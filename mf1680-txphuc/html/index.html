@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head txp>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+
+        <link rel="stylesheet" href="./css/base.css" />
+        <link rel="stylesheet" href="./css/button.css" />
+        <link rel="stylesheet" href="./css/textfield.css" />
+        <link rel="stylesheet" href="./css/toastmessage.css" />
+        <link rel="stylesheet" href="./css/dialog.css" />
+        <link rel="stylesheet" href="./css/combobox.css" />
+        <link rel="stylesheet" href="./css/table.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/regular.min.css"
+            integrity="sha512-WidMaWaNmZqjk3gDE6KBFCoDpBz9stTsTZZTeocfq/eDNkLfpakEd7qR0bPejvy/x0iT0dvzIq4IirnBtVer5A=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+    </head>
+    <body>
+        <div class="main">
+            <!-- button -->
+            <section class="section align-center">
+                <h1 class="h1">Button</h1>
+
+                <div class="d-flex align-center">
+                    <button class="btn btn-primary">Button</button>
+                    <button class="btn btn-secondary">Button</button>
+
+                    <button class="btn btn-icon" title="Button">
+                        <span class="icon">
+                            <i class="fa-regular fa-plus"></i>
+                        </span>
+                    </button>
+
+                    <button class="btn btn-link">Button</button>
+                </div>
+
+                <div class="d-flex align-center mt-16">
+                    <button class="btn btn-primary with-icon">
+                        <span class="left-icon">
+                            <i class="fa-regular fa-plus"></i>
+                        </span>
+                        Button
+                    </button>
+
+                    <button class="btn btn-primary with-icon with-dropdown">
+                        <span class="left-icon">
+                            <i class="fa-regular fa-plus"></i>
+                        </span>
+                        Button
+                        <span class="dropdown-toggle" title="Dropdown">
+                            <i class="fa-solid fa-angle-down"></i>
+                        </span>
+                    </button>
+
+                    <button class="btn btn-primary with-dropdown">
+                        Button
+                        <span class="dropdown-toggle" title="Dropdown">
+                            <i class="fa-solid fa-angle-down"></i>
+                        </span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Text field -->
+            <section class="section">
+                <h1 class="h1">Text field</h1>
+
+                <div class="d-flex flex-column align-start">
+                    <div class="form-group">
+                        <label for="" class="form-label">Field label</label>
+                        <input
+                            type="text"
+                            class="form-input"
+                            placeholder="Place holder"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="" class="form-label">Field label</label>
+                        <div class="input-group">
+                            <input
+                                type="text"
+                                class="form-input"
+                                placeholder="Place holder"
+                            />
+                            <button class="input-action">
+                                <img
+                                    class="action-icon"
+                                    src="./assets/icon/search.svg"
+                                    alt=""
+                                />
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group error">
+                        <label for="" class="form-label">Field label</label>
+                        <input type="text" class="form-input" />
+                        <p class="form-error-msg">
+                            Field label không được để trống
+                        </p>
+                    </div>
+
+                    <div class="form-group success">
+                        <label for="" class="form-label">Field label</label>
+                        <div class="input-group">
+                            <input
+                                type="text"
+                                class="form-input"
+                                value="Some things"
+                            />
+                            <span class="input-action">
+                                <img
+                                    class="action-icon"
+                                    src="./assets/icon/check-circle.svg"
+                                    alt=""
+                                />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Toast message -->
+            <section class="section">
+                <h1 class="h1">Toast message</h1>
+
+                <div class="toast-container success">
+                    <span class="toast-icon">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </span>
+                    <div class="toast-content">
+                        <span class="toast-title">Thành công!</span>
+                        <span class="toast-text">Công việc đã bị xoá</span>
+                    </div>
+                    <span class="toast-action">Hoàn tác</span>
+                    <span class="toast-close" title="Close">
+                        <img src="./assets/icon/times.svg" alt="" />
+                    </span>
+                </div>
+
+                <div class="toast-container error">
+                    <span class="toast-icon">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </span>
+                    <div class="toast-content">
+                        <span class="toast-title">Lỗi!</span>
+                        <span class="toast-text"
+                            >Không thể cập nhật được dữ liệu. Vui lòng kiểm tra
+                            lại kết nối internet</span
+                        >
+                    </div>
+
+                    <span class="toast-close" title="Close">
+                        <img src="./assets/icon/times.svg" alt="" />
+                    </span>
+                </div>
+
+                <div class="toast-container warning">
+                    <span class="toast-icon">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </span>
+                    <div class="toast-content">
+                        <span class="toast-title">Cảnh báo!</span>
+                        <span class="toast-text"
+                            >Dữ liệu của bạn đã bị thay đổi.</span
+                        >
+                    </div>
+
+                    <span class="toast-close" title="Close">
+                        <img src="./assets/icon/times.svg" alt="" />
+                    </span>
+                </div>
+
+                <div class="toast-container infor">
+                    <span class="toast-icon">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </span>
+                    <div class="toast-content">
+                        <span class="toast-title">Thông tin!</span>
+                        <span class="toast-text"
+                            >Bạn nên đọc kỹ nội dung trước khi gửi.</span
+                        >
+                    </div>
+
+                    <span class="toast-close" title="Close">
+                        <img src="./assets/icon/times.svg" alt="" />
+                    </span>
+                </div>
+            </section>
+
+            <!-- Dialog -->
+            <section class="section">
+                <h1 class="h1">Dialog</h1>
+
+                <div class="dialog">
+                    <div class="dialog-header">
+                        <h4 class="dialog-title">Tiêu đề</h4>
+                        <span class="dialog-close" title="Close">
+                            <img src="./assets/icon/times.svg" alt="" />
+                        </span>
+                    </div>
+
+                    <div class="dialog-content">Mô tả</div>
+
+                    <div class="dialog-controls">
+                        <button class="btn btn-secondary dialog-btn">
+                            Button 2
+                        </button>
+                        <button class="btn btn-primary dialog-btn">
+                            Button 1
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Combobox -->
+            <section class="section">
+                <h1 class="h1">Combobox</h1>
+                <div class="d-flex">
+                    <div>
+                        <div class="form-group error">
+                            <label for="" class="form-label">Field label</label>
+                            <div tabindex="-1" class="combobox">
+                                <input
+                                    class="combobox-input"
+                                    type="text"
+                                    placeholder="Type here"
+                                />
+
+                                <span class="dropdown-toggle" title="Combobox">
+                                    <i class="fa-solid fa-angle-down"></i>
+                                </span>
+
+                                <ul class="select-list">
+                                    <li class="select-item selected">
+                                        Type 1
+                                        <span class="select-item-icon">
+                                            <img
+                                                src="./assets/icon/check.svg"
+                                                alt=""
+                                            />
+                                        </span>
+                                    </li>
+                                    <li class="select-item">Type 2</li>
+                                    <li class="select-item">Type 3</li>
+                                </ul>
+                            </div>
+                            <p class="form-error-msg">Error message</p>
+                        </div>
+                    </div>
+
+                    <div class="ms-16">
+                        <div class="form-group">
+                            <label for="" class="form-label">Field label</label>
+                            <div tabindex="-1" class="combobox">
+                                <input
+                                    class="combobox-input"
+                                    type="text"
+                                    placeholder="Type here"
+                                />
+
+                                <span class="dropdown-toggle" title="Combobox">
+                                    <i class="fa-solid fa-angle-down"></i>
+                                </span>
+
+                                <ul class="select-list">
+                                    <li class="select-item selected">
+                                        Type 1
+                                        <span class="select-item-icon">
+                                            <img
+                                                src="./assets/icon/check.svg"
+                                                alt=""
+                                            />
+                                        </span>
+                                    </li>
+                                    <li class="select-item">Type 2</li>
+                                    <li class="select-item">Type 3</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Table -->
+            <section class="section">
+                <h1 class="h1">Table</h1>
+
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" name="" id="" /></th>
+                                <th>Header A</th>
+                                <th>Header B</th>
+                                <th>Header C</th>
+                                <th>Header D</th>
+                                <th>Header E</th>
+                                <th>Header F</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox" name="" id="" /></td>
+                                <td>
+                                    <img
+                                        src="./assets/img/avatar-default.png"
+                                        alt="Image"
+                                    />
+                                </td>
+                                <td>Cell B1</td>
+                                <td>Cell C1</td>
+                                <td>Cell D1</td>
+                                <td>Cell E1</td>
+                                <td>Cell F1</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" name="" id="" /></td>
+                                <td>
+                                    <img
+                                        src="./assets/img/avatar-default.png"
+                                        alt="Image"
+                                    />
+                                </td>
+                                <td>Cell B1</td>
+                                <td>Cell C1</td>
+                                <td>Cell D1</td>
+                                <td>Cell E1</td>
+                                <td>Cell F1</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" name="" id="" /></td>
+                                <td>
+                                    <img
+                                        src="./assets/img/avatar-default.png"
+                                        alt="Image"
+                                    />
+                                </td>
+                                <td>Cell B1</td>
+                                <td>Cell C1</td>
+                                <td>Cell D1</td>
+                                <td>Cell E1</td>
+                                <td>Cell F1</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" name="" id="" /></td>
+                                <td>
+                                    <img
+                                        src="./assets/img/avatar-default.png"
+                                        alt="Image"
+                                    />
+                                </td>
+                                <td>Cell B1</td>
+                                <td>Cell C1</td>
+                                <td>Cell D1</td>
+                                <td>Cell E1</td>
+                                <td>Cell F1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="table-footer">
+                        <p class="total-row">
+                            <span>Tổng: </span>
+                            <span class="text-bold">4</span>
+                        </p>
+                        <div class="page-infor">
+                            <div class="page-size-select">
+                                <span>Số bản ghi/trang: 10</span>
+                                <span class="dropdown-toggle" title="Dropdown">
+                                    <i class="fa-solid fa-angle-down"></i>
+                                </span>
+                            </div>
+
+                            <div class="table-range">
+                                <p>
+                                    1 - <span class="text-bold">4</span> bản ghi
+                                </p>
+                            </div>
+
+                            <div class="page-controls">
+                                <span
+                                    class="prev-page-btn"
+                                    title="Previous page"
+                                >
+                                    <img
+                                        src="./assets/icon/angle-left-b.svg"
+                                        alt=""
+                                    />
+                                </span>
+                                <span class="next-page-btn" title="Next page">
+                                    <img
+                                        src="./assets/icon/angle-right-b.svg"
+                                        alt=""
+                                    />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </body>
+</html>
