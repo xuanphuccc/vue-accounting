@@ -14,6 +14,7 @@
     outline: none;
     cursor: pointer;
     transition: all 0.2s ease;
+    user-select: none;
 }
 
 .btn + .btn {
@@ -113,15 +114,5 @@
     padding: 0 12px;
     margin-left: 16px;
     font-size: 16px;
-    position: relative;
-}
-
-.btn .dropdown-toggle::before {
-    content: "";
-    display: inline-block;
-    width: 1px;
-    height: 36px;
-    background: var(--white);
-    position: absolute;
-    left: 0;
+    border-left: 1px solid var(--white);
 }

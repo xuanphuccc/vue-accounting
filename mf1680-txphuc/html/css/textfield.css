@@ -73,9 +73,9 @@
     background: var(--gray-100);
 }
 
-/* .input-group:focus-within {
+.input-group:focus-within {
     border-color: var(--primary-color-500);
-} */
+}
 
 .input-group .form-input {
     background: transparent;
@@ -91,6 +91,10 @@
     cursor: default;
 }
 
+.form-group.success .input-action:active {
+    background: transparent;
+}
+
 .input-action {
     display: inline-flex;
     align-items: center;
@@ -101,6 +105,7 @@
     padding: 0 8px;
     cursor: pointer;
     transition: all 0.2s ease;
+    user-select: none;
 }
 
 .input-action:active {

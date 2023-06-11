@@ -23,6 +23,7 @@
 .dialog-close {
     display: flex;
     cursor: pointer;
+    user-select: none;
 }
 
 .dialog-close img {
