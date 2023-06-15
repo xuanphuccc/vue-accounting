@@ -1,4 +1,4 @@
-.toast-container {
+.ms-toast-container {
     display: flex;
     width: 450px;
     align-items: center;
@@ -11,34 +11,34 @@
         rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
 }
 
-.toast-container + .toast-container {
+.ms-toast-container + .ms-toast-container {
     margin-top: 24px;
 }
 
-.toast-icon {
+.ms-toast-icon {
     width: 24px;
     height: 24px;
     display: flex;
     font-size: 24px;
 }
 
-.toast-content {
+.ms-toast-content {
     margin-left: 8px;
     margin-right: 8px;
     flex: 1;
 }
 
-.toast-title {
+.ms-toast-title {
     font-weight: 500;
     font-size: 14px;
 }
 
-.toast-text {
+.ms-toast-text {
     font-size: 14px;
     color: var(--primary-text-color);
 }
 
-.toast-action {
+.ms-toast-action {
     font-size: 14px;
     font-weight: 500;
     text-decoration: underline;
@@ -47,35 +47,35 @@
     user-select: none;
 }
 
-.toast-close {
+.ms-toast-close {
     display: flex;
     margin-left: 16px;
     cursor: pointer;
     user-select: none;
 }
 
-.toast-close img {
+.ms-toast-close img {
     width: 20px;
     height: 20px;
 }
 
 /* modifier */
-.toast-container.success .toast-icon,
-.toast-container.success .toast-title {
+.ms-toast-container.success .ms-toast-icon,
+.ms-toast-container.success .ms-toast-title {
     color: var(--light-green-500);
 }
 
-.toast-container.error .toast-icon,
-.toast-container.error .toast-title {
+.ms-toast-container.error .ms-toast-icon,
+.ms-toast-container.error .ms-toast-title {
     color: var(--red-500);
 }
 
-.toast-container.warning .toast-icon,
-.toast-container.warning .toast-title {
+.ms-toast-container.warning .ms-toast-icon,
+.ms-toast-container.warning .ms-toast-title {
     color: var(--orange-500);
 }
 
-.toast-container.infor .toast-icon,
-.toast-container.infor .toast-title {
+.ms-toast-container.infor .ms-toast-icon,
+.ms-toast-container.infor .ms-toast-title {
     color: var(--blue-500);
 }

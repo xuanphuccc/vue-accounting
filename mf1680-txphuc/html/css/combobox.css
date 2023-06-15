@@ -1,4 +1,4 @@
-.combobox {
+.ms-combobox {
     position: relative;
     display: flex;
     align-items: center;
@@ -7,23 +7,23 @@
     border: 1px solid var(--border-color);
     border-radius: 4px;
     cursor: pointer;
-    font-family: Roboto;
+    font-family: var(--primary-font);
     transition: all 0.2s ease;
 }
 
-.combobox:hover {
+.ms-combobox:hover {
     background: var(--gray-100);
 }
 
-.combobox:focus-within {
+.ms-combobox:focus-within {
     border-color: var(--primary-color-500);
 }
 
-.form-group.error .combobox {
+.ms-form-group.error .ms-combobox {
     border-color: var(--red-500);
 }
 
-.combobox-input {
+.ms-combobox-input {
     height: 100%;
     border: none;
     outline: none;
@@ -33,12 +33,12 @@
     flex: 1;
 }
 
-.combobox-input::placeholder {
+.ms-combobox-input::placeholder {
     font-size: 14px;
     color: var(--gray-400);
 }
 
-.combobox .dropdown-toggle {
+.ms-combobox .dropdown-toggle {
     height: 100%;
     display: inline-flex;
     align-items: center;
@@ -51,7 +51,7 @@
 }
 
 /* select list */
-.select-list {
+.ms-combobox .select-list {
     position: absolute;
     top: calc(100% + 1px);
     left: 0;
@@ -70,12 +70,12 @@
     display: none;
 }
 
-.combobox:focus .select-list,
-.combobox-input:focus ~ .select-list {
+.ms-combobox:focus .select-list,
+.ms-combobox-input:focus ~ .select-list {
     display: block;
 }
 
-.select-item {
+.ms-combobox .select-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -87,11 +87,11 @@
     border-radius: 4px;
 }
 
-.select-item:hover {
+.ms-combobox .select-item:hover {
     background: var(--green-50);
 }
 
-.select-item.selected {
+.ms-combobox .select-item.selected {
     color: var(--light-green-500);
 }
 .select-item.selected .select-item-icon {

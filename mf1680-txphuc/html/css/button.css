@@ -1,4 +1,4 @@
-.btn {
+.ms-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -18,130 +18,130 @@
     user-select: none;
 }
 
-.btn + .btn,
-.btn + .btn-group,
-.btn-group + .btn,
-.btn-group + .btn-group {
+.ms-btn + .ms-btn,
+.ms-btn + .ms-btn-group,
+.ms-btn-group + .ms-btn,
+.ms-btn-group + .ms-btn-group {
     margin-left: 16px;
 }
 
-.btn:disabled {
+.ms-btn:disabled {
     opacity: 56%;
     cursor: default;
 }
 
 /* button link */
-.btn.btn-link {
+.ms-btn.ms-btn-link {
     min-width: auto;
     background: transparent;
     color: var(--primary-color-500);
     padding: 0;
 }
 
-.btn.btn-link:hover {
+.ms-btn.ms-btn-link:hover {
     color: var(--primary-color-400);
 }
 
-.btn.btn-link:active {
+.ms-btn.ms-btn-link:active {
     color: var(--primary-color-700);
 }
 
 /* button icon */
-.btn .left-icon,
-.btn .icon {
+.ms-btn .left-icon,
+.ms-btn .icon {
     display: inline-block;
     width: 20px;
     font-size: 20px;
 }
 
-.btn .left-icon {
+.ms-btn .left-icon {
     margin-right: 4px;
 }
 
-.btn.with-icon {
+.ms-btn.with-icon {
     padding-left: 12px;
 }
 
-.btn.btn-icon {
+.ms-btn.ms-btn-icon {
     min-width: 10px;
     padding: 0px 8px;
 }
 
 /* primary button */
-.btn.btn-primary {
+.ms-btn.ms-btn-primary {
     background: var(--primary-color-500);
     border-color: var(--primary-color-500);
     color: var(--white);
 }
 
-.btn.btn-primary:hover {
+.ms-btn.ms-btn-primary:hover {
     background: var(--primary-color-400);
     border-color: var(--primary-color-400);
 }
 
-.btn.btn-primary:active {
+.ms-btn.ms-btn-primary:active {
     background: var(--primary-color-700);
     border-color: var(--primary-color-700);
 }
 
 /* secondary button */
-.btn.btn-secondary {
+.ms-btn.ms-btn-secondary {
     background: var(--white);
     border-color: var(--border-color);
     color: var(--primary-text-color);
 }
 
-.btn.btn-secondary:hover {
+.ms-btn.ms-btn-secondary:hover {
     background: var(--gray-100);
 }
 
-.btn.btn-secondary:active {
+.ms-btn.ms-btn-secondary:active {
     background: var(--gray-200);
 }
 
 /* inverse button */
-.btn.btn-inverse {
+.ms-btn.ms-btn-inverse {
     background: var(--green-100);
     border-color: var(--green-100);
     color: var(--primary-color-500);
 }
 
-.btn.btn-inverse:hover {
+.ms-btn.ms-btn-inverse:hover {
     color: var(--primary-color-400);
 }
 
-.btn.btn-inverse:active {
+.ms-btn.ms-btn-inverse:active {
     color: var(--white);
     background: var(--primary-color-700);
     border-color: var(--primary-color-700);
 }
 
 /* button group */
-.btn-group {
+.ms-btn-group {
     display: flex;
 }
 
-.btn-group .btn {
+.ms-btn-group .ms-btn {
     margin-left: 0;
     border-radius: 0;
 }
 
-.btn-group :not(.btn:first-child) {
+.ms-btn-group :not(.ms-btn:first-child) {
     border-left-color: var(--white) !important;
 }
 
-.btn-group .btn:first-child {
+.ms-btn-group .ms-btn:first-child {
     border-radius: 4px 0 0 4px;
 }
-.btn-group .btn:last-child {
+.ms-btn-group .ms-btn:last-child {
     border-radius: 0 4px 4px 0;
 }
 
-.btn-group .btn.btn-icon {
+.ms-btn-group .ms-btn.ms-btn-icon {
     padding: 0 12px !important;
 }
 
-.btn-group .btn.btn-icon .icon {
+.ms-btn-group .ms-btn.ms-btn-icon .icon {
     display: flex;
     justify-content: center;
     align-items: center;
