@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+
+        <link rel="stylesheet" href="../../css/main.css" />
+    </head>
+    <body>
+        <div class="main">
+            <!-- navbar -->
+            <header class="navbar">
+                <div class="navbar__left">
+                    <div class="navbar__toggle" title="Menu"></div>
+                    <div class="navbar__logo" title="MISA CukCuk"></div>
+                </div>
+                <div class="navbar__right">
+                    <ul class="navbar__nav-list">
+                        <li class="navbar__nav-item --active">
+                            <a class="navbar__item-link" href="#"> Tổng quan </a>
+                        </li>
+                        <li class="navbar__nav-item">
+                            <a class="navbar__item-link" href="#"> Thành phần lương </a>
+                        </li>
+                        <li class="navbar__nav-item">
+                            <a class="navbar__item-link" href="#"> Chính sách </a>
+                        </li>
+                        <li class="navbar__nav-item">
+                            <a class="navbar__item-link" href="#"> Dữ liệu tính lương </a>
+                        </li>
+                        <li class="navbar__nav-item">
+                            <a class="navbar__item-link" href="#"> Báo cáo </a>
+                        </li>
+                    </ul>
+                    <div class="navbar__controls">
+                        <button
+                            class="navbar__button ms-icon--setting"
+                            title="Cài đặt"
+                        ></button>
+                        <button
+                            class="navbar__button ms-icon--bell"
+                            title="Thông báo"
+                        ></button>
+                        <button
+                            class="navbar__button ms-icon--question-circle"
+                            title="Hỗ trợ"
+                        ></button>
+                        <img
+                            class="navbar__avatar"
+                            src="../../assets/img/avatar-default.png"
+                            title="Tài khoản"
+                            alt=""
+                        />
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <!-- sidebar -->
+                <nav id="sidebar" class="sidebar">
+                    <ul class="sidebar__menu">
+                        <li class="sidebar__menu-item --active">
+                            <a href="#" class="sidebar__link">
+                                <span class="sidebar__link-icon ms-icon--home"></span>
+                                <span class="sidebar__link-text">Tổng quan</span>
+
+                                <!-- <div class="sidebar__tooltip">Tổng quan</div> -->
+                            </a>
+                        </li>
+                        <li class="sidebar__menu-item">
+                            <a href="#" class="sidebar__link">
+                                <span class="sidebar__link-icon ms-icon--user"></span>
+                                <span class="sidebar__link-text">Hồ sơ</span>
+                            </a>
+                        </li>
+                        <li class="sidebar__menu-item">
+                            <a href="#" class="sidebar__link">
+                                <span class="sidebar__link-icon ms-icon--doc"></span>
+                                <span class="sidebar__link-text">Hợp đồng</span>
+                            </a>
+                        </li>
+                        <li class="sidebar__menu-item">
+                            <a href="#" class="sidebar__link">
+                                <span
+                                    class="sidebar__link-icon ms-icon--user-plus"
+                                ></span>
+                                <span class="sidebar__link-text">Bổ nhiệm</span>
+                            </a>
+                        </li>
+                        <li class="sidebar__menu-item">
+                            <a href="#" class="sidebar__link">
+                                <span
+                                    class="sidebar__link-icon ms-icon--user-minus"
+                                ></span>
+                                <span class="sidebar__link-text">Miễn nhiệm</span>
+                            </a>
+                        </li>
+                        <li class="sidebar__menu-item">
+                            <a href="#" class="sidebar__link">
+                                <span
+                                    class="sidebar__link-icon ms-icon--right-left"
+                                ></span>
+                                <span class="sidebar__link-text">Thuyên chuyển</span>
+                            </a>
+                        </li>
+                        <li class="sidebar__menu-item">
+                            <a href="#" class="sidebar__link">
+                                <span
+                                    class="sidebar__link-icon ms-icon--user-cross"
+                                ></span>
+                                <span class="sidebar__link-text">Nghỉ việc</span>
+                            </a>
+                        </li>
+                        <li class="sidebar__menu-item">
+                            <a href="#" class="sidebar__link">
+                                <span class="sidebar__link-icon ms-icon--shield-x"></span>
+                                <span class="sidebar__link-text">Sự cố</span>
+                            </a>
+                        </li>
+                        <li class="sidebar__menu-item">
+                            <a href="#" class="sidebar__link">
+                                <span class="sidebar__link-icon ms-icon--users"></span>
+                                <span class="sidebar__link-text">Quy hoạch</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="sidebar__tippy">Tổng quan</div>
+
+                    <div
+                        onclick="toggleSidebar()"
+                        class="sidebar__toggle"
+                        title="Mở rộng"
+                    >
+                        <span class="sidebar__toggle-icon"></span>
+                        <span class="sidebar__toggle-text">Thu gọn</span>
+                    </div>
+                </nav>
+
+                <!-- main content -->
+                <div class="main-content">
+                    <div class="page-container">
+                        <div class="page__header">
+                            <div class="page__title-wrapper">
+                                <h1 class="page__title">Tiêu đề phân hệ</h1>
+                                <span
+                                    class="page__title-icon ms-icon--arrow-down"
+                                    title="Dropdown"
+                                ></span>
+                            </div>
+
+                            <div class="page__header-controls">
+                                <button
+                                    onclick="openDialog()"
+                                    class="ms-btn ms-btn--primary ms-btn--with-icon page__header-btn"
+                                >
+                                    <span class="ms-btn__icon ms-icon--plus"> </span>
+                                    Thêm mới
+                                </button>
+                                <button
+                                    onclick="randomToast()"
+                                    class="ms-btn ms-btn--icon ms-btn--secondary page__header-btn"
+                                    title="Tuỳ chọn"
+                                >
+                                    <span class="ms-btn__icon ms-icon--ellipsis-h"></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="page__content">
+                            <div class="filter-container">
+                                <div class="filter__left">
+                                    <label for="input2" class="ms-input-group">
+                                        <div class="ms-input-group__action">
+                                            <span
+                                                class="ms-input-group__action-icon ms-icon--search"
+                                            ></span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            class="ms-input"
+                                            id="input2"
+                                            placeholder="Tìm kiếm trong danh sách"
+                                        />
+                                    </label>
+                                </div>
+                                <div class="filter__right">
+                                    <div tabindex="-1" class="ms-combobox">
+                                        <input
+                                            class="ms-combobox__input"
+                                            type="text"
+                                            id="combobox2"
+                                            placeholder="Chọn công ty"
+                                        />
+
+                                        <div class="ms-combobox__toggle" title="Combobox">
+                                            <span
+                                                class="ms-combobox__toggle-icon ms-icon--angle-down"
+                                            ></span>
+                                        </div>
+
+                                        <ul class="ms-combobox__select-list">
+                                            <li class="ms-combobox__item --selected">
+                                                Type 1
+                                                <span
+                                                    class="ms-combobox__item-icon ms-icon--check"
+                                                ></span>
+                                            </li>
+                                            <li class="ms-combobox__item">Type 2</li>
+                                            <li class="ms-combobox__item">Type 3</li>
+                                        </ul>
+                                    </div>
+                                    <button
+                                        class="ms-btn ms-btn--icon ms-btn--secondary"
+                                        title="Bộ lọc"
+                                    >
+                                        <span class="ms-btn__icon ms-icon--filter"></span>
+                                    </button>
+                                    <button
+                                        class="ms-btn ms-btn--icon ms-btn--inverse"
+                                        title="Cài đặt"
+                                    >
+                                        <span
+                                            class="ms-btn__icon ms-icon--setting"
+                                        ></span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- table -->
+                            <div class="ms-table">
+                                <div class="ms-table__container">
+                                    <table class="ms-table__table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <input
+                                                        type="checkbox"
+                                                        name=""
+                                                        id=""
+                                                    />
+                                                </th>
+                                                <th>
+                                                    Header A
+                                                    <span
+                                                        class="ms-table_col-resize"
+                                                    ></span>
+                                                </th>
+                                                <th>
+                                                    Header B
+                                                    <span
+                                                        class="ms-table_col-resize"
+                                                    ></span>
+                                                </th>
+                                                <th>
+                                                    Header C
+                                                    <span
+                                                        class="ms-table_col-resize"
+                                                    ></span>
+                                                </th>
+                                                <th>
+                                                    Header D
+                                                    <span
+                                                        class="ms-table_col-resize"
+                                                    ></span>
+                                                </th>
+                                                <th>
+                                                    Header E
+                                                    <span
+                                                        class="ms-table_col-resize"
+                                                    ></span>
+                                                </th>
+                                                <th>
+                                                    Header F
+                                                    <span
+                                                        class="ms-table_col-resize"
+                                                    ></span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <input
+                                                        type="checkbox"
+                                                        name=""
+                                                        id=""
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-center">
+                                                        <img
+                                                            src="../../assets/img/avatar-default.png"
+                                                            alt="Image"
+                                                        />
+                                                        Cell A1
+                                                    </div>
+                                                </td>
+                                                <td>Cell B1</td>
+                                                <td>Cell C1</td>
+                                                <td>Cell D1</td>
+                                                <td>Cell E1</td>
+                                                <td>Cell F1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input
+                                                        type="checkbox"
+                                                        name=""
+                                                        id=""
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-center">
+                                                        <img
+                                                            src="../../assets/img/avatar-default.png"
+                                                            alt="Image"
+                                                        />
+                                                        Cell A1
+                                                    </div>
+                                                </td>
+                                                <td>Cell B1</td>
+                                                <td>Cell C1</td>
+                                                <td>Cell D1</td>
+                                                <td>Cell E1</td>
+                                                <td>Cell F1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input
+                                                        type="checkbox"
+                                                        name=""
+                                                        id=""
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-center">
+                                                        <img
+                                                            src="../../assets/img/avatar-default.png"
+                                                            alt="Image"
+                                                        />
+                                                        Cell A1
+                                                    </div>
+                                                </td>
+                                                <td>Cell B1</td>
+                                                <td>Cell C1</td>
+                                                <td>Cell D1</td>
+                                                <td>Cell E1</td>
+                                                <td>Cell F1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input
+                                                        type="checkbox"
+                                                        name=""
+                                                        id=""
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-center">
+                                                        <img
+                                                            src="../../assets/img/avatar-default.png"
+                                                            alt="Image"
+                                                        />
+                                                        Cell A1
+                                                    </div>
+                                                </td>
+                                                <td>Cell B1</td>
+                                                <td>Cell C1</td>
+                                                <td>Cell D1</td>
+                                                <td>Cell E1</td>
+                                                <td>Cell F1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input
+                                                        type="checkbox"
+                                                        name=""
+                                                        id=""
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-center">
+                                                        <img
+                                                            src="../../assets/img/avatar-default.png"
+                                                            alt="Image"
+                                                        />
+                                                        Cell A1
+                                                    </div>
+                                                </td>
+                                                <td>Cell B1</td>
+                                                <td>Cell C1</td>
+                                                <td>Cell D1</td>
+                                                <td>Cell E1</td>
+                                                <td>Cell F1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input
+                                                        type="checkbox"
+                                                        name=""
+                                                        id=""
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-center">
+                                                        <img
+                                                            src="../../assets/img/avatar-default.png"
+                                                            alt="Image"
+                                                        />
+                                                        Cell A1
+                                                    </div>
+                                                </td>
+                                                <td>Cell B1</td>
+                                                <td>Cell C1</td>
+                                                <td>Cell D1</td>
+                                                <td>Cell E1</td>
+                                                <td>Cell F1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input
+                                                        type="checkbox"
+                                                        name=""
+                                                        id=""
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-center">
+                                                        <img
+                                                            src="../../assets/img/avatar-default.png"
+                                                            alt="Image"
+                                                        />
+                                                        Cell A1
+                                                    </div>
+                                                </td>
+                                                <td>Cell B1</td>
+                                                <td>Cell C1</td>
+                                                <td>Cell D1</td>
+                                                <td>Cell E1</td>
+                                                <td>Cell F1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input
+                                                        type="checkbox"
+                                                        name=""
+                                                        id=""
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-center">
+                                                        <img
+                                                            src="../../assets/img/avatar-default.png"
+                                                            alt="Image"
+                                                        />
+                                                        Cell A1
+                                                    </div>
+                                                </td>
+                                                <td>Cell B1</td>
+                                                <td>Cell C1</td>
+                                                <td>Cell D1</td>
+                                                <td>Cell E1</td>
+                                                <td>Cell F1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input
+                                                        type="checkbox"
+                                                        name=""
+                                                        id=""
+                                                    />
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-center">
+                                                        <img
+                                                            src="../../assets/img/avatar-default.png"
+                                                            alt="Image"
+                                                        />
+                                                        Cell A1
+                                                    </div>
+                                                </td>
+                                                <td>Cell B1</td>
+                                                <td>Cell C1</td>
+                                                <td>Cell D1</td>
+                                                <td>Cell E1</td>
+                                                <td>Cell F1</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="ms-table__footer">
+                                    <p class="total-row">
+                                        <span>Tổng: </span>
+                                        <span class="text-bold">9</span>
+                                    </p>
+                                    <div class="ms-table__page-infor">
+                                        <div class="ms-table__page-size">
+                                            <span>Số bản ghi/trang: 10</span>
+                                            <span
+                                                class="ms-table__dropdown-btn ms-icon--arrow-down"
+                                                title="Dropdown"
+                                            >
+                                            </span>
+                                        </div>
+
+                                        <div class="ms-table__records-range">
+                                            <p>
+                                                1 -
+                                                <span class="text-bold">9</span>
+                                                bản ghi
+                                            </p>
+                                        </div>
+
+                                        <div class="ms-table__page-controls">
+                                            <span
+                                                class="ms-table__prev-btn ms-icon--angle-left disable"
+                                                title="Trang trước"
+                                            >
+                                            </span>
+                                            <span
+                                                class="ms-table__next-btn ms-icon--angle-right"
+                                                title="Trang sau"
+                                            >
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- dialog -->
+            <div onclick="closeDialog()" id="dialog" class="ms-dialog-overlay">
+                <div onclick="stopBubbles(event)" class="ms-dialog --warning">
+                    <h4 class="ms-dialog__title">Tiêu đề</h4>
+                    <button
+                        onclick="closeDialog(event)"
+                        class="ms-dialog__close ms-icon--times"
+                        title="Đóng"
+                    ></button>
+
+                    <div class="ms-dialog__content">
+                        <div
+                            class="ms-dialog__icon ms-icon--triangle-exclamation-solid"
+                        ></div>
+                        <p class="ms-dialog__text">
+                            Mô tả lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem
+                            ipsum lorem ipsum lorem ipsum lorem ipsum.
+                        </p>
+                    </div>
+
+                    <div class="ms-dialog__controls">
+                        <button class="ms-btn ms-btn--secondary">Button 2</button>
+                        <button class="ms-btn ms-btn--primary">Button 1</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- toast message -->
+            <div id="toast-list" class="toast-container">
+                <!-- <div class="ms-toast success">
+                    <span
+                        class="ms-toast__icon ms-icon--circle-check-solid"
+                    ></span>
+                    <div class="ms-toast__content">
+                        <span class="ms-toast__title">Thành công!</span>
+                        <span class="ms-toast__text">Công việc đã bị xoá</span>
+                    </div>
+                    <span class="ms-toast__action">Hoàn tác</span>
+                    <span
+                        class="ms-toast__close ms-icon--times"
+                        title="Đóng"
+                    ></span>
+                </div> -->
+            </div>
+        </div>
+        <script src="../../js/base/toastmessage.js"></script>
+        <script src="../../js/base/modal.js"></script>
+        <script src="../../js/base/table.js"></script>
+        <script src="../../js/layout/sidebar.js"></script>
+    </body>
+</html>

@@ -1,0 +1,124 @@
+@import url("./variables.css");
+@import url("./layout/navbar.css");
+@import url("./layout/main-content.css");
+@import url("./layout/sidebar.css");
+
+/* base components */
+@import url("./base/icons.css");
+@import url("./base/button.css");
+@import url("./base/textfield.css");
+@import url("./base/combobox.css");
+@import url("./base/table.css");
+@import url("./base/dialog.css");
+@import url("./base/toastmessage.css");
+@import url("./base/animation.css");
+
+@font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 100;
+    font-display: swap;
+    src: url("../assets/font/Roboto/Roboto-Thin.ttf");
+}
+@font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url("../assets/font/Roboto/Roboto-Light.ttf");
+}
+@font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("../assets/font/Roboto/Roboto-Regular.ttf");
+}
+@font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url("../assets/font/Roboto/Roboto-Medium.ttf");
+}
+@font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("../assets/font/Roboto/Roboto-Bold.ttf");
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: var(--primary-font);
+}
+
+.content-wrapper {
+    display: flex;
+    height: calc(100vh - 56px);
+}
+
+.background {
+    background: var(--background-color);
+    width: fit-content;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.align-start {
+    align-items: flex-start;
+}
+
+.mt-16 {
+    margin-top: 16px;
+}
+
+.ms-16 {
+    margin-left: 16px;
+}
+
+.h1 {
+    font-family: var(--primary-font);
+    font-size: 20px;
+    color: var(--primary-text-color);
+    margin-bottom: 32px;
+}
+
+.text-bold {
+    font-weight: 700;
+}
+
+/* scroll bar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #fff;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #9e9e9e;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
