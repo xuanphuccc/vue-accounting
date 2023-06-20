@@ -20,7 +20,7 @@
 
 /* table */
 .ms-table__table {
-    width: fit-content;
+    width: max-content;
     min-width: 100%;
     border-collapse: collapse;
 }
@@ -30,7 +30,8 @@
 }
 
 .ms-table__table tr:hover {
-    background-color: var(--gray-100);
+    background: var(--gray-100);
+    transition: background 0.2s ease;
 }
 
 .ms-table__table td,
@@ -49,6 +50,7 @@
     font-weight: 700;
     text-align: left;
     background: var(--gray-200);
+    transition: background 0.2s ease;
     user-select: none;
 }
 .ms-table__table th:hover {
@@ -71,7 +73,7 @@
     position: absolute;
     right: 0;
     top: 0;
-    width: 4px;
+    width: 8px;
     height: 100%;
     user-select: none;
     cursor: col-resize;

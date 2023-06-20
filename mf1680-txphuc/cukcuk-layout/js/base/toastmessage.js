@@ -1,3 +1,4 @@
+// show toast message
 const showToast = ({
     type = "success",
     title = "Toast title!",
@@ -48,6 +49,7 @@ const showToast = ({
     }
 };
 
+// random message
 const randomToast = () => {
     const types = ["success", "error", "warning", "infor"];
 

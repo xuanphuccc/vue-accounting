@@ -3,6 +3,7 @@ const sidebarMenu = document.querySelector(".sidebar__menu");
 const tippy = document.querySelector(".sidebar__tippy");
 const menuElements = document.querySelectorAll(".sidebar__link");
 
+// open/close sidebar
 const toggleSidebar = () => {
     if (sidebar) {
         sidebar.classList.toggle("--compact");

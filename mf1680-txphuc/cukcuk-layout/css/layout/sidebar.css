@@ -136,6 +136,7 @@
     transform: rotate(180deg);
 }
 
+/* sidebar tippy */
 .sidebar__tippy {
     position: absolute;
     z-index: 2;
@@ -150,8 +151,10 @@
     border-radius: 4px;
     user-select: none;
     transition: all 0.1s ease;
-    display: none;
     animation: fadeIn 0.2s ease;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+        rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+    display: none;
 }
 
 .sidebar__tippy::before {

@@ -5,21 +5,19 @@ Array.from(colResizeBtns).forEach((resizeBtn) => {
 
     // enable resizing when resize button pressed
     const activeResize = () => {
-        console.log("resizing");
+        const thElementRect = thElement.getBoundingClientRect();
 
         // resizing column
         const resizeColumn = (e) => {
-            const thElementRect = thElement.getBoundingClientRect();
             const mouseX = e.clientX;
 
-            thElement.style.width = mouseX - thElementRect.left + "px";
+            thElement.style.width = mouseX - thElementRect.left + 4 + "px";
         };
 
         window.addEventListener("mousemove", resizeColumn);
 
         // event clean up
         window.onmouseup = () => {
-            console.log("clean up");
             window.removeEventListener("mousemove", resizeColumn);
         };
     };

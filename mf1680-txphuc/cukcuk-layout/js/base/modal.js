@@ -1,3 +1,4 @@
+// open dialog
 const openDialog = () => {
     const dialog = document.getElementById("dialog");
 
@@ -6,6 +7,7 @@ const openDialog = () => {
     }
 };
 
+// close dialog
 const closeDialog = () => {
     const dialog = document.getElementById("dialog");
 
@@ -14,6 +16,7 @@ const closeDialog = () => {
     }
 };
 
+// stop event bubble
 const stopBubbles = (e) => {
     e.stopPropagation();
 };

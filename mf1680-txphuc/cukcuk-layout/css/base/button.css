@@ -91,11 +91,11 @@
 .ms-btn--secondary {
     background: var(--white);
     border-color: var(--border-color);
-    color: var(--secondary-text-color);
+    color: var(--primary-text-color);
 }
 
 .ms-btn--secondary .ms-btn__icon {
-    background: var(--secondary-text-color);
+    background: var(--primary-text-color);
 }
 
 .ms-btn--secondary:hover {
