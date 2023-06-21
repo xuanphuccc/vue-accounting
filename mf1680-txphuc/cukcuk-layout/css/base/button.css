@@ -134,6 +134,27 @@
     background: var(--white);
 }
 
+/* danger button */
+.ms-btn--danger {
+    background: var(--red-500);
+    border-color: var(--red-500);
+    color: var(--white);
+}
+
+.ms-btn--danger .ms-btn__icon {
+    background: var(--white);
+}
+
+.ms-btn--danger:hover {
+    background: var(--red-400);
+    border-color: var(--red-400);
+}
+
+.ms-btn--danger:active {
+    background: var(--red-700);
+    border-color: var(--red-700);
+}
+
 /* button group */
 .ms-btn-group {
     display: flex;

@@ -171,7 +171,11 @@
                         <div class="page__content">
                             <div class="filter-container">
                                 <div class="filter__left">
-                                    <label for="input2" class="ms-input-group">
+                                    <label
+                                        id="table-search"
+                                        for="input2"
+                                        class="ms-input-group"
+                                    >
                                         <div class="ms-input-group__action">
                                             <span
                                                 class="ms-input-group__action-icon ms-icon--search"
@@ -184,6 +188,22 @@
                                             placeholder="Tìm kiếm trong danh sách"
                                         />
                                     </label>
+
+                                    <div class="filter__select-infor">
+                                        <div>
+                                            Đã chọn
+                                            <span id="selected-count" class="text-bold"
+                                                >2</span
+                                            >
+                                        </div>
+                                        <button
+                                            onclick="removeAllSelectedCustomer()"
+                                            class="ms-btn ms-btn--secondary"
+                                        >
+                                            Bỏ chọn
+                                        </button>
+                                        <button class="ms-btn ms-btn--danger">Xoá</button>
+                                    </div>
                                 </div>
                                 <div class="filter__right">
                                     <div tabindex="-1" class="ms-combobox">
@@ -236,43 +256,50 @@
                                             <tr>
                                                 <th>
                                                     <input
+                                                        onclick="handleToggleSelectAllCustomers(event)"
                                                         type="checkbox"
                                                         name=""
-                                                        id=""
+                                                        id="select-all-rows"
                                                     />
                                                 </th>
                                                 <th>
-                                                    Header A
+                                                    Tên khách hàng
                                                     <span
                                                         class="ms-table_col-resize"
                                                     ></span>
                                                 </th>
                                                 <th>
-                                                    Header B
+                                                    Giới tính
+                                                    <span
+                                                        class="ms-table_col-resize"
+                                                    ></span>
+                                                </th>
+                                                <th class="text-align--center">
+                                                    Ngày sinh
                                                     <span
                                                         class="ms-table_col-resize"
                                                     ></span>
                                                 </th>
                                                 <th>
-                                                    Header C
+                                                    Email
+                                                    <span
+                                                        class="ms-table_col-resize"
+                                                    ></span>
+                                                </th>
+                                                <th class="text-align--end">
+                                                    Số điện thoại
                                                     <span
                                                         class="ms-table_col-resize"
                                                     ></span>
                                                 </th>
                                                 <th>
-                                                    Header D
+                                                    Tên công ty
                                                     <span
                                                         class="ms-table_col-resize"
                                                     ></span>
                                                 </th>
-                                                <th>
-                                                    Header E
-                                                    <span
-                                                        class="ms-table_col-resize"
-                                                    ></span>
-                                                </th>
-                                                <th>
-                                                    Header F
+                                                <th class="text-align--end">
+                                                    Số tiền nợ
                                                     <span
                                                         class="ms-table_col-resize"
                                                     ></span>
@@ -280,7 +307,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
+                                            <!-- <tr>
                                                 <td>
                                                     <input
                                                         type="checkbox"
@@ -302,191 +329,8 @@
                                                 <td>Cell D1</td>
                                                 <td>Cell E1</td>
                                                 <td>Cell F1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <input
-                                                        type="checkbox"
-                                                        name=""
-                                                        id=""
-                                                    />
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex align-center">
-                                                        <img
-                                                            src="../../assets/img/avatar-default.png"
-                                                            alt="Image"
-                                                        />
-                                                        Cell A1
-                                                    </div>
-                                                </td>
-                                                <td>Cell B1</td>
-                                                <td>Cell C1</td>
-                                                <td>Cell D1</td>
-                                                <td>Cell E1</td>
-                                                <td>Cell F1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <input
-                                                        type="checkbox"
-                                                        name=""
-                                                        id=""
-                                                    />
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex align-center">
-                                                        <img
-                                                            src="../../assets/img/avatar-default.png"
-                                                            alt="Image"
-                                                        />
-                                                        Cell A1
-                                                    </div>
-                                                </td>
-                                                <td>Cell B1</td>
-                                                <td>Cell C1</td>
-                                                <td>Cell D1</td>
-                                                <td>Cell E1</td>
-                                                <td>Cell F1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <input
-                                                        type="checkbox"
-                                                        name=""
-                                                        id=""
-                                                    />
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex align-center">
-                                                        <img
-                                                            src="../../assets/img/avatar-default.png"
-                                                            alt="Image"
-                                                        />
-                                                        Cell A1
-                                                    </div>
-                                                </td>
-                                                <td>Cell B1</td>
-                                                <td>Cell C1</td>
-                                                <td>Cell D1</td>
-                                                <td>Cell E1</td>
-                                                <td>Cell F1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <input
-                                                        type="checkbox"
-                                                        name=""
-                                                        id=""
-                                                    />
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex align-center">
-                                                        <img
-                                                            src="../../assets/img/avatar-default.png"
-                                                            alt="Image"
-                                                        />
-                                                        Cell A1
-                                                    </div>
-                                                </td>
-                                                <td>Cell B1</td>
-                                                <td>Cell C1</td>
-                                                <td>Cell D1</td>
-                                                <td>Cell E1</td>
-                                                <td>Cell F1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <input
-                                                        type="checkbox"
-                                                        name=""
-                                                        id=""
-                                                    />
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex align-center">
-                                                        <img
-                                                            src="../../assets/img/avatar-default.png"
-                                                            alt="Image"
-                                                        />
-                                                        Cell A1
-                                                    </div>
-                                                </td>
-                                                <td>Cell B1</td>
-                                                <td>Cell C1</td>
-                                                <td>Cell D1</td>
-                                                <td>Cell E1</td>
-                                                <td>Cell F1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <input
-                                                        type="checkbox"
-                                                        name=""
-                                                        id=""
-                                                    />
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex align-center">
-                                                        <img
-                                                            src="../../assets/img/avatar-default.png"
-                                                            alt="Image"
-                                                        />
-                                                        Cell A1
-                                                    </div>
-                                                </td>
-                                                <td>Cell B1</td>
-                                                <td>Cell C1</td>
-                                                <td>Cell D1</td>
-                                                <td>Cell E1</td>
-                                                <td>Cell F1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <input
-                                                        type="checkbox"
-                                                        name=""
-                                                        id=""
-                                                    />
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex align-center">
-                                                        <img
-                                                            src="../../assets/img/avatar-default.png"
-                                                            alt="Image"
-                                                        />
-                                                        Cell A1
-                                                    </div>
-                                                </td>
-                                                <td>Cell B1</td>
-                                                <td>Cell C1</td>
-                                                <td>Cell D1</td>
-                                                <td>Cell E1</td>
-                                                <td>Cell F1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <input
-                                                        type="checkbox"
-                                                        name=""
-                                                        id=""
-                                                    />
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex align-center">
-                                                        <img
-                                                            src="../../assets/img/avatar-default.png"
-                                                            alt="Image"
-                                                        />
-                                                        Cell A1
-                                                    </div>
-                                                </td>
-                                                <td>Cell B1</td>
-                                                <td>Cell C1</td>
-                                                <td>Cell D1</td>
-                                                <td>Cell E1</td>
-                                                <td>Cell F1</td>
-                                            </tr>
+                                                <td>Cell G1</td>
+                                            </tr> -->
                                         </tbody>
                                     </table>
                                 </div>
@@ -582,5 +426,6 @@
         <script src="../../js/base/modal.js"></script>
         <script src="../../js/base/table.js"></script>
         <script src="../../js/layout/sidebar.js"></script>
+        <script src="../../js/views/customer.js"></script>
     </body>
 </html>

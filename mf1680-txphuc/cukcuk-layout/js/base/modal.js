@@ -1,22 +1,43 @@
-// open dialog
+/**
+ * Author: txphuc (18/06/2023)
+ * Description: Open dialog
+ */
 const openDialog = () => {
-    const dialog = document.getElementById("dialog");
+    try {
+        const dialog = document.getElementById("dialog");
 
-    if (dialog) {
-        dialog.classList.add("--active");
+        if (dialog) {
+            dialog.classList.add("--active");
+        }
+    } catch (error) {
+        console.warn(error);
     }
 };
 
-// close dialog
+/**
+ * Author: txphuc (18/06/2023)
+ * Description: Close dialog
+ */
 const closeDialog = () => {
-    const dialog = document.getElementById("dialog");
+    try {
+        const dialog = document.getElementById("dialog");
 
-    if (dialog) {
-        dialog.classList.remove("--active");
+        if (dialog) {
+            dialog.classList.remove("--active");
+        }
+    } catch (error) {
+        console.warn(error);
     }
 };
 
-// stop event bubble
+/**
+ * Author: txphuc (18/06/2023)
+ * Description: Stop event bubble
+ */
 const stopBubbles = (e) => {
-    e.stopPropagation();
+    try {
+        e.stopPropagation();
+    } catch (error) {
+        console.warn(error);
+    }
 };

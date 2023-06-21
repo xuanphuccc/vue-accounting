@@ -57,6 +57,7 @@
 
 html {
     font-family: var(--primary-font);
+    font-size: 14px;
 }
 
 .content-wrapper {
@@ -102,6 +103,18 @@ html {
 
 .text-bold {
     font-weight: 700;
+}
+
+.text-align--center {
+    text-align: center !important;
+}
+
+.text-align--start {
+    text-align: left !important;
+}
+
+.text-align--end {
+    text-align: right !important;
 }
 
 /* scroll bar */

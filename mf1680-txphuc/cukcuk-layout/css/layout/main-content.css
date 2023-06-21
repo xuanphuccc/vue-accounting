@@ -68,6 +68,13 @@
     background-color: var(--white);
 }
 
+.filter__select-infor {
+    display: flex;
+    align-items: center;
+    column-gap: 12px;
+    display: none;
+}
+
 .filter__right {
     display: flex;
     column-gap: 12px;
