@@ -1,0 +1,132 @@
+.sidebar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  flex-shrink: 0;
+  height: calc(100vh - 56px);
+  background: var(--sidebar-background);
+  transition: all 0.2s ease;
+}
+
+/* sidebar menu */
+.sidebar__menu {
+  padding: 20px 0;
+  list-style: none;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sidebar__menu::-webkit-scrollbar-track {
+  background: var(--sidebar-background);
+}
+
+.sidebar__menu-item + .sidebar__menu-item {
+  margin-top: 4px;
+}
+
+.sidebar__menu-item {
+  padding: 0 12px;
+}
+
+.sidebar__menu-item.--active .sidebar__link {
+  background: var(--sidebar-hover-background);
+  color: var(--white);
+}
+
+.sidebar__menu-item.--active .sidebar__link-icon {
+  background: var(--white);
+}
+
+.sidebar__link {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 12px;
+  text-decoration: none;
+  color: #869ab8;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 4px;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.sidebar__link:hover {
+  background: var(--sidebar-hover-background);
+  color: var(--white);
+}
+
+.sidebar__link:hover .sidebar__link-icon {
+  background: var(--white);
+}
+
+.sidebar__link-text {
+  padding-left: 12px;
+}
+
+.sidebar__link-icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background: #869ab8;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+/* compact sidebar */
+.sidebar.--compact {
+  width: 72px;
+}
+
+.sidebar.--compact .sidebar__link {
+  width: 48px;
+  justify-content: center;
+}
+
+.sidebar.--compact .sidebar__link-text {
+  display: none;
+}
+
+.sidebar.--compact .sidebar__toggle-text {
+  display: none;
+}
+
+.sidebar.--compact .sidebar__toggle-icon {
+  margin-right: 0;
+  transform: rotate(180deg);
+}
+
+/* sidebar tippy */
+.sidebar__tippy {
+  position: absolute;
+  z-index: 2;
+  left: 88px;
+  top: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 12px;
+  white-space: nowrap;
+  color: var(--white);
+  background: var(--sidebar-background);
+  border-radius: 4px;
+  user-select: none;
+  transition: all 0.1s ease;
+  animation: fadeIn 0.2s ease;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  display: none;
+}
+
+.sidebar__tippy::before {
+  position: absolute;
+  left: -24px;
+  top: 50%;
+  transform: translateY(-50%);
+  content: "";
+  display: block;
+  border-style: solid;
+  border-color: transparent;
+  border-width: 8px 12px;
+  border-right-color: var(--sidebar-background);
+}
