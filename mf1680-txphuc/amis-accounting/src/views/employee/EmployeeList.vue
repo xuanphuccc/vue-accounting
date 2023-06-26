@@ -7,25 +7,25 @@
       </div>
 
       <div class="page__header-controls">
-        <MISAButton type="primary">Thêm mới nhân viên</MISAButton>
+        <MISAButton @click="togglePopup" type="primary">Thêm mới nhân viên</MISAButton>
       </div>
     </div>
 
     <div class="page__content">
       <div class="filter-container">
         <div class="filter__left">
-          <div :class="['filter__select-infor', { '--active': this.selectedRows?.length > 0 }]">
+          <div :class="['filter__select-infor', { '--active': selectedRowsState.length > 0 }]">
             <div>
               Đã chọn
-              <span id="selected-count" class="text-bold">{{ this.selectedRows?.length }}</span>
+              <span id="selected-count" class="text-bold">{{ selectedRowsState.length }}</span>
             </div>
-            <MISAButton @click="this.removeAllSelectedRows" type="secondary">Bỏ chọn</MISAButton>
+            <MISAButton @click="removeAllSelectedRows()" type="secondary">Bỏ chọn</MISAButton>
             <MISAButton type="danger">Xoá</MISAButton>
           </div>
         </div>
         <div class="filter__right">
-          <MISAInputGroup>
-            <MISAInput />
+          <MISAInputGroup for="search-input">
+            <MISAInput placeholder="Tìm theo mã, tên nhân viên" id="search-input" />
             <MISAInputAction />
           </MISAInputGroup>
           <MISAButton type="secondary" icon="ms-icon--reload-20" />
@@ -37,9 +37,9 @@
         :columns="[
           { key: 1, title: 'Tên khách hàng', dataIndex: 'name' },
           { key: 2, title: 'Giới tính', dataIndex: 'gender', width: 100 },
-          { key: 3, title: 'Ngày sinh', dataIndex: 'dateOfBirth', width: 120 },
-          { key: 4, title: 'Số điện thoại', dataIndex: 'phoneNumber', width: 100 },
-          { key: 5, title: 'Hành động', dataIndex: 'action', width: 100 },
+          { key: 3, title: 'Ngày sinh', dataIndex: 'dateOfBirth', width: 120, align: 'center' },
+          { key: 4, title: 'Số điện thoại', dataIndex: 'phoneNumber', width: 130 },
+          { key: 5, title: 'Email', dataIndex: 'email' },
         ]"
         :data-source="[
           {
@@ -48,7 +48,7 @@
             gender: 'Male',
             dateOfBirth: '01/04/2002',
             phoneNumber: '0123456789',
-            action: '',
+            email: 'abc@gmail.com',
           },
           {
             key: 2,
@@ -56,7 +56,7 @@
             gender: 'Male',
             dateOfBirth: '01/04/2002',
             phoneNumber: '0123456789',
-            action: '',
+            email: 'abb@gmail.com',
           },
           {
             key: 3,
@@ -64,87 +64,105 @@
             gender: 'Male',
             dateOfBirth: '01/04/2002',
             phoneNumber: '0123456789',
-            action: '',
+            email: 'dev.xuanphuc@gmail.com',
           },
         ]"
-        :selected-rows="this.selectedRows"
-        @select-row="this.selectRows"
+        :selected-rows="selectedRowsState"
+        @select-row="selectRows"
       >
         <template #name="row">
           <MISAButton type="link">{{ row["name"] }}</MISAButton>
         </template>
-        <template #action="row">
-          <MISAButtonGroup>
-            <MISAButton @click="this.deleteData(row)" type="secondary">Sửa</MISAButton>
-            <MISAButton type="secondary">Thêm</MISAButton>
-            <MISAButton type="secondary" icon="ms-icon--angle-down-20"></MISAButton>
-            <MISAButton type="secondary" icon="ms-icon--angle-down-20"></MISAButton>
-          </MISAButtonGroup>
+
+        <template #table-actions="row">
+          <MISATableAction icon="ms-icon--pen-24"></MISATableAction>
+          <MISATableAction>
+            <template #action-dropdown>
+              <!-- context menu -->
+              <MISAContextMenu>
+                <MISAContextItem icon="ms-icon--duplicate-24"> Nhân bản </MISAContextItem>
+                <MISAContextItem @click="showDeleteConfirmDialog(row)" icon="ms-icon--trash">
+                  Xoá
+                </MISAContextItem>
+                <MISAContextItem icon="ms-icon--circle-slash-24"> Ngừng sử dụng </MISAContextItem>
+              </MISAContextMenu>
+            </template>
+          </MISATableAction>
         </template>
       </MISATable>
 
       <!-- Modal -->
       <Teleport to="#app">
         <MISADialog
-          v-bind="this.dialog"
-          @close="this.dialog.active = false"
-          @cancel="this.dialog.active = false"
+          v-bind="dialogState"
+          @close="dialogState.active = false"
+          @cancel="dialogState.active = false"
         />
       </Teleport>
+
+      <!-- Employee detail -->
+      <EmployeeDetail :active="popupState" @close="togglePopup"></EmployeeDetail>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from "vue";
+
 import MISAButton from "../../components/base/button/MISAButton.vue";
-import MISAButtonGroup from "../../components/base/button/MISAButtonGroup.vue";
 import MISAInput from "../../components/base/input/MISAInput.vue";
 import MISAInputGroup from "../../components/base/input/MISAInputGroup.vue";
 import MISAInputAction from "../../components/base/input/MISAInputAction.vue";
 import MISATable from "../../components/base/table/MISATable.vue";
 import MISADialog from "../../components/base/dialog/MISADialog.vue";
+import MISAContextMenu from "../../components/base/context-menu/MISAContextMenu.vue";
+import MISAContextItem from "../../components/base/context-menu/MISAContextItem.vue";
+import MISATableAction from "../../components/base/table/MISATableAction.vue";
+import EmployeeDetail from "./EmployeeDetail.vue";
 
-export default {
-  components: {
-    MISAButton,
-    MISATable,
-    MISAInput,
-    MISAInputGroup,
-    MISAInputAction,
-    MISADialog,
-    MISAButtonGroup,
-  },
-  data() {
-    return {
-      selectedRows: [],
-      dialog: {
-        active: false,
-        title: "",
-        description: "",
-      },
-    };
-  },
-  methods: {
-    /**
-     * Hàm xử lý chọn dòng
-     * Createdby: sdnfsdf(24/06/2023)
-     * @param {*} value
-     */
-    selectRows(value) {
-      this.selectedRows = value;
-    },
-    removeAllSelectedRows() {
-      this.selectedRows = [];
-    },
-    deleteData(data) {
-      this.dialog = {
-        active: true,
-        title: "Xoá nhân viên",
-        type: "error",
-        description: `Bạn có muốn xoá nhân viên ${data.name}`,
-      };
-    },
-  },
+const selectedRowsState = ref([]);
+const dialogState = ref({
+  active: false,
+  title: "",
+  description: "",
+});
+const popupState = ref(false);
+
+/**
+ * Description: Lấy các bản ghi đã được chọn trả về từ bảng.
+ * Author: txphuc (24/06/2023).
+ */
+const selectRows = (value) => {
+  selectedRowsState.value = value;
+};
+
+/**
+ * Description: Bỏ chọn toàn bộ bản ghi trong bảng.
+ * Author: txphuc (24/06/2023).
+ */
+const removeAllSelectedRows = () => {
+  selectedRowsState.value = [];
+};
+
+/**
+ * Description: Hiện dialog xác nhận xoá
+ * Author: txphuc (24/06/2023).
+ */
+const showDeleteConfirmDialog = (data) => {
+  dialogState.value = {
+    active: true,
+    title: "Xoá nhân viên",
+    type: "error",
+    description: `Bạn có muốn xoá nhân viên ${data.name}`,
+  };
+};
+
+/**
+ * Description: Đóng/mở popup chi tiết nhân viên
+ * Author: txphuc (25/06/2023).
+ */
+const togglePopup = () => {
+  popupState.value = !popupState.value;
 };
 </script>
 

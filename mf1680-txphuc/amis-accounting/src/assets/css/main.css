@@ -40,11 +40,7 @@ html {
   height: calc(100vh - 56px);
 }
 
-.background {
-  background: var(--background-color);
-  width: fit-content;
-}
-
+/* ----- flexbox ----- */
 .d-flex {
   display: flex;
 }
@@ -61,6 +57,7 @@ html {
   align-items: flex-start;
 }
 
+/* ----- space ----- */
 .mt-16 {
   margin-top: 16px;
 }
@@ -69,6 +66,11 @@ html {
   margin-left: 16px;
 }
 
+.mb-24 {
+  margin-bottom: 24px;
+}
+
+/* ----- text ----- */
 .h1 {
   font-family: var(--primary-font);
   font-size: 20px;
@@ -92,7 +94,7 @@ html {
   text-align: right !important;
 }
 
-/* main content */
+/* ----- main content ----- */
 .main-content {
   flex-grow: 1;
   height: calc(100vh - 56px);
@@ -107,7 +109,7 @@ html {
   flex-direction: column;
 }
 
-/* page header */
+/* ----- page header ----- */
 .page__header {
   display: flex;
   align-items: center;
@@ -121,6 +123,7 @@ html {
 
 .page__title {
   font-size: 20px;
+  line-height: 20px;
 }
 
 .page__title-icon {
@@ -137,11 +140,7 @@ html {
   column-gap: 8px;
 }
 
-.page__header-btn + .page__header-btn {
-  margin-left: 12px !important;
-}
-
-/* page content */
+/* ----- page content ----- */
 .page__content {
   flex-grow: 1;
   display: flex;
@@ -180,7 +179,7 @@ html {
   column-gap: 12px;
 }
 
-/* scroll bar */
+/* ----- scroll bar ----- */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

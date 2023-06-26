@@ -1,5 +1,5 @@
 <template>
-  <header :class="['navbar', { '--compact': this.isCompact }]">
+  <header :class="['navbar', { '--compact': props.isCompact }]">
     <div class="navbar__left">
       <div class="navbar__menu-icon" title="Menu"></div>
       <div class="navbar__logo-container">
@@ -35,16 +35,17 @@
   </header>
 </template>
 
-<script>
-export default {
-  emits: ["toggleSidebar"],
-  props: {
-    isCompact: {
-      type: Boolean,
-      default: false
-    }
-  }
-};
+<script setup>
+defineEmits(["toggleSidebar"]);
+
+const props = defineProps({
+  // Trạng thái của Sidebar
+  // isCompact = true (trạng thái thu nhỏ)
+  isCompact: {
+    type: Boolean,
+    default: false,
+  },
+});
 </script>
 
 <style scoped>

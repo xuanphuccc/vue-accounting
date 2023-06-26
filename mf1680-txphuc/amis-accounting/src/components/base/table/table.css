@@ -29,9 +29,21 @@
   border-bottom: none;
 }
 
+.ms-table__table tr {
+  position: relative;
+  transition: background 0.2s ease;
+}
+
 .ms-table__table tr:hover {
   background: var(--gray-100);
-  transition: background 0.2s ease;
+}
+
+.ms-table__table tr:hover .ms-table__actions {
+  display: flex;
+}
+
+.ms-table__table tr.--active {
+  background-color: var(--primary-color-50);
 }
 
 .ms-table__table td,
@@ -47,6 +59,7 @@
 .ms-table__table th {
   position: sticky;
   top: 0;
+  z-index: 1;
   font-weight: 700;
   text-align: left;
   background: var(--gray-200);
@@ -97,6 +110,58 @@
 .ms-table__table input[type="checkbox"] {
   width: 16px;
   height: 16px;
+}
+
+/* table actions */
+.ms-table__actions {
+  position: absolute;
+  right: 16px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  background: transparent;
+  display: none;
+}
+
+.ms-table__action-btn {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--white);
+  border-radius: 50%;
+  box-shadow: var(--box-shadow-medium);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.ms-table__action-dropdown {
+  position: absolute;
+  top: calc(100% + 2px);
+  right: 0;
+  z-index: 1;
+  display: none;
+}
+
+.ms-table__action-dropdown.--active {
+  display: block;
+}
+
+.ms-table__action-btn:hover {
+  background: var(--gray-100);
+}
+.ms-table__action-btn:active {
+  background: var(--gray-200);
+}
+
+.ms-table__action-icon {
+  width: 24px;
+  height: 24px;
+  background-color: var(--secondary-text-color);
 }
 
 /* table footer */

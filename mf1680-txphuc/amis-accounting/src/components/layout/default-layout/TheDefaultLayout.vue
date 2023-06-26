@@ -1,11 +1,11 @@
 <template>
   <div class="main">
     <!-- navbar -->
-    <TheNavbar @toggleSidebar="this.toggleSidebar" :isCompact="this.isCompactSidebar"></TheNavbar>
+    <TheNavbar @toggleSidebar="toggleSidebar" :isCompact="isCompactSidebar"></TheNavbar>
 
     <div class="content-wrapper">
       <!-- sidebar -->
-      <TheSidebar :isCompact="this.isCompactSidebar"></TheSidebar>
+      <TheSidebar :isCompact="isCompactSidebar"></TheSidebar>
 
       <!-- main content -->
       <div class="main-content">
@@ -33,25 +33,19 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from "vue";
 import TheNavbar from "./navbar/TheNavbar.vue";
 import TheSidebar from "./sidebar/TheSidebar.vue";
 
-export default {
-  data() {
-    return {
-      isCompactSidebar: false,
-    };
-  },
-  methods: {
-    toggleSidebar() {
-      this.isCompactSidebar = !this.isCompactSidebar;
-    },
-  },
-  components: {
-    TheNavbar,
-    TheSidebar,
-  },
+const isCompactSidebar = ref(false);
+
+/**
+ * Description: Xử lý đóng/mở Sidebar
+ * Author: txphuc (24/06/2023)
+ */
+const toggleSidebar = () => {
+  isCompactSidebar.value = !isCompactSidebar.value;
 };
 </script>
 

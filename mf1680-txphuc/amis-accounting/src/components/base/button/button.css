@@ -1,4 +1,5 @@
 .ms-btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -10,6 +11,7 @@
   font-family: var(--primary-font);
   font-weight: 500;
   font-size: 14px;
+  white-space: nowrap;
   text-decoration: none;
   border: 1px solid transparent;
   outline: none;
@@ -179,4 +181,25 @@
 
 .ms-btn-group .ms-btn--icon {
   padding: 0 12px !important;
+}
+
+/* button dropdown container */
+.ms-btn__dropdown {
+  position: absolute;
+  display: none;
+  z-index: 1;
+}
+
+.ms-btn__dropdown.--active {
+  display: block;
+}
+
+.ms-btn__dropdown.--pos-bottom-right {
+  top: calc(100% + 1px);
+  right: 0;
+}
+
+.ms-btn__dropdown.--pos-bottom-left {
+  top: calc(100% + 1px);
+  right: 0;
 }

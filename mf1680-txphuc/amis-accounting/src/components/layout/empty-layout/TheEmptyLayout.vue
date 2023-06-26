@@ -4,10 +4,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "TheEmptyLayout"
-};
-</script>
+<script setup></script>
 
 <style></style>

@@ -1,5 +1,5 @@
 <template>
-  <nav :class="['sidebar', { '--compact': this.isCompact }]">
+  <nav :class="['sidebar', { '--compact': props.isCompact }]">
     <ul class="sidebar__menu">
       <li class="sidebar__menu-item">
         <a href="#" class="sidebar__link">
@@ -97,15 +97,15 @@
   </nav>
 </template>
 
-<script>
-export default {
-  props: {
-    isCompact: {
-      type: Boolean,
-      default: false
-    }
-  }
-};
+<script setup>
+const props = defineProps({
+  // Trạng thái của Sidebar (mặc định/thu nhỏ)
+  // isCompact = true (thu nhỏ)
+  isCompact: {
+    type: Boolean,
+    default: false,
+  },
+});
 </script>
 
 <style scoped>

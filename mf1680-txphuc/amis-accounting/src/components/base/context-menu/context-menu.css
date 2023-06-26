@@ -1,0 +1,30 @@
+.ms-context-menu {
+  width: 250px;
+  box-shadow: var(--box-shadow-medium);
+  padding: 16px 0;
+  background: var(--white);
+  border-radius: 4px;
+  list-style: none;
+  font-weight: 400;
+  user-select: none;
+}
+
+.ms-context-menu__item {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  transition: all 0.2s ease;
+}
+
+.ms-context-menu__item:hover {
+  background-color: var(--primary-color-50);
+}
+
+.ms-context-menu__icon {
+  display: flex;
+  padding-right: 12px;
+}
+.ms-context-menu__text {
+  line-height: 14px;
+}

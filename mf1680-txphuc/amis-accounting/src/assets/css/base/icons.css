@@ -1,3 +1,23 @@
+.ms-icon--24 {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background: var(--primary-text-color);
+}
+.ms-icon--20 {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: var(--primary-text-color);
+}
+.ms-icon--16 {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: var(--primary-text-color);
+}
+
+/* fixed size */
 .ms-icon--dashboard-24 {
   -webkit-mask-image: url("../../img/Sprites.64af8f61.svg");
   mask-image: url("../../img/Sprites.64af8f61.svg");
@@ -207,7 +227,51 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
+.ms-icon--duplicate-24 {
+  -webkit-mask-image: url("../../img/Sprites.64af8f61.svg");
+  mask-image: url("../../img/Sprites.64af8f61.svg");
+  -webkit-mask-position: -1545px -88px;
+  mask-position: -1545px -88px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ms-icon--circle-slash-24 {
+  -webkit-mask-image: url("../../img/Sprites.64af8f61.svg");
+  mask-image: url("../../img/Sprites.64af8f61.svg");
+  -webkit-mask-position: -940px -403px;
+  mask-position: -940px -403px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ms-icon--pen-24 {
+  -webkit-mask-image: url("../../img/Sprites.64af8f61.svg");
+  mask-image: url("../../img/Sprites.64af8f61.svg");
+  -webkit-mask-position: -1069px -511px;
+  mask-position: -1069px -511px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ms-icon--ellipsis-24 {
+  -webkit-mask-image: url("../../img/Sprites.64af8f61.svg");
+  mask-image: url("../../img/Sprites.64af8f61.svg");
+  -webkit-mask-position: -1028px -356px;
+  mask-position: -1028px -356px;
+  transform: rotate(90deg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
 
+/* auto sizing */
+.ms-icon--trash {
+  -webkit-mask-image: url("../../img/trash.svg");
+  mask-image: url("../../img/trash.svg");
+  -webkit-mask-position: contain;
+  mask-position: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* background */
 .ms-icon--info-24 {
   background: url("../../img/Sprites.64af8f61.svg") no-repeat -480px -144px;
 }
