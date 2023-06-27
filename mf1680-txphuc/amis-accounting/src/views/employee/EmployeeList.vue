@@ -28,45 +28,14 @@
             <MISAInput placeholder="Tìm theo mã, tên nhân viên" id="search-input" />
             <MISAInputAction icon="ms-icon--search-20" />
           </MISAInputGroup>
-          <MISAButton type="secondary" icon="ms-icon--reload-20" />
+          <MISAButton @click="getEmployeeData" type="secondary" icon="ms-icon--reload-20" />
         </div>
       </div>
 
       <!-- table -->
       <MISATable
-        :columns="[
-          { key: 1, title: 'Tên khách hàng', dataIndex: 'name' },
-          { key: 2, title: 'Giới tính', dataIndex: 'gender', width: 100 },
-          { key: 3, title: 'Ngày sinh', dataIndex: 'dateOfBirth', width: 120, align: 'center' },
-          { key: 4, title: 'Số điện thoại', dataIndex: 'phoneNumber', width: 130 },
-          { key: 5, title: 'Email', dataIndex: 'email' },
-        ]"
-        :data-source="[
-          {
-            key: 1,
-            name: 'Nguyễn Văn A',
-            gender: 'Male',
-            dateOfBirth: '01/04/2002',
-            phoneNumber: '0123456789',
-            email: 'abc@gmail.com',
-          },
-          {
-            key: 2,
-            name: 'Nguyễn Văn B',
-            gender: 'Male',
-            dateOfBirth: '01/04/2002',
-            phoneNumber: '0123456789',
-            email: 'abb@gmail.com',
-          },
-          {
-            key: 3,
-            name: 'Trần Xuân Phúc',
-            gender: 'Male',
-            dateOfBirth: '01/04/2002',
-            phoneNumber: '0123456789',
-            email: 'dev.xuanphuc@gmail.com',
-          },
-        ]"
+        :columns="columns"
+        :data-source="employeeData"
         :selected-rows="selectedRowsState"
         @select-row="selectRows"
         :loading="isLoading"
@@ -108,7 +77,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 
 import MISAButton from "../../components/base/button/MISAButton.vue";
 import MISAInput from "../../components/base/input/MISAInput.vue";
@@ -120,7 +89,10 @@ import MISAContextMenu from "../../components/base/context-menu/MISAContextMenu.
 import MISAContextItem from "../../components/base/context-menu/MISAContextItem.vue";
 import MISATableAction from "../../components/base/table/MISATableAction.vue";
 import EmployeeDetail from "./EmployeeDetail.vue";
+import employeeApi from "../../api/employee-api";
+import formatDate from "../../helper/format-date";
 
+const employeeData = ref([]);
 const selectedRowsState = ref([]);
 const dialogState = ref({
   active: false,
@@ -129,6 +101,40 @@ const dialogState = ref({
 });
 const popupState = ref(false);
 const isLoading = ref(false);
+
+const columns = ref([
+  { key: 1, title: "Mã nhân viên", dataIndex: "EmployeeCode" },
+  { key: 2, title: "Tên nhân viên", dataIndex: "FullName" },
+  { key: 3, title: "Giới tính", dataIndex: "GenderName" },
+  { key: 4, title: "Ngày sinh", dataIndex: "DateOfBirthFormated" },
+  { key: 5, title: "Số CMND", dataIndex: "IdentityNumber" },
+  { key: 6, title: "Chức danh", dataIndex: "PositionName" },
+  { key: 7, title: "Tên đơn vị", dataIndex: "DepartmentName" },
+  { key: 8, title: "Số tài khoản", dataIndex: "PhoneNumber" },
+  { key: 9, title: "Tên ngân hàng", dataIndex: "PhoneNumber" },
+  { key: 10, title: "Chi nhánh TK ngân hàng", dataIndex: "PhoneNumber" },
+]);
+
+/**
+ * Description: Hàm load dữ liệu nhân viên từ api
+ * Author: txphuc (27/06/2023)
+ */
+const getEmployeeData = async () => {
+  isLoading.value = true;
+
+  const response = await employeeApi.getAll();
+
+  // Format dữ liệu hiển thị ra bảng
+  employeeData.value = response.data?.map((employee) => {
+    employee.key = employee.EmployeeId;
+    employee.DateOfBirthFormated = formatDate(employee.DateOfBirth);
+
+    return employee;
+  });
+
+  isLoading.value = false;
+};
+getEmployeeData();
 
 /**
  * Description: Lấy các bản ghi đã được chọn trả về từ bảng.
@@ -155,7 +161,7 @@ const showDeleteConfirmDialog = (data) => {
     active: true,
     title: "Xoá nhân viên",
     type: "error",
-    description: `Bạn có muốn xoá nhân viên ${data.name}`,
+    description: `Bạn có muốn xoá nhân viên ${data.FullName}`,
   };
 };
 
@@ -166,13 +172,6 @@ const showDeleteConfirmDialog = (data) => {
 const togglePopup = () => {
   popupState.value = !popupState.value;
 };
-
-onMounted(() => {
-  isLoading.value = true;
-  setTimeout(() => {
-    isLoading.value = false;
-  }, 3000);
-});
 </script>
 
 <style scoped></style>

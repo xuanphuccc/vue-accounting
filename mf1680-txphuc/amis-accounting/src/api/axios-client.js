@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create new instance
 const axiosClient = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,
+  baseURL: "https://cukcuk.manhnv.net/api/v1",
   headers: {
     "Content-Type": "application/json",
   },
