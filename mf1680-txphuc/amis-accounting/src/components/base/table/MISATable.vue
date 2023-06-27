@@ -5,11 +5,9 @@
         <thead>
           <tr>
             <th>
-              <input
+              <MISACheckbox
                 @click="selectRow(props.dataSource)"
                 :checked="props.selectedRows.length === props.dataSource.length"
-                type="checkbox"
-                name=""
               />
             </th>
             <th
@@ -35,13 +33,7 @@
               :class="[{ '--active': row.checked }]"
             >
               <td>
-                <input
-                  @click="selectRow(row)"
-                  :checked="row.checked"
-                  type="checkbox"
-                  name=""
-                  id=""
-                />
+                <MISACheckbox @click="selectRow(row)" :checked="row.checked" />
               </td>
               <template v-for="column in props.columns" :key="column.key">
                 <td :style="{ textAlign: column.align ? column.align : '' }">
@@ -97,6 +89,7 @@
 <script setup>
 import { computed, ref, onMounted } from "vue";
 import MISASkeletonRow from "../skeleton-loader/MISASkeletonRow.vue";
+import MISACheckbox from "../checkbox/MISACheckbox.vue";
 
 const emit = defineEmits(["select-row"]);
 
@@ -146,7 +139,9 @@ const tableContainerRef = ref(null);
 const dataSourceWithSelectedRows = computed(() => {
   try {
     return props.dataSource?.map((row) => {
-      row["checked"] = props.selectedRows?.find((selectedItem) => selectedItem.key == row.key);
+      row["checked"] = props.selectedRows?.find((selectedItem) => selectedItem.key == row.key)
+        ? true
+        : false;
       return row;
     });
   } catch (error) {
@@ -164,7 +159,7 @@ const selectRow = (value) => {
   try {
     let localSelectedRows = [...props.selectedRows];
 
-    // Chọn nhiều hàng
+    // Chọn tất cả các hàng hàng
     if (Array.isArray(value)) {
       if (localSelectedRows.length === props.dataSource?.length) {
         localSelectedRows = [];

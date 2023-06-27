@@ -7,22 +7,30 @@
             <MISARow :gutter="{ x: 8 }">
               <MISACol span="5">
                 <MISAFormGroup label="Mã" for="input-id" class="mb-24">
-                  <MISAInput focus="" id="input-id" />
+                  <MISAInput v-model="formData.employeeCode" focus id="input-id" />
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="7">
                 <MISAFormGroup label="Tên" for="input-name" class="mb-24">
-                  <MISAInput id="input-name" />
+                  <MISAInput v-model="formData.fullName" id="input-name" />
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="12">
-                <MISAFormGroup label="Đơn vị" for="input-unit" class="mb-24">
-                  <MISADropdown></MISADropdown>
+                <MISAFormGroup label="Đơn vị" for="input-department" class="mb-24">
+                  <MISADropdown
+                    v-model="formData.departmentId"
+                    :options="departmentOptions"
+                    id="input-department"
+                  ></MISADropdown>
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="12">
-                <MISAFormGroup label="Chức danh" for="input-unit" class="mb-24">
-                  <MISAInput id="input-unit" />
+                <MISAFormGroup label="Chức danh" for="input-position" class="mb-24">
+                  <MISADropdown
+                    v-model="formData.positionId"
+                    :options="positionOptions"
+                    id="input-position"
+                  ></MISADropdown>
                 </MISAFormGroup>
               </MISACol>
             </MISARow>
@@ -31,27 +39,31 @@
             <MISARow :gutter="{ x: 8 }">
               <MISACol span="5">
                 <MISAFormGroup label="Ngày sinh" for="input-date-of-birth" class="mb-24">
-                  <MISAInput type="date" id="input-date-of-birth" />
+                  <MISAInput v-model="formData.dateOfBirth" type="date" id="input-date-of-birth" />
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="7">
-                <MISAFormGroup label="Giới tính" for="input-id" class="mb-24">
-                  <MISAInput id="input-id" />
+                <MISAFormGroup label="Giới tính" for="" class="mb-24">
+                  <div class="d-flex col-gap-16">
+                    <MISARadioButton v-model="formData.gender" value="0" label="Nam" />
+                    <MISARadioButton v-model="formData.gender" value="1" label="Nữ" />
+                    <MISARadioButton v-model="formData.gender" value="2" label="Khác" />
+                  </div>
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="7">
-                <MISAFormGroup label="Số CMND" for="input-id" class="mb-24">
-                  <MISAInput id="input-id" />
+                <MISAFormGroup label="Số CMND" for="input-identity-number" class="mb-24">
+                  <MISAInput v-model="formData.identityNumber" id="input-identity-number" />
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="5">
-                <MISAFormGroup label="Ngày cấp" for="input-id" class="mb-24">
-                  <MISAInput type="date" id="input-id" />
+                <MISAFormGroup label="Ngày cấp" for="input-identity-date" class="mb-24">
+                  <MISAInput v-model="formData.identityDate" type="date" id="input-identity-date" />
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="12">
-                <MISAFormGroup label="Nơi cấp" for="input-id" class="mb-24">
-                  <MISAInput id="input-id" />
+                <MISAFormGroup label="Nơi cấp" for="input-identity-place" class="mb-24">
+                  <MISAInput v-model="formData.identityPlace" id="input-identity-place" />
                 </MISAFormGroup>
               </MISACol>
             </MISARow>
@@ -60,52 +72,34 @@
 
         <MISARow :gutter="{ x: 8 }">
           <MISACol span="12">
-            <MISAFormGroup label="Địa chỉ" for="input-id" class="mb-24">
-              <MISAInput id="input-id" />
+            <MISAFormGroup label="Địa chỉ" for="input-address" class="mb-24">
+              <MISAInput v-model="formData.address" id="input-address" />
             </MISAFormGroup>
           </MISACol>
-          <MISACol span="3">
-            <MISAFormGroup label="ĐT di động" for="input-id" class="mb-24">
-              <MISAInput id="input-id" />
+          <MISACol span="4">
+            <MISAFormGroup label="Số điện thoại" for="input-phone-number">
+              <MISAInput v-model="formData.phoneNumber" id="input-phone-number" />
             </MISAFormGroup>
           </MISACol>
-          <MISACol span="3">
-            <MISAFormGroup label="ĐT cố định" for="input-id" class="mb-24">
-              <MISAInput id="input-id" />
+          <MISACol span="4">
+            <MISAFormGroup label="Email" for="input-email">
+              <MISAInput v-model="formData.email" id="input-email" />
             </MISAFormGroup>
           </MISACol>
-          <MISACol span="3">
-            <MISAFormGroup label="Email" for="input-id" class="mb-24">
-              <MISAInput id="input-id" />
-            </MISAFormGroup>
-          </MISACol>
-        </MISARow>
-
-        <MISARow :gutter="{ x: 8 }">
-          <MISACol span="3">
-            <MISAFormGroup label="TK ngân hàng" for="input-id">
-              <MISAInput id="input-id" />
-            </MISAFormGroup>
-          </MISACol>
-          <MISACol span="3">
-            <MISAFormGroup label="Tên ngân hàng" for="input-id">
-              <MISAInput id="input-id" />
-            </MISAFormGroup>
-          </MISACol>
-          <MISACol span="3">
-            <MISAFormGroup label="Chi nhánh" for="input-id">
-              <MISAInput id="input-id" />
+          <MISACol span="4">
+            <MISAFormGroup v-model="formData.salary" label="Tiền lương" for="input-salary">
+              <MISAInput id="input-salary" />
             </MISAFormGroup>
           </MISACol>
         </MISARow>
       </template>
 
       <template #controls-left>
-        <MISAButton type="secondary">Huỷ</MISAButton>
+        <MISAButton @click="$emit('close')" type="secondary">Huỷ</MISAButton>
       </template>
       <template #controls-right>
         <MISAButton type="secondary">Cất</MISAButton>
-        <MISAButton type="primary">Cất và thêm</MISAButton>
+        <MISAButton @click="handleCreateEmployee" type="primary">Cất và thêm</MISAButton>
       </template>
     </MISAPopup>
   </Teleport>
@@ -116,9 +110,14 @@ import MISAPopup from "../../components/base/popup/MISAPopup.vue";
 import MISAButton from "../../components/base/button/MISAButton.vue";
 import MISAFormGroup from "../../components/base/input/MISAFormGroup.vue";
 import MISAInput from "../../components/base/input/MISAInput.vue";
+import MISARadioButton from "../../components/base/radio-button/MISARadioButton.vue";
 import MISADropdown from "../../components/base/dropdown-list/MISADropdown.vue";
 import MISARow from "../../components/base/grid/MISARow.vue";
 import MISACol from "../../components/base/grid/MISACol.vue";
+import { ref, onUpdated } from "vue";
+import employeeApi from "../../api/employee-api";
+import departmentApi from "../../api/department-api";
+import positionApi from "../../api/position-api";
 
 defineEmits(["close"]);
 
@@ -129,6 +128,98 @@ const props = defineProps({
     default: false,
   },
 });
+
+const departmentOptions = ref([]);
+const positionOptions = ref([]);
+
+const formData = ref({
+  employeeCode: "",
+  fullName: "",
+  departmentId: "",
+  positionId: "",
+  dateOfBirth: "",
+  gender: "0",
+  identityNumber: "",
+  identityDate: "",
+  identityPlace: "",
+  address: "",
+  phoneNumber: "",
+  email: "",
+  salary: "",
+});
+
+/**
+ * Description: Hàm xử lý gọi api lấy mã nhân viên mới nhất
+ * Author: txphuc (28/06/2023)
+ */
+const getNewEmployeeCode = async () => {
+  try {
+    const response = await employeeApi.getNewCode();
+
+    formData.value.employeeCode = response.data;
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+/**
+ * Description: Hàm xử lý gọi api lấy dữ liệu đơn vị
+ * Author: txphuc (28/06/2023)
+ */
+const getDepartmentData = async () => {
+  try {
+    const response = await departmentApi.getAll();
+
+    departmentOptions.value = response.data?.map((department) => ({
+      label: department.DepartmentName,
+      value: department.DepartmentId,
+    }));
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+/**
+ * Description: Hàm xử lý gọi api lấy dữ liệu chức danh
+ * Author: txphuc (28/06/2023)
+ */
+const getPositionData = async () => {
+  try {
+    const response = await positionApi.getAll();
+
+    positionOptions.value = response.data?.map((position) => ({
+      label: position.PositionName,
+      value: position.PositionId,
+    }));
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+onUpdated(() => {
+  getNewEmployeeCode();
+  getDepartmentData();
+  getPositionData();
+});
+
+/**
+ * Description: Hàm xử lý gọi api tạo nhân viên
+ * Author: txphuc (28/06/2023)
+ */
+const handleCreateEmployee = async () => {
+  try {
+    console.log(formData);
+
+    formData.value.gender = Number(formData.value.gender);
+    formData.value.salary = Number(formData.value.salary);
+
+    const response = await employeeApi.create(formData);
+
+    console.log(response);
+  } catch (error) {
+    console.warn(error);
+  }
+};
 </script>
 
 <style scoped></style>

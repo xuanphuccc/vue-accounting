@@ -1,7 +1,7 @@
 <template>
   <input
     :value="props.modelValue"
-    @input="$emit('onUpdate:modelValue', $event.target.value)"
+    @input="$emit('update:modelValue', $event.target.value)"
     :type="props.type"
     :class="['ms-input', ...classNames]"
     :id="props.id"
@@ -14,7 +14,7 @@
 <script setup>
 import { computed, onMounted, ref } from "vue";
 
-defineEmits(["onUpdate:modelValue"]);
+defineEmits(["update:modelValue"]);
 
 const props = defineProps({
   // Giá trị của ô input

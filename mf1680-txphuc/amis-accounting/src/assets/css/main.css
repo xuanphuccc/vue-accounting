@@ -57,6 +57,16 @@ html {
   align-items: flex-start;
 }
 
+.col-gap-8 {
+  column-gap: 8px;
+}
+.col-gap-16 {
+  column-gap: 16px;
+}
+.col-gap-24 {
+  column-gap: 24px;
+}
+
 /* ----- space ----- */
 .mt-16 {
   margin-top: 16px;
@@ -64,6 +74,9 @@ html {
 
 .ms-16 {
   margin-left: 16px;
+}
+.ms-24 {
+  margin-left: 24px;
 }
 
 .mb-24 {
@@ -166,7 +179,6 @@ html {
 .filter__select-infor {
   display: flex;
   align-items: center;
-  column-gap: 12px;
   display: none;
 }
 

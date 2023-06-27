@@ -19,8 +19,10 @@
               Đã chọn
               <span id="selected-count" class="text-bold">{{ selectedRowsState.length }}</span>
             </div>
-            <MISAButton @click="removeAllSelectedRows()" type="secondary">Bỏ chọn</MISAButton>
-            <MISAButton type="danger">Xoá</MISAButton>
+            <MISAButton @click="removeAllSelectedRows()" type="link" class="ms-16"
+              >Bỏ chọn</MISAButton
+            >
+            <MISAButton type="secondary" class="ms-24">Xoá</MISAButton>
           </div>
         </div>
         <div class="filter__right">
@@ -37,7 +39,7 @@
         :columns="columns"
         :data-source="employeeData"
         :selected-rows="selectedRowsState"
-        @select-row="selectRows"
+        @select-row="selectTableRows"
         :loading="isLoading"
       >
         <template #name="row">
@@ -51,7 +53,15 @@
               <!-- context menu -->
               <MISAContextMenu>
                 <MISAContextItem icon="ms-icon--duplicate-24"> Nhân bản </MISAContextItem>
-                <MISAContextItem @click="showDeleteConfirmDialog(row)" icon="ms-icon--trash">
+                <MISAContextItem
+                  @click="
+                    () => {
+                      showDeleteConfirmDialog(row);
+                      setSingleSelectedRow(row);
+                    }
+                  "
+                  icon="ms-icon--trash"
+                >
                   Xoá
                 </MISAContextItem>
                 <MISAContextItem icon="ms-icon--circle-slash-24"> Ngừng sử dụng </MISAContextItem>
@@ -65,8 +75,9 @@
       <Teleport to="#app">
         <MISADialog
           v-bind="dialogState"
-          @close="dialogState.active = false"
-          @cancel="dialogState.active = false"
+          @ok="deleteSelectedEmployee"
+          @close="hideConfirmDialog"
+          @cancel="hideConfirmDialog"
         />
       </Teleport>
 
@@ -106,13 +117,13 @@ const columns = ref([
   { key: 1, title: "Mã nhân viên", dataIndex: "EmployeeCode" },
   { key: 2, title: "Tên nhân viên", dataIndex: "FullName" },
   { key: 3, title: "Giới tính", dataIndex: "GenderName" },
-  { key: 4, title: "Ngày sinh", dataIndex: "DateOfBirthFormated" },
+  { key: 4, title: "Ngày sinh", dataIndex: "DateOfBirthFormated", align: "center" },
   { key: 5, title: "Số CMND", dataIndex: "IdentityNumber" },
   { key: 6, title: "Chức danh", dataIndex: "PositionName" },
   { key: 7, title: "Tên đơn vị", dataIndex: "DepartmentName" },
-  { key: 8, title: "Số tài khoản", dataIndex: "PhoneNumber" },
-  { key: 9, title: "Tên ngân hàng", dataIndex: "PhoneNumber" },
-  { key: 10, title: "Chi nhánh TK ngân hàng", dataIndex: "PhoneNumber" },
+  { key: 7, title: "Email", dataIndex: "Email" },
+  { key: 7, title: "Số điện thoại", dataIndex: "PhoneNumber" },
+  { key: 8, title: "Lương", dataIndex: "Salary", align: "right" },
 ]);
 
 /**
@@ -120,28 +131,63 @@ const columns = ref([
  * Author: txphuc (27/06/2023)
  */
 const getEmployeeData = async () => {
-  isLoading.value = true;
+  try {
+    isLoading.value = true;
 
-  const response = await employeeApi.getAll();
+    const response = await employeeApi.getAll();
 
-  // Format dữ liệu hiển thị ra bảng
-  employeeData.value = response.data?.map((employee) => {
-    employee.key = employee.EmployeeId;
-    employee.DateOfBirthFormated = formatDate(employee.DateOfBirth);
+    // Format dữ liệu hiển thị ra bảng
+    employeeData.value = response.data?.map((employee) => {
+      employee.key = employee.EmployeeId;
+      employee.DateOfBirthFormated = formatDate(employee.DateOfBirth);
 
-    return employee;
-  });
+      return employee;
+    });
 
-  isLoading.value = false;
+    isLoading.value = false;
+  } catch (error) {
+    console.warn(error);
+  }
 };
 getEmployeeData();
+
+/**
+ * Description: Hàm xoá nhân viên đã được chọn
+ * Author: txphuc (27/06/2023)
+ */
+const deleteSelectedEmployee = async () => {
+  try {
+    const responseArr = selectedRowsState.value.map(async (employee) => {
+      const response = await employeeApi.delete(employee.EmployeeId);
+      console.log("delete", response);
+
+      return response;
+    });
+
+    await Promise.all(responseArr);
+
+    dialogState.value.active = false;
+    await getEmployeeData();
+    removeAllSelectedRows();
+  } catch (error) {
+    console.warn(error);
+  }
+};
 
 /**
  * Description: Lấy các bản ghi đã được chọn trả về từ bảng.
  * Author: txphuc (24/06/2023).
  */
-const selectRows = (value) => {
+const selectTableRows = (value) => {
   selectedRowsState.value = value;
+};
+
+/**
+ * Description: Set cột đang được chọn để xác nhận xoá
+ * Author: txphuc (27/06/2023)
+ */
+const setSingleSelectedRow = (row) => {
+  selectedRowsState.value = [row];
 };
 
 /**
@@ -163,6 +209,15 @@ const showDeleteConfirmDialog = (data) => {
     type: "error",
     description: `Bạn có muốn xoá nhân viên ${data.FullName}`,
   };
+};
+
+/**
+ * Description: Ẩn dialog xác nhận và bỏ hàng được chọn
+ * Author: txphuc (27/06/2023).
+ */
+const hideConfirmDialog = () => {
+  dialogState.value.active = false;
+  selectedRowsState.value = [];
 };
 
 /**
