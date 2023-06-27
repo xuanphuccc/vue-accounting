@@ -7,7 +7,10 @@
 <script setup>
 const props = defineProps({
   // Thuộc tính của label liên kết với input
-  for: String,
+  for: {
+    type: String,
+    default: "",
+  },
 });
 </script>
 

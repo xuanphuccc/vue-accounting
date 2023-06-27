@@ -227,6 +227,14 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
+.ms-icon--times-16 {
+  -webkit-mask-image: url("../../img/Sprites.64af8f61.svg");
+  mask-image: url("../../img/Sprites.64af8f61.svg");
+  -webkit-mask-position: -80px -312px;
+  mask-position: -80px -312px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
 .ms-icon--duplicate-24 {
   -webkit-mask-image: url("../../img/Sprites.64af8f61.svg");
   mask-image: url("../../img/Sprites.64af8f61.svg");

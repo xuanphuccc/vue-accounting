@@ -25,16 +25,21 @@ const props = defineProps({
  * Author: txphuc (25/06/2023)
  */
 const classNames = computed(() => {
-  const classArr = [];
+  try {
+    const classArr = [];
 
-  if (props.gutter?.x) {
-    classArr.push(`--gutter-x-${props.gutter.x}`);
-  }
-  if (props.gutter?.y) {
-    classArr.push(`--gutter-y-${props.gutter.y}`);
-  }
+    if (props.gutter?.x) {
+      classArr.push(`--gutter-x-${props.gutter.x}`);
+    }
+    if (props.gutter?.y) {
+      classArr.push(`--gutter-y-${props.gutter.y}`);
+    }
 
-  return classArr;
+    return classArr;
+  } catch (error) {
+    console.warn(error);
+    return [];
+  }
 });
 </script>
 

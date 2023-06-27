@@ -8,11 +8,6 @@
   z-index: 2;
 
   animation: fadeIn 0.3s ease;
-  display: none;
-}
-
-.ms-popup-overlay.--active {
-  display: block;
 }
 
 .ms-popup {
@@ -31,7 +26,7 @@
 
 .ms-popup__title {
   font-size: 24px;
-  line-height: 24px;
+  line-height: 30px;
   font-weight: 700;
   color: var(--primary-text-color);
   padding: 24px 24px 0;
@@ -52,6 +47,8 @@
 
 .ms-popup__content {
   padding: 24px;
+  max-height: calc(100vh - 160px);
+  overflow-y: auto;
 }
 
 .ms-popup__desc {

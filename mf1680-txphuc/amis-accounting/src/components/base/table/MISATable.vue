@@ -28,27 +28,38 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="row in dataSourceWithSelectedRows"
-            :key="row.key"
-            :class="[{ '--active': row.checked }]"
-          >
-            <td>
-              <input @click="selectRow(row)" :checked="row.checked" type="checkbox" name="" id="" />
-            </td>
-            <template v-for="column in props.columns" :key="column.key">
-              <td :style="{ textAlign: column.align ? column.align : '' }">
-                <slot :name="column.dataIndex" v-bind="row">
-                  {{ row[column.dataIndex] }}
-                </slot>
+          <template v-if="!props.loading">
+            <tr
+              v-for="row in dataSourceWithSelectedRows"
+              :key="row.key"
+              :class="[{ '--active': row.checked }]"
+            >
+              <td>
+                <input
+                  @click="selectRow(row)"
+                  :checked="row.checked"
+                  type="checkbox"
+                  name=""
+                  id=""
+                />
               </td>
-            </template>
+              <template v-for="column in props.columns" :key="column.key">
+                <td :style="{ textAlign: column.align ? column.align : '' }">
+                  <slot :name="column.dataIndex" v-bind="row">
+                    {{ row[column.dataIndex] }}
+                  </slot>
+                </td>
+              </template>
 
-            <!-- table actions -->
-            <div class="ms-table__actions" :style="{ right: tableActionsPosState + 'px' }">
-              <slot name="table-actions" v-bind="row"></slot>
-            </div>
-          </tr>
+              <!-- table actions -->
+              <div class="ms-table__actions" :style="{ right: tableActionsPosState + 'px' }">
+                <slot name="table-actions" v-bind="row"></slot>
+              </div>
+            </tr>
+          </template>
+
+          <!-- skeleton loading -->
+          <MISASkeletonRow v-else :columns="props.columns.length + 1" />
         </tbody>
       </table>
     </div>
@@ -85,6 +96,7 @@
 
 <script setup>
 import { computed, ref, onMounted } from "vue";
+import MISASkeletonRow from "../skeleton-loader/MISASkeletonRow.vue";
 
 const emit = defineEmits(["select-row"]);
 
@@ -113,6 +125,12 @@ const props = defineProps({
     default() {
       return [];
     },
+  },
+
+  // Trạng thái loading dữ liệu
+  loading: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -205,11 +223,15 @@ const activeResize = (e) => {
  * Author: txphuc (25/06/2023)
  */
 const changeActionsPos = () => {
-  const scrollWidth = tableContainerRef.value.scrollWidth;
-  const scrollLeft = tableContainerRef.value.scrollLeft;
-  const clientWidth = tableContainerRef.value.clientWidth;
+  try {
+    const scrollWidth = tableContainerRef.value.scrollWidth;
+    const scrollLeft = tableContainerRef.value.scrollLeft;
+    const clientWidth = tableContainerRef.value.clientWidth;
 
-  tableActionsPosState.value = scrollWidth - clientWidth - scrollLeft + 16;
+    tableActionsPosState.value = scrollWidth - clientWidth - scrollLeft + 16;
+  } catch (error) {
+    console.warn(error);
+  }
 };
 
 /**

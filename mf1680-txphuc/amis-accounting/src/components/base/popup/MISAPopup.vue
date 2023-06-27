@@ -1,5 +1,5 @@
 <template>
-  <div @click="$emit('close')" :class="[`ms-popup-overlay`, { '--active': props.active }]">
+  <div @keyup.esc="$emit('close')" @click="$emit('close')" tabindex="-1" class="ms-popup-overlay">
     <div @click.stop="" class="ms-popup" :style="{ width: props.width + 'px' }">
       <h4 class="ms-popup__title">{{ props.title }}</h4>
       <button
@@ -31,12 +31,6 @@
 defineEmits(["close"]);
 
 const props = defineProps({
-  // Trạng thái ẩn/hiện popup
-  active: {
-    type: Boolean,
-    default: false,
-  },
-
   // Tiêu đề popup
   title: {
     type: String,

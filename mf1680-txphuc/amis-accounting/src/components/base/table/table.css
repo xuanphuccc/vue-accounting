@@ -141,7 +141,7 @@
 
 .ms-table__action-dropdown {
   position: absolute;
-  top: calc(100% + 2px);
+  top: calc(100% + 4px);
   right: 0;
   z-index: 1;
   display: none;

@@ -5,7 +5,7 @@
 
     <div class="content-wrapper">
       <!-- sidebar -->
-      <TheSidebar :isCompact="isCompactSidebar"></TheSidebar>
+      <TheSidebar @toggle="toggleSidebar" :isCompact="isCompactSidebar"></TheSidebar>
 
       <!-- main content -->
       <div class="main-content">

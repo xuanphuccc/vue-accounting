@@ -26,7 +26,7 @@
         <div class="filter__right">
           <MISAInputGroup for="search-input">
             <MISAInput placeholder="Tìm theo mã, tên nhân viên" id="search-input" />
-            <MISAInputAction />
+            <MISAInputAction icon="ms-icon--search-20" />
           </MISAInputGroup>
           <MISAButton type="secondary" icon="ms-icon--reload-20" />
         </div>
@@ -69,6 +69,7 @@
         ]"
         :selected-rows="selectedRowsState"
         @select-row="selectRows"
+        :loading="isLoading"
       >
         <template #name="row">
           <MISAButton type="link">{{ row["name"] }}</MISAButton>
@@ -107,7 +108,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 import MISAButton from "../../components/base/button/MISAButton.vue";
 import MISAInput from "../../components/base/input/MISAInput.vue";
@@ -127,6 +128,7 @@ const dialogState = ref({
   description: "",
 });
 const popupState = ref(false);
+const isLoading = ref(false);
 
 /**
  * Description: Lấy các bản ghi đã được chọn trả về từ bảng.
@@ -164,6 +166,13 @@ const showDeleteConfirmDialog = (data) => {
 const togglePopup = () => {
   popupState.value = !popupState.value;
 };
+
+onMounted(() => {
+  isLoading.value = true;
+  setTimeout(() => {
+    isLoading.value = false;
+  }, 3000);
+});
 </script>
 
 <style scoped></style>

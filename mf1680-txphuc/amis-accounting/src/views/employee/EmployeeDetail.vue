@@ -1,26 +1,102 @@
 <template>
   <Teleport to="#app">
-    <MISAPopup
-      @close="$emit('close')"
-      :active="props.active"
-      :width="600"
-      title="Thông tin nhân viên"
-    >
+    <MISAPopup @close="$emit('close')" v-if="props.active" :width="800" title="Thông tin nhân viên">
       <template #default>
-        <MISAFormGroup for="ms-input">
-          <MISAInput id="ms-input" />
-        </MISAFormGroup>
-        <MISAFormGroup for="ms-input">
-          <MISAInput id="ms-input" />
-        </MISAFormGroup>
+        <MISARow :gutter="{ x: 24 }">
+          <MISACol span="6">
+            <MISARow :gutter="{ x: 8 }">
+              <MISACol span="5">
+                <MISAFormGroup label="Mã" for="input-id" class="mb-24">
+                  <MISAInput focus="" id="input-id" />
+                </MISAFormGroup>
+              </MISACol>
+              <MISACol span="7">
+                <MISAFormGroup label="Tên" for="input-name" class="mb-24">
+                  <MISAInput id="input-name" />
+                </MISAFormGroup>
+              </MISACol>
+              <MISACol span="12">
+                <MISAFormGroup label="Đơn vị" for="input-unit" class="mb-24">
+                  <MISADropdown></MISADropdown>
+                </MISAFormGroup>
+              </MISACol>
+              <MISACol span="12">
+                <MISAFormGroup label="Chức danh" for="input-unit" class="mb-24">
+                  <MISAInput id="input-unit" />
+                </MISAFormGroup>
+              </MISACol>
+            </MISARow>
+          </MISACol>
+          <MISACol span="6">
+            <MISARow :gutter="{ x: 8 }">
+              <MISACol span="5">
+                <MISAFormGroup label="Ngày sinh" for="input-date-of-birth" class="mb-24">
+                  <MISAInput type="date" id="input-date-of-birth" />
+                </MISAFormGroup>
+              </MISACol>
+              <MISACol span="7">
+                <MISAFormGroup label="Giới tính" for="input-id" class="mb-24">
+                  <MISAInput id="input-id" />
+                </MISAFormGroup>
+              </MISACol>
+              <MISACol span="7">
+                <MISAFormGroup label="Số CMND" for="input-id" class="mb-24">
+                  <MISAInput id="input-id" />
+                </MISAFormGroup>
+              </MISACol>
+              <MISACol span="5">
+                <MISAFormGroup label="Ngày cấp" for="input-id" class="mb-24">
+                  <MISAInput type="date" id="input-id" />
+                </MISAFormGroup>
+              </MISACol>
+              <MISACol span="12">
+                <MISAFormGroup label="Nơi cấp" for="input-id" class="mb-24">
+                  <MISAInput id="input-id" />
+                </MISAFormGroup>
+              </MISACol>
+            </MISARow>
+          </MISACol>
+        </MISARow>
 
-        <MISARow :gutter="{ x: 8, y: 8 }">
-          <MISACol span="7"><div class="test">abc</div></MISACol>
-          <MISACol span="3"><div class="test">abc</div></MISACol>
-          <MISACol span="2"><div class="test">abc</div></MISACol>
-          <MISACol span="7"><div class="test">abc</div></MISACol>
-          <MISACol span="3"><div class="test">abc</div></MISACol>
-          <MISACol span="2"><div class="test">abc</div></MISACol>
+        <MISARow :gutter="{ x: 8 }">
+          <MISACol span="12">
+            <MISAFormGroup label="Địa chỉ" for="input-id" class="mb-24">
+              <MISAInput id="input-id" />
+            </MISAFormGroup>
+          </MISACol>
+          <MISACol span="3">
+            <MISAFormGroup label="ĐT di động" for="input-id" class="mb-24">
+              <MISAInput id="input-id" />
+            </MISAFormGroup>
+          </MISACol>
+          <MISACol span="3">
+            <MISAFormGroup label="ĐT cố định" for="input-id" class="mb-24">
+              <MISAInput id="input-id" />
+            </MISAFormGroup>
+          </MISACol>
+          <MISACol span="3">
+            <MISAFormGroup label="Email" for="input-id" class="mb-24">
+              <MISAInput id="input-id" />
+            </MISAFormGroup>
+          </MISACol>
+        </MISARow>
+
+        <MISARow :gutter="{ x: 8 }">
+          <MISACol span="3">
+            <MISAFormGroup label="TK ngân hàng" for="input-id">
+              <MISAInput id="input-id" />
+            </MISAFormGroup>
+          </MISACol>
+          <MISACol span="3">
+            <MISAFormGroup label="Tên ngân hàng" for="input-id">
+              <MISAInput id="input-id" />
+            </MISAFormGroup>
+          </MISACol>
+          <MISACol span="3">
+            <MISAFormGroup label="Chi nhánh" for="input-id">
+              <MISAInput id="input-id" />
+            </MISAFormGroup>
+          </MISACol>
         </MISARow>
       </template>
 
@@ -40,6 +116,7 @@ import MISAPopup from "../../components/base/popup/MISAPopup.vue";
 import MISAButton from "../../components/base/button/MISAButton.vue";
 import MISAFormGroup from "../../components/base/input/MISAFormGroup.vue";
 import MISAInput from "../../components/base/input/MISAInput.vue";
+import MISADropdown from "../../components/base/dropdown-list/MISADropdown.vue";
 import MISARow from "../../components/base/grid/MISARow.vue";
 import MISACol from "../../components/base/grid/MISACol.vue";
 
@@ -54,8 +131,4 @@ const props = defineProps({
 });
 </script>
 
-<style scoped>
-.test {
-  background-color: #ccc;
-}
-</style>
+<style scoped></style>
