@@ -1,6 +1,6 @@
 <template>
   <Teleport to="#app">
-    <MISAPopup @close="$emit('close')" v-if="props.active" :width="800" title="Thông tin nhân viên">
+    <MISAPopup @close="$emit('close')" :width="800" title="Thông tin nhân viên">
       <template #default>
         <MISARow :gutter="{ x: 24 }">
           <MISACol span="6">
@@ -52,7 +52,12 @@
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="7">
-                <MISAFormGroup label="Số CMND" for="input-identity-number" class="mb-24">
+                <MISAFormGroup
+                  v-tooltip.top="'Số Chứng minh nhân dân'"
+                  label="Số CMND"
+                  for="input-identity-number"
+                  class="mb-24"
+                >
                   <MISAInput v-model="formData.identityNumber" id="input-identity-number" />
                 </MISAFormGroup>
               </MISACol>
@@ -87,8 +92,8 @@
             </MISAFormGroup>
           </MISACol>
           <MISACol span="4">
-            <MISAFormGroup v-model="formData.salary" label="Tiền lương" for="input-salary">
-              <MISAInput id="input-salary" />
+            <MISAFormGroup label="Tiền lương" for="input-salary">
+              <MISAInput v-model="formData.salary" id="input-salary" />
             </MISAFormGroup>
           </MISACol>
         </MISARow>
@@ -114,20 +119,12 @@ import MISARadioButton from "../../components/base/radio-button/MISARadioButton.
 import MISADropdown from "../../components/base/dropdown-list/MISADropdown.vue";
 import MISARow from "../../components/base/grid/MISARow.vue";
 import MISACol from "../../components/base/grid/MISACol.vue";
-import { ref, onUpdated } from "vue";
+import { ref } from "vue";
 import employeeApi from "../../api/employee-api";
 import departmentApi from "../../api/department-api";
 import positionApi from "../../api/position-api";
 
-defineEmits(["close"]);
-
-const props = defineProps({
-  // Trạng thái đóng mở popup
-  active: {
-    type: Boolean,
-    default: false,
-  },
-});
+const emit = defineEmits(["close", "submit"]);
 
 const departmentOptions = ref([]);
 const positionOptions = ref([]);
@@ -145,7 +142,7 @@ const formData = ref({
   address: "",
   phoneNumber: "",
   email: "",
-  salary: "",
+  salary: "0",
 });
 
 /**
@@ -196,11 +193,9 @@ const getPositionData = async () => {
   }
 };
 
-onUpdated(() => {
-  getNewEmployeeCode();
-  getDepartmentData();
-  getPositionData();
-});
+getNewEmployeeCode();
+getDepartmentData();
+getPositionData();
 
 /**
  * Description: Hàm xử lý gọi api tạo nhân viên
@@ -208,14 +203,16 @@ onUpdated(() => {
  */
 const handleCreateEmployee = async () => {
   try {
-    console.log(formData);
+    const data = {
+      ...formData.value,
+      gender: Number(formData.value.gender),
+      salary: Number(formData.value.salary),
+    };
 
-    formData.value.gender = Number(formData.value.gender);
-    formData.value.salary = Number(formData.value.salary);
+    await employeeApi.create(data);
 
-    const response = await employeeApi.create(formData);
-
-    console.log(response);
+    emit("submit");
+    emit("close");
   } catch (error) {
     console.warn(error);
   }

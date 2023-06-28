@@ -30,7 +30,12 @@
             <MISAInput placeholder="Tìm theo mã, tên nhân viên" id="search-input" />
             <MISAInputAction icon="ms-icon--search-20" />
           </MISAInputGroup>
-          <MISAButton @click="getEmployeeData" type="secondary" icon="ms-icon--reload-20" />
+          <MISAButton
+            @click="getEmployeeData"
+            v-tooltip.left="'Tải lại'"
+            type="secondary"
+            icon="ms-icon--reload-20"
+          />
         </div>
       </div>
 
@@ -42,13 +47,13 @@
         @select-row="selectTableRows"
         :loading="isLoading"
       >
-        <template #name="row">
-          <MISAButton type="link">{{ row["name"] }}</MISAButton>
+        <template #FullName="row">
+          <MISAButton type="link">{{ row["FullName"] }}</MISAButton>
         </template>
 
         <template #table-actions="row">
-          <MISATableAction icon="ms-icon--pen-24"></MISATableAction>
-          <MISATableAction>
+          <MISATableAction title="Chỉnh sửa" icon="ms-icon--pen-24"></MISATableAction>
+          <MISATableAction title="Thêm">
             <template #action-dropdown>
               <!-- context menu -->
               <MISAContextMenu>
@@ -82,7 +87,11 @@
       </Teleport>
 
       <!-- Employee detail -->
-      <EmployeeDetail :active="popupState" @close="togglePopup"></EmployeeDetail>
+      <EmployeeDetail
+        v-if="popupState"
+        @close="togglePopup"
+        @submit="getEmployeeData"
+      ></EmployeeDetail>
     </div>
   </div>
 </template>
@@ -118,12 +127,12 @@ const columns = ref([
   { key: 2, title: "Tên nhân viên", dataIndex: "FullName" },
   { key: 3, title: "Giới tính", dataIndex: "GenderName" },
   { key: 4, title: "Ngày sinh", dataIndex: "DateOfBirthFormated", align: "center" },
-  { key: 5, title: "Số CMND", dataIndex: "IdentityNumber" },
+  { key: 5, title: "Số CMND", dataIndex: "IdentityNumber", desc: "Số Chứng minh nhân dân" },
   { key: 6, title: "Chức danh", dataIndex: "PositionName" },
   { key: 7, title: "Tên đơn vị", dataIndex: "DepartmentName" },
-  { key: 7, title: "Email", dataIndex: "Email" },
-  { key: 7, title: "Số điện thoại", dataIndex: "PhoneNumber" },
-  { key: 8, title: "Lương", dataIndex: "Salary", align: "right" },
+  { key: 8, title: "Email", dataIndex: "Email" },
+  { key: 9, title: "Số điện thoại", dataIndex: "PhoneNumber" },
+  { key: 10, title: "Lương", dataIndex: "Salary", align: "right" },
 ]);
 
 /**
@@ -159,7 +168,6 @@ const deleteSelectedEmployee = async () => {
   try {
     const responseArr = selectedRowsState.value.map(async (employee) => {
       const response = await employeeApi.delete(employee.EmployeeId);
-      console.log("delete", response);
 
       return response;
     });

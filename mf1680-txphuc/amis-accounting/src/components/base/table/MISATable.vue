@@ -17,6 +17,7 @@
                 width: column.width ? column.width + 'px' : '',
                 textAlign: column.align ? column.align : '',
               }"
+              v-tooltip.bottom="column.desc || column.title"
             >
               {{ column.title }}
 

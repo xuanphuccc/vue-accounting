@@ -1,5 +1,5 @@
 <template>
-  <div @click.stop="handleActionClick" class="ms-table__action-btn">
+  <div @click.stop="handleActionClick" class="ms-table__action-btn" v-tooltip="props.title">
     <div :class="['ms-table__action-icon', props.icon]"></div>
 
     <div :class="['ms-table__action-dropdown', { '--active': isOpenDropdownState }]">
@@ -18,6 +18,10 @@ const props = defineProps({
   icon: {
     type: String,
     default: "ms-icon--ellipsis-24",
+  },
+  title: {
+    type: String,
+    default: "",
   },
 });
 

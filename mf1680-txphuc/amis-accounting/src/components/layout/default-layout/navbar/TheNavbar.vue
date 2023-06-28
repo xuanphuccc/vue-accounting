@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="navbar__controls">
-        <button class="navbar__button ms-icon--bell-24" title="Thông báo"></button>
+        <button title="Thông báo" class="navbar__button ms-icon--bell-24"></button>
 
         <div class="navbar__avatar-wrap">
           <img

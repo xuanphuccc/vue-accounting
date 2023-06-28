@@ -151,6 +151,10 @@
   display: block;
 }
 
+.ms-table__action-dropdown.--active ~ .ms-tooltip {
+  display: none;
+}
+
 .ms-table__action-btn:hover {
   background: var(--gray-100);
 }

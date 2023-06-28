@@ -1,6 +1,7 @@
 @import "./base.css";
 @import url("./base/icons.css");
 @import url("./base/animation.css");
+@import url("./base/tooltip.css");
 
 @font-face {
   font-family: "Noto Sans";
