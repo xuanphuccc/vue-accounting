@@ -1,16 +1,33 @@
 /**
  * Author: txphuc (20/06/2023)
- * Description: Generate in format: DD/MM/YYYY
+ * Description: Generate date in format: DD/MM/YYYY
  */
-function formatDate(dateString) {
+function formatDate(dateString, format = "DD/MM/YYYY") {
   try {
-    dateString = new Date(dateString);
+    const dateObject = new Date(dateString);
 
-    const date = dateString.getDate();
-    const month = dateString.getMonth() + 1;
-    const year = dateString.getFullYear();
+    const data = {
+      DD: dateObject.getDate(),
+      MM: dateObject.getMonth() + 1,
+      YYYY: dateObject.getFullYear(),
+    };
 
-    return `${date < 10 ? "0" + date : date}/${month < 10 ? "0" + month : month}/${year}`;
+    // Lấy ra ký tự phân cách
+    const separationString = format.match(/[^\w\s]/g)[0];
+
+    // Phân tích cú pháp
+    const formatArr = format.split(separationString);
+
+    // Chuyển đổi thành chuỗi theo cú pháp
+    const formateDateString = formatArr
+      .map((item) => {
+        if (data[item] < 10) {
+          return "0" + data[item];
+        } else return data[item] + "";
+      })
+      .join(separationString);
+
+    return formateDateString;
   } catch (error) {
     return "";
   }

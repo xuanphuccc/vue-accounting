@@ -1,5 +1,5 @@
 <template>
-  <nav :class="['sidebar', { '--compact': props.isCompact }]">
+  <nav :class="['sidebar', { '--compact': globalStore.sidebar.isCompact }]">
     <ul @mouseleave="hideTippy" class="sidebar__menu">
       <li class="sidebar__menu-item">
         <a @mouseenter="showTippy" href="#" class="sidebar__link">
@@ -95,7 +95,7 @@
 
     <div ref="tippyRef" class="sidebar__tippy">Tổng quan</div>
 
-    <div @click="$emit('toggle')" class="sidebar__toggle">
+    <div @click="globalStore.toggleSidebar" class="sidebar__toggle">
       <div class="sidebar__toggle-icon ms-icon--angle-left-24"></div>
       <div class="sidebar__toggle-text">Thu gọn</div>
     </div>
@@ -104,19 +104,11 @@
 
 <script setup>
 import { ref } from "vue";
-
-defineEmits(["toggle"]);
-
-const props = defineProps({
-  // Trạng thái của Sidebar (mặc định/thu nhỏ)
-  // isCompact = true (thu nhỏ)
-  isCompact: {
-    type: Boolean,
-    default: false,
-  },
-});
+import { useGlobalStore } from "@/stores/global-store";
 
 const tippyRef = ref(null);
+
+const globalStore = useGlobalStore();
 
 /**
  * Description: Hàm hiện tippy khi hover vào các sidebar item
@@ -125,7 +117,7 @@ const tippyRef = ref(null);
  */
 const showTippy = (e) => {
   try {
-    if (tippyRef.value && props.isCompact) {
+    if (tippyRef.value && globalStore.sidebar.isCompact) {
       tippyRef.value.style.display = "block";
       const linkElement = e.target;
       const linkRect = linkElement.getBoundingClientRect();

@@ -17,6 +17,10 @@ const employeeApi = {
     const url = `/Employees`;
     return axiosClient.post(url, data);
   },
+  update(id, data) {
+    const url = `/Employees/${id}`;
+    return axiosClient.put(url, data);
+  },
 };
 
 export default employeeApi;

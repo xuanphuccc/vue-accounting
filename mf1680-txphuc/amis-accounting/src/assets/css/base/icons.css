@@ -227,6 +227,14 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
+.ms-icon--times-20 {
+  -webkit-mask-image: url("../../img/Sprites.64af8f61.svg");
+  mask-image: url("../../img/Sprites.64af8f61.svg");
+  -webkit-mask-position: -1318px -358px;
+  mask-position: -1318px -358px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
 .ms-icon--times-16 {
   -webkit-mask-image: url("../../img/Sprites.64af8f61.svg");
   mask-image: url("../../img/Sprites.64af8f61.svg");
@@ -280,6 +288,9 @@
 }
 
 /* background */
+.ms-icon--success-24 {
+  background: url("../../img/Sprites.64af8f61.svg") no-repeat -1600px -256px;
+}
 .ms-icon--info-24 {
   background: url("../../img/Sprites.64af8f61.svg") no-repeat -480px -144px;
 }

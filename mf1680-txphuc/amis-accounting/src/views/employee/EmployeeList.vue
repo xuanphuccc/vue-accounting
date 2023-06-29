@@ -7,7 +7,9 @@
       </div>
 
       <div class="page__header-controls">
-        <MISAButton @click="togglePopup" type="primary">Thêm mới nhân viên</MISAButton>
+        <MISAButton @click="employeeStore.openFormForCreate" type="primary"
+          >Thêm mới nhân viên</MISAButton
+        >
       </div>
     </div>
 
@@ -52,7 +54,11 @@
         </template>
 
         <template #table-actions="row">
-          <MISATableAction title="Chỉnh sửa" icon="ms-icon--pen-24"></MISATableAction>
+          <MISATableAction
+            @click="employeeStore.openFormForUpdate(row)"
+            title="Chỉnh sửa"
+            icon="ms-icon--pen-24"
+          ></MISATableAction>
           <MISATableAction title="Thêm">
             <template #action-dropdown>
               <!-- context menu -->
@@ -87,11 +93,7 @@
       </Teleport>
 
       <!-- Employee detail -->
-      <EmployeeDetail
-        v-if="popupState"
-        @close="togglePopup"
-        @submit="getEmployeeData"
-      ></EmployeeDetail>
+      <EmployeeDetail v-if="employeeStore.isOpenForm" @submit="getEmployeeData"></EmployeeDetail>
     </div>
   </div>
 </template>
@@ -111,6 +113,7 @@ import MISATableAction from "../../components/base/table/MISATableAction.vue";
 import EmployeeDetail from "./EmployeeDetail.vue";
 import employeeApi from "../../api/employee-api";
 import formatDate from "../../helper/format-date";
+import { useEmployeeStore } from "@/stores/employee-store";
 
 const employeeData = ref([]);
 const selectedRowsState = ref([]);
@@ -119,8 +122,8 @@ const dialogState = ref({
   title: "",
   description: "",
 });
-const popupState = ref(false);
 const isLoading = ref(false);
+const employeeStore = useEmployeeStore();
 
 const columns = ref([
   { key: 1, title: "Mã nhân viên", dataIndex: "EmployeeCode" },
@@ -226,14 +229,6 @@ const showDeleteConfirmDialog = (data) => {
 const hideConfirmDialog = () => {
   dialogState.value.active = false;
   selectedRowsState.value = [];
-};
-
-/**
- * Description: Đóng/mở popup chi tiết nhân viên
- * Author: txphuc (25/06/2023).
- */
-const togglePopup = () => {
-  popupState.value = !popupState.value;
 };
 </script>
 

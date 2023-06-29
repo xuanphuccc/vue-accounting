@@ -1,6 +1,6 @@
 <template>
   <Teleport to="#app">
-    <MISAPopup @close="$emit('close')" :width="800" title="Thông tin nhân viên">
+    <MISAPopup @close="employeeStore.closeForm" :width="800" title="Thông tin nhân viên">
       <template #default>
         <MISARow :gutter="{ x: 24 }">
           <MISACol span="6">
@@ -100,11 +100,17 @@
       </template>
 
       <template #controls-left>
-        <MISAButton @click="$emit('close')" type="secondary">Huỷ</MISAButton>
+        <MISAButton @click="employeeStore.closeForm" type="secondary">Huỷ</MISAButton>
       </template>
       <template #controls-right>
         <MISAButton type="secondary">Cất</MISAButton>
-        <MISAButton @click="handleCreateEmployee" type="primary">Cất và thêm</MISAButton>
+        <MISAButton
+          v-if="employeeStore.mode === 'create'"
+          @click="handleCreateEmployee"
+          type="primary"
+          >Cất và thêm</MISAButton
+        >
+        <MISAButton v-else @click="handleUpdateEmployee" type="primary">Cất và lưu</MISAButton>
       </template>
     </MISAPopup>
   </Teleport>
@@ -121,10 +127,14 @@ import MISARow from "../../components/base/grid/MISARow.vue";
 import MISACol from "../../components/base/grid/MISACol.vue";
 import { ref } from "vue";
 import employeeApi from "../../api/employee-api";
-import departmentApi from "../../api/department-api";
-import positionApi from "../../api/position-api";
+import departmentApi from "@/api/department-api";
+import positionApi from "@/api/position-api";
+import formatDate from "@/helper/format-date";
+import { useEmployeeStore } from "@/stores/employee-store";
 
-const emit = defineEmits(["close", "submit"]);
+const emit = defineEmits(["submit"]);
+
+const employeeStore = useEmployeeStore();
 
 const departmentOptions = ref([]);
 const positionOptions = ref([]);
@@ -151,9 +161,11 @@ const formData = ref({
  */
 const getNewEmployeeCode = async () => {
   try {
-    const response = await employeeApi.getNewCode();
+    if (employeeStore.mode === "create") {
+      const response = await employeeApi.getNewCode();
 
-    formData.value.employeeCode = response.data;
+      formData.value.employeeCode = response.data;
+    }
   } catch (error) {
     console.warn(error);
   }
@@ -203,16 +215,74 @@ getPositionData();
  */
 const handleCreateEmployee = async () => {
   try {
-    const data = {
-      ...formData.value,
-      gender: Number(formData.value.gender),
-      salary: Number(formData.value.salary),
-    };
+    if (employeeStore.mode === "create") {
+      const data = {
+        ...formData.value,
+        gender: Number(formData.value.gender),
+        salary: Number(formData.value.salary),
+      };
 
-    await employeeApi.create(data);
+      await employeeApi.create(data);
 
-    emit("submit");
-    emit("close");
+      emit("submit");
+      employeeStore.closeForm();
+    }
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+/**
+ * Description: Hàm load dữ liệu để thực hiện update
+ * Author: txphuc (28/06/2023)
+ */
+const handleLoadDataForUpdate = () => {
+  try {
+    if (employeeStore.mode === "update") {
+      const currentEmployee = employeeStore.currentEmployee;
+
+      formData.value = {
+        employeeCode: currentEmployee.EmployeeCode,
+        fullName: currentEmployee.FullName,
+        departmentId: currentEmployee.DepartmentId,
+        positionId: currentEmployee.PositionId,
+        dateOfBirth: formatDate(currentEmployee.DateOfBirth, "YYYY-MM-DD"),
+        gender: currentEmployee.Gender + "",
+        identityNumber: currentEmployee.IdentityNumber,
+        identityDate: formatDate(currentEmployee.IdentityDate, "YYYY-MM-DD"),
+        identityPlace: currentEmployee.IdentityPlace,
+        address: currentEmployee.Address,
+        phoneNumber: currentEmployee.PhoneNumber,
+        email: currentEmployee.Email,
+        salary: currentEmployee.Salary + "",
+      };
+    }
+  } catch (error) {
+    console.warn(error);
+  }
+};
+handleLoadDataForUpdate();
+
+/**
+ * Description: Hàm xử lý gọi api cập nhật nhân viên
+ * Author: txphuc (28/06/2023)
+ */
+const handleUpdateEmployee = async () => {
+  try {
+    if (employeeStore.mode === "update") {
+      const employeeId = employeeStore.currentEmployee.EmployeeId;
+
+      const data = {
+        ...formData.value,
+        gender: Number(formData.value.gender),
+        salary: Number(formData.value.salary),
+      };
+
+      await employeeApi.update(employeeId, data);
+
+      emit("submit");
+      employeeStore.closeForm();
+    }
   } catch (error) {
     console.warn(error);
   }
