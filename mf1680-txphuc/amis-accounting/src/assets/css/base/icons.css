@@ -26,6 +26,14 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
+.ms-icon--user-24 {
+  -webkit-mask-image: url("../../img/Sprites.64af8f61.svg");
+  mask-image: url("../../img/Sprites.64af8f61.svg");
+  -webkit-mask-position: -162px -1661px;
+  mask-position: -162px -1661px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
 .ms-icon--money-24 {
   -webkit-mask-image: url("../../img/Sprites.64af8f61.svg");
   mask-image: url("../../img/Sprites.64af8f61.svg");

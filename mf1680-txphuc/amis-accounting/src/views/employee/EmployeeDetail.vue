@@ -113,11 +113,19 @@
         <MISAButton v-else @click="handleUpdateEmployee" type="primary">Cất và lưu</MISAButton>
       </template>
     </MISAPopup>
+
+    <MISADialog
+      v-if="dialogState.active"
+      v-bind="dialogState"
+      @cancel="closeDialog"
+      @ok="closeDialog"
+    />
   </Teleport>
 </template>
 
 <script setup>
 import MISAPopup from "../../components/base/popup/MISAPopup.vue";
+import MISADialog from "@/components/base/dialog/MISADialog.vue";
 import MISAButton from "../../components/base/button/MISAButton.vue";
 import MISAFormGroup from "../../components/base/input/MISAFormGroup.vue";
 import MISAInput from "../../components/base/input/MISAInput.vue";
@@ -125,19 +133,28 @@ import MISARadioButton from "../../components/base/radio-button/MISARadioButton.
 import MISADropdown from "../../components/base/dropdown-list/MISADropdown.vue";
 import MISARow from "../../components/base/grid/MISARow.vue";
 import MISACol from "../../components/base/grid/MISACol.vue";
+
 import { ref } from "vue";
 import employeeApi from "../../api/employee-api";
 import departmentApi from "@/api/department-api";
 import positionApi from "@/api/position-api";
 import formatDate from "@/helper/format-date";
 import { useEmployeeStore } from "@/stores/employee-store";
+import { useToastStore } from "@/stores/toast-store";
 
 const emit = defineEmits(["submit"]);
 
 const employeeStore = useEmployeeStore();
+const toastStore = useToastStore();
 
 const departmentOptions = ref([]);
 const positionOptions = ref([]);
+const dialogState = ref({
+  active: false,
+  type: "warning",
+  title: "",
+  description: "",
+});
 
 const formData = ref({
   employeeCode: "",
@@ -152,7 +169,7 @@ const formData = ref({
   address: "",
   phoneNumber: "",
   email: "",
-  salary: "0",
+  salary: "",
 });
 
 /**
@@ -210,6 +227,14 @@ getDepartmentData();
 getPositionData();
 
 /**
+ * Description: Hàm đóng dialog
+ * Author: txphuc (29/06/2023)
+ */
+const closeDialog = () => {
+  dialogState.value.active = false;
+};
+
+/**
  * Description: Hàm xử lý gọi api tạo nhân viên
  * Author: txphuc (28/06/2023)
  */
@@ -226,9 +251,24 @@ const handleCreateEmployee = async () => {
 
       emit("submit");
       employeeStore.closeForm();
+
+      // Hiện toast message thành công
+      toastStore.pushMessage({
+        type: "success",
+        title: "Thành công!",
+        message: "Thêm nhân viên thành công",
+      });
     }
   } catch (error) {
     console.warn(error);
+
+    // Hiện dialog báo lỗi
+    dialogState.value = {
+      active: true,
+      type: "error",
+      title: "Đã có lỗi",
+      description: error?.response?.data?.devMsg,
+    };
   }
 };
 
@@ -282,9 +322,24 @@ const handleUpdateEmployee = async () => {
 
       emit("submit");
       employeeStore.closeForm();
+
+      // Hiện toast message thành công
+      toastStore.pushMessage({
+        type: "success",
+        title: "Thành công!",
+        message: "Cập nhật thành công",
+      });
     }
   } catch (error) {
     console.warn(error);
+
+    // Hiện dialog báo lỗi
+    dialogState.value = {
+      active: true,
+      type: "error",
+      title: "Đã có lỗi",
+      description: error?.response?.data?.devMsg,
+    };
   }
 };
 </script>

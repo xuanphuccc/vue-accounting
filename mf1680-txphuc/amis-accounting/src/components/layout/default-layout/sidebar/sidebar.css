@@ -30,12 +30,12 @@
   padding: 0 12px;
 }
 
-.sidebar__menu-item.--active .sidebar__link {
+.router-link-active.sidebar__link {
   background: var(--sidebar-hover-background);
   color: var(--white);
 }
 
-.sidebar__menu-item.--active .sidebar__link-icon {
+.router-link-active.sidebar__link-icon {
   background: var(--white);
 }
 

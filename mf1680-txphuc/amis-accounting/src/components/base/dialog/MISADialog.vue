@@ -1,9 +1,9 @@
 <template>
-  <div @click="$emit('close')" :class="[`ms-dialog-overlay`, { '--active': props.active }]">
+  <div @click="$emit('cancel')" :class="[`ms-dialog-overlay`, '--active']">
     <div @click.stop="" class="ms-dialog">
       <h4 class="ms-dialog__title">{{ props.title }}</h4>
       <button
-        @click="$emit('close')"
+        @click="$emit('cancel')"
         class="ms-dialog__close ms-icon--times-24"
         title="Đóng"
       ></button>
@@ -26,15 +26,9 @@
 <script setup>
 import MISAButton from "../button/MISAButton.vue";
 
-defineEmits(["close", "cancel", "ok"]);
+defineEmits(["cancel", "ok"]);
 
 const props = defineProps({
-  // Trạng thái đóng/mở của dialog
-  active: {
-    type: Boolean,
-    default: false,
-  },
-
   // Loại dialog (info, warning, error)
   type: {
     type: String,

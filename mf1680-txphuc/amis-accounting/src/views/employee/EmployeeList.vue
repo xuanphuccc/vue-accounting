@@ -85,9 +85,9 @@
       <!-- Modal -->
       <Teleport to="#app">
         <MISADialog
+          v-if="dialogState.active"
           v-bind="dialogState"
           @ok="deleteSelectedEmployee"
-          @close="hideConfirmDialog"
           @cancel="hideConfirmDialog"
         />
       </Teleport>
@@ -101,29 +101,33 @@
 <script setup>
 import { ref } from "vue";
 
-import MISAButton from "../../components/base/button/MISAButton.vue";
-import MISAInput from "../../components/base/input/MISAInput.vue";
-import MISAInputGroup from "../../components/base/input/MISAInputGroup.vue";
-import MISAInputAction from "../../components/base/input/MISAInputAction.vue";
-import MISATable from "../../components/base/table/MISATable.vue";
-import MISADialog from "../../components/base/dialog/MISADialog.vue";
-import MISAContextMenu from "../../components/base/context-menu/MISAContextMenu.vue";
-import MISAContextItem from "../../components/base/context-menu/MISAContextItem.vue";
-import MISATableAction from "../../components/base/table/MISATableAction.vue";
+import MISAButton from "@/components/base/button/MISAButton.vue";
+import MISAInput from "@/components/base/input/MISAInput.vue";
+import MISAInputGroup from "@/components/base/input/MISAInputGroup.vue";
+import MISAInputAction from "@/components/base/input/MISAInputAction.vue";
+import MISATable from "@/components/base/table/MISATable.vue";
+import MISADialog from "@/components/base/dialog/MISADialog.vue";
+import MISAContextMenu from "@/components/base/context-menu/MISAContextMenu.vue";
+import MISAContextItem from "@/components/base/context-menu/MISAContextItem.vue";
+import MISATableAction from "@/components/base/table/MISATableAction.vue";
 import EmployeeDetail from "./EmployeeDetail.vue";
-import employeeApi from "../../api/employee-api";
-import formatDate from "../../helper/format-date";
+import employeeApi from "@/api/employee-api";
+import formatDate from "@/helper/format-date";
 import { useEmployeeStore } from "@/stores/employee-store";
+import { useToastStore } from "@/stores/toast-store";
 
 const employeeData = ref([]);
 const selectedRowsState = ref([]);
 const dialogState = ref({
   active: false,
+  type: "warning",
   title: "",
   description: "",
 });
 const isLoading = ref(false);
+
 const employeeStore = useEmployeeStore();
+const toastStore = useToastStore();
 
 const columns = ref([
   { key: 1, title: "Mã nhân viên", dataIndex: "EmployeeCode" },
@@ -134,7 +138,7 @@ const columns = ref([
   { key: 6, title: "Chức danh", dataIndex: "PositionName" },
   { key: 7, title: "Tên đơn vị", dataIndex: "DepartmentName" },
   { key: 8, title: "Email", dataIndex: "Email" },
-  { key: 9, title: "Số điện thoại", dataIndex: "PhoneNumber" },
+  { key: 9, title: "Số điện thoại", dataIndex: "PhoneNumber", align: "right" },
   { key: 10, title: "Lương", dataIndex: "Salary", align: "right" },
 ]);
 
@@ -180,6 +184,13 @@ const deleteSelectedEmployee = async () => {
     dialogState.value.active = false;
     await getEmployeeData();
     removeAllSelectedRows();
+
+    // Hiện toast message xoá thành công
+    toastStore.pushMessage({
+      type: "success",
+      title: "Thành công",
+      message: "Xoá thành công",
+    });
   } catch (error) {
     console.warn(error);
   }
@@ -217,7 +228,7 @@ const showDeleteConfirmDialog = (data) => {
   dialogState.value = {
     active: true,
     title: "Xoá nhân viên",
-    type: "error",
+    type: "warning",
     description: `Bạn có muốn xoá nhân viên ${data.FullName}`,
   };
 };
