@@ -22,7 +22,14 @@
               <span id="selected-count" class="text-bold">{{ selectedRowsState.length }}</span>
             </div>
             <MISAButton @click="uncheckedAllRows()" type="link" class="ms-16">Bỏ chọn</MISAButton>
-            <MISAButton type="secondary" class="ms-24">Xoá</MISAButton>
+            <MISAButton
+              @click="
+                showDeleteConfirmDialog(`Bạn có muốn xoá ${selectedRowsState.length} nhân viên`)
+              "
+              type="secondary"
+              class="ms-24"
+              >Xoá</MISAButton
+            >
           </div>
         </div>
         <div class="filter__right">
@@ -77,7 +84,7 @@
                 <MISAContextItem
                   @click="
                     () => {
-                      showDeleteConfirmDialog(row);
+                      showDeleteConfirmDialog(`Bạn có muốn xoá  nhân viên ${row.FullName}`);
                       setSingleSelectedRow(row);
                     }
                   "
@@ -265,12 +272,12 @@ const uncheckedAllRows = () => {
  * Description: Hiện dialog xác nhận xoá
  * Author: txphuc (24/06/2023).
  */
-const showDeleteConfirmDialog = (data) => {
+const showDeleteConfirmDialog = (description) => {
   dialogState.value = {
     active: true,
     title: "Xoá nhân viên",
     type: "warning",
-    description: `Bạn có muốn xoá nhân viên ${data.FullName}`,
+    description: description,
   };
 };
 

@@ -1,5 +1,5 @@
 <template>
-  <div :class="['ms-form__group', { '--error': props.error }, ...customClasses]">
+  <div :class="['ms-form__group', { '--error': props.errorMsg }, ...customClasses]">
     <label :for="props.for" class="ms-label">{{ props.label }}</label>
 
     <slot></slot>
@@ -20,9 +20,6 @@ const props = defineProps({
 
   // Thuộc tính của label liên kết với input
   for: String,
-
-  // Trạng thái của input (error)
-  error: Boolean,
 
   // Thông báo lỗi
   errorMsg: String,

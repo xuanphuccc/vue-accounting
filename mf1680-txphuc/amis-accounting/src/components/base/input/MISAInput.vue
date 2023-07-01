@@ -1,20 +1,20 @@
 <template>
   <input
     :value="props.modelValue"
-    @input="$emit('update:modelValue', $event.target.value)"
+    @input="onInputChange"
+    @blur="$emit('blur')"
     :type="props.type"
-    :class="['ms-input', ...classNames]"
+    :class="['ms-input']"
     :id="props.id"
     :placeholder="props.placeholder"
-    :style="{ width: typeof props.width === 'number' ? props.width + 'px' : props.width }"
     ref="inputRef"
   />
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 
-defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "blur", "input"]);
 
 const props = defineProps({
   // Giá trị của ô input
@@ -35,47 +35,23 @@ const props = defineProps({
   // Gợi ý
   placeholder: String,
 
-  // Chiều rộng input
-  width: {
-    type: [Number, String],
-    default: "",
-  },
-
   // Trạng thái focus khi component được mounted
   focus: {
     type: Boolean,
     default: false,
   },
-
-  // Thêm class
-  class: [String, Array],
 });
 
 const inputRef = ref(null);
 
 /**
- * Description: Chuyển đổi class dạng string sang arr
+ * Description: Xử lý lắng nghe sự thay đổi của input
  * Author: txphuc (26/06/2023)
  */
-const classNames = computed(() => {
-  try {
-    let classArr = [];
-
-    if (props.class) {
-      if (typeof props.class === "string") {
-        classArr.push(props.class);
-      } else if (Array.isArray(props.class)) {
-        classArr = props.class;
-      }
-    }
-
-    return classArr;
-  } catch (error) {
-    console.warn(error);
-    return [];
-  }
-});
-
+const onInputChange = (e) => {
+  emit("update:modelValue", e.target.value);
+  emit("input");
+};
 /**
  * Description: Xử lý auto focus vào input khi component được mounted
  * Author: txphuc (26/06/2023)

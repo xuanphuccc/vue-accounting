@@ -1,5 +1,11 @@
 <template>
-  <div @keyup.esc="$emit('close')" @click="$emit('close')" tabindex="-1" class="ms-popup-overlay">
+  <div
+    @keydown.esc="$emit('close')"
+    @keydown.enter="$emit('submit')"
+    @click="$emit('close')"
+    tabindex="-1"
+    class="ms-popup-overlay"
+  >
     <div @click.stop="" class="ms-popup" :style="{ width: props.width + 'px' }">
       <h4 class="ms-popup__title">{{ props.title }}</h4>
       <button
@@ -28,7 +34,7 @@
 </template>
 
 <script setup>
-defineEmits(["close"]);
+defineEmits(["close", "submit"]);
 
 const props = defineProps({
   // Tiêu đề popup

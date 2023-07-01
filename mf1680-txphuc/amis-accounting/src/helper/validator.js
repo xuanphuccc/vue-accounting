@@ -1,34 +1,23 @@
 /**
- * Description: Hàm validate inputs
+ * Description: Hàm validate input
  * Author: txphuc (01/07/2023)
  */
-export const validator = (inputs = []) => {
+export const validator = (input = { value: "", rules: [] }) => {
   try {
-    const validated = {};
+    let errorMsg = null;
+    for (let rule of input.rules) {
+      const message = rule.checker(input.value, rule.errorMsg);
 
-    // Lặp qua các input nếu có 1 rule bất kỳ không thoả mãn
-    // thì dừng lặp và trả về lỗi đó
-    for (let input of inputs) {
-      const key = input.key;
-      const value = input.value;
-      const rules = input.rules;
-
-      if (Object.keys(validated).length > 0) break;
-
-      for (let rule of rules) {
-        const result = rule.checker(value, rule.errorMsg);
-
-        if (result) {
-          validated[key] = result;
-          break;
-        }
+      if (message) {
+        errorMsg = message;
+        break;
       }
     }
 
-    return validated;
+    return errorMsg;
   } catch (error) {
     console.warn(error);
-    return {};
+    return "error";
   }
 };
 

@@ -1,30 +1,46 @@
 <template>
   <Teleport to="#app">
-    <MISAPopup @close="employeeStore.closeForm" :width="860" title="Thông tin nhân viên">
+    <MISAPopup
+      @close="employeeStore.closeForm"
+      @submit="handleSubmitForm()"
+      :width="860"
+      :title="employeeStore.mode === enums.form.mode.CREATE ? 'Thêm nhân viên' : 'Sửa nhân viên'"
+    >
       <template #default>
         <MISARow :gutter="{ x: 24 }">
           <MISACol span="6">
             <MISARow :gutter="{ x: 8 }">
               <MISACol span="5">
                 <MISAFormGroup
-                  :error="!!validatedInputs.employeeCode"
                   :error-msg="validatedInputs.employeeCode"
                   label="Mã"
                   for="input-id"
                   class="mb-24"
                 >
-                  <MISAInput tabindex="1" v-model="formData.employeeCode" focus id="input-id" />
+                  <MISAInput
+                    tabindex="1"
+                    v-model="formData.employeeCode"
+                    @blur="validateEmployeeCode"
+                    @input="validatedInputs.employeeCode = null"
+                    focus
+                    id="input-id"
+                  />
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="7">
                 <MISAFormGroup
-                  :error="!!validatedInputs.fullName"
                   :error-msg="validatedInputs.fullName"
                   label="Tên"
                   for="input-name"
                   class="mb-24"
                 >
-                  <MISAInput tabindex="2" v-model="formData.fullName" id="input-name" />
+                  <MISAInput
+                    tabindex="2"
+                    v-model="formData.fullName"
+                    @blur="validateFullName"
+                    @input="validatedInputs.fullName = null"
+                    id="input-name"
+                  />
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="12">
@@ -130,7 +146,16 @@
           </MISACol>
           <MISACol span="4">
             <MISAFormGroup label="Tiền lương" for="input-salary">
-              <MISAInput tabindex="15" v-model="formData.salary" id="input-salary" />
+              <MISAInput
+                tabindex="15"
+                :model-value="formData.salary"
+                @update:modelValue="
+                  (value) => {
+                    formData.salary = convertNumberToCurrency(value);
+                  }
+                "
+                id="input-salary"
+              />
             </MISAFormGroup>
           </MISACol>
         </MISARow>
@@ -140,8 +165,10 @@
         <MISAButton tabindex="18" @click="employeeStore.closeForm" type="secondary">Huỷ</MISAButton>
       </template>
       <template #controls-right>
-        <MISAButton tabindex="17" @click="handleValidateInputs" type="secondary">Cất</MISAButton>
-        <MISAButton tabindex="16" @click="handleSubmitForm" type="primary">Cất và thêm</MISAButton>
+        <MISAButton tabindex="17" @click="handleSubmitForm(false)" type="secondary">Cất</MISAButton>
+        <MISAButton tabindex="16" @click="handleSubmitForm()" type="primary"
+          >Cất và thêm</MISAButton
+        >
       </template>
     </MISAPopup>
 
@@ -170,6 +197,7 @@ import employeeApi from "../../api/employee-api";
 import departmentApi from "@/api/department-api";
 import positionApi from "@/api/position-api";
 import formatDate from "@/helper/format-date";
+import { convertNumberToCurrency } from "@/helper/convert-currency";
 import { useEmployeeStore } from "@/stores/employee-store";
 import { useToastStore } from "@/stores/toast-store";
 import enums from "@/helper/enum";
@@ -189,7 +217,7 @@ const dialogState = ref({
   description: "",
 });
 
-const formData = ref({
+const initialFormData = {
   employeeCode: "",
   fullName: "",
   departmentId: "",
@@ -203,7 +231,8 @@ const formData = ref({
   phoneNumber: "",
   email: "",
   salary: "",
-});
+};
+const formData = ref({ ...initialFormData });
 
 const validatedInputs = ref({
   employeeCode: null,
@@ -274,56 +303,100 @@ const closeDialog = () => {
 
 /**
  * Description: Hàm validate input
- * Author: txphuc (30/06/2023)
+ * Author: txphuc (01/07/2023)
  */
 const handleValidateInputs = () => {
   try {
-    validatedInputs.value = {
-      employeeCode: null,
-      fullName: null,
-    };
+    return !validateEmployeeCode() && !validateFullName();
+  } catch (error) {
+    console.warn(error);
+    return false;
+  }
+};
 
-    const result = validator([
-      {
-        key: "employeeCode",
-        value: formData.value.employeeCode,
-        rules: [
-          {
-            checker: required,
-            errorMsg: "Employee code is required",
-          },
-        ],
-      },
-      {
-        key: "fullName",
-        value: formData.value.fullName,
-        rules: [
-          {
-            checker: required,
-            errorMsg: "Full name is required",
-          },
-        ],
-      },
-    ]);
+/**
+ * Description: Hàm validate employee code
+ * Author: txphuc (01/07/2023)
+ */
+const validateEmployeeCode = () => {
+  try {
+    const result = validator({
+      value: formData.value.employeeCode,
+      rules: [{ checker: required, errorMsg: "Mã là bắt buộc" }],
+    });
 
-    validatedInputs.value = {
-      ...validatedInputs.value,
-      ...result,
-    };
+    validatedInputs.value.employeeCode = result;
+    return result;
+  } catch (error) {
+    console.warn(error);
+    return false;
+  }
+};
+
+/**
+ * Description: Hàm validate full name
+ * Author: txphuc (01/07/2023)
+ */
+const validateFullName = () => {
+  try {
+    const result = validator({
+      value: formData.value.fullName,
+      rules: [{ checker: required, errorMsg: "Tên là bắt buộc" }],
+    });
+
+    validatedInputs.value.fullName = result;
+    return result;
+  } catch (error) {
+    console.warn(error);
+    return false;
+  }
+};
+
+/**
+ * Description: Hàm reset lại các input về trạng thái ban đầu
+ * Author: txphuc (01/07/2023)
+ */
+const resetInputs = () => {
+  try {
+    if (employeeStore.mode === enums.form.mode.CREATE) {
+      formData.value = {
+        ...initialFormData,
+      };
+
+      getNewEmployeeCode();
+    }
   } catch (error) {
     console.warn(error);
   }
 };
 
 /**
- * Description: Hàm xử lý submit form ở các chế độ tương ứng
+ * Description: Hàm xử lý submit form ở các chế độ create/update
  * Author: txphuc (01/07/2023)
  */
-const handleSubmitForm = () => {
-  if (employeeStore.mode === enums.form.mode.CREATE) {
-    handleCreateEmployee();
-  } else if (employeeStore.mode === enums.form.mode.UPDATE) {
-    handleUpdateEmployee();
+const handleSubmitForm = async (isContinue = true) => {
+  try {
+    let result = false;
+
+    if (handleValidateInputs()) {
+      if (employeeStore.mode === enums.form.mode.CREATE) {
+        result = await handleCreateEmployee();
+      } else if (employeeStore.mode === enums.form.mode.UPDATE) {
+        result = await handleUpdateEmployee();
+      }
+    }
+
+    if (result && isContinue) {
+      // Reset intpus và reload bảng
+      resetInputs();
+      emit("submit");
+    } else if (result) {
+      // Đóng form và reload lại bảng
+      employeeStore.closeForm();
+      emit("submit");
+    }
+  } catch (error) {
+    console.warn(error);
   }
 };
 
@@ -342,15 +415,14 @@ const handleCreateEmployee = async () => {
 
       await employeeApi.create(data);
 
-      emit("submit");
-      employeeStore.closeForm();
-
       // Hiện toast message thành công
       toastStore.pushMessage({
         type: "success",
         title: "Thành công!",
         message: "Thêm nhân viên thành công",
       });
+
+      return true;
     }
   } catch (error) {
     console.warn(error);
@@ -362,6 +434,8 @@ const handleCreateEmployee = async () => {
       title: "Đã có lỗi",
       description: error?.response?.data?.userMsg,
     };
+
+    return false;
   }
 };
 
@@ -413,15 +487,14 @@ const handleUpdateEmployee = async () => {
 
       await employeeApi.update(employeeId, data);
 
-      emit("submit");
-      employeeStore.closeForm();
-
       // Hiện toast message thành công
       toastStore.pushMessage({
         type: "success",
         title: "Thành công!",
         message: "Cập nhật thành công",
       });
+
+      return true;
     }
   } catch (error) {
     console.warn(error);
@@ -433,6 +506,8 @@ const handleUpdateEmployee = async () => {
       title: "Đã có lỗi",
       description: error?.response?.data?.userMsg,
     };
+
+    return false;
   }
 };
 </script>
