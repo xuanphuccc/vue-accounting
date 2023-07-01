@@ -21,19 +21,21 @@
               Đã chọn
               <span id="selected-count" class="text-bold">{{ selectedRowsState.length }}</span>
             </div>
-            <MISAButton @click="removeAllSelectedRows()" type="link" class="ms-16"
-              >Bỏ chọn</MISAButton
-            >
+            <MISAButton @click="uncheckedAllRows()" type="link" class="ms-16">Bỏ chọn</MISAButton>
             <MISAButton type="secondary" class="ms-24">Xoá</MISAButton>
           </div>
         </div>
         <div class="filter__right">
           <MISAInputGroup for="search-input">
-            <MISAInput placeholder="Tìm theo mã, tên nhân viên" id="search-input" />
-            <MISAInputAction icon="ms-icon--search-20" />
+            <MISAInput
+              v-model="searchFieldState"
+              placeholder="Tìm theo mã, tên nhân viên"
+              id="search-input"
+            />
+            <MISAInputAction @click="handleSearchEmployee" icon="ms-icon--search-20" />
           </MISAInputGroup>
           <MISAButton
-            @click="getEmployeeData"
+            @click="handleResetFilter"
             v-tooltip.left="'Tải lại'"
             type="secondary"
             icon="ms-icon--reload-20"
@@ -46,8 +48,16 @@
         :columns="columns"
         :data-source="employeeData"
         :selected-rows="selectedRowsState"
-        @select-row="selectTableRows"
         :loading="isLoading"
+        :total-page="filterParamsState.totalPage"
+        :total-records="filterParamsState.totalRecords"
+        :current-page="filterParamsState.pageNumber"
+        :page-size="filterParamsState.pageSize"
+        @select-row="selectTableRows"
+        @next-page="handleNextPage"
+        @prev-page="handlePrevPage"
+        @select-page-size="handleChangePageSize"
+        @double-click="employeeStore.openFormForUpdate"
       >
         <template #FullName="row">
           <MISAButton type="link">{{ row["FullName"] }}</MISAButton>
@@ -87,6 +97,7 @@
         <MISADialog
           v-if="dialogState.active"
           v-bind="dialogState"
+          cancel-text="Huỷ"
           @ok="deleteSelectedEmployee"
           @cancel="hideConfirmDialog"
         />
@@ -99,7 +110,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 import MISAButton from "@/components/base/button/MISAButton.vue";
 import MISAInput from "@/components/base/input/MISAInput.vue";
@@ -117,6 +128,14 @@ import { useEmployeeStore } from "@/stores/employee-store";
 import { useToastStore } from "@/stores/toast-store";
 
 const employeeData = ref([]);
+const searchFieldState = ref("");
+const filterParamsState = ref({
+  pageNumber: 1,
+  pageSize: 10,
+  totalPage: 0,
+  totalRecords: 0,
+  employeeFilter: "",
+});
 const selectedRowsState = ref([]);
 const dialogState = ref({
   active: false,
@@ -134,7 +153,13 @@ const columns = ref([
   { key: 2, title: "Tên nhân viên", dataIndex: "FullName" },
   { key: 3, title: "Giới tính", dataIndex: "GenderName" },
   { key: 4, title: "Ngày sinh", dataIndex: "DateOfBirthFormated", align: "center" },
-  { key: 5, title: "Số CMND", dataIndex: "IdentityNumber", desc: "Số Chứng minh nhân dân" },
+  {
+    key: 5,
+    title: "Số CMND",
+    dataIndex: "IdentityNumber",
+    align: "right",
+    desc: "Số Chứng minh nhân dân",
+  },
   { key: 6, title: "Chức danh", dataIndex: "PositionName" },
   { key: 7, title: "Tên đơn vị", dataIndex: "DepartmentName" },
   { key: 8, title: "Email", dataIndex: "Email" },
@@ -150,25 +175,41 @@ const getEmployeeData = async () => {
   try {
     isLoading.value = true;
 
-    const response = await employeeApi.getAll();
+    const response = await employeeApi.filter(filterParamsState.value);
 
     // Format dữ liệu hiển thị ra bảng
-    employeeData.value = response.data?.map((employee) => {
+    employeeData.value = response.data?.Data?.map((employee) => {
       employee.key = employee.EmployeeId;
       employee.DateOfBirthFormated = formatDate(employee.DateOfBirth);
 
       return employee;
     });
 
+    // Lấy dữ liệu phân trang
+    filterParamsState.value.totalRecords = response.data.TotalRecord;
+    filterParamsState.value.totalPage = response.data.TotalPage;
+
     isLoading.value = false;
   } catch (error) {
     console.warn(error);
   }
 };
-getEmployeeData();
 
 /**
- * Description: Hàm xoá nhân viên đã được chọn
+ * Description: Xử lý theo dõi sự thay đổi của filter
+ * để get lại dữ liệu tương ứng
+ * Author: txphuc (30/06/2023)
+ */
+watch(
+  () => filterParamsState.value,
+  () => {
+    getEmployeeData();
+  },
+  { immediate: true, deep: true }
+);
+
+/**
+ * Description: Hàm xoá một/nhiều nhân viên đã được chọn
  * Author: txphuc (27/06/2023)
  */
 const deleteSelectedEmployee = async () => {
@@ -183,7 +224,7 @@ const deleteSelectedEmployee = async () => {
 
     dialogState.value.active = false;
     await getEmployeeData();
-    removeAllSelectedRows();
+    uncheckedAllRows();
 
     // Hiện toast message xoá thành công
     toastStore.pushMessage({
@@ -216,7 +257,7 @@ const setSingleSelectedRow = (row) => {
  * Description: Bỏ chọn toàn bộ bản ghi trong bảng.
  * Author: txphuc (24/06/2023).
  */
-const removeAllSelectedRows = () => {
+const uncheckedAllRows = () => {
   selectedRowsState.value = [];
 };
 
@@ -240,6 +281,57 @@ const showDeleteConfirmDialog = (data) => {
 const hideConfirmDialog = () => {
   dialogState.value.active = false;
   selectedRowsState.value = [];
+};
+
+/**
+ * Description: Xử lý chuyển trang trang tiếp theo
+ * Author: txphuc (30/06/2023)
+ */
+const handleNextPage = (nextPage) => {
+  filterParamsState.value.pageNumber = nextPage;
+};
+
+/**
+ * Description: Xử lý chuyển trang trang trước đó
+ * Author: txphuc (30/06/2023)
+ */
+const handlePrevPage = (prevPage) => {
+  filterParamsState.value.pageNumber = prevPage;
+};
+
+/**
+ * Description: Xử lý thay đổi filter để bắt đầu tìm kiếm
+ * Author: txphuc (30/06/2023)
+ */
+const handleSearchEmployee = () => {
+  filterParamsState.value.pageNumber = 1;
+  filterParamsState.value.employeeFilter = searchFieldState.value;
+};
+
+/**
+ * Description: Xử lý thay đổi pageSize
+ * Author: txphuc (30/06/2023)
+ */
+const handleChangePageSize = (newPageSize) => {
+  filterParamsState.value.pageSize = newPageSize;
+
+  // Reset lại số trang hiện tại
+  filterParamsState.value.pageNumber = 1;
+};
+
+/**
+ * Description: Reset filter và load lại dữ liệu
+ * Author: txphuc (30/06/2023)
+ */
+const handleResetFilter = () => {
+  filterParamsState.value = {
+    ...filterParamsState.value,
+    pageNumber: 1,
+    pageSize: 10,
+    employeeFilter: "",
+  };
+
+  searchFieldState.value = "";
 };
 </script>
 

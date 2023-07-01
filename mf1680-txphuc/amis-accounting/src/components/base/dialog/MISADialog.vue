@@ -16,7 +16,9 @@
       </div>
 
       <div class="ms-dialog__controls">
-        <MISAButton @click="$emit('cancel')" type="secondary">{{ props.cancelText }}</MISAButton>
+        <MISAButton v-if="props.cancelText" @click="$emit('cancel')" type="secondary">{{
+          props.cancelText
+        }}</MISAButton>
         <MISAButton @click="$emit('ok')" type="primary">{{ props.okText }}</MISAButton>
       </div>
     </div>
@@ -50,7 +52,7 @@ const props = defineProps({
   // Text của nút Cancel
   cancelText: {
     type: String,
-    default: "Huỷ",
+    default: "",
   },
 
   // Text của nút OK

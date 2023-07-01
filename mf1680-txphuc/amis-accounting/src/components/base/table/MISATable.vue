@@ -30,6 +30,7 @@
           <template v-if="!props.loading">
             <tr
               v-for="row in dataSourceWithSelectedRows"
+              @dblclick="returnRow(row)"
               :key="row.key"
               :class="[{ '--active': row.checked }]"
             >
@@ -56,31 +57,66 @@
         </tbody>
       </table>
     </div>
+
+    <!-- table footer -->
     <div class="ms-table__footer">
       <p class="total-row">
         <span>Tổng: </span>
-        <span class="text-bold">{{ props.dataSource.length }}</span>
+        <span class="text-bold">{{ props.totalRecords }}</span>
       </p>
       <div class="ms-table__page-infor">
+        <!-- page size dropdown -->
         <div class="ms-table__page-size">
-          <span>Số bản ghi/trang: 10</span>
-          <span class="ms-table__dropdown-btn ms-icon--angle-down-24" title="Dropdown"> </span>
+          <div>Số bản ghi/trang:</div>
+          <div @click="togglePageSizeDropdown" class="ms-table__page-size-btn">
+            {{ props.pageSize }}
+            <div class="ms-table__page-size-btn-icon ms-icon--angle-down-24" title="Dropdown"></div>
+          </div>
+          <ul v-if="pageSizeDropdown.isShow" class="ms-table__page-size-dropdown">
+            <li
+              v-for="(item, index) in pageSizeDropdown.items"
+              :key="index"
+              @click="handleSelectPageSize(item)"
+              class="ms-table__page-size-item"
+            >
+              {{ item }}
+              <span
+                v-if="props.pageSize === item"
+                class="ms-table__page-size-icon ms-icon--check-24"
+              ></span>
+            </li>
+          </ul>
         </div>
 
+        <!-- records range -->
         <div class="ms-table__records-range">
           <p>
-            1 -
-            <span class="text-bold">{{ props.dataSource.length }}</span>
+            {{ recordsRange.min }} -
+            <span class="text-bold">{{ recordsRange.max }}</span>
             bản ghi
           </p>
         </div>
 
+        <!-- page controls -->
         <div class="ms-table__page-controls">
           <span
-            class="ms-table__prev-btn ms-icon--angle-left-24 disable"
+            @click="handlePrevPage"
+            :class="[
+              'ms-table__prev-btn',
+              'ms-icon--angle-left-24',
+              { '--disable': props.currentPage <= 1 },
+            ]"
             title="Trang trước"
           ></span>
-          <span class="ms-table__next-btn ms-icon--angle-right-24" title="Trang sau"></span>
+          <span
+            @click="handleNextPage"
+            :class="[
+              'ms-table__next-btn',
+              'ms-icon--angle-right-24',
+              { '--disable': props.currentPage >= props.totalPage },
+            ]"
+            title="Trang sau"
+          ></span>
         </div>
       </div>
     </div>
@@ -92,16 +128,23 @@ import { computed, ref, onMounted } from "vue";
 import MISASkeletonRow from "../skeleton-loader/MISASkeletonRow.vue";
 import MISACheckbox from "../checkbox/MISACheckbox.vue";
 
-const emit = defineEmits(["select-row"]);
+const emit = defineEmits([
+  "double-click",
+  "select-row",
+  "next-page",
+  "prev-page",
+  "select-page-size",
+]);
 
 const props = defineProps({
   // Định nghĩa các cột - các trường
-  // một trường bao gồm: key, title, dataIndex, width, align
+  // một trường bao gồm: key, title, dataIndex, width, align, desc
   columns: {
     type: Array,
     default() {
       return [];
     },
+    required: true,
   },
 
   // Định nghĩa dữ liệu - các bản ghi
@@ -111,6 +154,7 @@ const props = defineProps({
     default() {
       return [];
     },
+    required: true,
   },
 
   // Các bản ghi đã được chọn
@@ -119,6 +163,30 @@ const props = defineProps({
     default() {
       return [];
     },
+  },
+
+  // Trang hiện tại
+  currentPage: {
+    type: Number,
+    default: 1,
+  },
+
+  // Tổng số trang
+  totalPage: {
+    type: Number,
+    default: 0,
+  },
+
+  // Tổng số bản ghi
+  totalRecords: {
+    type: Number,
+    default: 0,
+  },
+
+  // Số phần tử trên trang
+  pageSize: {
+    type: Number,
+    default: 0,
   },
 
   // Trạng thái loading dữ liệu
@@ -130,6 +198,11 @@ const props = defineProps({
 
 // ----- State -----
 const tableActionsPosState = ref(0);
+const pageSizeDropdown = ref({
+  isShow: false,
+  items: [10, 25, 50, 100],
+});
+
 const tableContainerRef = ref(null);
 
 /**
@@ -186,6 +259,98 @@ const selectRow = (value) => {
 };
 
 /**
+ * Description: Xử lý chọn một/nhiều hàng sau đó trả về
+ * một mảng các phần tử được chọn
+ * Author: txphuc (30/06/2023)
+ */
+const returnRow = (row) => {
+  emit("double-click", row);
+};
+
+/**
+ * Description: Tính toán khoảng của các phần tử
+ * đang hiển thị trên trang hiện tại (phân trang)
+ * Author: txphuc (30/06/2023)
+ */
+const recordsRange = computed(() => {
+  try {
+    if (props.currentPage && props.pageSize) {
+      let maxRange = props.currentPage * props.pageSize;
+      let minRange = maxRange - props.pageSize + 1;
+
+      if (props.currentPage === props.totalPage) {
+        maxRange = props.totalRecords;
+      }
+
+      return {
+        min: minRange,
+        max: maxRange,
+      };
+    } else {
+      return {
+        min: 0,
+        max: 0,
+      };
+    }
+  } catch (error) {
+    console.warn(error);
+    return {
+      min: 0,
+      max: 0,
+    };
+  }
+});
+
+/**
+ * Description: Xử lý sự kiện chuyển trang tiếp theo
+ * Author: txphuc (30/06/2023)
+ */
+const handleNextPage = () => {
+  try {
+    if (props.currentPage && props.totalPage && props.currentPage < props.totalPage) {
+      const nextPage = props.currentPage + 1;
+      emit("next-page", nextPage);
+    }
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+/**
+ * Description: Xử lý sự kiện chuyển trang trước đó
+ * Author: txphuc (30/06/2023)
+ */
+const handlePrevPage = () => {
+  try {
+    if (props.currentPage && props.currentPage > 1) {
+      const prevPage = props.currentPage - 1;
+      emit("prev-page", prevPage);
+    }
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+/**
+ * Description: Xử lý ẩn/hiện danh sách page size
+ * Author: txphuc (30/06/2023)
+ */
+const togglePageSizeDropdown = () => {
+  pageSizeDropdown.value.isShow = !pageSizeDropdown.value.isShow;
+};
+
+/**
+ * Description: Xử lý chọn page size
+ * Author: txphuc (30/06/2023)
+ */
+const handleSelectPageSize = (pageSize) => {
+  if (props.pageSize !== pageSize) {
+    emit("select-page-size", pageSize);
+    pageSizeDropdown.value.isShow = false;
+  }
+};
+
+/**
  * Description: Xử lý sự kiện thay đổi kích thước cột
  * bằng cách nhấn giữ và kéo trang phải/trái
  * Author: txphuc (24/06/2023)
@@ -214,7 +379,7 @@ const activeResize = (e) => {
 };
 
 /**
- * Description: Lấy chiều dài đã cuộn đẻ di chuyển vị trí
+ * Description: Lấy chiều dài đã cuộn để di chuyển vị trí
  * của các nút actions vào khung nhìn
  * Author: txphuc (25/06/2023)
  */

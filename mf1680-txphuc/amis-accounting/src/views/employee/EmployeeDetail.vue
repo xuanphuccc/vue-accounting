@@ -1,23 +1,36 @@
 <template>
   <Teleport to="#app">
-    <MISAPopup @close="employeeStore.closeForm" :width="800" title="Thông tin nhân viên">
+    <MISAPopup @close="employeeStore.closeForm" :width="860" title="Thông tin nhân viên">
       <template #default>
         <MISARow :gutter="{ x: 24 }">
           <MISACol span="6">
             <MISARow :gutter="{ x: 8 }">
               <MISACol span="5">
-                <MISAFormGroup label="Mã" for="input-id" class="mb-24">
-                  <MISAInput v-model="formData.employeeCode" focus id="input-id" />
+                <MISAFormGroup
+                  :error="!!validatedInputs.employeeCode"
+                  :error-msg="validatedInputs.employeeCode"
+                  label="Mã"
+                  for="input-id"
+                  class="mb-24"
+                >
+                  <MISAInput tabindex="1" v-model="formData.employeeCode" focus id="input-id" />
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="7">
-                <MISAFormGroup label="Tên" for="input-name" class="mb-24">
-                  <MISAInput v-model="formData.fullName" id="input-name" />
+                <MISAFormGroup
+                  :error="!!validatedInputs.fullName"
+                  :error-msg="validatedInputs.fullName"
+                  label="Tên"
+                  for="input-name"
+                  class="mb-24"
+                >
+                  <MISAInput tabindex="2" v-model="formData.fullName" id="input-name" />
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="12">
                 <MISAFormGroup label="Đơn vị" for="input-department" class="mb-24">
                   <MISADropdown
+                    tabindex="3"
                     v-model="formData.departmentId"
                     :options="departmentOptions"
                     id="input-department"
@@ -27,6 +40,7 @@
               <MISACol span="12">
                 <MISAFormGroup label="Chức danh" for="input-position" class="mb-24">
                   <MISADropdown
+                    tabindex="4"
                     v-model="formData.positionId"
                     :options="positionOptions"
                     id="input-position"
@@ -39,15 +53,25 @@
             <MISARow :gutter="{ x: 8 }">
               <MISACol span="5">
                 <MISAFormGroup label="Ngày sinh" for="input-date-of-birth" class="mb-24">
-                  <MISAInput v-model="formData.dateOfBirth" type="date" id="input-date-of-birth" />
+                  <MISAInput
+                    tabindex="5"
+                    v-model="formData.dateOfBirth"
+                    type="date"
+                    id="input-date-of-birth"
+                  />
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="7">
                 <MISAFormGroup label="Giới tính" for="" class="mb-24">
                   <div class="d-flex col-gap-16">
-                    <MISARadioButton v-model="formData.gender" value="0" label="Nam" />
-                    <MISARadioButton v-model="formData.gender" value="1" label="Nữ" />
-                    <MISARadioButton v-model="formData.gender" value="2" label="Khác" />
+                    <MISARadioButton tabindex="6" v-model="formData.gender" value="0" label="Nam" />
+                    <MISARadioButton tabindex="7" v-model="formData.gender" value="1" label="Nữ" />
+                    <MISARadioButton
+                      tabindex="8"
+                      v-model="formData.gender"
+                      value="2"
+                      label="Khác"
+                    />
                   </div>
                 </MISAFormGroup>
               </MISACol>
@@ -58,17 +82,30 @@
                   for="input-identity-number"
                   class="mb-24"
                 >
-                  <MISAInput v-model="formData.identityNumber" id="input-identity-number" />
+                  <MISAInput
+                    tabindex="9"
+                    v-model="formData.identityNumber"
+                    id="input-identity-number"
+                  />
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="5">
                 <MISAFormGroup label="Ngày cấp" for="input-identity-date" class="mb-24">
-                  <MISAInput v-model="formData.identityDate" type="date" id="input-identity-date" />
+                  <MISAInput
+                    tabindex="10"
+                    v-model="formData.identityDate"
+                    type="date"
+                    id="input-identity-date"
+                  />
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="12">
                 <MISAFormGroup label="Nơi cấp" for="input-identity-place" class="mb-24">
-                  <MISAInput v-model="formData.identityPlace" id="input-identity-place" />
+                  <MISAInput
+                    tabindex="11"
+                    v-model="formData.identityPlace"
+                    id="input-identity-place"
+                  />
                 </MISAFormGroup>
               </MISACol>
             </MISARow>
@@ -78,39 +115,33 @@
         <MISARow :gutter="{ x: 8 }">
           <MISACol span="12">
             <MISAFormGroup label="Địa chỉ" for="input-address" class="mb-24">
-              <MISAInput v-model="formData.address" id="input-address" />
+              <MISAInput tabindex="12" v-model="formData.address" id="input-address" />
             </MISAFormGroup>
           </MISACol>
           <MISACol span="4">
             <MISAFormGroup label="Số điện thoại" for="input-phone-number">
-              <MISAInput v-model="formData.phoneNumber" id="input-phone-number" />
+              <MISAInput tabindex="13" v-model="formData.phoneNumber" id="input-phone-number" />
             </MISAFormGroup>
           </MISACol>
           <MISACol span="4">
             <MISAFormGroup label="Email" for="input-email">
-              <MISAInput v-model="formData.email" id="input-email" />
+              <MISAInput tabindex="14" v-model="formData.email" id="input-email" />
             </MISAFormGroup>
           </MISACol>
           <MISACol span="4">
             <MISAFormGroup label="Tiền lương" for="input-salary">
-              <MISAInput v-model="formData.salary" id="input-salary" />
+              <MISAInput tabindex="15" v-model="formData.salary" id="input-salary" />
             </MISAFormGroup>
           </MISACol>
         </MISARow>
       </template>
 
       <template #controls-left>
-        <MISAButton @click="employeeStore.closeForm" type="secondary">Huỷ</MISAButton>
+        <MISAButton tabindex="18" @click="employeeStore.closeForm" type="secondary">Huỷ</MISAButton>
       </template>
       <template #controls-right>
-        <MISAButton type="secondary">Cất</MISAButton>
-        <MISAButton
-          v-if="employeeStore.mode === 'create'"
-          @click="handleCreateEmployee"
-          type="primary"
-          >Cất và thêm</MISAButton
-        >
-        <MISAButton v-else @click="handleUpdateEmployee" type="primary">Cất và lưu</MISAButton>
+        <MISAButton tabindex="17" @click="handleValidateInputs" type="secondary">Cất</MISAButton>
+        <MISAButton tabindex="16" @click="handleSubmitForm" type="primary">Cất và thêm</MISAButton>
       </template>
     </MISAPopup>
 
@@ -141,6 +172,8 @@ import positionApi from "@/api/position-api";
 import formatDate from "@/helper/format-date";
 import { useEmployeeStore } from "@/stores/employee-store";
 import { useToastStore } from "@/stores/toast-store";
+import enums from "@/helper/enum";
+import { validator, required } from "@/helper/validator";
 
 const emit = defineEmits(["submit"]);
 
@@ -172,13 +205,18 @@ const formData = ref({
   salary: "",
 });
 
+const validatedInputs = ref({
+  employeeCode: null,
+  fullName: null,
+});
+
 /**
  * Description: Hàm xử lý gọi api lấy mã nhân viên mới nhất
  * Author: txphuc (28/06/2023)
  */
 const getNewEmployeeCode = async () => {
   try {
-    if (employeeStore.mode === "create") {
+    if (employeeStore.mode === enums.form.mode.CREATE) {
       const response = await employeeApi.getNewCode();
 
       formData.value.employeeCode = response.data;
@@ -235,12 +273,67 @@ const closeDialog = () => {
 };
 
 /**
+ * Description: Hàm validate input
+ * Author: txphuc (30/06/2023)
+ */
+const handleValidateInputs = () => {
+  try {
+    validatedInputs.value = {
+      employeeCode: null,
+      fullName: null,
+    };
+
+    const result = validator([
+      {
+        key: "employeeCode",
+        value: formData.value.employeeCode,
+        rules: [
+          {
+            checker: required,
+            errorMsg: "Employee code is required",
+          },
+        ],
+      },
+      {
+        key: "fullName",
+        value: formData.value.fullName,
+        rules: [
+          {
+            checker: required,
+            errorMsg: "Full name is required",
+          },
+        ],
+      },
+    ]);
+
+    validatedInputs.value = {
+      ...validatedInputs.value,
+      ...result,
+    };
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+/**
+ * Description: Hàm xử lý submit form ở các chế độ tương ứng
+ * Author: txphuc (01/07/2023)
+ */
+const handleSubmitForm = () => {
+  if (employeeStore.mode === enums.form.mode.CREATE) {
+    handleCreateEmployee();
+  } else if (employeeStore.mode === enums.form.mode.UPDATE) {
+    handleUpdateEmployee();
+  }
+};
+
+/**
  * Description: Hàm xử lý gọi api tạo nhân viên
  * Author: txphuc (28/06/2023)
  */
 const handleCreateEmployee = async () => {
   try {
-    if (employeeStore.mode === "create") {
+    if (employeeStore.mode === enums.form.mode.CREATE) {
       const data = {
         ...formData.value,
         gender: Number(formData.value.gender),
@@ -267,7 +360,7 @@ const handleCreateEmployee = async () => {
       active: true,
       type: "error",
       title: "Đã có lỗi",
-      description: error?.response?.data?.devMsg,
+      description: error?.response?.data?.userMsg,
     };
   }
 };
@@ -278,7 +371,7 @@ const handleCreateEmployee = async () => {
  */
 const handleLoadDataForUpdate = () => {
   try {
-    if (employeeStore.mode === "update") {
+    if (employeeStore.mode === enums.form.mode.UPDATE) {
       const currentEmployee = employeeStore.currentEmployee;
 
       formData.value = {
@@ -309,7 +402,7 @@ handleLoadDataForUpdate();
  */
 const handleUpdateEmployee = async () => {
   try {
-    if (employeeStore.mode === "update") {
+    if (employeeStore.mode === enums.form.mode.UPDATE) {
       const employeeId = employeeStore.currentEmployee.EmployeeId;
 
       const data = {
@@ -338,7 +431,7 @@ const handleUpdateEmployee = async () => {
       active: true,
       type: "error",
       title: "Đã có lỗi",
-      description: error?.response?.data?.devMsg,
+      description: error?.response?.data?.userMsg,
     };
   }
 };

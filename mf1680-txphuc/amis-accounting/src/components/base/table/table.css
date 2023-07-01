@@ -168,7 +168,7 @@
   background-color: var(--secondary-text-color);
 }
 
-/* table footer */
+/* ----- table footer ----- */
 .ms-table__footer {
   background: var(--gray-200);
   height: 48px;
@@ -186,19 +186,57 @@
 }
 
 .ms-table__page-size {
+  position: relative;
   display: flex;
   align-items: center;
 }
 
-.ms-table__dropdown-btn {
+.ms-table__page-size-btn {
+  display: flex;
+  align-items: center;
+  padding-left: 4px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.ms-table__page-size-btn-icon {
+  display: block;
   width: 24px;
   height: 24px;
   background: var(--secondary-text-color);
+}
+
+.ms-table__page-size-dropdown {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  right: 0;
+  width: 76px;
+  padding: 8px;
+  list-style: none;
+  background-color: var(--white);
+  box-shadow: var(--box-shadow-medium);
+  border-radius: 4px;
+}
+
+.ms-table__page-size-item {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  line-height: 36px;
+  padding: 0 4px 0 8px;
+  border-radius: 4px;
   cursor: pointer;
-  user-select: none;
+  transition: background 0.2s ease;
+}
+.ms-table__page-size-item:hover {
+  background: var(--primary-color-50);
+}
+
+.ms-table__page-size-icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background: var(--primary-color-500);
 }
 
 .ms-table__records-range {
@@ -221,8 +259,13 @@
   user-select: none;
 }
 
-.ms-table__prev-btn.disable,
-.ms-table__next-btn.disable {
+.ms-table__prev-btn:active,
+.ms-table__next-btn:active {
+  background: var(--primary-text-color);
+}
+
+.ms-table__prev-btn.--disable,
+.ms-table__next-btn.--disable {
   background: var(--disable-color);
 }
 

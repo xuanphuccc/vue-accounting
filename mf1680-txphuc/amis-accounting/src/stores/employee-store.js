@@ -1,9 +1,10 @@
 import { defineStore } from "pinia";
+import enums from "@/helper/enum";
 
 export const useEmployeeStore = defineStore("employee", {
   state: () => ({
     // Xác định hành động của form nhập create/update
-    mode: "create",
+    mode: enums.form.mode.CREATE,
 
     // Trạng thái của form nhập liệu
     isOpenForm: false,
@@ -27,7 +28,7 @@ export const useEmployeeStore = defineStore("employee", {
      * Author: txphuc (28/06/2023)
      */
     openFormForCreate() {
-      this.mode = "create";
+      this.mode = enums.form.mode.CREATE;
       this.isOpenForm = true;
     },
 
@@ -38,7 +39,7 @@ export const useEmployeeStore = defineStore("employee", {
      */
     openFormForUpdate(employee) {
       this.currentEmployee = employee;
-      this.mode = "update";
+      this.mode = enums.form.mode.UPDATE;
       this.isOpenForm = true;
     },
 

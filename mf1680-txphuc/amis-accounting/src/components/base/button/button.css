@@ -37,6 +37,10 @@
   color: var(--primary-color-400);
 }
 
+.ms-btn--link:focus {
+  color: var(--primary-color-400);
+}
+
 .ms-btn--link:active {
   color: var(--primary-color-700);
 }
@@ -84,6 +88,11 @@
   border-color: var(--primary-color-400);
 }
 
+.ms-btn--primary:focus {
+  background: var(--primary-color-400);
+  border-color: var(--primary-color-400);
+}
+
 .ms-btn--primary:active {
   background: var(--primary-color-700);
   border-color: var(--primary-color-700);
@@ -101,6 +110,10 @@
 }
 
 .ms-btn--secondary:hover {
+  background: var(--gray-100);
+}
+
+.ms-btn--secondary:focus {
   background: var(--gray-100);
 }
 
@@ -127,6 +140,14 @@
   background: var(--primary-color-400);
 }
 
+.ms-btn--inverse:focus {
+  color: var(--primary-color-400);
+}
+
+.ms-btn--inverse:focus .ms-btn__icon {
+  background: var(--primary-color-400);
+}
+
 .ms-btn--inverse:active {
   color: var(--white);
   background: var(--primary-color-700);
@@ -149,6 +170,11 @@
 }
 
 .ms-btn--danger:hover {
+  background: var(--red-400);
+  border-color: var(--red-400);
+}
+
+.ms-btn--danger:focus {
   background: var(--red-400);
   border-color: var(--red-400);
 }

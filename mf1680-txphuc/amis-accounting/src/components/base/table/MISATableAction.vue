@@ -1,5 +1,10 @@
 <template>
-  <div @click.stop="handleActionClick" class="ms-table__action-btn" v-tooltip="props.title">
+  <div
+    @dblclick.stop=""
+    @click.stop="handleActionClick"
+    class="ms-table__action-btn"
+    v-tooltip="props.title"
+  >
     <div :class="['ms-table__action-icon', props.icon]"></div>
 
     <div :class="['ms-table__action-dropdown', { '--active': isOpenDropdownState }]">

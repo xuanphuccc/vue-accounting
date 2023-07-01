@@ -1,6 +1,7 @@
 <template>
   <div ref="comboboxRef" tabindex="-1" class="ms-combobox">
     <input
+      :tabindex="props.tabindex"
       readonly
       class="ms-combobox__input"
       type="text"
@@ -67,6 +68,12 @@ const props = defineProps({
   // Thuộc tính id cho label
   id: {
     type: String,
+  },
+
+  // Tabindex
+  tabindex: {
+    type: String,
+    default: "-1",
   },
 });
 

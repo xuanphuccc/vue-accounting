@@ -1,6 +1,7 @@
 <template>
   <label class="ms-radio-btn" :for="props.value">
     <input
+      :tabindex="props.tabindex"
       @change="$emit('update:modelValue', $event.target.value)"
       :value="props.value"
       :checked="props.modelValue === props.value"
@@ -34,6 +35,12 @@ const props = defineProps({
   label: {
     type: String,
     default: "Label",
+  },
+
+  // tabindex
+  tabindex: {
+    type: String,
+    default: "-1",
   },
 });
 </script>

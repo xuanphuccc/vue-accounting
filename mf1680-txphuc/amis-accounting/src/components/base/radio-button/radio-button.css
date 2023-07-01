@@ -6,6 +6,11 @@
   padding-left: 20px;
   margin: 8px 0;
   cursor: pointer;
+  user-select: none;
+}
+
+.ms-radio-btn:focus-within .ms-radio-btn__check-mark {
+  opacity: 80%;
 }
 
 .ms-radio-btn:hover .ms-radio-btn__check-mark {

@@ -5,6 +5,12 @@ const employeeApi = {
     const url = "/Employees";
     return axiosClient.get(url);
   },
+  filter(params = {}) {
+    const url = "/Employees/filter";
+    return axiosClient.get(url, {
+      params: params,
+    });
+  },
   delete(id) {
     const url = `/Employees/${id}`;
     return axiosClient.delete(url);
