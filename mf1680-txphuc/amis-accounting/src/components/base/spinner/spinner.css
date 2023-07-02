@@ -1,0 +1,19 @@
+.ms-spinner {
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border-radius: 50%;
+  border: 3px solid currentColor;
+  border-left-color: transparent;
+  animation: spin89345 1s linear infinite;
+}
+
+@keyframes spin89345 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

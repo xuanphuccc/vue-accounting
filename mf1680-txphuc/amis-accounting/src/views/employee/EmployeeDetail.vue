@@ -165,10 +165,14 @@
         <MISAButton tabindex="18" @click="employeeStore.closeForm" type="secondary">Huỷ</MISAButton>
       </template>
       <template #controls-right>
-        <MISAButton tabindex="17" @click="handleSubmitForm(false)" type="secondary">Cất</MISAButton>
-        <MISAButton tabindex="16" @click="handleSubmitForm()" type="primary"
-          >Cất và thêm</MISAButton
-        >
+        <MISAButton tabindex="17" @click="handleSubmitForm(false)" type="secondary">
+          <MISASpinner v-if="loading.submit" />
+          <template v-else>Cất</template>
+        </MISAButton>
+        <MISAButton tabindex="16" @click="handleSubmitForm()" type="primary">
+          <MISASpinner v-if="loading.submitAndContinue" />
+          <template v-else>Cất và thêm</template>
+        </MISAButton>
       </template>
     </MISAPopup>
 
@@ -182,18 +186,19 @@
 </template>
 
 <script setup>
-import MISAPopup from "../../components/base/popup/MISAPopup.vue";
+import MISAPopup from "@/components/base/popup/MISAPopup.vue";
 import MISADialog from "@/components/base/dialog/MISADialog.vue";
-import MISAButton from "../../components/base/button/MISAButton.vue";
-import MISAFormGroup from "../../components/base/input/MISAFormGroup.vue";
-import MISAInput from "../../components/base/input/MISAInput.vue";
-import MISARadioButton from "../../components/base/radio-button/MISARadioButton.vue";
-import MISADropdown from "../../components/base/dropdown-list/MISADropdown.vue";
-import MISARow from "../../components/base/grid/MISARow.vue";
-import MISACol from "../../components/base/grid/MISACol.vue";
+import MISAButton from "@/components/base/button/MISAButton.vue";
+import MISAFormGroup from "@/components/base/input/MISAFormGroup.vue";
+import MISAInput from "@/components/base/input/MISAInput.vue";
+import MISARadioButton from "@/components/base/radio-button/MISARadioButton.vue";
+import MISADropdown from "@/components/base/dropdown-list/MISADropdown.vue";
+import MISASpinner from "@/components/base/spinner/MISASpinner.vue";
+import MISARow from "@/components/base/grid/MISARow.vue";
+import MISACol from "@/components/base/grid/MISACol.vue";
 
 import { ref } from "vue";
-import employeeApi from "../../api/employee-api";
+import employeeApi from "@/api/employee-api";
 import departmentApi from "@/api/department-api";
 import positionApi from "@/api/position-api";
 import formatDate from "@/helper/format-date";
@@ -215,6 +220,11 @@ const dialogState = ref({
   type: "warning",
   title: "",
   description: "",
+});
+const loading = ref({
+  submit: false,
+  submitAndContinue: false,
+  form: false,
 });
 
 const initialFormData = {
@@ -379,6 +389,13 @@ const handleSubmitForm = async (isContinue = true) => {
     let result = false;
 
     if (handleValidateInputs()) {
+      // Bắt đầu loading
+      if (isContinue) {
+        loading.value.submitAndContinue = true;
+      } else {
+        loading.value.submit = true;
+      }
+
       if (employeeStore.mode === enums.form.mode.CREATE) {
         result = await handleCreateEmployee();
       } else if (employeeStore.mode === enums.form.mode.UPDATE) {
@@ -395,6 +412,10 @@ const handleSubmitForm = async (isContinue = true) => {
       employeeStore.closeForm();
       emit("submit");
     }
+
+    // Tắt loading
+    loading.value.submit = false;
+    loading.value.submitAndContinue = false;
   } catch (error) {
     console.warn(error);
   }
