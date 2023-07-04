@@ -4,14 +4,20 @@
     :class="[
       `ms-btn`,
       `ms-btn--${props.type}`,
-      { 'ms-btn--icon': props.icon && !$slots.default },
-      { 'ms-btn--with-icon': props.icon && $slots.default },
+      { 'ms-btn--icon': $slots.icon && !$slots.default },
+      { 'ms-btn--with-icon': $slots.icon && $slots.default },
     ]"
     :disabled="props.disabled"
   >
-    <span v-if="props.icon" :class="[`ms-btn__icon`, props.icon]"></span>
+    <!-- Chỉ chứa icon -->
+    <div v-if="$slots.icon" class="ms-btn__icon">
+      <slot name="icon"></slot>
+    </div>
+
+    <!-- Chứa text-->
     <slot></slot>
 
+    <!-- Menu dropdown (nếu có) -->
     <div
       v-if="$slots.dropdown"
       @click.stop=""
@@ -30,9 +36,6 @@ const isOpenDropdown = ref(false);
 const emit = defineEmits(["click"]);
 
 const props = defineProps({
-  // Tên class của icon
-  icon: String,
-
   // Loại button (primary, secondary, danger, link)
   type: {
     type: String,
@@ -45,7 +48,7 @@ const props = defineProps({
     default: false,
   },
 
-  // Vị trí dropdown
+  // Vị trí dropdown (bottom-right, bottom-left)
   dropdownPos: {
     type: String,
     default: "bottom-right",

@@ -8,11 +8,9 @@
   >
     <div @click.stop="" class="ms-popup" :style="{ width: props.width + 'px' }">
       <h4 class="ms-popup__title">{{ props.title }}</h4>
-      <button
-        @click="$emit('close')"
-        class="ms-popup__close ms-icon--times-24"
-        title="Đóng"
-      ></button>
+      <div @click="$emit('close')" class="ms-popup__close" title="Đóng">
+        <MISAIcon icon="times" />
+      </div>
 
       <div class="ms-popup__content">
         <p v-if="props.description" class="ms-popup__desc">
@@ -34,6 +32,8 @@
 </template>
 
 <script setup>
+import MISAIcon from "../icon/MISAIcon.vue";
+
 defineEmits(["close", "submit"]);
 
 const props = defineProps({

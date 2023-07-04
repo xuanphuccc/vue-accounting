@@ -9,17 +9,22 @@
     </div>
     <div class="navbar__right">
       <div class="navbar__title-wrap">
-        <div
-          @click="globalStore.toggleSidebar"
-          class="navbar__sidebar-toggle ms-icon--menu-24"
-        ></div>
+        <div @click="globalStore.toggleSidebar" class="navbar__sidebar-toggle">
+          <MISAIcon icon="menu" />
+        </div>
+
         <div class="navbar__title">
           <p>Công ty Cổ phần MISA</p>
-          <div class="navbar__title-toggle ms-icon--angle-down-24"></div>
+
+          <div class="navbar__title-toggle">
+            <MISAIcon icon="angle-down" />
+          </div>
         </div>
       </div>
       <div class="navbar__controls">
-        <button title="Thông báo" class="navbar__button ms-icon--bell-24"></button>
+        <div title="Thông báo" class="navbar__button">
+          <MISAIcon icon="bell" />
+        </div>
 
         <div class="navbar__avatar-wrap">
           <img
@@ -30,7 +35,9 @@
           />
           <div class="navbar__avatar-name">
             <span>Trần Xuân Phúc</span>
-            <span class="navbar__avatar-toggle ms-icon--angle-down-24"></span>
+            <div class="navbar__avatar-toggle">
+              <MISAIcon icon="angle-down" />
+            </div>
           </div>
         </div>
       </div>
@@ -39,6 +46,7 @@
 </template>
 
 <script setup>
+import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import { useGlobalStore } from "@/stores/global-store";
 
 const globalStore = useGlobalStore();

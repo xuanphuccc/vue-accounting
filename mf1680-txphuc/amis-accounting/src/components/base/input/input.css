@@ -7,6 +7,11 @@
   margin-bottom: 8px;
 }
 
+.ms-label--requried {
+  color: var(--red-500);
+  margin-left: 4px;
+}
+
 /* input */
 .ms-input {
   display: block;
@@ -90,6 +95,7 @@
   height: 100%;
   outline: none;
   border: none;
+  color: var(--secondary-text-color);
   padding: 0 8px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -102,12 +108,6 @@
 
 .ms-input-group__action + .ms-input {
   padding-left: 0;
-}
-
-.ms-input-group__action-icon {
-  width: 20px;
-  height: 20px;
-  background: var(--secondary-text-color);
 }
 
 /* modifier */

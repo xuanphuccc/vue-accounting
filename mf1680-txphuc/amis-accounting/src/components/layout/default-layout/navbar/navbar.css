@@ -63,9 +63,7 @@
 }
 
 .navbar__sidebar-toggle {
-  width: 24px;
-  height: 24px;
-  background-color: var(--secondary-text-color);
+  color: var(--secondary-text-color);
   margin: 0 12px;
   cursor: pointer;
 }
@@ -79,9 +77,7 @@
 }
 
 .navbar__title-toggle {
-  width: 24px;
-  height: 24px;
-  background-color: var(--secondary-text-color);
+  color: var(--secondary-text-color);
   cursor: pointer;
 }
 
@@ -93,12 +89,8 @@
 }
 
 .navbar__button {
-  width: 24px;
-  height: 24px;
-  border: none;
-  outline: none;
   cursor: pointer;
-  background-color: var(--secondary-text-color);
+  color: var(--secondary-text-color);
   margin-right: 24px;
 }
 
@@ -122,10 +114,7 @@
 }
 
 .navbar__avatar-toggle {
-  display: block;
-  width: 24px;
-  height: 24px;
-  background: var(--secondary-text-color);
+  color: var(--secondary-text-color);
   cursor: pointer;
 }
 

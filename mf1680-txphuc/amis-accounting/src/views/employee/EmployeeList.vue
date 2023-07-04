@@ -7,6 +7,7 @@
       </div>
 
       <div class="page__header-controls">
+        <MISACheckbox label="Xuan Phuc" />
         <MISAButton @click="employeeStore.openFormForCreate" type="primary"
           >Thêm mới nhân viên</MISAButton
         >
@@ -35,18 +36,18 @@
         <div class="filter__right">
           <MISAInputGroup for="search-input">
             <MISAInput
+              @keydown.enter="handleSearchEmployee"
               v-model="searchFieldState"
               placeholder="Tìm theo mã, tên nhân viên"
               id="search-input"
             />
-            <MISAInputAction @click="handleSearchEmployee" icon="ms-icon--search-20" />
+            <MISAInputAction @click="handleSearchEmployee">
+              <MISAIcon size="20" icon="search" />
+            </MISAInputAction>
           </MISAInputGroup>
-          <MISAButton
-            @click="handleResetFilter"
-            v-tooltip.left="'Tải lại'"
-            type="secondary"
-            icon="ms-icon--reload-20"
-          />
+          <MISAButton @click="handleResetFilter" v-tooltip.left="'Tải lại'" type="secondary">
+            <template #icon><MISAIcon size="20" icon="reload" /></template>
+          </MISAButton>
         </div>
       </div>
 
@@ -56,8 +57,8 @@
         :data-source="employeeData"
         :selected-rows="selectedRowsState"
         :loading="isLoading"
-        :total-page="filterParamsState.totalPage"
-        :total-records="filterParamsState.totalRecords"
+        :total-page="pagingInfoState.totalPage"
+        :total-records="pagingInfoState.totalRecords"
         :current-page="filterParamsState.pageNumber"
         :page-size="filterParamsState.pageSize"
         @select-row="selectTableRows"
@@ -66,10 +67,6 @@
         @select-page-size="handleChangePageSize"
         @double-click="employeeStore.openFormForUpdate"
       >
-        <template #FullName="row">
-          <MISAButton type="link">{{ row["FullName"] }}</MISAButton>
-        </template>
-
         <template #table-actions="row">
           <MISATableAction
             @click="employeeStore.openFormForUpdate(row)"
@@ -119,6 +116,8 @@
 <script setup>
 import { ref, watch } from "vue";
 
+import MISACheckbox from "@/components/base/checkbox/MISACheckbox.vue";
+import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import MISAButton from "@/components/base/button/MISAButton.vue";
 import MISAInput from "@/components/base/input/MISAInput.vue";
 import MISAInputGroup from "@/components/base/input/MISAInputGroup.vue";
@@ -139,9 +138,11 @@ const searchFieldState = ref("");
 const filterParamsState = ref({
   pageNumber: 1,
   pageSize: 10,
+  employeeFilter: "",
+});
+const pagingInfoState = ref({
   totalPage: 0,
   totalRecords: 0,
-  employeeFilter: "",
 });
 const selectedRowsState = ref([]);
 const dialogState = ref({
@@ -159,7 +160,7 @@ const columns = ref([
   { key: 1, title: "Mã nhân viên", dataIndex: "EmployeeCode" },
   { key: 2, title: "Tên nhân viên", dataIndex: "FullName" },
   { key: 3, title: "Giới tính", dataIndex: "GenderName" },
-  { key: 4, title: "Ngày sinh", dataIndex: "DateOfBirthFormated", align: "center" },
+  { key: 4, title: "Ngày sinh", dataIndex: "DateOfBirthFormated" },
   {
     key: 5,
     title: "Số CMND",
@@ -172,6 +173,7 @@ const columns = ref([
   { key: 8, title: "Email", dataIndex: "Email" },
   { key: 9, title: "Số điện thoại", dataIndex: "PhoneNumber", align: "right" },
   { key: 10, title: "Lương", dataIndex: "Salary", align: "right" },
+  { key: 11, title: "Chức năng", dataIndex: "Function" },
 ]);
 
 /**
@@ -193,8 +195,8 @@ const getEmployeeData = async () => {
     });
 
     // Lấy dữ liệu phân trang
-    filterParamsState.value.totalRecords = response.data.TotalRecord;
-    filterParamsState.value.totalPage = response.data.TotalPage;
+    pagingInfoState.value.totalRecords = response.data.TotalRecord;
+    pagingInfoState.value.totalPage = response.data.TotalPage;
 
     isLoading.value = false;
   } catch (error) {

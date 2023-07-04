@@ -1,6 +1,9 @@
 <template>
   <div :class="['ms-form__group', { '--error': props.errorMsg }, ...customClasses]">
-    <label :for="props.for" class="ms-label">{{ props.label }}</label>
+    <label :for="props.for" class="ms-label"
+      >{{ props.label }}
+      <span v-if="requiredMark" class="ms-label--requried">*</span>
+    </label>
 
     <slot></slot>
 
@@ -16,6 +19,12 @@ const props = defineProps({
   label: {
     type: String,
     default: "Label",
+  },
+
+  // Hiện đánh dấu bắt buộc
+  requiredMark: {
+    type: Boolean,
+    default: false,
   },
 
   // Thuộc tính của label liên kết với input

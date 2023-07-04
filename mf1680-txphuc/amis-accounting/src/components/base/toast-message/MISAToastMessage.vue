@@ -7,11 +7,15 @@
       <span class="ms-toast__text">{{ props.message }}</span>
     </div>
     <span v-if="props.undo" @click="$emit('undo')" class="ms-toast__action">Hoàn tác</span>
-    <span @click="$emit('close')" class="ms-toast__close ms-icon--times-20" title="Đóng"></span>
+    <div @click="$emit('close')" class="ms-toast__close" title="Đóng">
+      <MISAIcon size="20" icon="times" />
+    </div>
   </div>
 </template>
 
 <script setup>
+import MISAIcon from "../icon/MISAIcon.vue";
+
 defineEmits(["close", "undo"]);
 
 const props = defineProps({

@@ -58,10 +58,7 @@
 }
 
 .ms-toast__close {
-  display: block;
-  width: 20px;
-  height: 20px;
-  background: var(--secondary-text-color);
+  color: var(--secondary-text-color);
   margin-left: 16px;
   cursor: pointer;
   user-select: none;

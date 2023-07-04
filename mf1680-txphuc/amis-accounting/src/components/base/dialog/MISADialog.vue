@@ -2,11 +2,9 @@
   <div @click="$emit('cancel')" :class="[`ms-dialog-overlay`, '--active']">
     <div @click.stop="" class="ms-dialog">
       <h4 class="ms-dialog__title">{{ props.title }}</h4>
-      <button
-        @click="$emit('cancel')"
-        class="ms-dialog__close ms-icon--times-24"
-        title="Đóng"
-      ></button>
+      <div @click="$emit('cancel')" class="ms-dialog__close" title="Đóng">
+        <MISAIcon icon="times" />
+      </div>
 
       <div class="ms-dialog__content">
         <div :class="[`ms-dialog__icon`, `ms-icon--${props.type}-24`]"></div>
@@ -27,6 +25,7 @@
 
 <script setup>
 import MISAButton from "../button/MISAButton.vue";
+import MISAIcon from "../icon/MISAIcon.vue";
 
 defineEmits(["cancel", "ok"]);
 

@@ -3,98 +3,56 @@
     <ul @mouseleave="hideTippy" class="sidebar__menu">
       <li class="sidebar__menu-item">
         <router-link :to="{ name: 'home' }" @mouseenter="showTippy" class="sidebar__link">
-          <span class="sidebar__link-icon ms-icon--dashboard-24"></span>
+          <MISAIcon icon="dashboard" />
           <span class="sidebar__link-text">Tổng quan</span>
         </router-link>
       </li>
       <li class="sidebar__menu-item">
         <router-link :to="{ name: 'employee' }" @mouseenter="showTippy" class="sidebar__link">
-          <span class="sidebar__link-icon ms-icon--user-24"></span>
+          <MISAIcon icon="user" />
           <span class="sidebar__link-text">Nhân viên</span>
         </router-link>
       </li>
       <li class="sidebar__menu-item">
         <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
-          <span class="sidebar__link-icon ms-icon--money-24"></span>
+          <MISAIcon icon="money" />
           <span class="sidebar__link-text">Tiền mặt</span>
         </router-link>
       </li>
       <li class="sidebar__menu-item">
         <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
-          <span class="sidebar__link-icon ms-icon--bank-24"></span>
-          <span class="sidebar__link-text">Tiền gửi</span>
-        </router-link>
-      </li>
-      <li class="sidebar__menu-item">
-        <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
-          <span class="sidebar__link-icon ms-icon--bag-24"></span>
+          <MISAIcon icon="bag" />
           <span class="sidebar__link-text">Mua hàng</span>
         </router-link>
       </li>
       <li class="sidebar__menu-item">
         <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
-          <span class="sidebar__link-icon ms-icon--cart-24"></span>
+          <MISAIcon icon="cart" />
           <span class="sidebar__link-text">Bán hàng</span>
         </router-link>
       </li>
       <li class="sidebar__menu-item">
         <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
-          <span class="sidebar__link-icon ms-icon--bill-24"></span>
+          <MISAIcon icon="bill" />
           <span class="sidebar__link-text">Quản lý hoá đơn</span>
         </router-link>
       </li>
       <li class="sidebar__menu-item">
         <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
-          <span class="sidebar__link-icon ms-icon--warehouse-24"></span>
+          <MISAIcon icon="warehouse" />
           <span class="sidebar__link-text">Kho</span>
         </router-link>
       </li>
       <li class="sidebar__menu-item">
         <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
-          <span class="sidebar__link-icon ms-icon--tools-24"></span>
-          <span class="sidebar__link-text">Công cụ dụng cụ</span>
-        </router-link>
-      </li>
-      <li class="sidebar__menu-item">
-        <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
-          <span class="sidebar__link-icon ms-icon--car-24"></span>
-          <span class="sidebar__link-text">Tài sản cố định</span>
-        </router-link>
-      </li>
-      <li class="sidebar__menu-item">
-        <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
-          <span class="sidebar__link-icon ms-icon--government-24"></span>
+          <MISAIcon icon="government" />
           <span class="sidebar__link-text">Thuế</span>
         </router-link>
       </li>
       <li class="sidebar__menu-item">
         <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
-          <span class="sidebar__link-icon ms-icon--price-24"></span>
-          <span class="sidebar__link-text">Giá thành</span>
-        </router-link>
-      </li>
-      <li class="sidebar__menu-item">
-        <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
-          <span class="sidebar__link-icon ms-icon--money-book-24"></span>
-          <span class="sidebar__link-text">Tổng hợp</span>
-        </router-link>
-      </li>
-      <li class="sidebar__menu-item">
-        <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
-          <span class="sidebar__link-icon ms-icon--money-circle-dash-24"></span>
-          <span class="sidebar__link-text">Ngân sách</span>
-        </router-link>
-      </li>
-      <li class="sidebar__menu-item">
-        <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
-          <span class="sidebar__link-icon ms-icon--report-24"></span>
+          <MISAIcon icon="report" />
           <span class="sidebar__link-text">Báo cáo</span>
-        </router-link>
-      </li>
-      <li class="sidebar__menu-item">
-        <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
-          <span class="sidebar__link-icon ms-icon--finance-24"></span>
-          <span class="sidebar__link-text" title="Phân tích tài chính">Phân tích TC</span>
         </router-link>
       </li>
     </ul>
@@ -102,13 +60,14 @@
     <div ref="tippyRef" class="sidebar__tippy">Tổng quan</div>
 
     <div @click="globalStore.toggleSidebar" class="sidebar__toggle">
-      <div class="sidebar__toggle-icon ms-icon--angle-left-24"></div>
+      <MISAIcon icon="angle-left" />
       <div class="sidebar__toggle-text">Thu gọn</div>
     </div>
   </nav>
 </template>
 
 <script setup>
+import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import { ref } from "vue";
 import { useGlobalStore } from "@/stores/global-store";
 

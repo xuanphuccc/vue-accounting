@@ -52,6 +52,7 @@ const onInputChange = (e) => {
   emit("update:modelValue", e.target.value);
   emit("input");
 };
+
 /**
  * Description: Xử lý auto focus vào input khi component được mounted
  * Author: txphuc (26/06/2023)

@@ -3,30 +3,42 @@
     <div ref="tableContainerRef" @scroll="changeActionsPos" class="ms-table__container">
       <table class="ms-table__table">
         <thead>
+          <!-- header -->
           <tr>
-            <th>
+            <th class="--sticky-left">
               <MISACheckbox
                 @click="selectRow(props.dataSource)"
                 :checked="props.selectedRows.length === props.dataSource.length"
               />
+
+              <!-- fake borders -->
+              <span class="ms-table__border-bottom"></span>
             </th>
             <th
-              v-for="column in props.columns"
+              v-for="column in columsWithPos"
               :key="column.key"
               :style="{
                 width: column.width ? column.width + 'px' : '',
                 textAlign: column.align ? column.align : '',
+                left: column.left + 'px',
               }"
+              :class="column.sticky"
               v-tooltip.bottom="column.desc || column.title"
+              ref="columsRef"
             >
               {{ column.title }}
 
               <!-- resize column -->
               <span @mousedown="activeResize" class="ms-table__col-resize"></span>
+
+              <!-- fake borders -->
+              <span class="ms-table__border-bottom"></span>
+              <span class="ms-table__border-right"></span>
             </th>
           </tr>
         </thead>
         <tbody>
+          <!-- records -->
           <template v-if="!props.loading">
             <tr
               v-for="row in dataSourceWithSelectedRows"
@@ -34,14 +46,24 @@
               :key="row.key"
               :class="[{ '--active': row.checked }]"
             >
-              <td>
+              <td class="--sticky-left">
                 <MISACheckbox @click="selectRow(row)" :checked="row.checked" />
+
+                <!-- fake borders -->
+                <span class="ms-table__border-bottom"></span>
               </td>
-              <template v-for="column in props.columns" :key="column.key">
-                <td :style="{ textAlign: column.align ? column.align : '' }">
+              <template v-for="column in columsWithPos" :key="column.key">
+                <td
+                  :style="{ textAlign: column.align ? column.align : '', left: column.left + 'px' }"
+                  :class="column.sticky"
+                >
                   <slot :name="column.dataIndex" v-bind="row">
                     {{ row[column.dataIndex] }}
                   </slot>
+
+                  <!-- fake borders -->
+                  <span class="ms-table__border-bottom"></span>
+                  <span class="ms-table__border-right"></span>
                 </td>
               </template>
 
@@ -70,7 +92,9 @@
           <div>Số bản ghi/trang:</div>
           <div @click="togglePageSizeDropdown" class="ms-table__page-size-btn">
             {{ props.pageSize }}
-            <div class="ms-table__page-size-btn-icon ms-icon--angle-down-24" title="Dropdown"></div>
+            <div class="ms-table__page-size-btn-icon" title="Dropdown">
+              <MISAIcon icon="angle-down" />
+            </div>
           </div>
           <ul v-if="pageSizeDropdown.isShow" class="ms-table__page-size-dropdown">
             <li
@@ -80,10 +104,9 @@
               class="ms-table__page-size-item"
             >
               {{ item }}
-              <span
-                v-if="props.pageSize === item"
-                class="ms-table__page-size-icon ms-icon--check-24"
-              ></span>
+              <span v-if="props.pageSize === item" class="ms-table__page-size-icon">
+                <MISAIcon icon="check" />
+              </span>
             </li>
           </ul>
         </div>
@@ -101,32 +124,30 @@
         <div class="ms-table__page-controls">
           <span
             @click="handlePrevPage"
-            :class="[
-              'ms-table__prev-btn',
-              'ms-icon--angle-left-24',
-              { '--disable': props.currentPage <= 1 },
-            ]"
+            :class="['ms-table__prev-btn', { '--disable': props.currentPage <= 1 }]"
             title="Trang trước"
-          ></span>
+            ><MISAIcon icon="angle-left"
+          /></span>
           <span
             @click="handleNextPage"
-            :class="[
-              'ms-table__next-btn',
-              'ms-icon--angle-right-24',
-              { '--disable': props.currentPage >= props.totalPage },
-            ]"
+            :class="['ms-table__next-btn', { '--disable': props.currentPage >= props.totalPage }]"
             title="Trang sau"
-          ></span>
+          >
+            <MISAIcon icon="angle-right" />
+          </span>
         </div>
       </div>
     </div>
+    <!-- {{ console.log(columsWithPos) }} -->
+    <!-- {{ console.log("children render") }} -->
   </div>
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from "vue";
+import { computed, ref, onMounted, watch } from "vue";
 import MISASkeletonRow from "../skeleton-loader/MISASkeletonRow.vue";
 import MISACheckbox from "../checkbox/MISACheckbox.vue";
+import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 
 const emit = defineEmits([
   "double-click",
@@ -138,7 +159,7 @@ const emit = defineEmits([
 
 const props = defineProps({
   // Định nghĩa các cột - các trường
-  // một trường bao gồm: key, title, dataIndex, width, align, desc
+  // một trường bao gồm: key, title, dataIndex, width, align, desc, sticky
   columns: {
     type: Array,
     default() {
@@ -204,6 +225,70 @@ const pageSizeDropdown = ref({
 });
 
 const tableContainerRef = ref(null);
+const columsRef = ref(null);
+const columsWithPos = ref(props.columns);
+
+/**
+ * Description: Xử lý tính toán vị trí của các cột
+ * khi ghim cột đó sau khi dữ liệu được render vào DOM xong
+ * Author: txphuc (02/07/2023)
+ */
+
+watch(
+  () => props.dataSource,
+  () => {
+    const testPos = () => {
+      try {
+        if (columsRef.value && tableContainerRef.value) {
+          const tableScrollWidth = tableContainerRef.value.scrollWidth;
+
+          // Tính toán vị trí của các cột
+          const columnsPos = columsRef.value.map((columnEl) => {
+            const width = columnEl.offsetWidth;
+            const left = columnEl.offsetLeft;
+            const right = tableScrollWidth + 34 - (left + width);
+
+            return {
+              width,
+              left,
+              right,
+            };
+          });
+
+          // Gộp vị trí vào mảng các cột từ prop ban đầu
+          const result = props.columns.map((column, index) => {
+            if (column.sticky) {
+              return {
+                ...column,
+                sticky: `--sticky-${column.sticky}`,
+                ...columnsPos[index],
+              };
+            } else
+              return {
+                ...column,
+                width: "",
+                left: "",
+                right: "",
+                sticky: "",
+              };
+          });
+
+          columsWithPos.value = result;
+        }
+      } catch (error) {
+        console.warn(error);
+      }
+    };
+
+    setTimeout(() => {
+      testPos();
+    }, 50);
+  },
+  {
+    // Chạy khi DOM được cập nhật xong
+    flush: "post",
+  }
+);
 
 /**
  * Description: Xử lý thêm trường "checked" với bản ghi
@@ -365,6 +450,7 @@ const activeResize = (e) => {
       const mouseX = e.clientX;
 
       thElement.style.width = mouseX - thElementRect.left + 4 + "px";
+      // thElement.style.maxWidth = mouseX - thElementRect.left + 4 + "px";
     };
 
     window.addEventListener("mousemove", resizeColumn);

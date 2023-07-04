@@ -53,19 +53,11 @@
 
 .ms-btn__icon {
   display: inline-block;
-  width: 20px;
-  height: 20px;
   margin-right: 4px;
-  transition: all 0.2s ease;
 }
 
 .ms-btn--icon .ms-btn__icon {
   margin-right: 0;
-}
-
-.ms-btn__icon--sm {
-  width: 16px;
-  height: 16px;
 }
 
 .ms-btn--with-icon {
@@ -77,10 +69,6 @@
   background: var(--primary-color-500);
   border-color: var(--primary-color-500);
   color: var(--white);
-}
-
-.ms-btn--primary .ms-btn__icon {
-  background: var(--white);
 }
 
 .ms-btn--primary:hover {
@@ -105,10 +93,6 @@
   color: var(--primary-text-color);
 }
 
-.ms-btn--secondary .ms-btn__icon {
-  background: var(--primary-text-color);
-}
-
 .ms-btn--secondary:hover {
   background: var(--gray-100);
 }
@@ -128,24 +112,12 @@
   color: var(--primary-color-500);
 }
 
-.ms-btn--inverse .ms-btn__icon {
-  background: var(--primary-color-500);
-}
-
 .ms-btn--inverse:hover {
   color: var(--primary-color-400);
 }
 
-.ms-btn--inverse:hover .ms-btn__icon {
-  background: var(--primary-color-400);
-}
-
 .ms-btn--inverse:focus {
   color: var(--primary-color-400);
-}
-
-.ms-btn--inverse:focus .ms-btn__icon {
-  background: var(--primary-color-400);
 }
 
 .ms-btn--inverse:active {
@@ -154,19 +126,11 @@
   border-color: var(--primary-color-700);
 }
 
-.ms-btn--inverse:active .ms-btn__icon {
-  background: var(--white);
-}
-
 /* danger button */
 .ms-btn--danger {
   background: var(--red-500);
   border-color: var(--red-500);
   color: var(--white);
-}
-
-.ms-btn--danger .ms-btn__icon {
-  background: var(--white);
 }
 
 .ms-btn--danger:hover {

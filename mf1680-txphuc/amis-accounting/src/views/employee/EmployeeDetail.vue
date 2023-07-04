@@ -16,6 +16,7 @@
                   label="Mã"
                   for="input-id"
                   class="mb-24"
+                  required-mark
                 >
                   <MISAInput
                     tabindex="1"
@@ -33,6 +34,7 @@
                   label="Tên"
                   for="input-name"
                   class="mb-24"
+                  required-mark
                 >
                   <MISAInput
                     tabindex="2"
@@ -44,23 +46,24 @@
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="12">
-                <MISAFormGroup label="Đơn vị" for="input-department" class="mb-24">
-                  <MISADropdown
+                <MISAFormGroup label="Đơn vị" for="input-department" class="mb-24" required-mark>
+                  <MISASelect
                     tabindex="3"
                     v-model="formData.departmentId"
                     :options="departmentOptions"
                     id="input-department"
-                  ></MISADropdown>
+                  />
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="12">
                 <MISAFormGroup label="Chức danh" for="input-position" class="mb-24">
-                  <MISADropdown
+                  <MISASelect
                     tabindex="4"
                     v-model="formData.positionId"
                     :options="positionOptions"
                     id="input-position"
-                  ></MISADropdown>
+                    :search="true"
+                  />
                 </MISAFormGroup>
               </MISACol>
             </MISARow>
@@ -166,12 +169,12 @@
       </template>
       <template #controls-right>
         <MISAButton tabindex="17" @click="handleSubmitForm(false)" type="secondary">
-          <MISASpinner v-if="loading.submit" />
-          <template v-else>Cất</template>
+          <MISASpinner v-if="loading.submit" absolute />
+          <span :style="{ opacity: loading.submit ? 0 : 1 }">Cất</span>
         </MISAButton>
         <MISAButton tabindex="16" @click="handleSubmitForm()" type="primary">
-          <MISASpinner v-if="loading.submitAndContinue" />
-          <template v-else>Cất và thêm</template>
+          <MISASpinner v-if="loading.submitAndContinue" absolute />
+          <span :style="{ opacity: loading.submitAndContinue ? 0 : 1 }">Cất và thêm</span>
         </MISAButton>
       </template>
     </MISAPopup>
@@ -192,7 +195,7 @@ import MISAButton from "@/components/base/button/MISAButton.vue";
 import MISAFormGroup from "@/components/base/input/MISAFormGroup.vue";
 import MISAInput from "@/components/base/input/MISAInput.vue";
 import MISARadioButton from "@/components/base/radio-button/MISARadioButton.vue";
-import MISADropdown from "@/components/base/dropdown-list/MISADropdown.vue";
+import MISASelect from "@/components/base/select/MISASelect.vue";
 import MISASpinner from "@/components/base/spinner/MISASpinner.vue";
 import MISARow from "@/components/base/grid/MISARow.vue";
 import MISACol from "@/components/base/grid/MISACol.vue";
@@ -317,7 +320,7 @@ const closeDialog = () => {
  */
 const handleValidateInputs = () => {
   try {
-    return !validateEmployeeCode() && !validateFullName();
+    return validateEmployeeCode() && validateFullName();
   } catch (error) {
     console.warn(error);
     return false;
@@ -336,7 +339,7 @@ const validateEmployeeCode = () => {
     });
 
     validatedInputs.value.employeeCode = result;
-    return result;
+    return !result;
   } catch (error) {
     console.warn(error);
     return false;
@@ -355,7 +358,7 @@ const validateFullName = () => {
     });
 
     validatedInputs.value.fullName = result;
-    return result;
+    return !result;
   } catch (error) {
     console.warn(error);
     return false;

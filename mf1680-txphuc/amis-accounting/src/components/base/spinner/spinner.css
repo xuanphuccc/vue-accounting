@@ -3,9 +3,16 @@
   height: 20px;
   background: transparent;
   border-radius: 50%;
-  border: 3px solid currentColor;
+  border: 2px solid currentColor;
   border-left-color: transparent;
   animation: spin89345 1s linear infinite;
+}
+
+.ms-spinner.--absolute {
+  position: absolute;
+  /* top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
 }
 
 @keyframes spin89345 {

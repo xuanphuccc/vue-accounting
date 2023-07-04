@@ -31,10 +31,9 @@
 
 .ms-table__table tr {
   position: relative;
-  transition: background 0.2s ease;
 }
 
-.ms-table__table tr:hover {
+.ms-table__table tr:hover td {
   background: var(--gray-100);
 }
 
@@ -42,18 +41,42 @@
   display: flex;
 }
 
-.ms-table__table tr.--active {
+.ms-table__table tr.--active td {
   background-color: var(--primary-color-50);
 }
 
 .ms-table__table td,
 .ms-table__table th {
+  position: relative;
   height: 48px;
   font-size: 14px;
   padding: 0 16px;
   vertical-align: middle;
   white-space: nowrap;
+  overflow: hidden; /* Ẩn nội dung dư thừa */
+  text-overflow: ellipsis; /* Hiển thị dấu ba chấm */
+  transition: background 0.2s ease;
+}
+
+.ms-table__table td .ms-table__border-bottom,
+.ms-table__table th .ms-table__border-bottom {
+  display: block;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 0;
   border-bottom: 1px solid var(--border-color);
+}
+.ms-table__table td .ms-table__border-right,
+.ms-table__table th .ms-table__border-right {
+  display: block;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 0;
+  height: 100%;
+  border-right: 1px solid var(--border-color);
 }
 
 .ms-table__table th {
@@ -70,9 +93,9 @@
   background: var(--gray-300);
 }
 
-.ms-table__table td:first-child,
-.ms-table__table th:first-child {
-  padding-right: 0;
+.ms-table__table td:nth-child(2),
+.ms-table__table th:nth-child(2) {
+  padding-left: 0;
   width: 32px;
 }
 
@@ -92,11 +115,6 @@
   cursor: col-resize;
 }
 
-.ms-table__table td:nth-child(2),
-.ms-table__table th:nth-child(2) {
-  border-right: 1px solid var(--border-color);
-}
-
 .ms-table__table td img {
   display: block;
   width: 32px;
@@ -110,6 +128,33 @@
 .ms-table__table input[type="checkbox"] {
   width: 16px;
   height: 16px;
+}
+
+/* sticky column */
+.ms-table__table th.--sticky-left {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+
+.ms-table__table td.--sticky-left {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--white);
+}
+
+.ms-table__table th.--sticky-right {
+  position: sticky;
+  right: 0;
+  z-index: 2;
+}
+
+.ms-table__table td.--sticky-right {
+  position: sticky;
+  right: 0;
+  z-index: 1;
+  background: var(--white);
 }
 
 /* table actions */
@@ -200,10 +245,7 @@
 }
 
 .ms-table__page-size-btn-icon {
-  display: block;
-  width: 24px;
-  height: 24px;
-  background: var(--secondary-text-color);
+  color: var(--secondary-text-color);
 }
 
 .ms-table__page-size-dropdown {
@@ -234,9 +276,7 @@
 
 .ms-table__page-size-icon {
   display: block;
-  width: 24px;
-  height: 24px;
-  background: var(--primary-color-500);
+  color: var(--primary-color-500);
 }
 
 .ms-table__records-range {
@@ -252,21 +292,19 @@
 .ms-table__prev-btn,
 .ms-table__next-btn {
   display: inline-block;
-  width: 24px;
-  height: 24px;
-  background: var(--secondary-text-color);
+  color: var(--secondary-text-color);
   cursor: pointer;
   user-select: none;
 }
 
 .ms-table__prev-btn:active,
 .ms-table__next-btn:active {
-  background: var(--primary-text-color);
+  color: var(--primary-text-color);
 }
 
 .ms-table__prev-btn.--disable,
 .ms-table__next-btn.--disable {
-  background: var(--disable-color);
+  color: var(--disable-color);
 }
 
 .ms-table__next-btn {

@@ -36,11 +36,6 @@
   position: absolute;
   top: 24px;
   right: 24px;
-  width: 24px;
-  height: 24px;
-  background: var(--secondary-text-color);
-  border: none;
-  outline: none;
   cursor: pointer;
   user-select: none;
 }
