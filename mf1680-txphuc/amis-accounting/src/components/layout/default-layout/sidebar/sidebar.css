@@ -112,7 +112,7 @@
 /* sidebar tippy */
 .sidebar__tippy {
   position: absolute;
-  z-index: 2;
+  z-index: 4;
   left: 80px;
   top: 24px;
   font-size: 14px;

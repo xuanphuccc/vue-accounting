@@ -53,8 +53,6 @@
   padding: 0 16px;
   vertical-align: middle;
   white-space: nowrap;
-  overflow: hidden; /* Ẩn nội dung dư thừa */
-  text-overflow: ellipsis; /* Hiển thị dấu ba chấm */
   transition: background 0.2s ease;
 }
 
@@ -106,13 +104,14 @@
 .ms-table__table td:nth-child(2),
 .ms-table__table th:nth-child(2) {
   padding-left: 0;
-  width: 32px;
 }
 
-/* .ms-table__table th:not(:first-child) {
-    overflow: auto;
-    resize: horizontal;
-} */
+.ms-table__table-text-wrap {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden; /* Ẩn nội dung dư thừa */
+  text-overflow: ellipsis; /* Hiển thị dấu ba chấm */
+}
 
 .ms-table__col-resize {
   display: block;

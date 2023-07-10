@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import { v4 as uuidv4 } from "uuid";
+import MISAResource from "@/helper/resource";
+import { useGlobalStore } from "./global-store";
 
 export const useToastStore = defineStore("toast-message", {
   state: () => ({
@@ -11,11 +13,14 @@ export const useToastStore = defineStore("toast-message", {
      * Description: Đẩy lên một toast message mới
      * Author: txphuc (29/06/2023)
      */
-    pushMessage(
-      message = { type: "info", title: "Thông tin", message: "Nội dung thông báo", undo: null }
-    ) {
+    pushSuccessMessage(message = { message: "Nội dung thông báo", undo: null }) {
       try {
+        const globalStore = useGlobalStore();
+
         message.key = uuidv4();
+        message.type = "success";
+        message.title = MISAResource[globalStore.lang].Toast.Success;
+
         this.toastArr.push(message);
 
         setTimeout(() => {

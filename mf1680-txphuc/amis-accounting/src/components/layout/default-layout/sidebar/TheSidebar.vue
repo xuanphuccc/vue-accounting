@@ -4,66 +4,80 @@
       <li class="sidebar__menu-item">
         <router-link :to="{ name: 'home' }" @mouseenter="showTippy" class="sidebar__link">
           <MISAIcon icon="dashboard" />
-          <span class="sidebar__link-text">Tổng quan</span>
+          <span class="sidebar__link-text">{{
+            MISAResource[globalStore.lang].Sidebar.Dashboard
+          }}</span>
         </router-link>
       </li>
       <li class="sidebar__menu-item">
         <router-link :to="{ name: 'employee' }" @mouseenter="showTippy" class="sidebar__link">
           <MISAIcon icon="user" />
-          <span class="sidebar__link-text">Nhân viên</span>
+          <span class="sidebar__link-text">{{
+            MISAResource[globalStore.lang].Sidebar.Employee
+          }}</span>
         </router-link>
       </li>
       <li class="sidebar__menu-item">
         <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
           <MISAIcon icon="money" />
-          <span class="sidebar__link-text">Tiền mặt</span>
+          <span class="sidebar__link-text">{{ MISAResource[globalStore.lang].Sidebar.Cash }}</span>
         </router-link>
       </li>
       <li class="sidebar__menu-item">
         <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
           <MISAIcon icon="bag" />
-          <span class="sidebar__link-text">Mua hàng</span>
+          <span class="sidebar__link-text">{{
+            MISAResource[globalStore.lang].Sidebar.Purchase
+          }}</span>
         </router-link>
       </li>
       <li class="sidebar__menu-item">
         <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
           <MISAIcon icon="cart" />
-          <span class="sidebar__link-text">Bán hàng</span>
+          <span class="sidebar__link-text">{{ MISAResource[globalStore.lang].Sidebar.Sell }}</span>
         </router-link>
       </li>
       <li class="sidebar__menu-item">
         <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
           <MISAIcon icon="bill" />
-          <span class="sidebar__link-text">Quản lý hoá đơn</span>
+          <span class="sidebar__link-text">{{
+            MISAResource[globalStore.lang].Sidebar.InvoiceManagement
+          }}</span>
         </router-link>
       </li>
       <li class="sidebar__menu-item">
         <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
           <MISAIcon icon="warehouse" />
-          <span class="sidebar__link-text">Kho</span>
+          <span class="sidebar__link-text">{{
+            MISAResource[globalStore.lang].Sidebar.Warehouse
+          }}</span>
         </router-link>
       </li>
       <li class="sidebar__menu-item">
         <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
           <MISAIcon icon="government" />
-          <span class="sidebar__link-text">Thuế</span>
+          <span class="sidebar__link-text">{{ MISAResource[globalStore.lang].Sidebar.Tax }}</span>
         </router-link>
       </li>
       <li class="sidebar__menu-item">
         <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
           <MISAIcon icon="report" />
-          <span class="sidebar__link-text">Báo cáo</span>
+          <span class="sidebar__link-text">{{
+            MISAResource[globalStore.lang].Sidebar.Report
+          }}</span>
         </router-link>
       </li>
     </ul>
 
-    <div ref="tippyRef" class="sidebar__tippy">Tổng quan</div>
+    <div ref="tippyRef" class="sidebar__tippy">
+      {{ MISAResource[globalStore.lang].Sidebar.Dashboard }}
+    </div>
 
     <div @click="globalStore.toggleSidebar" class="sidebar__toggle">
       <div class="sidebar__toggle-icon">
         <MISAIcon icon="angle-left" />
       </div>
-      <div class="sidebar__toggle-text">Thu gọn</div>
+      <div class="sidebar__toggle-text">{{ MISAResource[globalStore.lang].Sidebar.Collapse }}</div>
     </div>
   </nav>
 </template>
@@ -72,6 +86,7 @@
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import { ref } from "vue";
 import { useGlobalStore } from "@/stores/global-store";
+import MISAResource from "@/helper/resource";
 
 const tippyRef = ref(null);
 

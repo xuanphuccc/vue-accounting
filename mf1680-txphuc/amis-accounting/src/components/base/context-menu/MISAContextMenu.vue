@@ -1,10 +1,17 @@
 <template>
-  <ul class="ms-context-menu">
+  <ul :class="['ms-context-menu', { '--small': props.small }]">
     <slot></slot>
   </ul>
 </template>
 
-<script setup></script>
+<script setup>
+const props = defineProps({
+  small: {
+    type: Boolean,
+    default: false,
+  },
+});
+</script>
 
 <style scoped>
 @import url("./context-menu.css");

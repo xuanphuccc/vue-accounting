@@ -1,8 +1,10 @@
 import axiosClient from "./axios-client";
 
+const rootUrl = "/Departments";
+
 const departmentApi = {
   getAll() {
-    const url = `/Departments`;
+    const url = rootUrl;
     return axiosClient.get(url);
   },
 };

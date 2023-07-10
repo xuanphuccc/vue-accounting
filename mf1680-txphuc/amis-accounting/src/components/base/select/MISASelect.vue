@@ -140,7 +140,7 @@ const optionWithSearch = computed(() => {
   try {
     if (props.search) {
       return props.options.filter((option) =>
-        option?.label?.toLowerCase()?.includes(searchValue.value.toLowerCase())
+        option?.label?.toLowerCase()?.includes(searchValue.value?.toLowerCase() || "")
       );
     } else {
       return props.options;
@@ -203,21 +203,21 @@ const preSelectOnPressArrow = (e) => {
       (option) => option.value === preSelectValue.value?.value
     );
 
-    if (keyCode === enums.KEY.ARROW_UP) {
+    if (keyCode === enums.key.ARROW_UP) {
       // Di chuyển lên, nếu đến đầu thì quay về cuối
       if (currentIndex > 0) {
         preSelectValue.value = optionWithSearch.value[currentIndex - 1];
       } else {
         preSelectValue.value = optionWithSearch.value[lastIndex];
       }
-    } else if (keyCode === enums.KEY.ARROW_DOWN) {
+    } else if (keyCode === enums.key.ARROW_DOWN) {
       // Di chuyển xuống, nếu đến cuối thì quay lại đầu
       if (currentIndex < lastIndex) {
         preSelectValue.value = optionWithSearch.value[currentIndex + 1];
       } else {
         preSelectValue.value = optionWithSearch.value[0];
       }
-    } else if (keyCode === enums.KEY.ENTER) {
+    } else if (keyCode === enums.key.ENTER) {
       // Chọn giá trị khi nhấn phím ENTER
       selectOption(preSelectValue.value);
       e.target.blur();

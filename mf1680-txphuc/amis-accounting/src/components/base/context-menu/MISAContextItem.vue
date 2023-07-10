@@ -1,7 +1,7 @@
 <template>
   <li @click="$emit('click', $event)" class="ms-context-menu__item">
-    <div v-if="props.icon" class="ms-context-menu__icon">
-      <div :class="['ms-icon--24', props.icon]"></div>
+    <div v-if="$slots.icon" class="ms-context-menu__icon">
+      <slot name="icon"></slot>
     </div>
     <div class="ms-context-menu__text">
       <slot></slot>
@@ -11,11 +11,6 @@
 
 <script setup>
 defineEmits(["click"]);
-
-const props = defineProps({
-  // Icon minh hoạ
-  icon: String,
-});
 </script>
 
 <style scoped>

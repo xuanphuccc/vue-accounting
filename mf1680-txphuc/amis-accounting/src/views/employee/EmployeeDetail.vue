@@ -4,7 +4,11 @@
       @close="employeeStore.closeForm"
       @submit="handleSubmitForm()"
       :width="860"
-      :title="employeeStore.mode === enums.form.mode.CREATE ? 'Thêm nhân viên' : 'Sửa nhân viên'"
+      :title="
+        employeeStore.mode === enums.form.mode.CREATE
+          ? MISAResource[globalStore.lang].Page.Employee.Form.CreateTitle
+          : MISAResource[globalStore.lang].Page.Employee.Form.UpdateTitle
+      "
     >
       <template #default>
         <MISARow :gutter="{ x: 24 }">
@@ -13,7 +17,7 @@
               <MISACol span="5">
                 <MISAFormGroup
                   :error-msg="validatedInputs.employeeCode"
-                  label="Mã"
+                  :label="MISAResource[globalStore.lang].Page.Employee.EmployeeCode.Title"
                   for="input-id"
                   required-mark
                   space-bottom
@@ -31,7 +35,7 @@
               <MISACol span="7">
                 <MISAFormGroup
                   :error-msg="validatedInputs.fullName"
-                  label="Tên"
+                  :label="MISAResource[globalStore.lang].Page.Employee.FullName.Title"
                   for="input-name"
                   required-mark
                   space-bottom
@@ -46,7 +50,12 @@
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="12">
-                <MISAFormGroup label="Đơn vị" for="input-department" required-mark space-bottom>
+                <MISAFormGroup
+                  :label="MISAResource[globalStore.lang].Page.Employee.Department.Title"
+                  for="input-department"
+                  required-mark
+                  space-bottom
+                >
                   <MISASelect
                     tabindex="3"
                     v-model="formData.departmentId"
@@ -56,7 +65,11 @@
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="12">
-                <MISAFormGroup label="Chức danh" for="input-position" space-bottom>
+                <MISAFormGroup
+                  :label="MISAResource[globalStore.lang].Page.Employee.Position.Title"
+                  for="input-position"
+                  space-bottom
+                >
                   <MISASelect
                     tabindex="4"
                     v-model="formData.positionId"
@@ -71,7 +84,11 @@
           <MISACol span="6">
             <MISARow :gutter="{ x: 8 }">
               <MISACol span="5">
-                <MISAFormGroup label="Ngày sinh" for="input-date-of-birth" space-bottom>
+                <MISAFormGroup
+                  :label="MISAResource[globalStore.lang].Page.Employee.DateOfBirth.Title"
+                  for="input-date-of-birth"
+                  space-bottom
+                >
                   <MISAInput
                     tabindex="5"
                     v-model="formData.dateOfBirth"
@@ -81,23 +98,37 @@
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="7">
-                <MISAFormGroup label="Giới tính" for="" space-bottom>
+                <MISAFormGroup
+                  :label="MISAResource[globalStore.lang].Page.Employee.Gender.Title"
+                  for=""
+                  space-bottom
+                >
                   <div class="d-flex col-gap-16">
-                    <MISARadioButton tabindex="6" v-model="formData.gender" value="0" label="Nam" />
-                    <MISARadioButton tabindex="7" v-model="formData.gender" value="1" label="Nữ" />
+                    <MISARadioButton
+                      tabindex="6"
+                      v-model="formData.gender"
+                      :value="enums.gender.MALE + ''"
+                      :label="MISAResource[globalStore.lang].Gender.Male"
+                    />
+                    <MISARadioButton
+                      tabindex="7"
+                      v-model="formData.gender"
+                      :value="enums.gender.FEMALE + ''"
+                      :label="MISAResource[globalStore.lang].Gender.Female"
+                    />
                     <MISARadioButton
                       tabindex="8"
                       v-model="formData.gender"
-                      value="2"
-                      label="Khác"
+                      :value="enums.gender.OTHER + ''"
+                      :label="MISAResource[globalStore.lang].Gender.Other"
                     />
                   </div>
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="7">
                 <MISAFormGroup
-                  v-tooltip.top="'Số Chứng minh nhân dân'"
-                  label="Số CMND"
+                  v-tooltip.top="MISAResource[globalStore.lang].Page.Employee.IdentityNumber.Desc"
+                  :label="MISAResource[globalStore.lang].Page.Employee.IdentityNumber.Title"
                   for="input-identity-number"
                   space-bottom
                 >
@@ -109,7 +140,11 @@
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="5">
-                <MISAFormGroup label="Ngày cấp" for="input-identity-date" space-bottom>
+                <MISAFormGroup
+                  :label="MISAResource[globalStore.lang].Page.Employee.IdentityDate.Title"
+                  for="input-identity-date"
+                  space-bottom
+                >
                   <MISAInput
                     tabindex="10"
                     v-model="formData.identityDate"
@@ -119,7 +154,11 @@
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="12">
-                <MISAFormGroup label="Nơi cấp" for="input-identity-place" space-bottom>
+                <MISAFormGroup
+                  :label="MISAResource[globalStore.lang].Page.Employee.IdentityPlace.Title"
+                  for="input-identity-place"
+                  space-bottom
+                >
                   <MISAInput
                     tabindex="11"
                     v-model="formData.identityPlace"
@@ -133,7 +172,11 @@
 
         <MISARow :gutter="{ x: 8 }">
           <MISACol span="12">
-            <MISAFormGroup label="Địa chỉ" for="input-address" space-bottom>
+            <MISAFormGroup
+              :label="MISAResource[globalStore.lang].Page.Employee.Address.Title"
+              for="input-address"
+              space-bottom
+            >
               <MISAInput tabindex="12" v-model="formData.address" id="input-address" />
             </MISAFormGroup>
           </MISACol>
@@ -142,26 +185,30 @@
         <MISARow :gutter="{ x: 8 }">
           <MISACol span="3">
             <MISAFormGroup
-              v-tooltip.top="'Điện thoại di động'"
-              label="ĐT di động"
-              for="input-phone-number"
+              v-tooltip.top="MISAResource[globalStore.lang].Page.Employee.MobilePhone.Desc"
+              :label="MISAResource[globalStore.lang].Page.Employee.MobilePhone.Title"
+              for="input-mobile-phone"
               space-bottom
             >
-              <MISAInput tabindex="13" v-model="formData.phoneNumber" id="input-phone-number" />
+              <MISAInput tabindex="13" v-model="formData.phoneNumber" id="input-mobile-phone" />
             </MISAFormGroup>
           </MISACol>
           <MISACol span="3">
             <MISAFormGroup
-              v-tooltip.top="'Điện thoại cố định'"
-              label="ĐT cố định"
-              for="input-salary"
+              v-tooltip.top="MISAResource[globalStore.lang].Page.Employee.LandlinePhone.Desc"
+              :label="MISAResource[globalStore.lang].Page.Employee.LandlinePhone.Title"
+              for="input-landline-phone"
               space-bottom
             >
-              <MISAInput tabindex="14" id="input-salary" />
+              <MISAInput tabindex="14" id="input-landline-phone" />
             </MISAFormGroup>
           </MISACol>
           <MISACol span="3">
-            <MISAFormGroup label="Email" for="input-email" space-bottom>
+            <MISAFormGroup
+              :label="MISAResource[globalStore.lang].Page.Employee.Email.Title"
+              for="input-email"
+              space-bottom
+            >
               <MISAInput tabindex="15" v-model="formData.email" id="input-email" />
             </MISAFormGroup>
           </MISACol>
@@ -169,34 +216,49 @@
 
         <MISARow :gutter="{ x: 8 }">
           <MISACol span="3">
-            <MISAFormGroup label="Tài khoản ngân hàng" for="account">
-              <MISAInput tabindex="16" id="account" />
+            <MISAFormGroup
+              :label="MISAResource[globalStore.lang].Page.Employee.BankAccount.Title"
+              for="bank-account"
+            >
+              <MISAInput tabindex="16" id="bank-account" />
             </MISAFormGroup>
           </MISACol>
           <MISACol span="3">
-            <MISAFormGroup label="Tên ngân hàng" for="bank-name">
+            <MISAFormGroup
+              :label="MISAResource[globalStore.lang].Page.Employee.BankName.Title"
+              for="bank-name"
+            >
               <MISAInput tabindex="17" id="bank-name" />
             </MISAFormGroup>
           </MISACol>
           <MISACol span="3">
-            <MISAFormGroup label="Chi nhánh" for="banch">
-              <MISAInput tabindex="18" id="banch" />
+            <MISAFormGroup
+              :label="MISAResource[globalStore.lang].Page.Employee.BankBranch.Title"
+              for="branch"
+            >
+              <MISAInput tabindex="18" id="branch" />
             </MISAFormGroup>
           </MISACol>
         </MISARow>
       </template>
 
       <template #controls-left>
-        <MISAButton tabindex="21" @click="employeeStore.closeForm" type="secondary">Huỷ</MISAButton>
+        <MISAButton tabindex="21" @click="employeeStore.closeForm" type="secondary">{{
+          MISAResource[globalStore.lang].Button.Cancel
+        }}</MISAButton>
       </template>
       <template #controls-right>
         <MISAButton tabindex="20" @click="handleSubmitForm(false)" type="secondary">
           <MISASpinner v-if="loading.submit" absolute />
-          <span :style="{ opacity: loading.submit ? 0 : 1 }">Cất</span>
+          <span :style="{ opacity: loading.submit ? 0 : 1 }">{{
+            MISAResource[globalStore.lang].Button.Save
+          }}</span>
         </MISAButton>
         <MISAButton tabindex="19" @click="handleSubmitForm()" type="primary">
           <MISASpinner v-if="loading.submitAndContinue" absolute />
-          <span :style="{ opacity: loading.submitAndContinue ? 0 : 1 }">Cất và thêm</span>
+          <span :style="{ opacity: loading.submitAndContinue ? 0 : 1 }">{{
+            MISAResource[globalStore.lang].Button.SaveAndContinue
+          }}</span>
         </MISAButton>
       </template>
     </MISAPopup>
@@ -228,13 +290,16 @@ import employeeApi from "@/api/employee-api";
 import departmentApi from "@/api/department-api";
 import positionApi from "@/api/position-api";
 import formatDate from "@/helper/format-date";
+import { useGlobalStore } from "@/stores/global-store";
 import { useEmployeeStore } from "@/stores/employee-store";
 import { useToastStore } from "@/stores/toast-store";
 import enums from "@/helper/enum";
+import MISAResource from "@/helper/resource";
 import { validator, required } from "@/helper/validator";
 
 const emit = defineEmits(["submit"]);
 
+const globalStore = useGlobalStore();
 const employeeStore = useEmployeeStore();
 const toastStore = useToastStore();
 
@@ -258,14 +323,13 @@ const initialFormData = {
   departmentId: "",
   positionId: "",
   dateOfBirth: "",
-  gender: "0",
+  gender: enums.gender.MALE + "",
   identityNumber: "",
   identityDate: "",
   identityPlace: "",
   address: "",
   phoneNumber: "",
   email: "",
-  salary: "",
 };
 const formData = ref({ ...initialFormData });
 
@@ -280,7 +344,10 @@ const validatedInputs = ref({
  */
 const getNewEmployeeCode = async () => {
   try {
-    if (employeeStore.mode === enums.form.mode.CREATE) {
+    if (
+      employeeStore.mode === enums.form.mode.CREATE ||
+      employeeStore.mode === enums.form.mode.DUPLICATE
+    ) {
       const response = await employeeApi.getNewCode();
 
       formData.value.employeeCode = response.data;
@@ -357,7 +424,12 @@ const validateEmployeeCode = () => {
   try {
     const result = validator({
       value: formData.value.employeeCode,
-      rules: [{ checker: required, errorMsg: "Mã là bắt buộc" }],
+      rules: [
+        {
+          checker: required,
+          errorMsg: MISAResource[globalStore.lang].Page.Employee.Validate.EmployeeCode,
+        },
+      ],
     });
 
     validatedInputs.value.employeeCode = result;
@@ -376,7 +448,12 @@ const validateFullName = () => {
   try {
     const result = validator({
       value: formData.value.fullName,
-      rules: [{ checker: required, errorMsg: "Tên là bắt buộc" }],
+      rules: [
+        {
+          checker: required,
+          errorMsg: MISAResource[globalStore.lang].Page.Employee.Validate.FullName,
+        },
+      ],
     });
 
     validatedInputs.value.fullName = result;
@@ -391,14 +468,17 @@ const validateFullName = () => {
  * Description: Hàm reset lại các input về trạng thái ban đầu
  * Author: txphuc (01/07/2023)
  */
-const resetInputs = () => {
+const resetInputs = async () => {
   try {
-    if (employeeStore.mode === enums.form.mode.CREATE) {
+    if (
+      employeeStore.mode === enums.form.mode.CREATE ||
+      employeeStore.mode === enums.form.mode.DUPLICATE
+    ) {
       formData.value = {
         ...initialFormData,
       };
 
-      getNewEmployeeCode();
+      await getNewEmployeeCode();
     }
   } catch (error) {
     console.warn(error);
@@ -425,12 +505,14 @@ const handleSubmitForm = async (isContinue = true) => {
         result = await handleCreateEmployee();
       } else if (employeeStore.mode === enums.form.mode.UPDATE) {
         result = await handleUpdateEmployee();
+      } else if (employeeStore.mode === enums.form.mode.DUPLICATE) {
+        result = await handleDuplicateEmployee();
       }
     }
 
     if (result && isContinue) {
       // Reset intpus và reload bảng
-      resetInputs();
+      await resetInputs();
       emit("submit");
     } else if (result) {
       // Đóng form và reload lại bảng
@@ -456,16 +538,13 @@ const handleCreateEmployee = async () => {
       const data = {
         ...formData.value,
         gender: Number(formData.value.gender),
-        salary: Number(formData.value.salary),
       };
 
       await employeeApi.create(data);
 
       // Hiện toast message thành công
-      toastStore.pushMessage({
-        type: "success",
-        title: "Thành công!",
-        message: "Thêm nhân viên thành công",
+      toastStore.pushSuccessMessage({
+        message: MISAResource[globalStore.lang].Page.Employee.Toast.CreateSuccess,
       });
 
       return true;
@@ -477,7 +556,7 @@ const handleCreateEmployee = async () => {
     dialogState.value = {
       active: true,
       type: "error",
-      title: "Đã có lỗi",
+      title: MISAResource[globalStore.lang].Dialog.ErrorTitle,
       description: error?.response?.data?.userMsg,
     };
 
@@ -486,29 +565,41 @@ const handleCreateEmployee = async () => {
 };
 
 /**
- * Description: Hàm load dữ liệu để thực hiện update
+ * Description: Hàm load dữ liệu để thực hiện update/duplicate
  * Author: txphuc (28/06/2023)
  */
-const handleLoadDataForUpdate = () => {
+const handleLoadDataForUpdate = async () => {
   try {
-    if (employeeStore.mode === enums.form.mode.UPDATE) {
-      const currentEmployee = employeeStore.currentEmployee;
+    if (
+      employeeStore.mode === enums.form.mode.UPDATE ||
+      employeeStore.mode === enums.form.mode.DUPLICATE
+    ) {
+      const employeeId = employeeStore.currentEmployee?.EmployeeId;
 
+      // Gọi API lấy thông tin nhân viên cần sửa
+      const response = await employeeApi.get(employeeId);
+      const employeeData = response.data;
+
+      // Binding dữ liệu vào form
       formData.value = {
-        employeeCode: currentEmployee.EmployeeCode,
-        fullName: currentEmployee.FullName,
-        departmentId: currentEmployee.DepartmentId,
-        positionId: currentEmployee.PositionId,
-        dateOfBirth: formatDate(currentEmployee.DateOfBirth, "YYYY-MM-DD"),
-        gender: currentEmployee.Gender + "",
-        identityNumber: currentEmployee.IdentityNumber,
-        identityDate: formatDate(currentEmployee.IdentityDate, "YYYY-MM-DD"),
-        identityPlace: currentEmployee.IdentityPlace,
-        address: currentEmployee.Address,
-        phoneNumber: currentEmployee.PhoneNumber,
-        email: currentEmployee.Email,
-        salary: currentEmployee.Salary + "",
+        employeeCode: employeeData.EmployeeCode,
+        fullName: employeeData.FullName,
+        departmentId: employeeData.DepartmentId,
+        positionId: employeeData.PositionId,
+        dateOfBirth: formatDate(employeeData.DateOfBirth, "YYYY-MM-DD"),
+        gender: employeeData.Gender + "",
+        identityNumber: employeeData.IdentityNumber,
+        identityDate: formatDate(employeeData.IdentityDate, "YYYY-MM-DD"),
+        identityPlace: employeeData.IdentityPlace,
+        address: employeeData.Address,
+        phoneNumber: employeeData.PhoneNumber,
+        email: employeeData.Email,
       };
+
+      // Lấy mã nhân viên mới để nhân bản
+      if (employeeStore.mode === enums.form.mode.DUPLICATE) {
+        await getNewEmployeeCode();
+      }
     }
   } catch (error) {
     console.warn(error);
@@ -528,16 +619,13 @@ const handleUpdateEmployee = async () => {
       const data = {
         ...formData.value,
         gender: Number(formData.value.gender),
-        salary: Number(formData.value.salary),
       };
 
       await employeeApi.update(employeeId, data);
 
       // Hiện toast message thành công
-      toastStore.pushMessage({
-        type: "success",
-        title: "Thành công!",
-        message: "Cập nhật thành công",
+      toastStore.pushSuccessMessage({
+        message: MISAResource[globalStore.lang].Page.Employee.Toast.UpdateSuccess,
       });
 
       return true;
@@ -549,7 +637,43 @@ const handleUpdateEmployee = async () => {
     dialogState.value = {
       active: true,
       type: "error",
-      title: "Đã có lỗi",
+      title: MISAResource[globalStore.lang].Dialog.ErrorTitle,
+      description: error?.response?.data?.userMsg,
+    };
+
+    return false;
+  }
+};
+
+/**
+ * Description: Hàm xử lý gọi api nhân bản nhân viên
+ * Author: txphuc (10/07/2023)
+ */
+const handleDuplicateEmployee = async () => {
+  try {
+    if (employeeStore.mode === enums.form.mode.DUPLICATE) {
+      const data = {
+        ...formData.value,
+        gender: Number(formData.value.gender),
+      };
+
+      await employeeApi.create(data);
+
+      // Hiện toast message nhân bản thành công
+      toastStore.pushSuccessMessage({
+        message: MISAResource[globalStore.lang].Page.Employee.Toast.DuplicateSuccess,
+      });
+
+      return true;
+    }
+  } catch (error) {
+    console.warn(error);
+
+    // Hiện dialog báo lỗi
+    dialogState.value = {
+      active: true,
+      type: "error",
+      title: MISAResource[globalStore.lang].Dialog.ErrorTitle,
       description: error?.response?.data?.userMsg,
     };
 

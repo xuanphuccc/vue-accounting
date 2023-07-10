@@ -1,30 +1,36 @@
 import axiosClient from "./axios-client";
 
+const rootUrl = "/Employees";
+
 const employeeApi = {
   getAll() {
-    const url = "/Employees";
+    const url = rootUrl;
+    return axiosClient.get(url);
+  },
+  get(employeeId) {
+    const url = `${rootUrl}/${employeeId}`;
     return axiosClient.get(url);
   },
   filter(params = {}) {
-    const url = "/Employees/filter";
+    const url = `${rootUrl}/filter`;
     return axiosClient.get(url, {
       params: params,
     });
   },
   delete(id) {
-    const url = `/Employees/${id}`;
+    const url = `${rootUrl}/${id}`;
     return axiosClient.delete(url);
   },
   getNewCode() {
-    const url = `/Employees/NewEmployeeCode`;
+    const url = `${rootUrl}/NewEmployeeCode`;
     return axiosClient.get(url);
   },
   create(data) {
-    const url = `/Employees`;
+    const url = rootUrl;
     return axiosClient.post(url, data);
   },
   update(id, data) {
-    const url = `/Employees/${id}`;
+    const url = `${rootUrl}/${id}`;
     return axiosClient.put(url, data);
   },
 };

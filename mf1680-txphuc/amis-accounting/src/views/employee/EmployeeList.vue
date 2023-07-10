@@ -2,14 +2,14 @@
   <div class="page-container">
     <div class="page__header">
       <div class="page__title-wrapper">
-        <h1 class="page__title">Nhân viên</h1>
+        <h1 class="page__title">{{ MISAResource[globalStore.lang].Page.Employee.Title }}</h1>
         <span class="page__title-icon ms-icon--angle-down-24" title="Dropdown"></span>
       </div>
 
       <div class="page__header-controls">
-        <MISAButton @click="employeeStore.openFormForCreate" type="primary"
-          >Thêm mới nhân viên</MISAButton
-        >
+        <MISAButton @click="employeeStore.openFormForCreate" type="primary">{{
+          MISAResource[globalStore.lang].Page.Employee.AddButton
+        }}</MISAButton>
       </div>
     </div>
 
@@ -18,17 +18,23 @@
         <div class="filter__left">
           <div :class="['filter__select-infor', { '--active': selectedRowsState.length > 0 }]">
             <div>
-              Đã chọn
+              {{ MISAResource[globalStore.lang].Text.Selected }}
               <span id="selected-count" class="text-bold">{{ selectedRowsState.length }}</span>
             </div>
-            <MISAButton @click="uncheckedAllRows()" type="link" class="ms-16">Bỏ chọn</MISAButton>
+            <MISAButton @click="uncheckedAllRows()" type="link" class="ms-16">{{
+              MISAResource[globalStore.lang].Button.UnChecked
+            }}</MISAButton>
             <MISAButton
               @click="
-                showDeleteConfirmDialog(`Bạn có muốn xoá ${selectedRowsState.length} nhân viên`)
+                showDeleteConfirmDialog(
+                  MISAResource[globalStore.lang].Page.Employee.Dialog.MultipleDeleteConfirmDesc(
+                    selectedRowsState.length
+                  )
+                )
               "
               type="secondary"
               class="ms-24"
-              >Xoá</MISAButton
+              >{{ MISAResource[globalStore.lang].Button.Delete }}</MISAButton
             >
           </div>
         </div>
@@ -37,14 +43,18 @@
             <MISAInput
               @keydown.enter="handleSearchEmployee"
               v-model="searchFieldState"
-              placeholder="Tìm theo mã, tên nhân viên"
+              :placeholder="MISAResource[globalStore.lang].Page.Employee.SearchPlaceholder"
               id="search-input"
             />
             <MISAInputAction @click="handleSearchEmployee">
               <MISAIcon size="20" icon="search" />
             </MISAInputAction>
           </MISAInputGroup>
-          <MISAButton @click="handleResetFilter" v-tooltip.left="'Tải lại'" type="secondary">
+          <MISAButton
+            @click="handleResetFilter"
+            v-tooltip.left="MISAResource[globalStore.lang].Tooltip.Reload"
+            type="secondary"
+          >
             <template #icon><MISAIcon size="20" icon="reload" /></template>
           </MISAButton>
         </div>
@@ -67,12 +77,16 @@
         @double-click="employeeStore.openFormForUpdate"
       >
         <template #context-menu>
-          <MISAContextMenu>
-            <MISAContextItem>Nhân bản</MISAContextItem>
+          <MISAContextMenu small>
+            <MISAContextItem @click="employeeStore.openFormForDuplicate(selectedRowsState[0])"
+              >Nhân bản</MISAContextItem
+            >
             <MISAContextItem
               @click="
                 showDeleteConfirmDialog(
-                  `Xoá nhân viên ${selectedRowsState[0]?.FullName}. Nhân viên sau khi xoá sẽ không thể khôi phục lại được`
+                  MISAResource[globalStore.lang].Page.Employee.Dialog.DeleteConfirmDesc(
+                    selectedRowsState[0]?.FullName
+                  )
                 )
               "
               >Xoá</MISAContextItem
@@ -111,6 +125,8 @@ import MISADialog from "@/components/base/dialog/MISADialog.vue";
 import EmployeeDetail from "./EmployeeDetail.vue";
 import employeeApi from "@/api/employee-api";
 import formatDate from "@/helper/format-date";
+import MISAResource from "@/helper/resource";
+import { useGlobalStore } from "@/stores/global-store";
 import { useEmployeeStore } from "@/stores/employee-store";
 import { useToastStore } from "@/stores/toast-store";
 
@@ -134,30 +150,77 @@ const dialogState = ref({
 });
 const isLoading = ref(false);
 
+const globalStore = useGlobalStore();
 const employeeStore = useEmployeeStore();
 const toastStore = useToastStore();
 
 const columns = ref([
-  { key: 1, title: "Mã nhân viên", dataIndex: "EmployeeCode", width: 120, sticky: "left" },
-  { key: 2, title: "Tên nhân viên", dataIndex: "FullName", width: 200, sticky: "left" },
-  { key: 3, title: "Giới tính", dataIndex: "GenderName" },
-  { key: 4, title: "Ngày sinh", dataIndex: "DateOfBirthFormated", align: "center" },
+  {
+    key: 1,
+    title: MISAResource[globalStore.lang].Page.Employee.EmployeeCode.SubTitle,
+    dataIndex: "EmployeeCode",
+    width: 120,
+    sticky: "left",
+  },
+  {
+    key: 2,
+    title: MISAResource[globalStore.lang].Page.Employee.FullName.SubTitle,
+    dataIndex: "FullName",
+    width: 200,
+    sticky: "left",
+  },
+  {
+    key: 3,
+    title: MISAResource[globalStore.lang].Page.Employee.Gender.Title,
+    dataIndex: "GenderName",
+  },
+  {
+    key: 4,
+    title: MISAResource[globalStore.lang].Page.Employee.DateOfBirth.Title,
+    dataIndex: "DateOfBirthFormated",
+    align: "center",
+  },
   {
     key: 5,
-    title: "Số CMND",
+    title: MISAResource[globalStore.lang].Page.Employee.IdentityNumber.Title,
     dataIndex: "IdentityNumber",
+    desc: MISAResource[globalStore.lang].Page.Employee.IdentityNumber.Desc,
     align: "right",
-    desc: "Số Chứng minh nhân dân",
   },
-  { key: 6, title: "Chức danh", dataIndex: "PositionName" },
-  { key: 7, title: "Tên đơn vị", dataIndex: "DepartmentName", width: 240 },
-  { key: 8, title: "Email", dataIndex: "Email" },
-  { key: 9, title: "Số điện thoại", dataIndex: "PhoneNumber", align: "right" },
-  { key: 10, title: "Lương", dataIndex: "Salary", align: "right" },
+  {
+    key: 6,
+    title: MISAResource[globalStore.lang].Page.Employee.Position.Title,
+    dataIndex: "PositionName",
+    width: 180,
+  },
+  {
+    key: 7,
+    title: MISAResource[globalStore.lang].Page.Employee.Department.Title,
+    dataIndex: "DepartmentName",
+    width: 240,
+  },
+  {
+    key: 8,
+    title: MISAResource[globalStore.lang].Page.Employee.BankAccount.SubTitle,
+    dataIndex: "Account",
+    align: "right",
+  },
+  {
+    key: 9,
+    title: MISAResource[globalStore.lang].Page.Employee.BankName.Title,
+    dataIndex: "BankName",
+  },
+  {
+    key: 10,
+    title: MISAResource[globalStore.lang].Page.Employee.BankBranch.SubTitle,
+    dataIndex: "BankBranch",
+    desc: MISAResource[globalStore.lang].Page.Employee.BankBranch.Desc,
+    width: 240,
+  },
 ]);
 
 /**
- * Description: Hàm load dữ liệu nhân viên từ api
+ * Description: Hàm load dữ liệu danh sách nhân viên từ api
  * Author: txphuc (27/06/2023)
  */
 const getEmployeeData = async () => {
@@ -198,6 +261,19 @@ watch(
 );
 
 /**
+ * Description: Xoá hàng đang chọn khi form nhân bản được tắt
+ * Author: txphuc (10/07/2023)
+ */
+watch(
+  () => employeeStore.isOpenForm,
+  () => {
+    if (!employeeStore.isOpenForm) {
+      uncheckedAllRows();
+    }
+  }
+);
+
+/**
  * Description: Hàm xoá một/nhiều nhân viên đã được chọn
  * Author: txphuc (27/06/2023)
  */
@@ -216,10 +292,8 @@ const deleteSelectedEmployee = async () => {
     uncheckedAllRows();
 
     // Hiện toast message xoá thành công
-    toastStore.pushMessage({
-      type: "success",
-      title: "Thành công",
-      message: "Xoá thành công",
+    toastStore.pushSuccessMessage({
+      message: MISAResource[globalStore.lang].Page.Employee.Toast.DeleteSuccess,
     });
   } catch (error) {
     console.warn(error);
@@ -249,7 +323,7 @@ const uncheckedAllRows = () => {
 const showDeleteConfirmDialog = (description) => {
   dialogState.value = {
     active: true,
-    title: "Xoá nhân viên",
+    title: MISAResource[globalStore.lang].Page.Employee.Dialog.DeleteConfirmTitle,
     type: "warning",
     description: description,
   };

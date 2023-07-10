@@ -3,12 +3,22 @@ const enums = {
     mode: {
       CREATE: 0,
       UPDATE: 1,
+      DUPLICATE: 2,
     },
   },
-  KEY: {
+  gender: {
+    MALE: 0,
+    FEMALE: 1,
+    OTHER: 2,
+  },
+  key: {
     ARROW_UP: 38,
     ARROW_DOWN: 40,
     ENTER: 13,
+  },
+  language: {
+    VN: "VN",
+    EN: "EN",
   },
 };
 

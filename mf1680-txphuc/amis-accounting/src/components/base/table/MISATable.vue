@@ -27,7 +27,9 @@
               v-tooltip.bottom="column.desc || column.title"
               ref="columsRef"
             >
-              {{ column.title }}
+              <div class="ms-table__table-text-wrap">
+                {{ column.title }}
+              </div>
 
               <!-- resize column -->
               <span @mousedown="activeResize($event, column)" class="ms-table__col-resize"></span>
@@ -38,7 +40,7 @@
             </th>
 
             <th class="--sticky-right">
-              Chức năng
+              {{ MISAResource[globalStore.lang].Table.Functions }}
               <!-- fake borders -->
               <span class="ms-table__border-left"></span>
               <span class="ms-table__border-bottom"></span>
@@ -72,7 +74,9 @@
                   :title="row[column.dataIndex] || ''"
                 >
                   <slot :name="column.dataIndex" v-bind="row">
-                    {{ row[column.dataIndex] }}
+                    <div class="ms-table__table-text-wrap">
+                      {{ row[column.dataIndex] }}
+                    </div>
                   </slot>
 
                   <!-- fake borders -->
@@ -84,7 +88,9 @@
               <!-- table action -->
               <td class="--sticky-right">
                 <div class="ms-table__action">
-                  <div @click="returnRow(row)" class="ms-table__action-text">Sửa</div>
+                  <div @click="returnRow(row)" class="ms-table__action-text">
+                    {{ MISAResource[globalStore.lang].Button.Update }}
+                  </div>
                   <div
                     @dblclick.stop=""
                     @click.stop="setActionContextPos($event, row)"
@@ -118,13 +124,13 @@
     <!-- table footer -->
     <div class="ms-table__footer">
       <p class="total-row">
-        <span>Tổng: </span>
+        <span>{{ MISAResource[globalStore.lang].Paging.TotalRecords }}: </span>
         <span class="text-bold">{{ props.totalRecords }}</span>
       </p>
       <div class="ms-table__page-infor">
         <!-- page size dropdown -->
         <div class="ms-table__page-size">
-          <div>Số bản ghi/trang:</div>
+          <div>{{ MISAResource[globalStore.lang].Paging.ItemsPerPage }}:</div>
           <div @click="togglePageSizeDropdown" class="ms-table__page-size-btn">
             {{ props.pageSize }}
             <div class="ms-table__page-size-btn-icon" title="Dropdown">
@@ -151,7 +157,7 @@
           <p>
             {{ recordsRange.min }} -
             <span class="text-bold">{{ recordsRange.max }}</span>
-            bản ghi
+            {{ MISAResource[globalStore.lang].Paging.Records }}
           </p>
         </div>
 
@@ -160,13 +166,13 @@
           <span
             @click="handlePrevPage"
             :class="['ms-table__prev-btn', { '--disable': props.currentPage <= 1 }]"
-            title="Trang trước"
+            :title="MISAResource[globalStore.lang].Paging.PrevPage"
             ><MISAIcon icon="angle-left"
           /></span>
           <span
             @click="handleNextPage"
             :class="['ms-table__next-btn', { '--disable': props.currentPage >= props.totalPage }]"
-            title="Trang sau"
+            :title="MISAResource[globalStore.lang].Paging.NextPage"
           >
             <MISAIcon icon="angle-right" />
           </span>
@@ -181,6 +187,8 @@ import { computed, onMounted, onUnmounted, ref } from "vue";
 import MISASkeletonRow from "../skeleton-loader/MISASkeletonRow.vue";
 import MISACheckbox from "../checkbox/MISACheckbox.vue";
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
+import MISAResource from "@/helper/resource";
+import { useGlobalStore } from "@/stores/global-store";
 
 const emit = defineEmits([
   "double-click",
@@ -263,6 +271,8 @@ const actionContextMenu = ref({
   isShow: false,
   top: 0,
 });
+
+const globalStore = useGlobalStore();
 
 /**
  * Description: Xử lý thêm trường "checked" với bản ghi
@@ -425,13 +435,13 @@ const calculateColumnsPos = () => {
   try {
     const defaultWidth = 140;
     const firstColumnWidth = 50;
-    const calculatedColumns = columsWithPos.value.map((column, index) => {
+    columsWithPos.value.forEach((column, index) => {
       // Nếu không được chỉ định chiều dài thì sẽ được set mặc định
       if (!column.width) {
         column.width = defaultWidth;
       }
 
-      // Vị trí của cột hiện tại so với vị trí bắt đầu của bảng
+      // Vị trí của cột hiện tại so với vị trí đầu bảng
       const leftPos = columsWithPos.value.reduce((left, column, currentIndex) => {
         if (currentIndex < index) {
           return left + (column.width || defaultWidth);
@@ -441,16 +451,7 @@ const calculateColumnsPos = () => {
       }, 0);
 
       column.left = leftPos + firstColumnWidth;
-
-      // Thêm tên class cho cột có sticky (ghim cột)
-      // if (column.sticky) {
-      //   column.sticky = `--sticky-${column.sticky}`;
-      // } else column.sticky = "";
-
-      return column;
     });
-
-    console.log(calculatedColumns);
   } catch (error) {
     console.warn(error);
   }
@@ -467,18 +468,19 @@ const activeResize = (e, column) => {
     const thElement = e.target.parentElement;
     const thElementRect = thElement.getBoundingClientRect();
 
-    // resizing column
+    // Resize cột
     const resizeColumn = (e) => {
       const mouseX = e.clientX;
 
       column.width = mouseX - thElementRect.left + 4;
 
+      // Tính toán lại vị trí cột ghim
       calculateColumnsPos();
     };
 
     window.addEventListener("mousemove", resizeColumn);
 
-    // event clean up
+    // Huỷ sự kiện resize cột
     window.onmouseup = () => {
       window.removeEventListener("mousemove", resizeColumn);
     };
@@ -498,10 +500,11 @@ const setActionContextPos = (e, row) => {
       const actionElement = e.target;
       const actionPos = actionElement.getBoundingClientRect();
       const tablePos = tableContainerRef.value.getBoundingClientRect();
-      const contextMenuHeight = 176;
+      const contextMenuHeight = 124;
+      const headRowHeight = 48;
       const space = 24;
 
-      if (actionPos.y - contextMenuHeight > tablePos.y) {
+      if (actionPos.y - contextMenuHeight > tablePos.y + headRowHeight) {
         // Hiện lên trên của dropdown
         actionContextMenu.value = {
           isShow: true,

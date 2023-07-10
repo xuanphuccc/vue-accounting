@@ -44,6 +44,17 @@ export const useEmployeeStore = defineStore("employee", {
     },
 
     /**
+     * Description: Mở form và set thông tin
+     * của nhân viên muốn nhân bản
+     * Author: txphuc (10/07/2023)
+     */
+    openFormForDuplicate(employee) {
+      this.currentEmployee = employee;
+      this.mode = enums.form.mode.DUPLICATE;
+      this.isOpenForm = true;
+    },
+
+    /**
      * Description: Đóng form và reset dữ liệu về ban đầu
      * Author: txphuc (28/06/2023)
      */

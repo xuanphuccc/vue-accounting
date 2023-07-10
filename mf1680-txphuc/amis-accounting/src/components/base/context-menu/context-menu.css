@@ -9,6 +9,13 @@
   user-select: none;
 }
 
+.ms-context-menu.--small {
+  padding: 8px 0;
+}
+.ms-context-menu.--small .ms-context-menu__item {
+  height: 36px;
+}
+
 .ms-context-menu__item {
   height: 48px;
   display: flex;

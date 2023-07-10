@@ -1,7 +1,9 @@
 import { defineStore } from "pinia";
+import enums from "@/helper/enum";
 
 export const useGlobalStore = defineStore("app-global", {
   state: () => ({
+    lang: enums.language.VN,
     sidebar: {
       isCompact: false,
     },
