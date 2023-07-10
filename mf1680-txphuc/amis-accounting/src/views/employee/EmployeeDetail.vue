@@ -474,9 +474,11 @@ const resetInputs = async () => {
       employeeStore.mode === enums.form.mode.CREATE ||
       employeeStore.mode === enums.form.mode.DUPLICATE
     ) {
-      formData.value = {
-        ...initialFormData,
-      };
+      if (employeeStore.mode === enums.form.mode.CREATE) {
+        formData.value = {
+          ...initialFormData,
+        };
+      }
 
       await getNewEmployeeCode();
     }
@@ -486,7 +488,7 @@ const resetInputs = async () => {
 };
 
 /**
- * Description: Hàm xử lý submit form ở các chế độ create/update
+ * Description: Hàm xử lý submit form ở các chế độ create/update/duplicate
  * Author: txphuc (01/07/2023)
  */
 const handleSubmitForm = async (isContinue = true) => {
