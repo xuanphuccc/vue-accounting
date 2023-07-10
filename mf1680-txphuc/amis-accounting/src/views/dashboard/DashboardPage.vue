@@ -6,9 +6,7 @@
         <span class="page__title-icon ms-icon--angle-down-24" title="Dropdown"></span>
       </div>
 
-      <div class="page__header-controls">
-        <!-- <MISAButton type="primary">Thêm mới nhân viên</MISAButton> -->
-      </div>
+      <div class="page__header-controls"></div>
     </div>
 
     <div class="page__content"></div>

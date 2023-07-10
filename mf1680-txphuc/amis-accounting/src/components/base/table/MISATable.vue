@@ -1,6 +1,6 @@
 <template>
   <div class="ms-table">
-    <div ref="tableContainerRef" @scroll="changeActionsPos" class="ms-table__container">
+    <div ref="tableContainerRef" class="ms-table__container">
       <table class="ms-table__table">
         <thead>
           <!-- header -->
@@ -14,26 +14,34 @@
               <!-- fake borders -->
               <span class="ms-table__border-bottom"></span>
             </th>
+
             <th
               v-for="column in columsWithPos"
               :key="column.key"
               :style="{
                 width: column.width ? column.width + 'px' : '',
-                textAlign: column.align ? column.align : '',
-                left: column.left + 'px',
+                maxWidth: column.width ? column.width + 'px' : '',
+                left: column.sticky && column.left + 'px',
               }"
-              :class="column.sticky"
+              :class="[`--align-${column.align || ''}`, `--sticky-${column.sticky}`]"
               v-tooltip.bottom="column.desc || column.title"
               ref="columsRef"
             >
               {{ column.title }}
 
               <!-- resize column -->
-              <span @mousedown="activeResize" class="ms-table__col-resize"></span>
+              <span @mousedown="activeResize($event, column)" class="ms-table__col-resize"></span>
 
               <!-- fake borders -->
               <span class="ms-table__border-bottom"></span>
               <span class="ms-table__border-right"></span>
+            </th>
+
+            <th class="--sticky-right">
+              Chức năng
+              <!-- fake borders -->
+              <span class="ms-table__border-left"></span>
+              <span class="ms-table__border-bottom"></span>
             </th>
           </tr>
         </thead>
@@ -52,10 +60,16 @@
                 <!-- fake borders -->
                 <span class="ms-table__border-bottom"></span>
               </td>
+
               <template v-for="column in columsWithPos" :key="column.key">
                 <td
-                  :style="{ textAlign: column.align ? column.align : '', left: column.left + 'px' }"
-                  :class="column.sticky"
+                  :style="{
+                    width: column.width ? column.width + 'px' : '',
+                    maxWidth: column.width ? column.width + 'px' : '',
+                    left: column.sticky && column.left + 'px',
+                  }"
+                  :class="[`--align-${column.align || ''}`, `--sticky-${column.sticky}`]"
+                  :title="row[column.dataIndex] || ''"
                 >
                   <slot :name="column.dataIndex" v-bind="row">
                     {{ row[column.dataIndex] }}
@@ -67,10 +81,22 @@
                 </td>
               </template>
 
-              <!-- table actions -->
-              <div class="ms-table__actions" :style="{ right: tableActionsPosState + 'px' }">
-                <slot name="table-actions" v-bind="row"></slot>
-              </div>
+              <!-- table action -->
+              <td class="--sticky-right">
+                <div class="ms-table__action">
+                  <div @click="returnRow(row)" class="ms-table__action-text">Sửa</div>
+                  <div
+                    @dblclick.stop=""
+                    @click.stop="setActionContextPos($event, row)"
+                    class="ms-table__action-toggle"
+                  >
+                    <MISAIcon icon="triangle-down" />
+                  </div>
+                </div>
+                <!-- fake borders -->
+                <span class="ms-table__border-left"></span>
+                <span class="ms-table__border-bottom"></span>
+              </td>
             </tr>
           </template>
 
@@ -78,6 +104,15 @@
           <MISASkeletonRow v-else :columns="props.columns.length + 1" />
         </tbody>
       </table>
+
+      <!-- table context menu -->
+      <div
+        v-if="actionContextMenu.isShow"
+        :style="{ top: actionContextMenu.top + 'px' }"
+        class="ms-table__action-context"
+      >
+        <slot name="context-menu"></slot>
+      </div>
     </div>
 
     <!-- table footer -->
@@ -138,13 +173,11 @@
         </div>
       </div>
     </div>
-    <!-- {{ console.log(columsWithPos) }} -->
-    <!-- {{ console.log("children render") }} -->
   </div>
 </template>
 
 <script setup>
-import { computed, ref, onMounted, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import MISASkeletonRow from "../skeleton-loader/MISASkeletonRow.vue";
 import MISACheckbox from "../checkbox/MISACheckbox.vue";
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
@@ -218,7 +251,6 @@ const props = defineProps({
 });
 
 // ----- State -----
-const tableActionsPosState = ref(0);
 const pageSizeDropdown = ref({
   isShow: false,
   items: [10, 25, 50, 100],
@@ -227,68 +259,10 @@ const pageSizeDropdown = ref({
 const tableContainerRef = ref(null);
 const columsRef = ref(null);
 const columsWithPos = ref(props.columns);
-
-/**
- * Description: Xử lý tính toán vị trí của các cột
- * khi ghim cột đó sau khi dữ liệu được render vào DOM xong
- * Author: txphuc (02/07/2023)
- */
-
-watch(
-  () => props.dataSource,
-  () => {
-    const testPos = () => {
-      try {
-        if (columsRef.value && tableContainerRef.value) {
-          const tableScrollWidth = tableContainerRef.value.scrollWidth;
-
-          // Tính toán vị trí của các cột
-          const columnsPos = columsRef.value.map((columnEl) => {
-            const width = columnEl.offsetWidth;
-            const left = columnEl.offsetLeft;
-            const right = tableScrollWidth + 34 - (left + width);
-
-            return {
-              width,
-              left,
-              right,
-            };
-          });
-
-          // Gộp vị trí vào mảng các cột từ prop ban đầu
-          const result = props.columns.map((column, index) => {
-            if (column.sticky) {
-              return {
-                ...column,
-                sticky: `--sticky-${column.sticky}`,
-                ...columnsPos[index],
-              };
-            } else
-              return {
-                ...column,
-                width: "",
-                left: "",
-                right: "",
-                sticky: "",
-              };
-          });
-
-          columsWithPos.value = result;
-        }
-      } catch (error) {
-        console.warn(error);
-      }
-    };
-
-    setTimeout(() => {
-      testPos();
-    }, 50);
-  },
-  {
-    // Chạy khi DOM được cập nhật xong
-    flush: "post",
-  }
-);
+const actionContextMenu = ref({
+  isShow: false,
+  top: 0,
+});
 
 /**
  * Description: Xử lý thêm trường "checked" với bản ghi
@@ -344,8 +318,15 @@ const selectRow = (value) => {
 };
 
 /**
- * Description: Xử lý chọn một/nhiều hàng sau đó trả về
- * một mảng các phần tử được chọn
+ * Description: Xử lý chọn chỉ một hàng (chờ xoá/nhân bản)
+ * Author: txphuc (09/07/2023)
+ */
+const setSingleSelectedRow = (row) => {
+  emit("select-row", [row]);
+};
+
+/**
+ * Description: Trả về data của hàng khi double click vào hàng đó
  * Author: txphuc (30/06/2023)
  */
 const returnRow = (row) => {
@@ -436,11 +417,52 @@ const handleSelectPageSize = (pageSize) => {
 };
 
 /**
+ * Description: Xử lý tính toán vị trí của các cột
+ * khi ghim cột
+ * Author: txphuc (02/07/2023)
+ */
+const calculateColumnsPos = () => {
+  try {
+    const defaultWidth = 140;
+    const firstColumnWidth = 50;
+    const calculatedColumns = columsWithPos.value.map((column, index) => {
+      // Nếu không được chỉ định chiều dài thì sẽ được set mặc định
+      if (!column.width) {
+        column.width = defaultWidth;
+      }
+
+      // Vị trí của cột hiện tại so với vị trí bắt đầu của bảng
+      const leftPos = columsWithPos.value.reduce((left, column, currentIndex) => {
+        if (currentIndex < index) {
+          return left + (column.width || defaultWidth);
+        } else {
+          return left;
+        }
+      }, 0);
+
+      column.left = leftPos + firstColumnWidth;
+
+      // Thêm tên class cho cột có sticky (ghim cột)
+      // if (column.sticky) {
+      //   column.sticky = `--sticky-${column.sticky}`;
+      // } else column.sticky = "";
+
+      return column;
+    });
+
+    console.log(calculatedColumns);
+  } catch (error) {
+    console.warn(error);
+  }
+};
+calculateColumnsPos();
+
+/**
  * Description: Xử lý sự kiện thay đổi kích thước cột
  * bằng cách nhấn giữ và kéo trang phải/trái
  * Author: txphuc (24/06/2023)
  */
-const activeResize = (e) => {
+const activeResize = (e, column) => {
   try {
     const thElement = e.target.parentElement;
     const thElementRect = thElement.getBoundingClientRect();
@@ -449,8 +471,9 @@ const activeResize = (e) => {
     const resizeColumn = (e) => {
       const mouseX = e.clientX;
 
-      thElement.style.width = mouseX - thElementRect.left + 4 + "px";
-      // thElement.style.maxWidth = mouseX - thElementRect.left + 4 + "px";
+      column.width = mouseX - thElementRect.left + 4;
+
+      calculateColumnsPos();
     };
 
     window.addEventListener("mousemove", resizeColumn);
@@ -465,28 +488,64 @@ const activeResize = (e) => {
 };
 
 /**
- * Description: Lấy chiều dài đã cuộn để di chuyển vị trí
- * của các nút actions vào khung nhìn
- * Author: txphuc (25/06/2023)
+ * Description: Xử lý hiện context menu
+ * phía trên hoặc dưới dropdown theo diện tích hiển thị
+ * Author: txphuc (06/07/2023)
  */
-const changeActionsPos = () => {
+const setActionContextPos = (e, row) => {
   try {
-    const scrollWidth = tableContainerRef.value.scrollWidth;
-    const scrollLeft = tableContainerRef.value.scrollLeft;
-    const clientWidth = tableContainerRef.value.clientWidth;
+    if (e.target && tableContainerRef.value) {
+      const actionElement = e.target;
+      const actionPos = actionElement.getBoundingClientRect();
+      const tablePos = tableContainerRef.value.getBoundingClientRect();
+      const contextMenuHeight = 176;
+      const space = 24;
 
-    tableActionsPosState.value = scrollWidth - clientWidth - scrollLeft + 16;
+      if (actionPos.y - contextMenuHeight > tablePos.y) {
+        // Hiện lên trên của dropdown
+        actionContextMenu.value = {
+          isShow: true,
+          top: actionPos.y - contextMenuHeight,
+        };
+      } else {
+        // Hiện bên dưới dropdown
+        actionContextMenu.value = {
+          isShow: true,
+          top: actionPos.y + space,
+        };
+      }
+
+      // Chọn hàng đang được mở context menu
+      setSingleSelectedRow(row);
+    }
   } catch (error) {
-    console.warn(error);
+    console.log(error);
   }
 };
 
 /**
- * Description: Xác định vị trí cho nút action ngay khi mounted
- * Author: txphuc (25/06/2023)
+ * Description: Tắt context menu
+ * Author: txphuc (09/07/2023)
+ */
+const hideContextMenu = () => {
+  actionContextMenu.value.isShow = false;
+};
+
+/**
+ * Description: Tắt context menu khi bấm ra
+ * vị trí bất kỳ ngoài context menu
+ * Author: txphuc (09/07/2023)
  */
 onMounted(() => {
-  changeActionsPos();
+  document.addEventListener("click", hideContextMenu);
+});
+
+/**
+ * Description: Huỷ sự kiện bấm ra ngoài context menu
+ * Author: txphuc (09/07/2023)
+ */
+onUnmounted(() => {
+  document.removeEventListener("click", hideContextMenu);
 });
 </script>
 

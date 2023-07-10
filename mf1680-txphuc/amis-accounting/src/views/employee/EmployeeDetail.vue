@@ -15,8 +15,8 @@
                   :error-msg="validatedInputs.employeeCode"
                   label="Mã"
                   for="input-id"
-                  class="mb-24"
                   required-mark
+                  space-bottom
                 >
                   <MISAInput
                     tabindex="1"
@@ -33,8 +33,8 @@
                   :error-msg="validatedInputs.fullName"
                   label="Tên"
                   for="input-name"
-                  class="mb-24"
                   required-mark
+                  space-bottom
                 >
                   <MISAInput
                     tabindex="2"
@@ -46,7 +46,7 @@
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="12">
-                <MISAFormGroup label="Đơn vị" for="input-department" class="mb-24" required-mark>
+                <MISAFormGroup label="Đơn vị" for="input-department" required-mark space-bottom>
                   <MISASelect
                     tabindex="3"
                     v-model="formData.departmentId"
@@ -56,7 +56,7 @@
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="12">
-                <MISAFormGroup label="Chức danh" for="input-position" class="mb-24">
+                <MISAFormGroup label="Chức danh" for="input-position" space-bottom>
                   <MISASelect
                     tabindex="4"
                     v-model="formData.positionId"
@@ -71,7 +71,7 @@
           <MISACol span="6">
             <MISARow :gutter="{ x: 8 }">
               <MISACol span="5">
-                <MISAFormGroup label="Ngày sinh" for="input-date-of-birth" class="mb-24">
+                <MISAFormGroup label="Ngày sinh" for="input-date-of-birth" space-bottom>
                   <MISAInput
                     tabindex="5"
                     v-model="formData.dateOfBirth"
@@ -81,7 +81,7 @@
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="7">
-                <MISAFormGroup label="Giới tính" for="" class="mb-24">
+                <MISAFormGroup label="Giới tính" for="" space-bottom>
                   <div class="d-flex col-gap-16">
                     <MISARadioButton tabindex="6" v-model="formData.gender" value="0" label="Nam" />
                     <MISARadioButton tabindex="7" v-model="formData.gender" value="1" label="Nữ" />
@@ -99,7 +99,7 @@
                   v-tooltip.top="'Số Chứng minh nhân dân'"
                   label="Số CMND"
                   for="input-identity-number"
-                  class="mb-24"
+                  space-bottom
                 >
                   <MISAInput
                     tabindex="9"
@@ -109,7 +109,7 @@
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="5">
-                <MISAFormGroup label="Ngày cấp" for="input-identity-date" class="mb-24">
+                <MISAFormGroup label="Ngày cấp" for="input-identity-date" space-bottom>
                   <MISAInput
                     tabindex="10"
                     v-model="formData.identityDate"
@@ -119,7 +119,7 @@
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="12">
-                <MISAFormGroup label="Nơi cấp" for="input-identity-place" class="mb-24">
+                <MISAFormGroup label="Nơi cấp" for="input-identity-place" space-bottom>
                   <MISAInput
                     tabindex="11"
                     v-model="formData.identityPlace"
@@ -133,52 +133,75 @@
 
         <MISARow :gutter="{ x: 8 }">
           <MISACol span="12">
-            <MISAFormGroup label="Địa chỉ" for="input-address" class="mb-24">
+            <MISAFormGroup label="Địa chỉ" for="input-address" space-bottom>
               <MISAInput tabindex="12" v-model="formData.address" id="input-address" />
             </MISAFormGroup>
           </MISACol>
-          <MISACol span="4">
-            <MISAFormGroup label="Số điện thoại" for="input-phone-number">
+        </MISARow>
+
+        <MISARow :gutter="{ x: 8 }">
+          <MISACol span="3">
+            <MISAFormGroup
+              v-tooltip.top="'Điện thoại di động'"
+              label="ĐT di động"
+              for="input-phone-number"
+              space-bottom
+            >
               <MISAInput tabindex="13" v-model="formData.phoneNumber" id="input-phone-number" />
             </MISAFormGroup>
           </MISACol>
-          <MISACol span="4">
-            <MISAFormGroup label="Email" for="input-email">
-              <MISAInput tabindex="14" v-model="formData.email" id="input-email" />
+          <MISACol span="3">
+            <MISAFormGroup
+              v-tooltip.top="'Điện thoại cố định'"
+              label="ĐT cố định"
+              for="input-salary"
+              space-bottom
+            >
+              <MISAInput tabindex="14" id="input-salary" />
             </MISAFormGroup>
           </MISACol>
-          <MISACol span="4">
-            <MISAFormGroup label="Tiền lương" for="input-salary">
-              <MISAInput
-                tabindex="15"
-                :model-value="formData.salary"
-                @update:modelValue="
-                  (value) => {
-                    formData.salary = convertNumberToCurrency(value);
-                  }
-                "
-                id="input-salary"
-              />
+          <MISACol span="3">
+            <MISAFormGroup label="Email" for="input-email" space-bottom>
+              <MISAInput tabindex="15" v-model="formData.email" id="input-email" />
+            </MISAFormGroup>
+          </MISACol>
+        </MISARow>
+
+        <MISARow :gutter="{ x: 8 }">
+          <MISACol span="3">
+            <MISAFormGroup label="Tài khoản ngân hàng" for="account">
+              <MISAInput tabindex="16" id="account" />
+            </MISAFormGroup>
+          </MISACol>
+          <MISACol span="3">
+            <MISAFormGroup label="Tên ngân hàng" for="bank-name">
+              <MISAInput tabindex="17" id="bank-name" />
+            </MISAFormGroup>
+          </MISACol>
+          <MISACol span="3">
+            <MISAFormGroup label="Chi nhánh" for="banch">
+              <MISAInput tabindex="18" id="banch" />
             </MISAFormGroup>
           </MISACol>
         </MISARow>
       </template>
 
       <template #controls-left>
-        <MISAButton tabindex="18" @click="employeeStore.closeForm" type="secondary">Huỷ</MISAButton>
+        <MISAButton tabindex="21" @click="employeeStore.closeForm" type="secondary">Huỷ</MISAButton>
       </template>
       <template #controls-right>
-        <MISAButton tabindex="17" @click="handleSubmitForm(false)" type="secondary">
+        <MISAButton tabindex="20" @click="handleSubmitForm(false)" type="secondary">
           <MISASpinner v-if="loading.submit" absolute />
           <span :style="{ opacity: loading.submit ? 0 : 1 }">Cất</span>
         </MISAButton>
-        <MISAButton tabindex="16" @click="handleSubmitForm()" type="primary">
+        <MISAButton tabindex="19" @click="handleSubmitForm()" type="primary">
           <MISASpinner v-if="loading.submitAndContinue" absolute />
           <span :style="{ opacity: loading.submitAndContinue ? 0 : 1 }">Cất và thêm</span>
         </MISAButton>
       </template>
     </MISAPopup>
 
+    <!-- delete confirm dialog -->
     <MISADialog
       v-if="dialogState.active"
       v-bind="dialogState"
@@ -205,7 +228,6 @@ import employeeApi from "@/api/employee-api";
 import departmentApi from "@/api/department-api";
 import positionApi from "@/api/position-api";
 import formatDate from "@/helper/format-date";
-import { convertNumberToCurrency } from "@/helper/convert-currency";
 import { useEmployeeStore } from "@/stores/employee-store";
 import { useToastStore } from "@/stores/toast-store";
 import enums from "@/helper/enum";

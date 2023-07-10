@@ -66,10 +66,14 @@
   align-items: center;
   color: #869ab8;
   border-top: 1px solid #213553;
-  overflow: hidden;
+  overflow-x: hidden;
   user-select: none;
   cursor: pointer;
   transition: color 0.2s ease;
+}
+
+.sidebar__toggle:hover {
+  color: var(--white);
 }
 
 .sidebar__toggle-text {
@@ -79,8 +83,8 @@
   padding-left: 12px;
 }
 
-.sidebar__toggle:hover {
-  color: var(--white);
+.sidebar__toggle-icon {
+  transition: all 0.2s ease;
 }
 
 /* compact sidebar */

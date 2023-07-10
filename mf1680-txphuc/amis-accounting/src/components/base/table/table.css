@@ -78,6 +78,16 @@
   height: 100%;
   border-right: 1px solid var(--border-color);
 }
+.ms-table__table td .ms-table__border-left,
+.ms-table__table th .ms-table__border-left {
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 100%;
+  border-left: 1px solid var(--border-color);
+}
 
 .ms-table__table th {
   position: sticky;
@@ -157,60 +167,32 @@
   background: var(--white);
 }
 
-/* table actions */
-.ms-table__actions {
-  position: absolute;
-  right: 16px;
-  height: 100%;
+/* ----- table action ----- */
+.ms-table__action {
+  width: 100%;
   display: flex;
-  align-items: center;
-  column-gap: 8px;
-  background: transparent;
-  display: none;
-}
-
-.ms-table__action-btn {
-  position: relative;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  background: var(--white);
-  border-radius: 50%;
-  box-shadow: var(--box-shadow-medium);
+  align-items: center;
+  color: var(--primary-color-500);
+}
+
+.ms-table__action-text {
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 500;
+  color: var(--primary-color-500);
   cursor: pointer;
-  transition: background 0.2s ease;
+}
+.ms-table__action-toggle {
+  margin-left: 8px;
+  cursor: pointer;
 }
 
-.ms-table__action-dropdown {
+.ms-table__action-context {
   position: absolute;
-  top: calc(100% + 4px);
-  right: 0;
-  z-index: 1;
-  display: none;
-}
-
-.ms-table__action-dropdown.--active {
-  display: block;
-}
-
-.ms-table__action-dropdown.--active ~ .ms-tooltip {
-  display: none;
-}
-
-.ms-table__action-btn:hover {
-  background: var(--gray-100);
-}
-.ms-table__action-btn:active {
-  background: var(--gray-200);
-}
-
-.ms-table__action-icon {
-  width: 24px;
-  height: 24px;
-  background-color: var(--secondary-text-color);
+  top: 50%;
+  right: 56px;
+  z-index: 2;
 }
 
 /* ----- table footer ----- */
@@ -309,4 +291,15 @@
 
 .ms-table__next-btn {
   margin-left: 16px;
+}
+
+/* text align */
+.ms-table .--align-left {
+  text-align: left;
+}
+.ms-table .--align-right {
+  text-align: right;
+}
+.ms-table .--align-center {
+  text-align: center;
 }

@@ -144,6 +144,14 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
+.ms-icon--triangle-down-24 {
+  -webkit-mask-image: url("./Sprites.64af8f61.svg");
+  mask-image: url("./Sprites.64af8f61.svg");
+  -webkit-mask-position: -844px -355px;
+  mask-position: -844px -355px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
 .ms-icon--angle-down-24 {
   -webkit-mask-image: url("./Sprites.64af8f61.svg");
   mask-image: url("./Sprites.64af8f61.svg");

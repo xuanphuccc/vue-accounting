@@ -81,7 +81,7 @@ const props = defineProps({
     default: "Chọn giá trị",
   },
 
-  // Search
+  // Search giá trị (combobox)
   search: {
     type: Boolean,
     default: false,
@@ -166,13 +166,23 @@ const selectedOption = computed(() => {
 });
 
 /**
+ * Description: Gán giá trị cho input search khi option được chọn
+ * Author: txphuc (10/07/2023)
+ */
+watch(
+  () => selectedOption.value,
+  () => {
+    searchValue.value = selectedOption.value.label;
+  }
+);
+
+/**
  * Description: Hàm chọn giá trị của combobox
  * Author: txphuc (27/06/2023)
  */
 const selectOption = (option) => {
   selectedValue.value = option.value;
   emit("update:modelValue", option.value);
-  searchValue.value = option.label;
 
   // Đóng dropdown
   if (comboboxRef.value) {
@@ -218,7 +228,7 @@ const preSelectOnPressArrow = (e) => {
 };
 
 /**
- * Description: Reset giá trị đã chọn về rỗng
+ * Description: Reset giá trị đã chọn về rỗng (chế độ dropdown list)
  * Author: txphuc (04/07/2023)
  */
 const clearSelectedValue = (e) => {

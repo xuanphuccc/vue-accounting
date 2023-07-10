@@ -2,7 +2,6 @@
   <div
     @keydown.esc="$emit('close')"
     @keydown.enter="$emit('submit')"
-    @click="$emit('close')"
     tabindex="-1"
     class="ms-popup-overlay"
   >

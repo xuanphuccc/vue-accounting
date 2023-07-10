@@ -7,7 +7,6 @@
       </div>
 
       <div class="page__header-controls">
-        <MISACheckbox label="Xuan Phuc" />
         <MISAButton @click="employeeStore.openFormForCreate" type="primary"
           >Thêm mới nhân viên</MISAButton
         >
@@ -67,44 +66,28 @@
         @select-page-size="handleChangePageSize"
         @double-click="employeeStore.openFormForUpdate"
       >
-        <template #table-actions="row">
-          <MISATableAction
-            @click="employeeStore.openFormForUpdate(row)"
-            title="Chỉnh sửa"
-            icon="ms-icon--pen-24"
-          ></MISATableAction>
-          <MISATableAction title="Thêm">
-            <template #action-dropdown>
-              <!-- context menu -->
-              <MISAContextMenu>
-                <MISAContextItem icon="ms-icon--duplicate-24"> Nhân bản </MISAContextItem>
-                <MISAContextItem
-                  @click="
-                    () => {
-                      showDeleteConfirmDialog(`Bạn có muốn xoá  nhân viên ${row.FullName}`);
-                      setSingleSelectedRow(row);
-                    }
-                  "
-                  icon="ms-icon--trash"
-                >
-                  Xoá
-                </MISAContextItem>
-                <MISAContextItem icon="ms-icon--circle-slash-24"> Ngừng sử dụng </MISAContextItem>
-              </MISAContextMenu>
-            </template>
-          </MISATableAction>
+        <template #context-menu>
+          <MISAContextMenu>
+            <MISAContextItem>Nhân bản</MISAContextItem>
+            <MISAContextItem
+              @click="
+                showDeleteConfirmDialog(
+                  `Xoá nhân viên ${selectedRowsState[0]?.FullName}. Nhân viên sau khi xoá sẽ không thể khôi phục lại được`
+                )
+              "
+              >Xoá</MISAContextItem
+            >
+            <MISAContextItem>Ngừng sử dụng</MISAContextItem>
+          </MISAContextMenu>
         </template>
       </MISATable>
 
       <!-- Modal -->
       <Teleport to="#app">
-        <MISADialog
-          v-if="dialogState.active"
-          v-bind="dialogState"
-          cancel-text="Huỷ"
-          @ok="deleteSelectedEmployee"
-          @cancel="hideConfirmDialog"
-        />
+        <MISADialog v-if="dialogState.active" v-bind="dialogState" @cancel="hideConfirmDialog">
+          <MISAButton @click="hideConfirmDialog" type="secondary">Huỷ</MISAButton>
+          <MISAButton @click="deleteSelectedEmployee" type="danger">Xoá</MISAButton>
+        </MISADialog>
       </Teleport>
 
       <!-- Employee detail -->
@@ -116,17 +99,15 @@
 <script setup>
 import { ref, watch } from "vue";
 
-import MISACheckbox from "@/components/base/checkbox/MISACheckbox.vue";
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import MISAButton from "@/components/base/button/MISAButton.vue";
 import MISAInput from "@/components/base/input/MISAInput.vue";
 import MISAInputGroup from "@/components/base/input/MISAInputGroup.vue";
 import MISAInputAction from "@/components/base/input/MISAInputAction.vue";
 import MISATable from "@/components/base/table/MISATable.vue";
-import MISADialog from "@/components/base/dialog/MISADialog.vue";
 import MISAContextMenu from "@/components/base/context-menu/MISAContextMenu.vue";
 import MISAContextItem from "@/components/base/context-menu/MISAContextItem.vue";
-import MISATableAction from "@/components/base/table/MISATableAction.vue";
+import MISADialog from "@/components/base/dialog/MISADialog.vue";
 import EmployeeDetail from "./EmployeeDetail.vue";
 import employeeApi from "@/api/employee-api";
 import formatDate from "@/helper/format-date";
@@ -157,10 +138,10 @@ const employeeStore = useEmployeeStore();
 const toastStore = useToastStore();
 
 const columns = ref([
-  { key: 1, title: "Mã nhân viên", dataIndex: "EmployeeCode" },
-  { key: 2, title: "Tên nhân viên", dataIndex: "FullName" },
+  { key: 1, title: "Mã nhân viên", dataIndex: "EmployeeCode", width: 120, sticky: "left" },
+  { key: 2, title: "Tên nhân viên", dataIndex: "FullName", width: 200, sticky: "left" },
   { key: 3, title: "Giới tính", dataIndex: "GenderName" },
-  { key: 4, title: "Ngày sinh", dataIndex: "DateOfBirthFormated" },
+  { key: 4, title: "Ngày sinh", dataIndex: "DateOfBirthFormated", align: "center" },
   {
     key: 5,
     title: "Số CMND",
@@ -169,11 +150,10 @@ const columns = ref([
     desc: "Số Chứng minh nhân dân",
   },
   { key: 6, title: "Chức danh", dataIndex: "PositionName" },
-  { key: 7, title: "Tên đơn vị", dataIndex: "DepartmentName" },
+  { key: 7, title: "Tên đơn vị", dataIndex: "DepartmentName", width: 240 },
   { key: 8, title: "Email", dataIndex: "Email" },
   { key: 9, title: "Số điện thoại", dataIndex: "PhoneNumber", align: "right" },
   { key: 10, title: "Lương", dataIndex: "Salary", align: "right" },
-  { key: 11, title: "Chức năng", dataIndex: "Function" },
 ]);
 
 /**
@@ -252,14 +232,6 @@ const deleteSelectedEmployee = async () => {
  */
 const selectTableRows = (value) => {
   selectedRowsState.value = value;
-};
-
-/**
- * Description: Set cột đang được chọn để xác nhận xoá
- * Author: txphuc (27/06/2023)
- */
-const setSingleSelectedRow = (row) => {
-  selectedRowsState.value = [row];
 };
 
 /**

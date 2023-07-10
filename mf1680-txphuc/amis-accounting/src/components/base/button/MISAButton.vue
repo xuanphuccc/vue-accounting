@@ -1,6 +1,6 @@
 <template>
   <button
-    @click.stop="handleOnClick"
+    @click="handleOnClick"
     :class="[
       `ms-btn`,
       `ms-btn--${props.type}`,

@@ -31,9 +31,10 @@
 
 .ms-dialog__title {
   font-size: 20px;
-  line-height: 20px;
+  line-height: 22px;
   font-weight: 700;
   color: var(--primary-text-color);
+  padding-right: 24px;
 }
 
 .ms-dialog__close {

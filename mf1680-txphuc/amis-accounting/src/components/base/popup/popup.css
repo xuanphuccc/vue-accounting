@@ -16,6 +16,8 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 400px;
+  display: flex;
+  flex-direction: column;
   background: var(--white);
   border-radius: 4px;
   overflow: hidden;
@@ -26,7 +28,7 @@
 
 .ms-popup__title {
   font-size: 24px;
-  line-height: 30px;
+  line-height: 24px;
   font-weight: 700;
   color: var(--primary-text-color);
   padding: 24px 24px 0;
@@ -42,8 +44,7 @@
 
 .ms-popup__content {
   padding: 24px;
-  max-height: calc(100vh - 160px);
-  overflow-y: auto;
+  overflow-y: visible;
 }
 
 .ms-popup__desc {

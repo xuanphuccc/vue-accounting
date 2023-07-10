@@ -60,7 +60,9 @@
     <div ref="tippyRef" class="sidebar__tippy">Tổng quan</div>
 
     <div @click="globalStore.toggleSidebar" class="sidebar__toggle">
-      <MISAIcon icon="angle-left" />
+      <div class="sidebar__toggle-icon">
+        <MISAIcon icon="angle-left" />
+      </div>
       <div class="sidebar__toggle-text">Thu gọn</div>
     </div>
   </nav>

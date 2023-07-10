@@ -22,14 +22,6 @@
   display: flex;
 }
 
-.ms-select.--show-search .ms-select__toggle {
-  padding: 0 12px;
-  border-left: 1px solid var(--border-color);
-}
-.ms-select.--show-search .ms-select__clear {
-  display: none;
-}
-
 .ms-form__group.--error .ms-select {
   border-color: var(--red-500);
 }
@@ -97,7 +89,6 @@
 
 .ms-select__select-list {
   flex: 1;
-
   list-style: none;
   overflow-y: auto;
 }
@@ -130,4 +121,16 @@
 }
 .ms-select__item-icon {
   display: none;
+}
+
+/* combobox */
+.ms-select.--show-search .ms-select__toggle {
+  padding: 0 12px;
+  border-left: 1px solid var(--border-color);
+}
+.ms-select.--show-search .ms-select__clear {
+  display: none;
+}
+.ms-select.--show-search .ms-select__list-container {
+  max-height: 380px;
 }

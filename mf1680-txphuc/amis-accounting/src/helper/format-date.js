@@ -33,4 +33,16 @@ function formatDate(dateString, format = "DD/MM/YYYY") {
   }
 }
 
+export function formatDateString(dateString, format = "DD/MM/YYYY") {
+  dateString = dateString.replace(/[^\w]/gi, "");
+
+  const data = {
+    DD: dateString.slice(0, 2) || "DD",
+    MM: dateString.slice(2, 4) || "MM",
+    YYYY: dateString.slice(4, 8) || "YYYY",
+  };
+
+  console.log(data, `${data.DD || "DD"}/${data.MM || "MM"}/${data.YYYY || "YYYY"}`);
+}
+
 export default formatDate;

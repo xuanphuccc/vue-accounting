@@ -2,6 +2,7 @@
 .ms-label {
   display: inline-block;
   font-size: 14px;
+  line-height: 14px;
   color: var(--primary-text-color);
   font-weight: 500;
   margin-bottom: 8px;
@@ -42,11 +43,16 @@
 }
 
 /* input text */
+.ms-form__group {
+  position: relative;
+}
+
 .ms-form__group .ms-input-text {
+  position: absolute;
+  bottom: 4px;
   font-size: 12px;
+  line-height: 12px;
   color: var(--secondary-text-color);
-  margin-top: 8px;
-  display: none;
 }
 
 .ms-form__group.--error .ms-input {
@@ -121,4 +127,8 @@
 
 .ms-form__group.--success .ms-input-group__action:active {
   background: transparent;
+}
+
+.ms-form__group.--space-bottom {
+  padding-bottom: 24px;
 }

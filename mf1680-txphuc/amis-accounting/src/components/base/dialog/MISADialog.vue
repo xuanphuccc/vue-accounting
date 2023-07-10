@@ -14,10 +14,12 @@
       </div>
 
       <div class="ms-dialog__controls">
-        <MISAButton v-if="props.cancelText" @click="$emit('cancel')" type="secondary">{{
-          props.cancelText
-        }}</MISAButton>
-        <MISAButton @click="$emit('ok')" type="primary">{{ props.okText }}</MISAButton>
+        <slot>
+          <MISAButton v-if="props.cancelText" @click="$emit('cancel')" type="secondary">{{
+            props.cancelText
+          }}</MISAButton>
+          <MISAButton @click="$emit('ok')" type="primary">{{ props.okText }}</MISAButton>
+        </slot>
       </div>
     </div>
   </div>
