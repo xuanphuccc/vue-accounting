@@ -3,7 +3,7 @@
     <MISAPopup
       @close="employeeStore.closeForm"
       @submit="handleSubmitForm()"
-      :width="860"
+      :width="880"
       :title="
         employeeStore.mode === enums.form.mode.CREATE
           ? MISAResource[globalStore.lang].Page.Employee.Form.CreateTitle
@@ -269,6 +269,7 @@
       v-bind="dialogState"
       @cancel="closeDialog"
       @ok="closeDialog"
+      :ok-text="MISAResource[globalStore.lang].Button.OK"
     />
   </Teleport>
 </template>

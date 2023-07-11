@@ -70,6 +70,7 @@ const MISAResource = {
       Reload: "Tải lại",
       Notification: "Thông báo",
       Account: "Tài khoản",
+      Close: "Đóng",
     },
 
     Text: {
@@ -174,7 +175,182 @@ const MISAResource = {
       },
     },
   },
-  EN: {},
+  EN: {
+    Product: "Accounting",
+    Company: "MISA Joint Stock Company",
+    Sidebar: {
+      Dashboard: "Dashboard",
+      Employee: "Employee",
+      Cash: "Cash",
+      Purchase: "Purchase",
+      Sell: "Sell",
+      InvoiceManagement: "Invoice",
+      Warehouse: "Warehouse",
+      Tax: "Tax",
+      Report: "Report",
+      Collapse: "Collapse",
+    },
+
+    Gender: {
+      Male: "Male",
+      Female: "Female",
+      Other: "Other",
+    },
+
+    Button: {
+      Save: "Save",
+      SaveAndContinue: "Save and continue",
+      Cancel: "Cancel",
+      OK: "OK",
+      UnChecked: "Uncheck",
+      Delete: "Delete",
+      Update: "Update",
+    },
+
+    Table: {
+      Functions: "Functions",
+    },
+
+    ContextMenu: {
+      Duplicate: "Duplicate",
+      Delete: "Delete",
+      StopUsing: "Stop Using",
+    },
+
+    Combobox: {
+      PlaceHolder: "Select a value",
+    },
+
+    Paging: {
+      TotalRecords: "Total",
+      ItemsPerPage: "Records per page",
+      Records: "Records",
+      NextPage: "Next Page",
+      PrevPage: "Previous Page",
+    },
+
+    Dialog: {
+      ErrorTitle: "Error",
+    },
+
+    Popup: {},
+
+    Toast: {
+      Success: "Success!",
+      Error: "Error!",
+      Warning: "Warning!",
+      Info: "Information!",
+    },
+
+    Tooltip: {
+      Reload: "Reload",
+      Notification: "Notification",
+      Account: "Account",
+      Close: "Close",
+    },
+
+    Text: {
+      Selected: "Selected",
+    },
+
+    Page: {
+      Employee: {
+        Title: "Employee",
+        AddButton: "Add new employee",
+        SearchPlaceholder: "Search by code or name",
+        Form: {
+          CreateTitle: "Add Employee",
+          UpdateTitle: "Edit Employee",
+        },
+        Toast: {
+          CreateSuccess: "Successfully added employee",
+          UpdateSuccess: "Successfully updated employee",
+          DeleteSuccess: "Successfully deleted employee",
+          DuplicateSuccess: "Successfully duplicated employee",
+        },
+        Dialog: {
+          DeleteConfirmTitle: "Delete Employee",
+          DeleteConfirmDesc: (name) =>
+            `Delete employee "${name}". The employee cannot be recovered after deletion`,
+          MultipleDeleteConfirmDesc: (count) =>
+            `Delete ${count} employees. Employees cannot be recovered after deletion`,
+        },
+        Validate: {
+          EmployeeCode: "Code is required",
+          FullName: "Name is required",
+        },
+
+        EmployeeCode: {
+          Title: "Code",
+          SubTitle: "Employee code",
+          Desc: "Code",
+        },
+        FullName: {
+          Title: "Name",
+          SubTitle: "Employee name",
+          Desc: "Name",
+        },
+        Department: {
+          Title: "Department",
+          Desc: "Department",
+        },
+        Position: {
+          Title: "Position",
+          Desc: "Position",
+        },
+        DateOfBirth: {
+          Title: "Date of Birth",
+          Desc: "Date of Birth",
+        },
+        Gender: {
+          Title: "Gender",
+          Desc: "Gender",
+        },
+        IdentityNumber: {
+          Title: "ID Number",
+          Desc: "Identity Card Number",
+        },
+        IdentityDate: {
+          Title: "Issue Date",
+          Desc: "Issue Date",
+        },
+        IdentityPlace: {
+          Title: "Issue Place",
+          Desc: "Issue Place",
+        },
+        Address: {
+          Title: "Address",
+          Desc: "Address",
+        },
+        MobilePhone: {
+          Title: "Mobile Phone",
+          Desc: "Mobile Phone",
+        },
+        LandlinePhone: {
+          Title: "Landline Phone",
+          Desc: "Landline Phone",
+        },
+        Email: {
+          Title: "Email",
+          Desc: "Email",
+        },
+        BankAccount: {
+          Title: "Bank Account",
+          SubTitle: "Account Number",
+          Desc: "Bank Account",
+        },
+        BankName: {
+          Title: "Bank Name",
+          Desc: "Bank Name",
+        },
+        BankBranch: {
+          Title: "Bank Branch",
+          SubTitle: "Bank Account Branch",
+          Desc: "Bank Account Branch",
+        },
+      },
+    },
+  },
 };
 
 export default MISAResource;

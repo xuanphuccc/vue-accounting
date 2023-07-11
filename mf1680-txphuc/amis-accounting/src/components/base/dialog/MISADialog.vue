@@ -2,7 +2,11 @@
   <div @click="$emit('cancel')" :class="[`ms-dialog-overlay`, '--active']">
     <div @click.stop="" class="ms-dialog">
       <h4 class="ms-dialog__title">{{ props.title }}</h4>
-      <div @click="$emit('cancel')" class="ms-dialog__close" title="Đóng">
+      <div
+        @click="$emit('cancel')"
+        class="ms-dialog__close"
+        :title="MISAResource[globalStore.lang].Tooltip.Close"
+      >
         <MISAIcon icon="times" />
       </div>
 
@@ -28,6 +32,8 @@
 <script setup>
 import MISAButton from "../button/MISAButton.vue";
 import MISAIcon from "../icon/MISAIcon.vue";
+import MISAResource from "@/helper/resource";
+import { useGlobalStore } from "@/stores/global-store";
 
 defineEmits(["cancel", "ok"]);
 
@@ -41,13 +47,13 @@ const props = defineProps({
   // Tiêu đề
   title: {
     type: String,
-    default: "Tiêu đề",
+    default: "Title",
   },
 
   // Mô tả
   description: {
     type: String,
-    default: "Mô tả",
+    default: "Description",
   },
 
   // Text của nút Cancel
@@ -59,9 +65,11 @@ const props = defineProps({
   // Text của nút OK
   okText: {
     type: String,
-    default: "Đồng ý",
+    default: "OK",
   },
 });
+
+const globalStore = useGlobalStore();
 </script>
 
 <style scoped>

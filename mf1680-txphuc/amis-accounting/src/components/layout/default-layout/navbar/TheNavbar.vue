@@ -26,7 +26,7 @@
           <MISAIcon icon="bell" />
         </div>
 
-        <div class="navbar__avatar-wrap">
+        <div @click.stop="openUserMenu" class="navbar__avatar-wrap">
           <img
             class="navbar__avatar"
             src="../../../../assets/img/avatar-default.png"
@@ -42,15 +42,44 @@
         </div>
       </div>
     </div>
+
+    <MISAUserMenu v-if="isOpenUserMenu" @click.stop="" />
   </header>
 </template>
 
 <script setup>
+import MISAUserMenu from "@/components/base/user-menu/MISAUserMenu.vue";
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import { useGlobalStore } from "@/stores/global-store";
 import MISAResource from "@/helper/resource";
+import { onMounted, ref } from "vue";
 
+const isOpenUserMenu = ref(false);
 const globalStore = useGlobalStore();
+
+/**
+ * Description: Hàm mở menu người dùng
+ * Author: txphuc (11/07/2023)
+ */
+const openUserMenu = () => {
+  isOpenUserMenu.value = true;
+};
+
+/**
+ * Description: Hàm đóng menu người dùng
+ * Author: txphuc (11/07/2023)
+ */
+const closeUserMenu = () => {
+  isOpenUserMenu.value = false;
+};
+
+/**
+ * Description: Xử lý sự kiện click ra ngoài thì tắt user menu
+ * Author: txphuc (11/07/2023)
+ */
+onMounted(() => {
+  window.addEventListener("click", closeUserMenu);
+});
 </script>
 
 <style scoped>

@@ -65,12 +65,14 @@
         :columns="columns"
         :data-source="employeeData"
         :selected-rows="selectedRowsState"
+        :active-row="activeRowState"
         :loading="isLoading"
         :total-page="pagingInfoState.totalPage"
         :total-records="pagingInfoState.totalRecords"
         :current-page="filterParamsState.pageNumber"
         :page-size="filterParamsState.pageSize"
         @select-row="selectTableRows"
+        @active-row="setActiveRow"
         @next-page="handleNextPage"
         @prev-page="handlePrevPage"
         @select-page-size="handleChangePageSize"
@@ -78,20 +80,22 @@
       >
         <template #context-menu>
           <MISAContextMenu small>
-            <MISAContextItem @click="employeeStore.openFormForDuplicate(selectedRowsState[0])"
-              >Nhân bản</MISAContextItem
-            >
+            <MISAContextItem @click="employeeStore.openFormForDuplicate(activeRowState)">{{
+              MISAResource[globalStore.lang].ContextMenu.Duplicate
+            }}</MISAContextItem>
             <MISAContextItem
               @click="
                 showDeleteConfirmDialog(
                   MISAResource[globalStore.lang].Page.Employee.Dialog.DeleteConfirmDesc(
-                    selectedRowsState[0]?.FullName
+                    activeRowState.FullName
                   )
                 )
               "
-              >Xoá</MISAContextItem
+              >{{ MISAResource[globalStore.lang].ContextMenu.Delete }}</MISAContextItem
             >
-            <MISAContextItem>Ngừng sử dụng</MISAContextItem>
+            <MISAContextItem>{{
+              MISAResource[globalStore.lang].ContextMenu.StopUsing
+            }}</MISAContextItem>
           </MISAContextMenu>
         </template>
       </MISATable>
@@ -99,8 +103,12 @@
       <!-- Modal -->
       <Teleport to="#app">
         <MISADialog v-if="dialogState.active" v-bind="dialogState" @cancel="hideConfirmDialog">
-          <MISAButton @click="hideConfirmDialog" type="secondary">Huỷ</MISAButton>
-          <MISAButton @click="deleteSelectedEmployee" type="danger">Xoá</MISAButton>
+          <MISAButton @click="hideConfirmDialog" type="secondary">{{
+            MISAResource[globalStore.lang].Button.Cancel
+          }}</MISAButton>
+          <MISAButton @click="handleDeleteEmployee" type="danger">{{
+            MISAResource[globalStore.lang].Button.Delete
+          }}</MISAButton>
         </MISADialog>
       </Teleport>
 
@@ -142,6 +150,7 @@ const pagingInfoState = ref({
   totalRecords: 0,
 });
 const selectedRowsState = ref([]);
+const activeRowState = ref(null);
 const dialogState = ref({
   active: false,
   type: "warning",
@@ -154,70 +163,85 @@ const globalStore = useGlobalStore();
 const employeeStore = useEmployeeStore();
 const toastStore = useToastStore();
 
-const columns = ref([
-  {
-    key: 1,
-    title: MISAResource[globalStore.lang].Page.Employee.EmployeeCode.SubTitle,
-    dataIndex: "EmployeeCode",
-    width: 120,
-    sticky: "left",
+const columns = ref([]);
+
+/**
+ * Description: Gán lại giá trị cột khi ngôn ngữ thay đổi
+ * Author: txphuc (11/07/2023)
+ */
+watch(
+  () => globalStore.lang,
+  () => {
+    columns.value = [
+      {
+        key: 1,
+        title: MISAResource[globalStore.lang].Page.Employee.EmployeeCode.SubTitle,
+        dataIndex: "EmployeeCode",
+        width: 130,
+        sticky: "left",
+      },
+      {
+        key: 2,
+        title: MISAResource[globalStore.lang].Page.Employee.FullName.SubTitle,
+        dataIndex: "FullName",
+        width: 200,
+        sticky: "left",
+      },
+      {
+        key: 3,
+        title: MISAResource[globalStore.lang].Page.Employee.Gender.Title,
+        dataIndex: "GenderName",
+      },
+      {
+        key: 4,
+        title: MISAResource[globalStore.lang].Page.Employee.DateOfBirth.Title,
+        dataIndex: "DateOfBirthFormated",
+        align: "center",
+      },
+      {
+        key: 5,
+        title: MISAResource[globalStore.lang].Page.Employee.IdentityNumber.Title,
+        dataIndex: "IdentityNumber",
+        desc: MISAResource[globalStore.lang].Page.Employee.IdentityNumber.Desc,
+        align: "right",
+      },
+      {
+        key: 6,
+        title: MISAResource[globalStore.lang].Page.Employee.Position.Title,
+        dataIndex: "PositionName",
+        width: 180,
+      },
+      {
+        key: 7,
+        title: MISAResource[globalStore.lang].Page.Employee.Department.Title,
+        dataIndex: "DepartmentName",
+        width: 240,
+      },
+      {
+        key: 8,
+        title: MISAResource[globalStore.lang].Page.Employee.BankAccount.SubTitle,
+        dataIndex: "BankAccount",
+        align: "right",
+        width: 180,
+      },
+      {
+        key: 9,
+        title: MISAResource[globalStore.lang].Page.Employee.BankName.Title,
+        dataIndex: "BankName",
+      },
+      {
+        key: 10,
+        title: MISAResource[globalStore.lang].Page.Employee.BankBranch.SubTitle,
+        dataIndex: "BankBranch",
+        desc: MISAResource[globalStore.lang].Page.Employee.BankBranch.Desc,
+        width: 240,
+      },
+    ];
   },
   {
-    key: 2,
-    title: MISAResource[globalStore.lang].Page.Employee.FullName.SubTitle,
-    dataIndex: "FullName",
-    width: 200,
-    sticky: "left",
-  },
-  {
-    key: 3,
-    title: MISAResource[globalStore.lang].Page.Employee.Gender.Title,
-    dataIndex: "GenderName",
-  },
-  {
-    key: 4,
-    title: MISAResource[globalStore.lang].Page.Employee.DateOfBirth.Title,
-    dataIndex: "DateOfBirthFormated",
-    align: "center",
-  },
-  {
-    key: 5,
-    title: MISAResource[globalStore.lang].Page.Employee.IdentityNumber.Title,
-    dataIndex: "IdentityNumber",
-    desc: MISAResource[globalStore.lang].Page.Employee.IdentityNumber.Desc,
-    align: "right",
-  },
-  {
-    key: 6,
-    title: MISAResource[globalStore.lang].Page.Employee.Position.Title,
-    dataIndex: "PositionName",
-    width: 180,
-  },
-  {
-    key: 7,
-    title: MISAResource[globalStore.lang].Page.Employee.Department.Title,
-    dataIndex: "DepartmentName",
-    width: 240,
-  },
-  {
-    key: 8,
-    title: MISAResource[globalStore.lang].Page.Employee.BankAccount.SubTitle,
-    dataIndex: "Account",
-    align: "right",
-  },
-  {
-    key: 9,
-    title: MISAResource[globalStore.lang].Page.Employee.BankName.Title,
-    dataIndex: "BankName",
-  },
-  {
-    key: 10,
-    title: MISAResource[globalStore.lang].Page.Employee.BankBranch.SubTitle,
-    dataIndex: "BankBranch",
-    desc: MISAResource[globalStore.lang].Page.Employee.BankBranch.Desc,
-    width: 240,
-  },
-]);
+    immediate: true,
+  }
+);
 
 /**
  * Description: Hàm load dữ liệu danh sách nhân viên từ api
@@ -261,20 +285,25 @@ watch(
 );
 
 /**
- * Description: Xoá hàng đang chọn khi form nhân bản được tắt
- * Author: txphuc (10/07/2023)
+ * Description: Hàm xoá nhân viên active hoặc đang được chọn
+ * Author: txphuc (11/07/2023)
  */
-watch(
-  () => employeeStore.isOpenForm,
-  () => {
-    if (!employeeStore.isOpenForm) {
-      uncheckedAllRows();
+const handleDeleteEmployee = async () => {
+  try {
+    if (activeRowState.value) {
+      // Nếu có hàng đang được active thì xoá hàng đó trước
+      await deleteActiveEmployee();
+    } else {
+      // Xoá các hàng đang checked
+      await deleteSelectedEmployee();
     }
+  } catch (error) {
+    console.warn(error);
   }
-);
+};
 
 /**
- * Description: Hàm xoá một/nhiều nhân viên đã được chọn
+ * Description: Hàm xoá nhiều nhân viên đã được chọn
  * Author: txphuc (27/06/2023)
  */
 const deleteSelectedEmployee = async () => {
@@ -301,6 +330,27 @@ const deleteSelectedEmployee = async () => {
 };
 
 /**
+ * Description: Hàm xoá một nhân viên đang active
+ * Author: txphuc (11/07/2023)
+ */
+const deleteActiveEmployee = async () => {
+  try {
+    await employeeApi.delete(activeRowState.value?.EmployeeId);
+
+    dialogState.value.active = false;
+    await getEmployeeData();
+    setActiveRow(null);
+
+    // Hiện toast message xoá thành công
+    toastStore.pushSuccessMessage({
+      message: MISAResource[globalStore.lang].Page.Employee.Toast.DeleteSuccess,
+    });
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+/**
  * Description: Lấy các bản ghi đã được chọn trả về từ bảng.
  * Author: txphuc (24/06/2023).
  */
@@ -314,6 +364,14 @@ const selectTableRows = (value) => {
  */
 const uncheckedAllRows = () => {
   selectedRowsState.value = [];
+};
+
+/**
+ * Description: Xử lý chọn chỉ một hàng (chờ xoá/nhân bản)
+ * Author: txphuc (11/07/2023)
+ */
+const setActiveRow = (row) => {
+  activeRowState.value = row;
 };
 
 /**

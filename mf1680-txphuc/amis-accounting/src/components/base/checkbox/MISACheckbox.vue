@@ -1,5 +1,5 @@
 <template>
-  <label @dblclick.stop="" class="ms-checkbox" :for="props.value">
+  <label @dblclick.stop="" @click.stop="" class="ms-checkbox" :for="props.value">
     <input
       @click="handleChecked"
       :id="props.value"

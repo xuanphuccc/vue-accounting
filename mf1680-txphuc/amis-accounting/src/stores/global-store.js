@@ -17,5 +17,13 @@ export const useGlobalStore = defineStore("app-global", {
     toggleSidebar() {
       this.sidebar.isCompact = !this.sidebar.isCompact;
     },
+
+    /**
+     * Description: Hàm xử lý thay đổi ngôn ngữ
+     * Author: txphuc (11/07/2023)
+     */
+    changeLanguage(langCode) {
+      this.lang = langCode;
+    },
   },
 });

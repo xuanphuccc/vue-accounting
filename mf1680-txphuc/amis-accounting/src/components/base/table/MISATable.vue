@@ -54,7 +54,7 @@
               v-for="row in dataSourceWithSelectedRows"
               @dblclick="returnRow(row)"
               :key="row.key"
-              :class="[{ '--active': row.checked }]"
+              :class="[{ '--active': row.checked || row.key === props.activeRow?.key }]"
             >
               <td class="--sticky-left">
                 <MISACheckbox @click="selectRow(row)" :checked="row.checked" />
@@ -183,7 +183,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import MISASkeletonRow from "../skeleton-loader/MISASkeletonRow.vue";
 import MISACheckbox from "../checkbox/MISACheckbox.vue";
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
@@ -193,6 +193,7 @@ import { useGlobalStore } from "@/stores/global-store";
 const emit = defineEmits([
   "double-click",
   "select-row",
+  "active-row",
   "next-page",
   "prev-page",
   "select-page-size",
@@ -225,6 +226,11 @@ const props = defineProps({
     default() {
       return [];
     },
+  },
+
+  // Hàng đang được active
+  activeRow: {
+    type: Object,
   },
 
   // Trang hiện tại
@@ -275,6 +281,21 @@ const actionContextMenu = ref({
 const globalStore = useGlobalStore();
 
 /**
+ * Description: Truyền prop columns cho columsWithPos
+ * mỗi khi columns thay đổi (thay đổi ngôn ngữ)
+ * Author: txphuc (11/07/2023)
+ */
+watch(
+  () => props.columns,
+  () => {
+    columsWithPos.value = props.columns;
+
+    // Tính toán lại vị trí cột ghim
+    calculateColumnsPos();
+  }
+);
+
+/**
  * Description: Xử lý thêm trường "checked" với bản ghi
  * đã được chọn
  * Author: txphuc (24/06/2023)
@@ -321,18 +342,31 @@ const selectRow = (value) => {
       }
     }
 
+    // Cập nhật các cột ra ngoài
     emit("select-row", localSelectedRows);
+
+    // Bỏ các cột đang active
+    emit("active-row", null);
   } catch (error) {
     console.warn(error);
   }
 };
 
 /**
- * Description: Xử lý chọn chỉ một hàng (chờ xoá/nhân bản)
+ * Description: Bỏ chọn toàn bộ bản ghi trong bảng.
+ * Author: txphuc (11/07/2023).
+ */
+const uncheckedAllRows = () => {
+  emit("select-row", []);
+};
+
+/**
+ * Description: Active một hàng (chờ xoá/nhân bản)
  * Author: txphuc (09/07/2023)
  */
-const setSingleSelectedRow = (row) => {
-  emit("select-row", [row]);
+const setActiveRow = (row) => {
+  emit("active-row", row);
+  uncheckedAllRows();
 };
 
 /**
@@ -518,8 +552,8 @@ const setActionContextPos = (e, row) => {
         };
       }
 
-      // Chọn hàng đang được mở context menu
-      setSingleSelectedRow(row);
+      // set active cho hàng hiện tại
+      setActiveRow(row);
     }
   } catch (error) {
     console.log(error);

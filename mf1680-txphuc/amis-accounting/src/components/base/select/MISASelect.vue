@@ -118,7 +118,7 @@ watch(
 );
 
 /**
- * Description: Reset giá trị đã trọn về rỗng
+ * Description: Reset giá trị đã chọn về rỗng
  * khi input search được xoá rỗng (ở chế độ search)
  * Author: txphuc (04/07/2023)
  */
@@ -158,7 +158,7 @@ const optionWithSearch = computed(() => {
  */
 const selectedOption = computed(() => {
   try {
-    return optionWithSearch.value.find((option) => option.value === selectedValue.value) ?? {};
+    return props.options.find((option) => option.value === selectedValue.value) ?? {};
   } catch (error) {
     console.warn(error);
     return {};
