@@ -29,6 +29,7 @@
                     @input="validatedInputs.employeeCode = null"
                     focus
                     id="input-id"
+                    ref="employeeCodeRef"
                   />
                 </MISAFormGroup>
               </MISACol>
@@ -46,11 +47,13 @@
                     @blur="validateFullName"
                     @input="validatedInputs.fullName = null"
                     id="input-name"
+                    ref="fullNameRef"
                   />
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="12">
                 <MISAFormGroup
+                  :error-msg="validatedInputs.department"
                   :label="MISAResource[globalStore.lang].Page.Employee.Department.Title"
                   for="input-department"
                   required-mark
@@ -59,8 +62,10 @@
                   <MISASelect
                     tabindex="3"
                     v-model="formData.departmentId"
+                    @focusout="validateDepartment"
                     :options="departmentOptions"
                     id="input-department"
+                    ref="departmentRef"
                   />
                 </MISAFormGroup>
               </MISACol>
@@ -334,9 +339,14 @@ const initialFormData = {
 };
 const formData = ref({ ...initialFormData });
 
+const employeeCodeRef = ref(null);
+const fullNameRef = ref(null);
+const departmentRef = ref(null);
+
 const validatedInputs = ref({
   employeeCode: null,
   fullName: null,
+  department: null,
 });
 
 /**
@@ -410,7 +420,7 @@ const closeDialog = () => {
  */
 const handleValidateInputs = () => {
   try {
-    return validateEmployeeCode() && validateFullName();
+    return validateEmployeeCode() && validateFullName() && validateDepartment();
   } catch (error) {
     console.warn(error);
     return false;
@@ -432,6 +442,11 @@ const validateEmployeeCode = () => {
         },
       ],
     });
+
+    // Focus vào khi lỗi
+    if (result) {
+      employeeCodeRef.value?.autoFocus();
+    }
 
     validatedInputs.value.employeeCode = result;
     return !result;
@@ -457,7 +472,41 @@ const validateFullName = () => {
       ],
     });
 
+    // Focus vào khi lỗi
+    if (result) {
+      fullNameRef.value?.autoFocus();
+    }
+
     validatedInputs.value.fullName = result;
+    return !result;
+  } catch (error) {
+    console.warn(error);
+    return false;
+  }
+};
+
+/**
+ * Description: Hàm validate department
+ * Author: txphuc (01/07/2023)
+ */
+const validateDepartment = () => {
+  try {
+    const result = validator({
+      value: formData.value.departmentId,
+      rules: [
+        {
+          checker: required,
+          errorMsg: MISAResource[globalStore.lang].Page.Employee.Validate.Department,
+        },
+      ],
+    });
+
+    // Focus vào khi lỗi
+    if (result) {
+      departmentRef.value?.autoFocus();
+    }
+
+    validatedInputs.value.department = result;
     return !result;
   } catch (error) {
     console.warn(error);

@@ -54,6 +54,16 @@ const onInputChange = (e) => {
 };
 
 /**
+ * Description: Xử lý auto focus khi gọi từ component cha
+ * Author: txphuc (12/07/2023)
+ */
+const autoFocus = () => {
+  if (inputRef.value) {
+    inputRef.value.focus();
+  }
+};
+
+/**
  * Description: Xử lý auto focus vào input khi component được mounted
  * Author: txphuc (26/06/2023)
  */
@@ -62,6 +72,9 @@ onMounted(() => {
     inputRef.value.focus();
   }
 });
+
+// Expose ra ngoài component cha
+defineExpose({ autoFocus });
 </script>
 
 <style scoped>

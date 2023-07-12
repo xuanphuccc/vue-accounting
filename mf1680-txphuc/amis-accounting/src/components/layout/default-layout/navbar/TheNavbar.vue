@@ -26,7 +26,7 @@
           <MISAIcon icon="bell" />
         </div>
 
-        <div @click.stop="openUserMenu" class="navbar__avatar-wrap">
+        <div @click.stop="toggleUserMenu" class="navbar__avatar-wrap">
           <img
             class="navbar__avatar"
             src="../../../../assets/img/avatar-default.png"
@@ -61,8 +61,8 @@ const globalStore = useGlobalStore();
  * Description: Hàm mở menu người dùng
  * Author: txphuc (11/07/2023)
  */
-const openUserMenu = () => {
-  isOpenUserMenu.value = true;
+const toggleUserMenu = () => {
+  isOpenUserMenu.value = !isOpenUserMenu.value;
 };
 
 /**

@@ -1,6 +1,9 @@
 const MISAResource = {
   VN: {
+    Language: "Tiếng Việt",
+    LanguageCode: "VN",
     Product: "Kế toán",
+    FullProductName: "AMIS Kế toán",
     Company: "Công ty Cổ phần MISA",
     Sidebar: {
       Dashboard: "Tổng quan",
@@ -13,6 +16,16 @@ const MISAResource = {
       Tax: "Thuế",
       Report: "Báo cáo",
       Collapse: "Thu gọn",
+    },
+
+    UserMenu: {
+      ChangePassword: "Đổi mật khẩu",
+      AccountSettings: "Thiết lập tài khoản",
+      SecuritySettings: "Thiết lập bảo mật",
+      LicenseAndPayment: "Giấy phép & Thanh toán",
+      ReferralsEarnPoints: "Giới thiệu - Tích điểm",
+      Language: "Ngôn ngữ",
+      SignOut: "Đăng xuất",
     },
 
     Gender: {
@@ -100,8 +113,9 @@ const MISAResource = {
             `Xoá ${count} nhân viên. Nhân viên sau khi xoá sẽ không thể khôi phục lại được`,
         },
         Validate: {
-          EmployeeCode: "Mã là bắt buộc",
-          FullName: "Tên là bắt buộc",
+          EmployeeCode: "Mã không được để trống",
+          FullName: "Tên không được để trống",
+          Department: "Đơn vị không được để trống",
         },
 
         EmployeeCode: {
@@ -176,7 +190,10 @@ const MISAResource = {
     },
   },
   EN: {
+    Language: "English",
+    LanguageCode: "EN",
     Product: "Accounting",
+    FullProductName: "AMIS Accounting",
     Company: "MISA Joint Stock Company",
     Sidebar: {
       Dashboard: "Dashboard",
@@ -189,6 +206,16 @@ const MISAResource = {
       Tax: "Tax",
       Report: "Report",
       Collapse: "Collapse",
+    },
+
+    UserMenu: {
+      ChangePassword: "Change password",
+      AccountSettings: "Account settings",
+      SecuritySettings: "Security settings",
+      LicenseAndPayment: "License & Payment",
+      ReferralsEarnPoints: "Referrals - Earn points",
+      Language: "Language",
+      SignOut: "Sign out",
     },
 
     Gender: {
@@ -204,7 +231,7 @@ const MISAResource = {
       OK: "OK",
       UnChecked: "Uncheck",
       Delete: "Delete",
-      Update: "Update",
+      Update: "Edit",
     },
 
     Table: {
@@ -278,6 +305,7 @@ const MISAResource = {
         Validate: {
           EmployeeCode: "Code is required",
           FullName: "Name is required",
+          Department: "Department is required",
         },
 
         EmployeeCode: {

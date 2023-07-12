@@ -3,7 +3,7 @@ import enums from "@/helper/enum";
 
 export const useGlobalStore = defineStore("app-global", {
   state: () => ({
-    lang: enums.language.VN,
+    lang: localStorage.getItem("lang") ?? enums.language.VN,
     sidebar: {
       isCompact: false,
     },
@@ -24,6 +24,9 @@ export const useGlobalStore = defineStore("app-global", {
      */
     changeLanguage(langCode) {
       this.lang = langCode;
+
+      // Lưu vào localStorage
+      localStorage.setItem("lang", langCode);
     },
   },
 });
