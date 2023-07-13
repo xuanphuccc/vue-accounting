@@ -35,7 +35,7 @@ namespace MISA.WebFresher052023.Demo.Services
         /// <param name="employee"></param>
         /// <returns>Trả về số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (12/07/2023)
-        Task<int> Update(EmployeeRequestDto employee);
+        Task<int> Update(Guid employeeId, EmployeeRequestDto employee);
 
         /// <summary>
         /// Xoá một nhân viên thông qua Id

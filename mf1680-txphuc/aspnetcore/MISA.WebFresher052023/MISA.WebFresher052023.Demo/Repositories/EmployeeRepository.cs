@@ -148,9 +148,55 @@ namespace MISA.WebFresher052023.Demo.Repositories
         /// <param name="employee"></param>
         /// <returns>Trả về số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (12/07/2023)
-        public async Task<int> Update(Employee employee)
+        public async Task<int> Update(Guid employeeId, Employee employee)
         {
-            return 0;
+            var connectionStr = _configuration.GetConnectionString("MisaAccounting");
+
+            using var mySqlConnection = new MySqlConnection(connectionStr);
+
+            try
+            {
+                mySqlConnection.Open();
+
+                await Console.Out.WriteLineAsync(Guid.NewGuid().ToString());
+
+                var param = new DynamicParameters();
+                param.Add("@EmployeeId", Guid.NewGuid());
+                param.Add("@EmployeeCode", employee.EmployeeCode);
+                param.Add("@FullName", employee.FullName);
+                param.Add("@DepartmentId", employee.DepartmentId);
+                param.Add("@PositionId", employee.PositionId);
+                param.Add("@DateOfBirth", employee.DateOfBirth);
+                param.Add("@Gender", employee.Gender);
+                param.Add("@IdentityNumber", employee.IdentityNumber);
+                param.Add("@IdentityDate", employee.IdentityDate);
+                param.Add("@IdentityPlace", employee.IdentityPlace);
+                param.Add("@Address", employee.Address);
+                param.Add("@MobilePhoneNumber", employee.MobilePhoneNumber);
+                param.Add("@LandlineNumber", employee.LandlineNumber);
+                param.Add("@Email", employee.Email);
+                param.Add("@BankAccount", employee.BankAccount);
+                param.Add("@BankName", employee.BankName);
+                param.Add("@BankBranch", employee.BankBranch);
+                param.Add("@ModifiedDate", employee.ModifiedDate);
+                param.Add("@ModifiedBy", employee.ModifiedBy);
+
+                var sql = "Proc_Employee_Create";
+
+                var result = await mySqlConnection.ExecuteAsync(sql, param, commandType: CommandType.StoredProcedure);
+
+
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                mySqlConnection.Close();
+            }
         }
 
         /// <summary>
