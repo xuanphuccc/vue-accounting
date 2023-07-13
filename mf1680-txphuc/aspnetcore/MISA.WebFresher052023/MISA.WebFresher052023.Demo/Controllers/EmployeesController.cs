@@ -90,6 +90,28 @@ namespace MISA.WebFresher052023.Demo.Controllers
         }
 
         /// <summary>
+        /// Sửa nhân viên theo id
+        /// </summary>
+        /// <param name="id">Mã nhân viên</param>
+        /// <param name="employeeRequestDto"></param>
+        /// <returns>Trả về số bản ghi bị ảnh hưởng</returns>
+        /// CreatedBy: txphuc (12/07/2023)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] EmployeeRequestDto employeeRequestDto)
+        {
+            try
+            {
+                var result = await _employeeService.Update(id, employeeRequestDto);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Xoá một nhân viên theo Id
         /// </summary>
         /// <param name="id">Mã nhân viên</param>
