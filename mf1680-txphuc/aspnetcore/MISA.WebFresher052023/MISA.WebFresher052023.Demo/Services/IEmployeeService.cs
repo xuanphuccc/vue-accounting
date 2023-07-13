@@ -25,7 +25,7 @@ namespace MISA.WebFresher052023.Demo.Services
         /// Tạo nhân viên
         /// </summary>
         /// <param name="employee"></param>
-        /// <returns>Trả về nhân viên được tạo thành công</returns>
+        /// <returns>Trả về số bản ghi được tạo thành công</returns>
         /// CreatedBy: txphuc (12/07/2023)
         Task<int> Create(EmployeeRequestDto employee);
 

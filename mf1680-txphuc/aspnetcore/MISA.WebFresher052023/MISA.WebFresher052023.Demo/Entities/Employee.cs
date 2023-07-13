@@ -4,84 +4,126 @@ namespace MISA.WebFresher052023.Demo.Entities
 {
     public class Employee
     {
-        // Khoá chính
+        /// <summary>
+        /// Khoá chính
+        /// </summary>
         [Required]
         public Guid EmployeeId { get; set; }
 
-        // Mã nhân viên
+        /// <summary>
+        /// Mã nhân viên
+        /// </summary>
         [Required]
         [StringLength(20)]
         public string EmployeeCode { get; set; } = string.Empty;
 
-        // Tên nhân viên
+        /// <summary>
+        /// Tên nhân viên
+        /// </summary>
         [Required]
         [StringLength(100)]
         public string FullName { get; set; } = string.Empty;
 
-        // Ngày sinh
+        /// <summary>
+        /// Ngày sinh
+        /// </summary>
         public DateTime? DateOfBirth { get; set; }
 
-        // Giới tính (0 - nữ, 1 - nam, 2 - khác)
+        /// <summary>
+        /// Giới tính (0 - nữ, 1 - nam, 2 - khác)
+        /// </summary>
         public int? Gender { get; set; }
 
-        // Số Chứng minh nhân dân
+        /// <summary>
+        /// Số Chứng minh nhân dân
+        /// </summary>
         [StringLength(25)]
         public string? IdentityNumber { get; set; }
 
-        // Ngày cấp Chứng minh nhân dân
+        /// <summary>
+        /// Ngày cấp Chứng minh nhân dân
+        /// </summary>
         public DateTime? IdentityDate { get; set; }
 
-        // Nơi cấp Chứng minh nhân dân
+        /// <summary>
+        /// Nơi cấp Chứng minh nhân dân
+        /// </summary>
         [StringLength(255)]
         public string? IdentityPlace { get; set; }
 
-        // Địa chỉ
+        /// <summary>
+        /// Địa chỉ
+        /// </summary>
         [StringLength(255)]
         public string? Address { get; set; }
 
-        // Số điện thoại di động
+        /// <summary>
+        /// Số điện thoại di động
+        /// </summary>
         [StringLength(50)]
         public string? MobilePhoneNumber { get; set; }
 
-        // Số điện thoại cố định
+        /// <summary>
+        /// Số điện thoại cố định
+        /// </summary>
         [StringLength(50)]
         public string? LandlineNumber { get; set; }
 
-        // Email
+        /// <summary>
+        /// Email
+        /// </summary>
         [StringLength(100)]
         public string? Email { get; set; }
 
-        // Tài khoản ngân hàng
+        /// <summary>
+        /// Tài khoản ngân hàng
+        /// </summary>
         [StringLength(25)]
         public string? BankAccount { get; set; }
 
-        // Tên ngân hàng
+        /// <summary>
+        /// Tên ngân hàng
+        /// </summary>
         [StringLength(255)]
         public string? BankName { get; set; }
 
-        // Chi nhánh ngân hàng
+        /// <summary>
+        /// Chi nhánh ngân hàng
+        /// </summary>
         [StringLength(255)]
         public string? BankBranch { get; set; }
 
-        // Ngày tạo
+        /// <summary>
+        /// Ngày tạo
+        /// </summary>
         public DateTime? CreatedDate { get; set; }
 
-        // Người tạo
+        /// <summary>
+        /// Người tạo
+        /// </summary>
         [StringLength(255)]
         public string? CreatedBy { get; set; }
 
-        // Ngày sửa
+        /// <summary>
+        /// Ngày sửa
+        /// </summary>
         public DateTime? ModifiedDate { get; set; }
 
-        // Người sửa
+        /// <summary>
+        /// Người sửa
+        /// </summary>
         [StringLength(255)]
         public string? ModifiedBy { get; set; }
 
-        // Mã đơn vị (khoá ngoại)
+        /// <summary>
+        /// Mã đơn vị (khoá ngoại)
+        /// </summary>
         [Required]
         public Guid DepartmentId { get; set; }
 
-        // Mã vị trí (khoá ngoại)
+        /// <summary>
+        /// Mã vị trí (khoá ngoại)
+        /// </summary>
         [StringLength(36)]
         public Guid? PositionId { get; set; }
     }

@@ -30,7 +30,7 @@ namespace MISA.WebFresher052023.Demo.Services
         /// <summary>
         /// Get một nhân viên thông qua Id
         /// </summary>
-        /// <param name="employeeId">Mã nhân viên</param>
+        /// <param name="employeeId">Id của nhân viên</param>
         /// <returns>Trả về một nhân viên thoả mãn</returns>
         /// CreatedBy: txphuc (12/07/2023)
         public async Task<Employee> GetById(Guid employeeId)
@@ -43,13 +43,12 @@ namespace MISA.WebFresher052023.Demo.Services
         /// <summary>
         /// Tạo nhân viên
         /// </summary>
-        /// <param name="employee"></param>
-        /// <returns>Trả về nhân viên được tạo thành công</returns>
+        /// <param name="employee">Data của nhân viên cần tạo</param>
+        /// <returns>Số bản ghi tạo thành công</returns>
         /// CreatedBy: txphuc (12/07/2023)
         public async Task<int> Create(EmployeeRequestDto employeeDto)
         {
             var newEmployee = _mapper.Map<Employee>(employeeDto);
-            //newEmployee.EmployeeId = Guid.NewGuid();
 
             var result = await _employeeRepository.Create(newEmployee);
 
@@ -59,7 +58,7 @@ namespace MISA.WebFresher052023.Demo.Services
         /// <summary>
         /// Cập nhật nhân viên
         /// </summary>
-        /// <param name="employee"></param>
+        /// <param name="employee">Data của nhân viên cần sửa</param>
         /// <returns>Trả về số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (12/07/2023)
         public async Task<int> Update(Guid employeeId, EmployeeRequestDto employee)
@@ -76,7 +75,7 @@ namespace MISA.WebFresher052023.Demo.Services
         /// <summary>
         /// Xoá một nhân viên thông qua Id
         /// </summary>
-        /// <param name="employeeId">Mã nhân viên</param>
+        /// <param name="employeeId">Id của nhân viên</param>
         /// <returns>Trả về số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (13/07/2023)
         public async Task<int> DeleteById(Guid employeeId)
@@ -89,7 +88,7 @@ namespace MISA.WebFresher052023.Demo.Services
         /// <summary>
         /// Xoá nhiều nhân viên nhân viên thông qua mảng các Id
         /// </summary>
-        /// <param name="employeeIds">Mảng mã nhân viên</param>
+        /// <param name="employeeIds">Mảng Id của nhân viên</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (13/07/2023)
         public async Task<int> Delete(Guid[] employeeIds)

@@ -71,7 +71,7 @@ namespace MISA.WebFresher052023.Demo.Controllers
         /// <summary>
         /// Tạo mới một nhân viên
         /// </summary>
-        /// <param name="employeeRequestDto"></param>
+        /// <param name="employeeRequestDto">Data nhân viên cần tạo</param>
         /// <returns>Trả về số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (12/07/2023)
         [HttpPost]
@@ -93,7 +93,7 @@ namespace MISA.WebFresher052023.Demo.Controllers
         /// Sửa nhân viên theo id
         /// </summary>
         /// <param name="id">Mã nhân viên</param>
-        /// <param name="employeeRequestDto"></param>
+        /// <param name="employeeRequestDto">Data nhân viên cần sửa</param>
         /// <returns>Trả về số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (12/07/2023)
         [HttpPut("{id}")]

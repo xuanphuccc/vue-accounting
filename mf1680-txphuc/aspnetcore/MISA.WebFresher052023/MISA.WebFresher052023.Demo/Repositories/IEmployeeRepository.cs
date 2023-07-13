@@ -15,7 +15,7 @@ namespace MISA.WebFresher052023.Demo.Repositories
         /// <summary>
         /// Get một nhân viên thông qua Id
         /// </summary>
-        /// <param name="employeeId">Mã nhân viên</param>
+        /// <param name="employeeId">Id của nhân viên</param>
         /// <returns>Trả về một nhân viên thoả mãn</returns>
         /// CreatedBy: txphuc (12/07/2023)
         Task<Employee> GetById(Guid employeeId);
@@ -23,15 +23,16 @@ namespace MISA.WebFresher052023.Demo.Repositories
         /// <summary>
         /// Tạo nhân viên
         /// </summary>
-        /// <param name="employee"></param>
-        /// <returns>Trả về nhân viên được tạo thành công</returns>
+        /// <param name="employee">Data của nhân viên cần tạo</param>
+        /// <returns>Trả về số bản ghi được tạo thành công</returns>
         /// CreatedBy: txphuc (12/07/2023)
         Task<int> Create(Employee employee);
 
         /// <summary>
         /// Cập nhật nhân viên
         /// </summary>
-        /// <param name="employee"></param>
+        /// <param name="employeeId">Id của nhân viên</param>
+        /// <param name="employee">Data của nhân viên cần sửa</param>
         /// <returns>Trả về số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (12/07/2023)
         Task<int> Update(Guid employeeId, Employee employee);
@@ -39,7 +40,7 @@ namespace MISA.WebFresher052023.Demo.Repositories
         /// <summary>
         /// Xoá một nhân viên thông qua Id
         /// </summary>
-        /// <param name="employeeId">Mã nhân viên</param>
+        /// <param name="employeeId">Id của nhân viên</param>
         /// <returns>Trả về số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (13/07/2023)
         Task<int> DeleteById(Guid employeeId);
@@ -47,7 +48,7 @@ namespace MISA.WebFresher052023.Demo.Repositories
         /// <summary>
         /// Xoá nhiều nhân viên nhân viên thông qua mảng các Id
         /// </summary>
-        /// <param name="employeeIds">Mảng mã nhân viên</param>
+        /// <param name="employeeIds">Mảng id của nhân viên</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (13/07/2023)
         Task<int> Delete(Guid[] employeeIds);
