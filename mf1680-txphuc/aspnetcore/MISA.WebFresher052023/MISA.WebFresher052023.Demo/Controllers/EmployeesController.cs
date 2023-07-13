@@ -81,7 +81,7 @@ namespace MISA.WebFresher052023.Demo.Controllers
             {
                 var result = await _employeeService.Create(employeeRequestDto);
 
-                return Ok(result);
+                return StatusCode(StatusCodes.Status201Created, result);
             }
             catch (Exception ex)
             {
