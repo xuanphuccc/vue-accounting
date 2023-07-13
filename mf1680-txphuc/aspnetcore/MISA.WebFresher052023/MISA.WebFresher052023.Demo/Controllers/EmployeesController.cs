@@ -29,10 +29,16 @@ namespace MISA.WebFresher052023.Demo.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            try
+            {
+                var employees = await _employeeService.GetAll();
 
-            var employees = await _employeeService.GetAll();
-
-            return Ok(employees);
+                return Ok(employees);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         /// <summary>
@@ -44,15 +50,22 @@ namespace MISA.WebFresher052023.Demo.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
-            var employee = await _employeeService.GetById(id);
-
-            // Nếu không tìm thấy thì trả về notfound
-            if (employee == null)
+            try
             {
-                return NotFound();
-            }
+                var employee = await _employeeService.GetById(id);
 
-            return Ok(employee);
+                // Nếu không tìm thấy thì trả về notfound
+                if (employee == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(employee);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         /// <summary>
@@ -64,9 +77,16 @@ namespace MISA.WebFresher052023.Demo.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] EmployeeRequestDto employeeRequestDto)
         {
-            var result = await _employeeService.Create(employeeRequestDto);
+            try
+            {
+                var result = await _employeeService.Create(employeeRequestDto);
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         /// <summary>
@@ -77,16 +97,23 @@ namespace MISA.WebFresher052023.Demo.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteById([FromRoute] Guid id)
         {
-            var employee = await _employeeService.GetById(id);
-
-            if (employee == null)
+            try
             {
-                return NotFound();
+                var employee = await _employeeService.GetById(id);
+
+                if (employee == null)
+                {
+                    return NotFound();
+                }
+
+                var result = await _employeeService.DeleteById(id);
+
+                return Ok(result);
             }
-
-            var result = await _employeeService.DeleteById(id);
-
-            return Ok(result);
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }

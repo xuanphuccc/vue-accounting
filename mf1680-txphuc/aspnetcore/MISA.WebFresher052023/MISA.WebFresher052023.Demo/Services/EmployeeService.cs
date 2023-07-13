@@ -64,7 +64,13 @@ namespace MISA.WebFresher052023.Demo.Services
         /// CreatedBy: txphuc (12/07/2023)
         public async Task<int> Update(Guid employeeId, EmployeeRequestDto employee)
         {
-            return 0;
+            var oldEmployee = await _employeeRepository.GetById(employeeId);
+
+            var newEmployee = _mapper.Map(employee, oldEmployee);
+
+            var result = await _employeeRepository.Update(employeeId, newEmployee);
+
+            return result;
         }
 
         /// <summary>
