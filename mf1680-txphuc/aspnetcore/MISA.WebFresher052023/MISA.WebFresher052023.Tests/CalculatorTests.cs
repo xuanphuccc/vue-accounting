@@ -11,23 +11,6 @@ namespace MISA.WebFresher052023.Tests
     [TestFixture]
     public class CalculatorTests
     {
-        //[Test]
-        //public void Add_ValidInput_ValidResult()
-        //{
-        //    // Arrange (chuẩn bị dữ liệu)
-        //    var x = 1;
-        //    var y = 2;
-
-        //    var expectedResult = 5;
-
-        //    // Act (hành động)
-        //    var actualResult = new Calculator().Add(x, y);
-
-
-        //    // Assert
-        //    Assert.That(actualResult, Is.EqualTo(expectedResult));
-        //}
-
         [TestCase(1, 2, 3)]
         [TestCase(2, 3, 5)]
         [TestCase(int.MaxValue, 1, int.MaxValue + (long)1)]
@@ -93,6 +76,63 @@ namespace MISA.WebFresher052023.Tests
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
+
+        // Bài tập
+        /// <summary>
+        /// Trường hợp đầu vào là chuỗi rỗng
+        /// </summary>
+        /// CreatedBy: txphuc (13/07/2023)
+        [Test]
+        public void Add_EmptyString_ReturnZero()
+        {
+            // Arrange
+            var str = "";
+            var expectedResult = 0;
+
+            // Act
+            var actualResult = new Calculator().Add(str);
+
+            // Assert
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
+
+        /// <summary>
+        /// Trường hợp đầu vào là chuỗi có một hoặc nhiều số KHÔNG âm
+        /// phân tách nhau bởi dấu `,` có dạng: "1" hoặc "1,2,3" hoặc "1, 2, 3"
+        /// </summary>
+        /// <param name="str">Giá trị đầu vào</param>
+        /// <param name="expectedResult">Kết quả mong đợi</param>
+        /// CreatedBy: txphuc (13/07/2023)
+        [TestCase("1", 1)]
+        [TestCase("20", 20)]
+        [TestCase("1,2,3", 6)]
+        [TestCase("1, 2, 3", 6)]
+        public void Add_MultipleNumbersString_ReturnTotal(string str, int expectedResult)
+        {
+            // Act
+            var actualResult = new Calculator().Add(str);
+
+            // Assert
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
+
+        /// <summary>
+        /// Trường hợp đầu vào là chuỗi có một hoặc nhiều số âm
+        /// phân tách nhau bởi dấu `,` có dạng: "-1" hoặc "1,-2,-3" hoặc "1, -2, -3"
+        /// </summary>
+        /// <param name="str"></param>
+        /// CreatedBy: txphuc (13/07/2023)
+        [TestCase("-1", "Không chấp nhận toán tử âm: -1")]
+        [TestCase("1,-2,-3", "Không chấp nhận toán tử âm: -2, -3")]
+        [TestCase("1, -2, -3", "Không chấp nhận toán tử âm: -2, -3")]
+        public void Add_NegativeNumberString_ReturnException(string str, string expectedExceptionMessage)
+        {
+            // Act
+            var exception = Assert.Throws<Exception>(() => new Calculator().Add(str));
+
+            // Assert
+            Assert.That(exception.Message, Is.EqualTo(expectedExceptionMessage));
         }
     }
 }

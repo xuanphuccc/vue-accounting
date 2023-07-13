@@ -84,6 +84,41 @@ namespace MISA.WebFresher052023.Demo.Repositories
         }
 
         /// <summary>
+        /// Get một nhân viên thông qua mã nhân viên
+        /// </summary>
+        /// <param name="employeeCode">Mã nhân viên</param>
+        /// <returns>Trả về nhân viên thoả mãn</returns>
+        /// CreatedBy: txphuc (13/07/2023)
+        public async Task<Employee> GetByCode(string employeeCode)
+        {
+            var connectionStr = _configuration.GetConnectionString("MisaAccounting");
+
+            using var mySqlConnection = new MySqlConnection(connectionStr);
+
+            try
+            {
+                mySqlConnection.Open();
+
+                var param = new DynamicParameters();
+                param.Add("@EmployeeCode", employeeCode);
+
+                var sql = "Proc_Employee_GetByCode";
+
+                var employee = await mySqlConnection.QueryFirstOrDefaultAsync<Employee>(sql, param, commandType: CommandType.StoredProcedure);
+
+                return employee;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                mySqlConnection.Close();
+            }
+        }
+
+        /// <summary>
         /// Tạo nhân viên
         /// </summary>
         /// <param name="employee">Data của nhân viên cần tạo</param>
@@ -98,8 +133,6 @@ namespace MISA.WebFresher052023.Demo.Repositories
             try
             {
                 mySqlConnection.Open();
-
-                await Console.Out.WriteLineAsync(Guid.NewGuid().ToString());
 
                 var param = new DynamicParameters();
                 param.Add("@EmployeeId", Guid.NewGuid());
@@ -162,7 +195,7 @@ namespace MISA.WebFresher052023.Demo.Repositories
                 await Console.Out.WriteLineAsync(Guid.NewGuid().ToString());
 
                 var param = new DynamicParameters();
-                param.Add("@EmployeeId", Guid.NewGuid());
+                param.Add("@EmployeeId", employeeId);
                 param.Add("@EmployeeCode", employee.EmployeeCode);
                 param.Add("@FullName", employee.FullName);
                 param.Add("@DepartmentId", employee.DepartmentId);
@@ -182,10 +215,9 @@ namespace MISA.WebFresher052023.Demo.Repositories
                 param.Add("@ModifiedDate", employee.ModifiedDate);
                 param.Add("@ModifiedBy", employee.ModifiedBy);
 
-                var sql = "Proc_Employee_Create";
+                var sql = "Proc_Employee_UpdateById";
 
                 var result = await mySqlConnection.ExecuteAsync(sql, param, commandType: CommandType.StoredProcedure);
-
 
                 return result;
 

@@ -50,6 +50,10 @@ namespace MISA.WebFresher052023.Demo.Services
         {
             var newEmployee = _mapper.Map<Employee>(employeeDto);
 
+            // Set ngày tạo và ngày sửa đổi bản ghi
+            newEmployee.CreatedDate = DateTime.Now;
+            newEmployee.ModifiedDate = DateTime.Now;
+
             var result = await _employeeRepository.Create(newEmployee);
 
             return result;
@@ -66,6 +70,9 @@ namespace MISA.WebFresher052023.Demo.Services
             var oldEmployee = await _employeeRepository.GetById(employeeId);
 
             var newEmployee = _mapper.Map(employee, oldEmployee);
+
+            // Set lại ngày sửa đổi bản ghi
+            newEmployee.ModifiedDate = DateTime.Now;
 
             var result = await _employeeRepository.Update(employeeId, newEmployee);
 

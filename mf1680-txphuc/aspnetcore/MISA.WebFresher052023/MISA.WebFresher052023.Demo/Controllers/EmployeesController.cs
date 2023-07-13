@@ -9,7 +9,7 @@ using System.Data;
 
 namespace MISA.WebFresher052023.Demo.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class EmployeesController : ControllerBase
     {
@@ -79,6 +79,12 @@ namespace MISA.WebFresher052023.Demo.Controllers
         {
             try
             {
+                // Validate dữ liệu
+                if (!ModelState.IsValid)
+                {
+                    return HandleValidate();
+                }
+
                 var result = await _employeeService.Create(employeeRequestDto);
 
                 return StatusCode(StatusCodes.Status201Created, result);
@@ -101,6 +107,28 @@ namespace MISA.WebFresher052023.Demo.Controllers
         {
             try
             {
+                // Kiểm tra nhân viên có tồn tại hay không
+                var employee = await _employeeService.GetById(id);
+
+                if (employee == null)
+                {
+                    return NotFound(new
+                    {
+                        ErrorCode = StatusCodes.Status404NotFound,
+                        UserMsg = "Nhân viên không tồn tại",
+                        DevMsg = "Nhân viên không tồn tại"
+                    });
+                }
+
+                // Validate dữ liệu
+                if (!ModelState.IsValid)
+                {
+                    return HandleValidate();
+                }
+
+                // Kiểm tra mã nhân viên có bị trùng hay không
+                
+
                 var result = await _employeeService.Update(id, employeeRequestDto);
 
                 return Ok(result);
@@ -121,11 +149,17 @@ namespace MISA.WebFresher052023.Demo.Controllers
         {
             try
             {
+                // Kiểm tra nhân viên có tồn tại hay không
                 var employee = await _employeeService.GetById(id);
 
                 if (employee == null)
                 {
-                    return NotFound();
+                    return NotFound(new
+                    {
+                        ErrorCode = StatusCodes.Status404NotFound,
+                        UserMsg = "Nhân viên không tồn tại",
+                        DevMsg = "Nhân viên không tồn tại"
+                    });
                 }
 
                 var result = await _employeeService.DeleteById(id);
@@ -136,6 +170,20 @@ namespace MISA.WebFresher052023.Demo.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
+
+        private IActionResult HandleValidate()
+        {
+            var errors = ModelState.Values.SelectMany(state => state.Errors)
+                                        .Select(error => error.ErrorMessage)
+                                        .ToList();
+
+            return BadRequest(new
+            {
+                ErrorCode = StatusCodes.Status400BadRequest,
+                UserMsg = string.Join(", ", errors),
+                DevMsg = string.Join(", ", errors)
+            });
         }
     }
 }

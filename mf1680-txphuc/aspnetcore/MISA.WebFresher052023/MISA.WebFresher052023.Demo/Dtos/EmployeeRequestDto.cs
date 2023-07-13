@@ -9,6 +9,7 @@ namespace MISA.WebFresher052023.Demo.Dtos
         /// </summary>
         [Required(ErrorMessage = "Mã không được để trống")]
         [StringLength(20, ErrorMessage = "Mã tối đa 20 ký tự")]
+        [RegularExpression(@"^NV[0-9]{4,}$", ErrorMessage = "Mã nhân viên phải có định dạng NV0000 trong đó sau NV có ít nhất 4 số")]
         public string EmployeeCode { get; set; } = string.Empty;
 
         /// <summary>
@@ -67,6 +68,7 @@ namespace MISA.WebFresher052023.Demo.Dtos
         /// Email
         /// </summary>
         [StringLength(100, ErrorMessage = "Email tối đa 100 ký tự")]
+        [RegularExpression(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", ErrorMessage = "Email không đúng định dạng")]
         public string? Email { get; set; }
 
         /// <summary>

@@ -21,6 +21,14 @@ namespace MISA.WebFresher052023.Demo.Repositories
         Task<Employee> GetById(Guid employeeId);
 
         /// <summary>
+        /// Get một nhân viên thông qua mã nhân viên
+        /// </summary>
+        /// <param name="employeeCode">Mã nhân viên</param>
+        /// <returns>Trả về nhân viên thoả mãn</returns>
+        /// CreatedBy: txphuc (13/07/2023)
+        Task<Employee> GetByCode(string employeeCode);
+
+        /// <summary>
         /// Tạo nhân viên
         /// </summary>
         /// <param name="employee">Data của nhân viên cần tạo</param>

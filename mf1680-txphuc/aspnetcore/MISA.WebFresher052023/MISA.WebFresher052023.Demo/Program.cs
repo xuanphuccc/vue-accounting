@@ -8,8 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
     .ConfigureApiBehaviorOptions(options =>
     {
-        // Tắt bộ lọc validate mặc định
-        options.SuppressInferBindingSourcesForParameters = true;
+        options.SuppressModelStateInvalidFilter = true;
     })
     .AddJsonOptions(options =>
     {
