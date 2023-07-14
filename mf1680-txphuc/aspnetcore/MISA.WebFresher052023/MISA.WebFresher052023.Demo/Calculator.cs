@@ -27,34 +27,36 @@
         /// CreatedBy: txphuc (13/07/2023)
         public int Add(string str)
         {
-            try
+            if (str == "")
             {
-                if (str == "")
-                {
-                    // Trường hợp chuỗi rỗng
-                    return 0;
-                }
-                else if (str.Contains('-'))
-                {
-                    // Trường hợp chứa số âm
-                    var negativeNumbers = str.Split(',')
-                                            .Where(number => number.Contains('-'))
-                                            .Select(number => number.Trim());
-                    var errorMessage = $"Không chấp nhận toán tử âm: {string.Join(", ", negativeNumbers)}";
+                // Trường hợp chuỗi rỗng
+                return 0;
+            }
+            else if (str.Contains('-'))
+            {
+                // Trường hợp chứa số âm
+                var negativeNumbers = str.Split(',')
+                                        .Where(number => number.Contains('-'))
+                                        .Select(number => number.Trim());
+                var errorMessage = $"Không chấp nhận toán tử âm: {string.Join(", ", negativeNumbers)}";
 
-                    throw new Exception(errorMessage);
-                }
-                else
+                throw new Exception(errorMessage);
+            }
+            else
+            {
+                try
                 {
                     // Trường hợp là một hoặc nhiều số KHÔNG âm cách nhau bởi dấu `,`
                     var result = str.Split(',').Select(number => Int32.Parse(number)).Sum();
                     return result;
                 }
+                catch (Exception ex)
+                {
+                    throw new Exception("Chuỗi không hợp lệ");
+                }
             }
-            catch (Exception ex)
-            {
-                throw new Exception("Chuỗi không hợp lệ");
-            }
+
+
         }
 
         /// <summary>
