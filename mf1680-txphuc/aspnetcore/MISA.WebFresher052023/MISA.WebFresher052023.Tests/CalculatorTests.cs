@@ -134,5 +134,23 @@ namespace MISA.WebFresher052023.Tests
             // Assert
             Assert.That(exception.Message, Is.EqualTo(expectedExceptionMessage));
         }
+
+        /// <summary>
+        /// Trường hợp chuỗi không hợp lệ
+        /// </summary>
+        /// <param name="str"></param>
+        /// CreatedBy: txphuc (13/07/2023)
+        [TestCase("Đây là chuỗi không hợp lệ")]
+        public void Add_InvalidInput_ReturnException(string str)
+        {
+            // Arrange
+            var expectedExceptionMessage = "Chuỗi không hợp lệ";
+
+            // Act
+            var exception = Assert.Throws<Exception>(() => new Calculator().Add(str));
+
+            // Assert
+            Assert.That(exception.Message, Is.EqualTo(expectedExceptionMessage));
+        }
     }
 }

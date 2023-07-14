@@ -53,7 +53,7 @@
             }
             catch (Exception ex)
             {
-                throw new Exception("Đối số truyền vào không phải là chuỗi các số");
+                throw new Exception("Chuỗi không hợp lệ");
             }
         }
 
