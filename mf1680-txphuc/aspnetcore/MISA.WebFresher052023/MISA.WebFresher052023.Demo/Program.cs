@@ -1,5 +1,9 @@
-﻿using MISA.WebFresher052023.Demo.Repositories;
-using MISA.WebFresher052023.Demo.Services;
+﻿using Microsoft.AspNetCore.Mvc;
+using MISA.WebFresher052023.Application;
+using MISA.WebFresher052023.Demo;
+using MISA.WebFresher052023.Domain;
+using MISA.WebFresher052023.Infrastructure;
+using MySqlConnector;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +12,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
     .ConfigureApiBehaviorOptions(options =>
     {
-        options.SuppressModelStateInvalidFilter = true;
+        options.InvalidModelStateResponseFactory = (context) =>
+        {
+            var errors = context.ModelState.Values.SelectMany(error => error.Errors);
+            var errorMsgs = string.Join(", ", errors.Select(error => error.ErrorMessage));
+
+            return new BadRequestObjectResult(new BaseException()
+            {
+                ErrorCode = 400,
+                UserMessage = errorMsgs,
+                DevMessage = errorMsgs,
+                TraceId = context.HttpContext.TraceIdentifier,
+                MoreInfo = "",
+                Errors = errors
+            });
+        };
     })
     .AddJsonOptions(options =>
     {
@@ -24,10 +42,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Add repositories
-builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+var connectionString = builder.Configuration.GetConnectionString("MisaAccounting");
+
+builder.Services.AddScoped<IEmployeeRepository>((option) => new EmployeeRepository(new MySqlConnection(connectionString)));
 
 // Add services
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IEmployeeManager, EmployeeManager>();
 
 var app = builder.Build();
 
@@ -43,5 +64,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.Run();

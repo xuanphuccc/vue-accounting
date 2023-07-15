@@ -55,8 +55,6 @@
                     throw new Exception("Chuỗi không hợp lệ");
                 }
             }
-
-
         }
 
         /// <summary>

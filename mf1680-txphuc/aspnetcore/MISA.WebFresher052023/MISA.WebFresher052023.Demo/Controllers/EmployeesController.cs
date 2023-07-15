@@ -1,9 +1,7 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MISA.WebFresher052023.Demo.Dtos;
-using MISA.WebFresher052023.Demo.Entities;
-using MISA.WebFresher052023.Demo.Services;
+using MISA.WebFresher052023.Application;
 using MySqlConnector;
 using System.Data;
 
@@ -14,31 +12,29 @@ namespace MISA.WebFresher052023.Demo.Controllers
     public class EmployeesController : ControllerBase
     {
 
+        #region Fields
         private readonly IEmployeeService _employeeService;
+        #endregion
 
+        #region Constructor
         public EmployeesController(IEmployeeService employeeService)
         {
             _employeeService = employeeService;
         }
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Get toàn bộ danh sách nhân viên
         /// </summary>
         /// <returns>Danh sách nhân viên</returns>
         /// CreatedBy: txphuc (13/07/2023)
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllAsync()
         {
-            try
-            {
-                var employees = await _employeeService.GetAll();
+            var employees = await _employeeService.GetAllAsync();
 
-                return Ok(employees);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            return Ok(employees);
         }
 
         /// <summary>
@@ -50,93 +46,38 @@ namespace MISA.WebFresher052023.Demo.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
-            try
-            {
-                var employee = await _employeeService.GetById(id);
+            var employee = await _employeeService.GetByIdAsync(id);
 
-                // Nếu không tìm thấy thì trả về notfound
-                if (employee == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(employee);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            return Ok(employee);
         }
 
         /// <summary>
         /// Tạo mới một nhân viên
         /// </summary>
-        /// <param name="employeeRequestDto">Data nhân viên cần tạo</param>
+        /// <param name="employeeCreateDto">Data nhân viên cần tạo</param>
         /// <returns>Trả về số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (12/07/2023)
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] EmployeeRequestDto employeeRequestDto)
+        public async Task<IActionResult> Create([FromBody] EmployeeCreateDto employeeCreateDto)
         {
-            try
-            {
-                // Validate dữ liệu
-                if (!ModelState.IsValid)
-                {
-                    return HandleValidate();
-                }
+            await _employeeService.InsertAsync(employeeCreateDto);
 
-                var result = await _employeeService.Create(employeeRequestDto);
-
-                return StatusCode(StatusCodes.Status201Created, result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            return StatusCode(StatusCodes.Status201Created);
         }
 
         /// <summary>
         /// Sửa nhân viên theo id
         /// </summary>
         /// <param name="id">Mã nhân viên</param>
-        /// <param name="employeeRequestDto">Data nhân viên cần sửa</param>
+        /// <param name="employeeUpdateDto">Data nhân viên cần sửa</param>
         /// <returns>Trả về số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (12/07/2023)
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] EmployeeRequestDto employeeRequestDto)
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] EmployeeUpdateDto employeeUpdateDto)
         {
-            try
-            {
-                // Kiểm tra nhân viên có tồn tại hay không
-                var employee = await _employeeService.GetById(id);
+            await _employeeService.UpdateAsync(id, employeeUpdateDto);
 
-                if (employee == null)
-                {
-                    return NotFound(new
-                    {
-                        ErrorCode = StatusCodes.Status404NotFound,
-                        UserMsg = "Nhân viên không tồn tại",
-                        DevMsg = "Nhân viên không tồn tại"
-                    });
-                }
-
-                // Validate dữ liệu
-                if (!ModelState.IsValid)
-                {
-                    return HandleValidate();
-                }
-
-                // Kiểm tra mã nhân viên có bị trùng hay không
-                
-
-                var result = await _employeeService.Update(id, employeeRequestDto);
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            return Ok();
         }
 
         /// <summary>
@@ -147,43 +88,10 @@ namespace MISA.WebFresher052023.Demo.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteById([FromRoute] Guid id)
         {
-            try
-            {
-                // Kiểm tra nhân viên có tồn tại hay không
-                var employee = await _employeeService.GetById(id);
+            await _employeeService.DeleteAsync(id);
 
-                if (employee == null)
-                {
-                    return NotFound(new
-                    {
-                        ErrorCode = StatusCodes.Status404NotFound,
-                        UserMsg = "Nhân viên không tồn tại",
-                        DevMsg = "Nhân viên không tồn tại"
-                    });
-                }
-
-                var result = await _employeeService.DeleteById(id);
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            return Ok();
         }
-
-        private IActionResult HandleValidate()
-        {
-            var errors = ModelState.Values.SelectMany(state => state.Errors)
-                                        .Select(error => error.ErrorMessage)
-                                        .ToList();
-
-            return BadRequest(new
-            {
-                ErrorCode = StatusCodes.Status400BadRequest,
-                UserMsg = string.Join(", ", errors),
-                DevMsg = string.Join(", ", errors)
-            });
-        }
+        #endregion
     }
 }
