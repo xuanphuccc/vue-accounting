@@ -4,13 +4,23 @@ namespace MISA.WebFresher052023.Demo
 {
     public class ExceptionMiddleware
     {
+        #region Fields
         private readonly RequestDelegate _next;
+        #endregion
 
+        #region Constructor
         public ExceptionMiddleware(RequestDelegate next)
         {
             _next = next;
         }
+        #endregion
 
+        #region Methods
+        /// <summary>
+        /// Bắt exception trong pipeline
+        /// </summary>
+        /// <param name="context">HttpContext</param>
+        /// CreatedBy: txphuc (14/07/2023)
         public async Task InvokeAsync(HttpContext context)
         {
             try
@@ -46,7 +56,7 @@ namespace MISA.WebFresher052023.Demo
                             DevMessage = exception.Message,
                             TraceId = context.TraceIdentifier,
                             MoreInfo = exception.HelpLink
-                        }.ToString());
+                        }.ToString() ?? "");
             }
             else if (exception is ConflictException)
             {
@@ -61,7 +71,7 @@ namespace MISA.WebFresher052023.Demo
                             DevMessage = exception.Message,
                             TraceId = context.TraceIdentifier,
                             MoreInfo = exception.HelpLink
-                        }.ToString());
+                        }.ToString() ?? "");
             }
             else
             {
@@ -76,8 +86,9 @@ namespace MISA.WebFresher052023.Demo
                             DevMessage = exception.Message,
                             TraceId = context.TraceIdentifier,
                             MoreInfo = exception.HelpLink
-                        }.ToString());
+                        }.ToString() ?? "");
             }
-        }
+        } 
+        #endregion
     }
 }

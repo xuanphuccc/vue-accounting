@@ -34,6 +34,40 @@ namespace MISA.WebFresher052023.Infrastructure
         }
 
         /// <summary>
+        /// Tìm kiếm, filter và phân trang
+        /// </summary>
+        /// <param name="search">Search theo tên hoặc mã nhân viên</param>
+        /// <param name="currentPage">trang hiện tại</param>
+        /// <param name="pageSize">Số phần tử trên trang</param>
+        /// <returns>Danh sách nhân viên đã được filter và phân trang</returns>
+        /// CreatedBy: txphuc (15/07/2023)
+        public async Task<Pagination> FilterAsync(string search, int currentPage, int pageSize)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@Search", search);
+            parameters.Add("@Page", currentPage);
+            parameters.Add("@PageSize", pageSize);
+            parameters.Add("@TotalRecords", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("@TotalPages", pageSize, direction: ParameterDirection.Output);
+
+            var sql = "Proc_Employee_FilterAndPaging";
+
+            // Lấy data nhân viên
+            var employeeModels = await _connection.QueryAsync<EmployeeModel>(sql, parameters, commandType: CommandType.StoredProcedure);
+
+            // Lấy thông tin phân trang
+            var totalRecords = parameters.Get<int>("@TotalRecords");
+            var totalPages = parameters.Get<int>("@TotalPages");
+
+            return new Pagination()
+            {
+                Data = employeeModels,
+                TotalRecords = totalRecords,
+                TotalPages = totalPages,
+            };
+        }
+
+        /// <summary>
         /// Lấy nhân viên theo Id
         /// </summary>
         /// <param name="employeeId">Id của nhân viên</param>
@@ -93,14 +127,29 @@ namespace MISA.WebFresher052023.Infrastructure
         }
 
         /// <summary>
+        /// Lấy mã nhân viên mới
+        /// </summary>
+        /// <returns>Mã nhân viên mới nhất</returns>
+        /// CreatedBy: txphuc (15/07/2023)
+        public async Task<string?> FindNewEmployeeCodeAsync()
+        {
+            var sql = "Proc_Employee_GetNewCode";
+
+            var employee = await _connection.QueryFirstOrDefaultAsync<string>(sql, commandType: CommandType.StoredProcedure);
+
+            return employee;
+        }
+
+        /// <summary>
         /// Tạo nhân viên mới
         /// </summary>
         /// <param name="employee">Thông tin nhân viên</param>
+        /// <returns>Số bản ghi được thêm</returns>
         /// CreatedBy: txphuc (14/07/2023)
-        public async Task InsertAsync(Employee employee)
+        public async Task<int> InsertAsync(Employee employee)
         {
             var param = new DynamicParameters();
-            param.Add("@EmployeeId", Guid.NewGuid());
+            param.Add("@EmployeeId", employee.EmployeeId);
             param.Add("@EmployeeCode", employee.EmployeeCode);
             param.Add("@FullName", employee.FullName);
             param.Add("@DepartmentId", employee.DepartmentId);
@@ -124,15 +173,18 @@ namespace MISA.WebFresher052023.Infrastructure
 
             var sql = "Proc_Employee_Create";
 
-            await _connection.ExecuteAsync(sql, param, commandType: CommandType.StoredProcedure);
+            var result = await _connection.ExecuteAsync(sql, param, commandType: CommandType.StoredProcedure);
+
+            return result;
         }
 
         /// <summary>
         /// Cập nhật nhân viên
         /// </summary>
         /// <param name="employee">Thông tin nhân viên</param>
+        /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (14/07/2023)
-        public async Task UpdateAsync(Employee employee)
+        public async Task<int> UpdateAsync(Employee employee)
         {
             var param = new DynamicParameters();
             param.Add("@EmployeeId", employee.EmployeeId);
@@ -157,22 +209,27 @@ namespace MISA.WebFresher052023.Infrastructure
 
             var sql = "Proc_Employee_UpdateById";
 
-            await _connection.ExecuteAsync(sql, param, commandType: CommandType.StoredProcedure);
+            var result = await _connection.ExecuteAsync(sql, param, commandType: CommandType.StoredProcedure);
+
+            return result;
         }
 
         /// <summary>
         /// Xoá nhân viên   
         /// </summary>
         /// <param name="employee">Thông tin nhân viên</param>
+        /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (14/07/2023)
-        public async Task DeleteAsync(Employee employee)
+        public async Task<int> DeleteAsync(Employee employee)
         {
             var param = new DynamicParameters();
             param.Add("@EmployeeId", employee.EmployeeId);
 
             var sql = "Proc_Employee_DeleteById";
 
-            await _connection.ExecuteAsync(sql, param, commandType: CommandType.StoredProcedure);
+            var result = await _connection.ExecuteAsync(sql, param, commandType: CommandType.StoredProcedure);
+
+            return result;
         }
     }
 }

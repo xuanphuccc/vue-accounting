@@ -14,16 +14,16 @@ namespace MISA.WebFresher052023.Application
         /// Mã nhân viên
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
-        [Required(ErrorMessage = "Mã không được để trống")]
+        [Required(ErrorMessage = "Mã nhân viên không được để trống")]
         [StringLength(20, ErrorMessage = "Mã tối đa 20 ký tự")]
-        [RegularExpression(@"^NV[0-9]{4,}$", ErrorMessage = "Mã nhân viên phải có định dạng NV0000 trong đó sau NV có ít nhất 4 số")]
+        [RegularExpression(@"^NV-[0-9]{4,}$", ErrorMessage = "Mã nhân viên phải có định dạng NV-XXXX trong đó sau NV có ít nhất 4 số")]
         public string EmployeeCode { get; set; } = string.Empty;
 
         /// <summary>
         /// Tên nhân viên
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
-        [Required(ErrorMessage = "Tên không được để trống")]
+        [Required(ErrorMessage = "Tên nhân viên không được để trống")]
         [StringLength(100, ErrorMessage = "Tên tối đa 100 ký tự")]
         public string FullName { get; set; } = string.Empty;
 

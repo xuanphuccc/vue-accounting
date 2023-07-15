@@ -41,6 +41,36 @@ namespace MISA.WebFresher052023.Application
         }
 
         /// <summary>
+        /// Tìm kiếm, filter và phân trang
+        /// </summary>
+        /// <param name="search">Search theo tên hoặc mã nhân viên</param>
+        /// <param name="currentPage">trang hiện tại</param>
+        /// <param name="pageSize">Số phần tử trên trang</param>
+        /// <returns>Danh sách nhân viên đã được filter và phân trang</returns>
+        /// CreatedBy: txphuc (15/07/2023)
+        public async Task<Pagination> FilterAsync(string? search, int? currentPage, int? pageSize)
+        {
+            if (string.IsNullOrEmpty(search))
+            {
+                search = "";
+            }
+            if (!currentPage.HasValue)
+            {
+                currentPage = 1;
+            }
+            if (!pageSize.HasValue)
+            {
+                pageSize = 10;
+            }
+
+            var pagedEmployees = await _employeeRepository.FilterAsync(search, currentPage.Value, pageSize.Value);
+
+            pagedEmployees.Data = _mapper.Map<IEnumerable<EmployeeDto>>(pagedEmployees.Data);
+
+            return pagedEmployees;
+        }
+
+        /// <summary>
         /// Lấy nhân viên theo Id
         /// </summary>
         /// <param name="employeeId">Id của nhân viên</param>
@@ -56,22 +86,39 @@ namespace MISA.WebFresher052023.Application
         }
 
         /// <summary>
+        /// Lấy mã nhân viên mới
+        /// </summary>
+        /// <returns>Mã nhân viên mới nhất</returns>
+        /// CreatedBy: txphuc (15/07/2023)
+        public async Task<string?> FindNewEmployeeCodeAsync()
+        {
+            var newEmployeeCode = await _employeeRepository.FindNewEmployeeCodeAsync();
+
+            return newEmployeeCode;
+        }
+
+        /// <summary>
         /// Tạo nhân viên mới
         /// </summary>
         /// <param name="employee">Thông tin nhân viên</param>
         /// CreatedBy: txphuc (14/07/2023)
-        public async Task InsertAsync(EmployeeCreateDto employeeCreateDto)
+        public async Task<int> InsertAsync(EmployeeCreateDto employeeCreateDto)
         {
             // Check trùng mã nhân viên
             await _employeeManager.CheckExistEmployeeCode(employeeCreateDto.EmployeeCode);
 
             var employee = _mapper.Map<Employee>(employeeCreateDto);
 
-            // Set ngày tạo và ngày sửa đổi bản ghi
+            // Set Id, ngày tạo và ngày sửa đổi bản ghi
+            employee.EmployeeId = Guid.NewGuid();
             employee.CreatedDate = DateTime.Now;
+            employee.CreatedBy = "txphuc";
             employee.ModifiedDate = DateTime.Now;
+            employee.ModifiedBy = "txphuc";
 
-            await _employeeRepository.InsertAsync(employee);
+            var result = await _employeeRepository.InsertAsync(employee);
+
+            return result;
         }
 
         /// <summary>
@@ -79,7 +126,7 @@ namespace MISA.WebFresher052023.Application
         /// </summary>
         /// <param name="employee">Thông tin nhân viên</param>
         /// CreatedBy: txphuc (14/07/2023)
-        public async Task UpdateAsync(Guid employeeId, EmployeeUpdateDto employeeUpdateDto)
+        public async Task<int> UpdateAsync(Guid employeeId, EmployeeUpdateDto employeeUpdateDto)
         {
             // Check nhân viên có tồn tại hay không
             var oldEmployee = await _employeeRepository.GetByIdAsync(employeeId);
@@ -91,8 +138,11 @@ namespace MISA.WebFresher052023.Application
 
             // Set lại ngày sửa đổi bản ghi
             newEmployee.ModifiedDate = DateTime.Now;
+            newEmployee.ModifiedBy = "txphuc";
 
-            await _employeeRepository.UpdateAsync(newEmployee);
+            var result = await _employeeRepository.UpdateAsync(newEmployee);
+
+            return result;
         }
 
         /// <summary>
@@ -100,7 +150,7 @@ namespace MISA.WebFresher052023.Application
         /// </summary>
         /// <param name="employee">Thông tin nhân viên</param>
         /// CreatedBy: txphuc (14/07/2023)
-        public async Task DeleteAsync(Guid employeeId)
+        public async Task<int> DeleteAsync(Guid employeeId)
         {
             var existEmployee = await _employeeRepository.FindByIdAsync(employeeId);
 
@@ -109,7 +159,9 @@ namespace MISA.WebFresher052023.Application
                 throw new NotFoundException("Nhân viên không tồn tại");
             }
 
-            await _employeeRepository.DeleteAsync(existEmployee);
+            var reruslt = await _employeeRepository.DeleteAsync(existEmployee);
+
+            return reruslt;
         }
         #endregion
     }

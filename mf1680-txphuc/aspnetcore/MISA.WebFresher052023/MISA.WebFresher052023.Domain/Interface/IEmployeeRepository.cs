@@ -16,6 +16,16 @@ namespace MISA.WebFresher052023.Domain
         Task<IEnumerable<Employee>> GetAllAsync();
 
         /// <summary>
+        /// Tìm kiếm, filter và phân trang
+        /// </summary>
+        /// <param name="search">Search theo tên hoặc mã nhân viên</param>
+        /// <param name="currentPage">trang hiện tại</param>
+        /// <param name="pageSize">Số phần tử trên trang</param>
+        /// <returns>Danh sách nhân viên đã được filter và phân trang</returns>
+        /// CreatedBy: txphuc (15/07/2023)
+        Task<Pagination> FilterAsync(string search, int currentPage, int pageSize);
+
+        /// <summary>
         /// Lấy nhân viên theo Id
         /// </summary>
         /// <param name="employeeId">Id của nhân viên</param>
@@ -40,24 +50,34 @@ namespace MISA.WebFresher052023.Domain
         Task<Employee?> FindByIdAsync(Guid employeeId);
 
         /// <summary>
+        /// Lấy mã nhân viên mới
+        /// </summary>
+        /// <returns>Mã nhân viên mới nhất</returns>
+        /// CreatedBy: txphuc (15/07/2023)
+        Task<string?> FindNewEmployeeCodeAsync();
+
+        /// <summary>
         /// Tạo nhân viên mới
         /// </summary>
         /// <param name="employee">Thông tin nhân viên</param>
+        /// <returns>Số bản ghi được thêm</returns>
         /// CreatedBy: txphuc (14/07/2023)
-        Task InsertAsync(Employee employee);
+        Task<int> InsertAsync(Employee employee);
 
         /// <summary>
         /// Cập nhật nhân viên
         /// </summary>
         /// <param name="employee">Thông tin nhân viên</param>
+        /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (14/07/2023)
-        Task UpdateAsync(Employee employee);
+        Task<int> UpdateAsync(Employee employee);
 
         /// <summary>
         /// Xoá nhân viên   
         /// </summary>
         /// <param name="employee">Thông tin nhân viên</param>
+        /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (14/07/2023)
-        Task DeleteAsync(Employee employee);
+        Task<int> DeleteAsync(Employee employee);
     }
 }

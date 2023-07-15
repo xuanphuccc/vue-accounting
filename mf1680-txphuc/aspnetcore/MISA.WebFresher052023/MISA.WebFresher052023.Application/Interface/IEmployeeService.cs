@@ -17,6 +17,16 @@ namespace MISA.WebFresher052023.Application
         Task<IEnumerable<EmployeeDto>> GetAllAsync();
 
         /// <summary>
+        /// Tìm kiếm, filter và phân trang
+        /// </summary>
+        /// <param name="search">Search theo tên hoặc mã nhân viên</param>
+        /// <param name="currentPage">trang hiện tại</param>
+        /// <param name="pageSize">Số phần tử trên trang</param>
+        /// <returns>Danh sách nhân viên đã được filter và phân trang</returns>
+        /// CreatedBy: txphuc (15/07/2023)
+        Task<Pagination> FilterAsync(string? search, int? currentPage, int? pageSize);
+
+        /// <summary>
         /// Lấy nhân viên theo Id
         /// </summary>
         /// <param name="employeeId">Id của nhân viên</param>
@@ -25,11 +35,18 @@ namespace MISA.WebFresher052023.Application
         Task<EmployeeDto> GetByIdAsync(Guid employeeId);
 
         /// <summary>
+        /// Lấy mã nhân viên mới
+        /// </summary>
+        /// <returns>Mã nhân viên mới nhất</returns>
+        /// CreatedBy: txphuc (15/07/2023)
+        Task<string?> FindNewEmployeeCodeAsync();
+
+        /// <summary>
         /// Tạo nhân viên mới
         /// </summary>
         /// <param name="employeeCreateDto">Thông tin nhân viên</param>
         /// CreatedBy: txphuc (14/07/2023)
-        Task InsertAsync(EmployeeCreateDto employeeCreateDto);
+        Task<int> InsertAsync(EmployeeCreateDto employeeCreateDto);
 
         /// <summary>
         /// Cập nhật nhân viên
@@ -37,13 +54,13 @@ namespace MISA.WebFresher052023.Application
         /// <param name="employeeId">Id nhân viên</param>
         /// <param name="employeeUpdateDto">Thông tin nhân viên</param>
         /// CreatedBy: txphuc (14/07/2023)
-        Task UpdateAsync(Guid employeeId, EmployeeUpdateDto employeeUpdateDto);
+        Task<int> UpdateAsync(Guid employeeId, EmployeeUpdateDto employeeUpdateDto);
 
         /// <summary>
         /// Xoá nhân viên   
         /// </summary>
         /// <param name="employeeId">Thông tin nhân viên</param>
         /// CreatedBy: txphuc (14/07/2023)
-        Task DeleteAsync(Guid employeeId);
+        Task<int> DeleteAsync(Guid employeeId);
     }
 }

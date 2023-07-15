@@ -38,17 +38,41 @@ namespace MISA.WebFresher052023.Demo.Controllers
         }
 
         /// <summary>
+        /// Tìm kiếm, filter và phân trang nhân viên
+        /// </summary>
+        /// <param name="search">Tìm theo tên hoặc mã nhân viên</param>
+        /// <param name="page">Trang hiện tại</param>
+        /// <param name="pageSize">Số phần tử trên trang</param>
+        /// <returns>Danh sách nhân viên được lọc và phân trang</returns>
+        /// CreatedBy: txphuc (15/07/2023)
+        [HttpGet("/filter")]
+        public async Task<IActionResult> FilterAsync([FromQuery] string? search, [FromQuery] int? page, [FromQuery] int? pageSize)
+        {
+            var pagedEmployees = await _employeeService.FilterAsync(search, page, pageSize);
+
+            return Ok(pagedEmployees);
+        }
+
+        /// <summary>
         /// Get một nhân viên thông qua Id
         /// </summary>
         /// <param name="id">Mã nhân viên</param>
         /// <returns>Trả về thông tin một nhân viên tìm được</returns> 
         /// CreatedBy: txphuc (12/07/2023)
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById([FromRoute] Guid id)
+        public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
         {
             var employee = await _employeeService.GetByIdAsync(id);
 
             return Ok(employee);
+        }
+
+        [HttpGet("/NewEmployeeCode")]
+        public async Task<IActionResult> FindNewEmployeeCodeAsync ()
+        {
+            var newEmployeeCode = await _employeeService.FindNewEmployeeCodeAsync();
+
+            return Ok(newEmployeeCode);
         }
 
         /// <summary>
@@ -58,11 +82,11 @@ namespace MISA.WebFresher052023.Demo.Controllers
         /// <returns>Trả về số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (12/07/2023)
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] EmployeeCreateDto employeeCreateDto)
+        public async Task<IActionResult> CreateAsync([FromBody] EmployeeCreateDto employeeCreateDto)
         {
-            await _employeeService.InsertAsync(employeeCreateDto);
+            var result = await _employeeService.InsertAsync(employeeCreateDto);
 
-            return StatusCode(StatusCodes.Status201Created);
+            return StatusCode(StatusCodes.Status201Created, result);
         }
 
         /// <summary>
@@ -73,11 +97,11 @@ namespace MISA.WebFresher052023.Demo.Controllers
         /// <returns>Trả về số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (12/07/2023)
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] EmployeeUpdateDto employeeUpdateDto)
+        public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] EmployeeUpdateDto employeeUpdateDto)
         {
-            await _employeeService.UpdateAsync(id, employeeUpdateDto);
+            var result = await _employeeService.UpdateAsync(id, employeeUpdateDto);
 
-            return Ok();
+            return Ok(result);
         }
 
         /// <summary>
@@ -86,11 +110,11 @@ namespace MISA.WebFresher052023.Demo.Controllers
         /// <param name="id">Mã nhân viên</param>
         /// <returns>Trả về số bản ghi bị ảnh hưởng</returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteById([FromRoute] Guid id)
+        public async Task<IActionResult> DeleteByIdAsync([FromRoute] Guid id)
         {
-            await _employeeService.DeleteAsync(id);
+            var result = await _employeeService.DeleteAsync(id);
 
-            return Ok();
+            return Ok(result);
         }
         #endregion
     }

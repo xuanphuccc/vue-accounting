@@ -13,7 +13,7 @@ namespace MISA.WebFresher052023.Application
         public EmployeeProfile()
         {
             CreateMap<Employee, EmployeeDto>();
-            CreateMap<EmployeeDepartmentModel, EmployeeDto>();
+            CreateMap<EmployeeModel, EmployeeDto>();
             CreateMap<EmployeeCreateDto, Employee>();
             CreateMap<EmployeeUpdateDto, Employee>();
         }
