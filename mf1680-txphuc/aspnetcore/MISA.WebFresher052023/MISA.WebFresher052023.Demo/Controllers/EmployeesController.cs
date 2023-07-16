@@ -45,7 +45,7 @@ namespace MISA.WebFresher052023.Demo.Controllers
         /// <param name="pageSize">Số phần tử trên trang</param>
         /// <returns>Danh sách nhân viên được lọc và phân trang</returns>
         /// CreatedBy: txphuc (15/07/2023)
-        [HttpGet("/filter")]
+        [HttpGet("filter")]
         public async Task<IActionResult> FilterAsync([FromQuery] string? search, [FromQuery] int? page, [FromQuery] int? pageSize)
         {
             var pagedEmployees = await _employeeService.FilterAsync(search, page, pageSize);
@@ -112,7 +112,15 @@ namespace MISA.WebFresher052023.Demo.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteByIdAsync([FromRoute] Guid id)
         {
-            var result = await _employeeService.DeleteAsync(id);
+            var result = await _employeeService.DeleteByIdAsync(id);
+
+            return Ok(result);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAsync([FromBody] IEnumerable<DeleteManyDto> employeeDeleteDtos)
+        {
+            var result = await _employeeService.DeleteAsync(employeeDeleteDtos);
 
             return Ok(result);
         }

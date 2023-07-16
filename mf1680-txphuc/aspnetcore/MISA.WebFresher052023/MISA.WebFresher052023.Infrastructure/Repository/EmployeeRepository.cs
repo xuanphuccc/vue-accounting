@@ -71,7 +71,7 @@ namespace MISA.WebFresher052023.Infrastructure
         /// Lấy nhân viên theo Id
         /// </summary>
         /// <param name="employeeId">Id của nhân viên</param>
-        /// <returns>Nhân viên</returns>
+        /// <returns>Nhân viên (trả về NotFoundException nếu không tìm thấy)</returns>
         /// CreatedBy: txphuc (14/07/2023)
         public async Task<Employee> GetByIdAsync(Guid employeeId)
         {
@@ -84,7 +84,7 @@ namespace MISA.WebFresher052023.Infrastructure
 
             if (employee == null)
             {
-                throw new NotFoundException("Nhân viên không tồn tại");
+                throw new NotFoundException($"Nhân viên '{employeeId}' không tồn tại");
             }
 
             return employee;
@@ -94,7 +94,7 @@ namespace MISA.WebFresher052023.Infrastructure
         /// Lấy nhân viên theo mã nhân viên
         /// </summary>
         /// <param name="employeeCode">Mã nhân viên</param>
-        /// <returns>Nhân viên</returns>
+        /// <returns>Nhân viên (trả về null nếu không tìm thấy)</returns>
         /// CreatedBy: txphuc (14/07/2023)
         public async Task<Employee> FindByCodeAsync(string employeeCode)
         {
@@ -112,7 +112,7 @@ namespace MISA.WebFresher052023.Infrastructure
         /// Tìm nhân viên theo Id
         /// </summary>
         /// <param name="employeeId">Id của nhân viên</param>
-        /// <returns>Nhân viên</returns>
+        /// <returns>Nhân viên (trả về null nếu không tìm thấy)</returns>
         /// CreatedBy: txphuc (14/07/2023)
         public async Task<Employee?> FindByIdAsync(Guid employeeId)
         {
@@ -215,17 +215,37 @@ namespace MISA.WebFresher052023.Infrastructure
         }
 
         /// <summary>
-        /// Xoá nhân viên   
+        /// Xoá nhân viên theo Id
         /// </summary>
         /// <param name="employee">Thông tin nhân viên</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (14/07/2023)
-        public async Task<int> DeleteAsync(Employee employee)
+        public async Task<int> DeleteByIdAsync(Employee employee)
         {
             var param = new DynamicParameters();
             param.Add("@EmployeeId", employee.EmployeeId);
 
             var sql = "Proc_Employee_DeleteById";
+
+            var result = await _connection.ExecuteAsync(sql, param, commandType: CommandType.StoredProcedure);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Xoá nhiều nhân viên
+        /// </summary>
+        /// <param name="employees">Danh sách nhân viên cần xoá</param>
+        /// <returns>Số bản ghi bị ảnh hưởng</returns>
+        /// CreatedBy: txphuc (16/07/2023)
+        public async Task<int> DeleteAsync(IEnumerable<Employee> employees)
+        {
+            var employeeIds = string.Join(", ", employees.Select(employee => employee.EmployeeId));
+
+            var param = new DynamicParameters();
+            param.Add("@EmployeeIds", employeeIds);
+
+            var sql = "Proc_Employee_Delete";
 
             var result = await _connection.ExecuteAsync(sql, param, commandType: CommandType.StoredProcedure);
 

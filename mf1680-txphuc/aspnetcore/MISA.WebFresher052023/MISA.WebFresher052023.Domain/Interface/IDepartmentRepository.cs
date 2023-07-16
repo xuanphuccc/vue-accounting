@@ -19,9 +19,17 @@ namespace MISA.WebFresher052023.Domain
         /// Lấy đơn vị theo Id
         /// </summary>
         /// <param name="departmentId">Id của đơn vị</param>
-        /// <returns>Thông tin đơn vị</returns>
+        /// <returns>Thông tin đơn vị (Trả về NotFoundException nếu không tìm thấy)</returns>
         /// CreatedBy: txphuc (15/07/2023)
         Task<Department> GetByIdAsync(Guid departmentId);
+
+        /// <summary>
+        /// Lấy đơn vị theo mã đơn vị
+        /// </summary>
+        /// <param name="departmentCode">Mã đơn vị</param>
+        /// <returns>Thông tin đơn vị (Trả về null nếu không tìm thấy)</returns>
+        /// CreatedBy: txphuc (15/07/2023)
+        Task<Department?> FindByCodeAsync(string departmentCode);
 
         /// <summary>
         /// Tạo đơn vị mới

@@ -16,12 +16,20 @@ namespace MISA.WebFresher052023.Domain
         Task<IEnumerable<Position>> GetAllAsync();
 
         /// <summary>
-        /// Lấy thông tin một vị trí
+        /// Lấy thông tin một vị trí theo Id
         /// </summary>
         /// <param name="positionId">Id của vị trí</param>
-        /// <returns>Thông tin vị trí</returns>
+        /// <returns>Thông tin vị trí (trả về NotFoundException nếu không tìm thấy)</returns>
         /// CreatedBy: txphuc (15/07/2023)
         Task<Position> GetByIdAsync(Guid positionId);
+
+        /// <summary>
+        /// Lấy thông tin một vị trí theo mã vị trí
+        /// </summary>
+        /// <param name="positionCode">Mã vị trí</param>
+        /// <returns>Thông tin vị trí (trả về null nếu không tìm thấy)</returns>
+        /// CreatedBy: txphuc (15/07/2023)
+        Task<Position> FindByCodeAsync(string positionCode);
 
         /// <summary>
         /// Thêm mới một vị trí

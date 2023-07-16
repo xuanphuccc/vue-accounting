@@ -53,7 +53,9 @@ builder.Services.AddScoped<IPositionRepository>((option) => new PositionReposito
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IEmployeeManager, EmployeeManager>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<IDepartmentManager, DepartmentManager>();
 builder.Services.AddScoped<IPositionService, PositionService>();
+builder.Services.AddScoped<IPositionManager, PositionManager>();
 
 var app = builder.Build();
 

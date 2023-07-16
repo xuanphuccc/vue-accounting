@@ -29,7 +29,7 @@ namespace MISA.WebFresher052023.Domain
         /// Lấy nhân viên theo Id
         /// </summary>
         /// <param name="employeeId">Id của nhân viên</param>
-        /// <returns>Nhân viên</returns>
+        /// <returns>Nhân viên (trả về NotFoundException nếu không tìm thấy)</returns>
         /// CreatedBy: txphuc (14/07/2023)
         Task<Employee> GetByIdAsync(Guid employeeId);
 
@@ -37,7 +37,7 @@ namespace MISA.WebFresher052023.Domain
         /// Lấy nhân viên theo mã nhân viên
         /// </summary>
         /// <param name="employeeCode">Mã nhân viên</param>
-        /// <returns>Nhân viên</returns>
+        /// <returns>Nhân viên (trả về null nếu không tìm thấy)</returns>
         /// CreatedBy: txphuc (14/07/2023)
         Task<Employee> FindByCodeAsync(string employeeCode);
 
@@ -45,7 +45,7 @@ namespace MISA.WebFresher052023.Domain
         /// Tìm nhân viên theo Id
         /// </summary>
         /// <param name="employeeId">Id của nhân viên</param>
-        /// <returns>Nhân viên</returns>
+        /// <returns>Nhân viên (trả về null nếu không tìm thấy)</returns>
         /// CreatedBy: txphuc (14/07/2023)
         Task<Employee?> FindByIdAsync(Guid employeeId);
 
@@ -73,11 +73,19 @@ namespace MISA.WebFresher052023.Domain
         Task<int> UpdateAsync(Employee employee);
 
         /// <summary>
-        /// Xoá nhân viên   
+        /// Xoá nhân viên theo Id
         /// </summary>
         /// <param name="employee">Thông tin nhân viên</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (14/07/2023)
-        Task<int> DeleteAsync(Employee employee);
+        Task<int> DeleteByIdAsync(Employee employee);
+
+        /// <summary>
+        /// Xoá nhiều nhân viên
+        /// </summary>
+        /// <param name="employees">Danh sách nhân viên cần xoá</param>
+        /// <returns>Số bản ghi bị ảnh hưởng</returns>
+        /// CreatedBy: txphuc (16/07/2023)
+        Task<int> DeleteAsync(IEnumerable<Employee> employees);
     }
 }

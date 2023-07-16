@@ -9,7 +9,7 @@ namespace MISA.WebFresher052023.Domain
     public interface IEmployeeManager
     {
         /// <summary>
-        /// Check trùng mã nhânv viên
+        /// Check trùng mã nhân viên
         /// </summary>
         /// <param name="employeeCode">Mã nhân viên cần check</param>
         /// <param name="oldEmployeeCode">Mã nhân viên cũ (trong trường hợp cập nhật mã)</param>

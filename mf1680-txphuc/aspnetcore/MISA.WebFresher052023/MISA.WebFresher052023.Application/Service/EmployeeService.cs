@@ -13,14 +13,23 @@ namespace MISA.WebFresher052023.Application
         #region Fields
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IEmployeeManager _employeeManager;
+        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IPositionRepository _positionRepository;
         private readonly IMapper _mapper;
         #endregion
 
         #region Constructor
-        public EmployeeService(IEmployeeRepository employeeRepository, IEmployeeManager employeeManager, IMapper mapper)
+        public EmployeeService(
+            IEmployeeRepository employeeRepository,
+            IEmployeeManager employeeManager,
+            IDepartmentRepository departmentRepository,
+            IPositionRepository positionRepository,
+            IMapper mapper)
         {
             _employeeRepository = employeeRepository;
             _employeeManager = employeeManager;
+            _departmentRepository = departmentRepository;
+            _positionRepository = positionRepository;
             _mapper = mapper;
         }
         #endregion
@@ -107,6 +116,13 @@ namespace MISA.WebFresher052023.Application
             // Check trùng mã nhân viên
             await _employeeManager.CheckExistEmployeeCode(employeeCreateDto.EmployeeCode);
 
+            // Check departmentId và positionId có tồn tại hay không
+            await _departmentRepository.GetByIdAsync(employeeCreateDto.DepartmentId);
+            if (employeeCreateDto.PositionId != null)
+            {
+                await _positionRepository.GetByIdAsync(employeeCreateDto.PositionId.Value);
+            }
+
             var employee = _mapper.Map<Employee>(employeeCreateDto);
 
             // Set Id, ngày tạo và ngày sửa đổi bản ghi
@@ -128,6 +144,13 @@ namespace MISA.WebFresher052023.Application
         /// CreatedBy: txphuc (14/07/2023)
         public async Task<int> UpdateAsync(Guid employeeId, EmployeeUpdateDto employeeUpdateDto)
         {
+            // Check departmentId và positionId có tồn tại hay không
+            await _departmentRepository.GetByIdAsync(employeeUpdateDto.DepartmentId);
+            if (employeeUpdateDto.PositionId != null)
+            {
+                await _positionRepository.GetByIdAsync(employeeUpdateDto.PositionId.Value);
+            }
+
             // Check nhân viên có tồn tại hay không
             var oldEmployee = await _employeeRepository.GetByIdAsync(employeeId);
 
@@ -146,22 +169,41 @@ namespace MISA.WebFresher052023.Application
         }
 
         /// <summary>
-        /// Xoá nhân viên   
+        /// Xoá nhân viên theo Id
         /// </summary>
-        /// <param name="employee">Thông tin nhân viên</param>
+        /// <param name="employee">Id của nhân viên</param>
         /// CreatedBy: txphuc (14/07/2023)
-        public async Task<int> DeleteAsync(Guid employeeId)
+        public async Task<int> DeleteByIdAsync(Guid employeeId)
         {
-            var existEmployee = await _employeeRepository.FindByIdAsync(employeeId);
+            // Check nhân viên có tồn tại hay không
+            var existEmployee = await _employeeRepository.GetByIdAsync(employeeId);
 
-            if (existEmployee == null)
-            {
-                throw new NotFoundException("Nhân viên không tồn tại");
-            }
-
-            var reruslt = await _employeeRepository.DeleteAsync(existEmployee);
+            var reruslt = await _employeeRepository.DeleteByIdAsync(existEmployee);
 
             return reruslt;
+        }
+
+        /// <summary>
+        /// Xoá nhiều nhân viên
+        /// </summary>
+        /// <param name="employeeDeleteDtos">Danh sách Id của các nhân viên cần xoá</param>
+        /// <returns>Số bản ghi bị ảnh hưởng</returns>
+        /// CreatedBy: txphuc (16/07/2023)
+        public async Task<int> DeleteAsync(IEnumerable<DeleteManyDto> employeeDeleteDtos)
+        {
+            List<Employee> employees = new();
+
+            foreach (var employeeDeleteDto in employeeDeleteDtos)
+            {
+                // Check nhân viên có tồn tại hay không
+                var existEmployee = await _employeeRepository.GetByIdAsync(employeeDeleteDto.Id);
+
+                employees.Add(existEmployee);
+            }
+
+            var result = await _employeeRepository.DeleteAsync(employees);
+
+            return result;
         }
         #endregion
     }

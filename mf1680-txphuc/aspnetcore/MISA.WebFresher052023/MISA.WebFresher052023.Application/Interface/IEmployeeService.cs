@@ -57,10 +57,18 @@ namespace MISA.WebFresher052023.Application
         Task<int> UpdateAsync(Guid employeeId, EmployeeUpdateDto employeeUpdateDto);
 
         /// <summary>
-        /// Xoá nhân viên   
+        /// Xoá nhân viên theo Id
         /// </summary>
-        /// <param name="employeeId">Thông tin nhân viên</param>
+        /// <param name="employeeId">Id của nhân viên</param>
         /// CreatedBy: txphuc (14/07/2023)
-        Task<int> DeleteAsync(Guid employeeId);
+        Task<int> DeleteByIdAsync(Guid employeeId);
+
+        /// <summary>
+        /// Xoá nhiều nhân viên
+        /// </summary>
+        /// <param name="employeeDeleteDtos">Danh sách Id của các nhân viên cần xoá</param>
+        /// <returns>Số bản ghi bị ảnh hưởng</returns>
+        /// CreatedBy: txphuc (16/07/2023)
+        Task<int> DeleteAsync(IEnumerable<DeleteManyDto> employeeDeleteDtos);
     }
 }

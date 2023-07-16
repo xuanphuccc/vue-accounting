@@ -4,7 +4,7 @@ using MISA.WebFresher052023.Application;
 
 namespace MISA.WebFresher052023.Demo.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class PositionsController : ControllerBase
     {

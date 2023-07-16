@@ -11,11 +11,13 @@ namespace MISA.WebFresher052023.Application
     public class PositionService : IPositionService
     {
         private readonly IPositionRepository _positionRepository;
+        private readonly IPositionManager _positionManager;
         private readonly IMapper _mapper;
 
-        public PositionService(IPositionRepository positionRepository, IMapper mapper)
+        public PositionService(IPositionRepository positionRepository, IPositionManager positionManager, IMapper mapper)
         {
             _positionRepository = positionRepository;
+            _positionManager = positionManager;
             _mapper = mapper;
         }
 
@@ -59,6 +61,9 @@ namespace MISA.WebFresher052023.Application
         /// CreatedBy: txphuc (15/07/2023)
         public async Task<int> InsertAsync(PositionCreateDto positionCreateDto)
         {
+            // Check trùng mã vị trí
+            await _positionManager.CheckExistPositionCode(positionCreateDto.PositionCode);
+
             var position = _mapper.Map<Position>(positionCreateDto);
 
             // Set thông tin cho bản ghi
@@ -84,6 +89,9 @@ namespace MISA.WebFresher052023.Application
         {
             // Check vị trí có tồn tại hay không
             var oldPosition = await _positionRepository.GetByIdAsync(positionId);
+
+            // Check trùng mã vị trí
+            await _positionManager.CheckExistPositionCode(positionUpdateDto.PositionCode, oldPosition.PositionCode);
 
             var newPosition = _mapper.Map(positionUpdateDto, oldPosition);
 

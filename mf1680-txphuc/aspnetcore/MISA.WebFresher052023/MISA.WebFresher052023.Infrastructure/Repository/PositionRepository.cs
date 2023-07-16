@@ -39,10 +39,10 @@ namespace MISA.WebFresher052023.Infrastructure
         }
 
         /// <summary>
-        /// Lấy thông tin một vị trí
+        /// Lấy thông tin một vị trí theo Id
         /// </summary>
         /// <param name="positionId">Id của vị trí</param>
-        /// <returns>Thông tin vị trí</returns>
+        /// <returns>Thông tin vị trí (trả về NotFoundException nếu không tìm thấy)</returns>
         /// CreatedBy: txphuc (15/07/2023)
         public async Task<Position> GetByIdAsync(Guid positionId)
         {
@@ -57,6 +57,24 @@ namespace MISA.WebFresher052023.Infrastructure
             {
                 throw new NotFoundException("Vị trí không tồn tại");
             }
+
+            return position;
+        }
+
+        /// <summary>
+        /// Lấy thông tin một vị trí theo mã vị trí
+        /// </summary>
+        /// <param name="positionCode">Mã vị trí</param>
+        /// <returns>Thông tin vị trí (trả về null nếu không tìm thấy)</returns>
+        /// CreatedBy: txphuc (15/07/2023)
+        public async Task<Position> FindByCodeAsync(string positionCode)
+        {
+            var sql = "Proc_Position_GetByCode";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@PositionCode", positionCode);
+
+            var position = await _connection.QueryFirstOrDefaultAsync<Position>(sql, parameters, commandType: CommandType.StoredProcedure);
 
             return position;
         }
@@ -117,7 +135,7 @@ namespace MISA.WebFresher052023.Infrastructure
         /// CreatedBy: txphuc (15/07/2023)
         public async Task<int> DeleteAsync(Position position)
         {
-            var sql = "Proc_Position_Delete";
+            var sql = "Proc_Position_DeleteById";
 
             var parameters = new DynamicParameters();
             parameters.Add("@PositionId", position.PositionId);
@@ -125,7 +143,7 @@ namespace MISA.WebFresher052023.Infrastructure
             var result = await _connection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
 
             return result;
-        } 
+        }
         #endregion
     }
 }
