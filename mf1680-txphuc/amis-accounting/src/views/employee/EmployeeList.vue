@@ -69,7 +69,7 @@
         :loading="isLoading"
         :total-page="pagingInfoState.totalPage"
         :total-records="pagingInfoState.totalRecords"
-        :current-page="filterParamsState.pageNumber"
+        :current-page="filterParamsState.page"
         :page-size="filterParamsState.pageSize"
         @select-row="selectTableRows"
         @active-row="setActiveRow"
@@ -133,6 +133,7 @@ import MISADialog from "@/components/base/dialog/MISADialog.vue";
 import EmployeeDetail from "./EmployeeDetail.vue";
 import employeeApi from "@/api/employee-api";
 import formatDate from "@/helper/format-date";
+import enums from "@/helper/enum";
 import MISAResource from "@/helper/resource";
 import { useGlobalStore } from "@/stores/global-store";
 import { useEmployeeStore } from "@/stores/employee-store";
@@ -141,9 +142,9 @@ import { useToastStore } from "@/stores/toast-store";
 const employeeData = ref([]);
 const searchFieldState = ref("");
 const filterParamsState = ref({
-  pageNumber: 1,
+  page: 1,
   pageSize: 10,
-  employeeFilter: "",
+  search: "",
 });
 const pagingInfoState = ref({
   totalPage: 0,
@@ -190,7 +191,7 @@ watch(
       {
         key: 3,
         title: MISAResource[globalStore.lang].Page.Employee.Gender.Title,
-        dataIndex: "GenderName",
+        dataIndex: "GenderFormated",
       },
       {
         key: 4,
@@ -228,6 +229,7 @@ watch(
         key: 9,
         title: MISAResource[globalStore.lang].Page.Employee.BankName.Title,
         dataIndex: "BankName",
+        width: 180,
       },
       {
         key: 10,
@@ -257,13 +259,22 @@ const getEmployeeData = async () => {
     employeeData.value = response.data?.Data?.map((employee) => {
       employee.key = employee.EmployeeId;
       employee.DateOfBirthFormated = formatDate(employee.DateOfBirth);
+      employee.GenderFormated =
+        employee.Gender === enums.gender.MALE
+          ? "Nam"
+          : employee.Gender === enums.gender.FEMALE
+          ? "Nữ"
+          : "Khác";
 
       return employee;
     });
 
     // Lấy dữ liệu phân trang
-    pagingInfoState.value.totalRecords = response.data.TotalRecord;
-    pagingInfoState.value.totalPage = response.data.TotalPage;
+    const totalRecords = response.data.TotalRecords;
+    const pageSize = filterParamsState.value.pageSize;
+
+    pagingInfoState.value.totalRecords = totalRecords;
+    pagingInfoState.value.totalPage = Math.ceil(totalRecords / pageSize);
 
     isLoading.value = false;
   } catch (error) {
@@ -401,7 +412,7 @@ const hideConfirmDialog = () => {
  * Author: txphuc (30/06/2023)
  */
 const handleNextPage = (nextPage) => {
-  filterParamsState.value.pageNumber = nextPage;
+  filterParamsState.value.page = nextPage;
 };
 
 /**
@@ -409,7 +420,7 @@ const handleNextPage = (nextPage) => {
  * Author: txphuc (30/06/2023)
  */
 const handlePrevPage = (prevPage) => {
-  filterParamsState.value.pageNumber = prevPage;
+  filterParamsState.value.page = prevPage;
 };
 
 /**
@@ -417,8 +428,8 @@ const handlePrevPage = (prevPage) => {
  * Author: txphuc (30/06/2023)
  */
 const handleSearchEmployee = () => {
-  filterParamsState.value.pageNumber = 1;
-  filterParamsState.value.employeeFilter = searchFieldState.value;
+  filterParamsState.value.page = 1;
+  filterParamsState.value.search = searchFieldState.value;
 };
 
 /**
@@ -429,7 +440,7 @@ const handleChangePageSize = (newPageSize) => {
   filterParamsState.value.pageSize = newPageSize;
 
   // Reset lại số trang hiện tại
-  filterParamsState.value.pageNumber = 1;
+  filterParamsState.value.page = 1;
 };
 
 /**
@@ -439,9 +450,9 @@ const handleChangePageSize = (newPageSize) => {
 const handleResetFilter = () => {
   filterParamsState.value = {
     ...filterParamsState.value,
-    pageNumber: 1,
+    page: 1,
     pageSize: 10,
-    employeeFilter: "",
+    search: "",
   };
 
   searchFieldState.value = "";

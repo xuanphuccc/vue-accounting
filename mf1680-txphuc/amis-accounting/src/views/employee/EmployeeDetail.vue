@@ -195,7 +195,11 @@
               for="input-mobile-phone"
               space-bottom
             >
-              <MISAInput tabindex="13" v-model="formData.phoneNumber" id="input-mobile-phone" />
+              <MISAInput
+                tabindex="13"
+                v-model="formData.mobilePhoneNumber"
+                id="input-mobile-phone"
+              />
             </MISAFormGroup>
           </MISACol>
           <MISACol span="3">
@@ -205,7 +209,11 @@
               for="input-landline-phone"
               space-bottom
             >
-              <MISAInput tabindex="14" id="input-landline-phone" />
+              <MISAInput
+                tabindex="14"
+                v-model="formData.landlineNumber"
+                id="input-landline-phone"
+              />
             </MISAFormGroup>
           </MISACol>
           <MISACol span="3">
@@ -225,7 +233,7 @@
               :label="MISAResource[globalStore.lang].Page.Employee.BankAccount.Title"
               for="bank-account"
             >
-              <MISAInput tabindex="16" id="bank-account" />
+              <MISAInput tabindex="16" v-model="formData.bankAccount" id="bank-account" />
             </MISAFormGroup>
           </MISACol>
           <MISACol span="3">
@@ -233,7 +241,7 @@
               :label="MISAResource[globalStore.lang].Page.Employee.BankName.Title"
               for="bank-name"
             >
-              <MISAInput tabindex="17" id="bank-name" />
+              <MISAInput tabindex="17" v-model="formData.bankName" id="bank-name" />
             </MISAFormGroup>
           </MISACol>
           <MISACol span="3">
@@ -241,7 +249,7 @@
               :label="MISAResource[globalStore.lang].Page.Employee.BankBranch.Title"
               for="branch"
             >
-              <MISAInput tabindex="18" id="branch" />
+              <MISAInput tabindex="18" v-model="formData.bankBranch" id="branch" />
             </MISAFormGroup>
           </MISACol>
         </MISARow>
@@ -327,15 +335,19 @@ const initialFormData = {
   employeeCode: "",
   fullName: "",
   departmentId: "",
-  positionId: "",
-  dateOfBirth: "",
+  positionId: null,
+  dateOfBirth: null,
   gender: enums.gender.MALE + "",
-  identityNumber: "",
-  identityDate: "",
-  identityPlace: "",
-  address: "",
-  phoneNumber: "",
-  email: "",
+  identityNumber: null,
+  identityDate: null,
+  identityPlace: null,
+  address: null,
+  mobilePhoneNumber: null,
+  landlineNumber: null,
+  email: null,
+  bankAccount: null,
+  bankName: null,
+  bankBranch: null,
 };
 const formData = ref({ ...initialFormData });
 
@@ -609,7 +621,7 @@ const handleCreateEmployee = async () => {
       active: true,
       type: "error",
       title: MISAResource[globalStore.lang].Dialog.ErrorTitle,
-      description: error?.response?.data?.userMsg,
+      description: error?.response?.data?.UserMessage,
     };
 
     return false;
@@ -644,8 +656,12 @@ const handleLoadDataForUpdate = async () => {
         identityDate: formatDate(employeeData.IdentityDate, "YYYY-MM-DD"),
         identityPlace: employeeData.IdentityPlace,
         address: employeeData.Address,
-        phoneNumber: employeeData.PhoneNumber,
+        mobilePhoneNumber: employeeData.MobilePhoneNumber,
+        landlineNumber: employeeData.LandlineNumber,
         email: employeeData.Email,
+        bankAccount: employeeData.BankAccount,
+        bankName: employeeData.BankName,
+        bankBranch: employeeData.BankBranch,
       };
 
       // Lấy mã nhân viên mới để nhân bản
@@ -690,7 +706,7 @@ const handleUpdateEmployee = async () => {
       active: true,
       type: "error",
       title: MISAResource[globalStore.lang].Dialog.ErrorTitle,
-      description: error?.response?.data?.userMsg,
+      description: error?.response?.data?.UserMessage,
     };
 
     return false;
@@ -726,7 +742,7 @@ const handleDuplicateEmployee = async () => {
       active: true,
       type: "error",
       title: MISAResource[globalStore.lang].Dialog.ErrorTitle,
-      description: error?.response?.data?.userMsg,
+      description: error?.response?.data?.UserMessage,
     };
 
     return false;

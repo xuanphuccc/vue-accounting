@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create new instance
 const axiosClient = axios.create({
-  baseURL: "https://cukcuk.manhnv.net/api/v1",
+  baseURL: "https://localhost:7047/api/v1",
   headers: {
     "Content-Type": "application/json",
   },
