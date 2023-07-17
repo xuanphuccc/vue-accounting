@@ -20,12 +20,12 @@ builder.Services.AddControllers()
 
             return new BadRequestObjectResult(new BaseException()
             {
-                ErrorCode = 400,
+                ErrorCode = 1001,
                 UserMessage = errorMsgs,
                 DevMessage = errorMsgs,
                 TraceId = context.HttpContext.TraceIdentifier,
                 MoreInfo = "",
-                Errors = errors
+                Errors = context.ModelState
             });
         };
     })
@@ -57,6 +57,16 @@ builder.Services.AddScoped<IDepartmentManager, DepartmentManager>();
 builder.Services.AddScoped<IPositionService, PositionService>();
 builder.Services.AddScoped<IPositionManager, PositionManager>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policyBuilder =>
+    {
+        policyBuilder.AllowAnyOrigin();
+        policyBuilder.AllowAnyHeader();
+        policyBuilder.AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -65,6 +75,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 

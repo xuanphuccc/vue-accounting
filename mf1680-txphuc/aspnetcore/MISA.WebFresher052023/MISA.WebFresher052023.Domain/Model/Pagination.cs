@@ -15,12 +15,6 @@ namespace MISA.WebFresher052023.Domain
         public object? Data { get; set; }
 
         /// <summary>
-        /// Tổng số trang
-        /// </summary>
-        /// CreatedBy: txphuc (15/07/2023)
-        public int? TotalPages { get; set; }
-
-        /// <summary>
         /// Tổng số bản ghi
         /// </summary>
         /// CreatedBy: txphuc (15/07/2023)

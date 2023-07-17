@@ -66,9 +66,9 @@ namespace MISA.WebFresher052023.Application
         /// <summary>
         /// Xoá nhiều nhân viên
         /// </summary>
-        /// <param name="employeeDeleteDtos">Danh sách Id của các nhân viên cần xoá</param>
+        /// <param name="employeeIds">Danh sách Id của các nhân viên cần xoá</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (16/07/2023)
-        Task<int> DeleteAsync(IEnumerable<DeleteManyDto> employeeDeleteDtos);
+        Task<int> DeleteAsync(IEnumerable<Guid> employeeIds);
     }
 }

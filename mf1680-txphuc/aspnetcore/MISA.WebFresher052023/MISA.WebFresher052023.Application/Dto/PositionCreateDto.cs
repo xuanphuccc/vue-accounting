@@ -15,7 +15,7 @@ namespace MISA.WebFresher052023.Application
         /// CreatedBy: txphuc (14/07/2023)
         [Required(ErrorMessage = "Mã vị trí không được để trống")]
         [StringLength(20, ErrorMessage = "Mã vị trí tối đa 20 ký tự")]
-        [RegularExpression(@"^VT-[0-9]{4,}$", ErrorMessage = "Mã vị trí phải có định dạng NV-XXXX trong đó sau VT có ít nhất 4 số")]
+        [RegularExpression(@"[a-zA-Z]{1,}-[0-9]{4,}", ErrorMessage = "Mã vị trí phải có định dạng xx-xxxx trong đó sau xx- có ít nhất 4 số")]
         public string PositionCode { get; set; } = string.Empty;
 
         /// <summary>

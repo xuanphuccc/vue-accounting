@@ -113,6 +113,13 @@ namespace MISA.WebFresher052023.Application
         /// CreatedBy: txphuc (14/07/2023)
         public async Task<int> InsertAsync(EmployeeCreateDto employeeCreateDto)
         {
+
+            var existEmployee = await _employeeRepository.FindByCodeAsync(employeeCreateDto.EmployeeCode);
+            if (existEmployee != null)
+            {
+                throw new ConflictException("Mã nhân viên đã tồn tại");
+            }
+
             // Check trùng mã nhân viên
             await _employeeManager.CheckExistEmployeeCode(employeeCreateDto.EmployeeCode);
 
@@ -186,17 +193,17 @@ namespace MISA.WebFresher052023.Application
         /// <summary>
         /// Xoá nhiều nhân viên
         /// </summary>
-        /// <param name="employeeDeleteDtos">Danh sách Id của các nhân viên cần xoá</param>
+        /// <param name="employeeIds">Danh sách Id của các nhân viên cần xoá</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (16/07/2023)
-        public async Task<int> DeleteAsync(IEnumerable<DeleteManyDto> employeeDeleteDtos)
+        public async Task<int> DeleteAsync(IEnumerable<Guid> employeeIds)
         {
             List<Employee> employees = new();
 
-            foreach (var employeeDeleteDto in employeeDeleteDtos)
+            foreach (var employeeId in employeeIds)
             {
                 // Check nhân viên có tồn tại hay không
-                var existEmployee = await _employeeRepository.GetByIdAsync(employeeDeleteDto.Id);
+                var existEmployee = await _employeeRepository.GetByIdAsync(employeeId);
 
                 employees.Add(existEmployee);
             }

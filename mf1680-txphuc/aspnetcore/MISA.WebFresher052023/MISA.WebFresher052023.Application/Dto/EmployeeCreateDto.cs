@@ -14,9 +14,9 @@ namespace MISA.WebFresher052023.Application
         /// Mã nhân viên
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
-        [Required(ErrorMessage = "Mã nhân viên không được để trống")]
+        [Required(ErrorMessage = "Mã nhân viên không được để trống", ErrorMessageResourceName = "test")]
         [StringLength(20, ErrorMessage = "Mã tối đa 20 ký tự")]
-        [RegularExpression(@"^NV-[0-9]{4,}$", ErrorMessage = "Mã nhân viên phải có định dạng NV-XXXX trong đó sau NV có ít nhất 4 số")]
+        [RegularExpression(@"[a-zA-Z]{1,}-[0-9]{4,}", ErrorMessage = "Mã nhân viên phải có định dạng xx-xxxx trong đó sau xx- có ít nhất 4 số")]
         public string EmployeeCode { get; set; } = string.Empty;
 
         /// <summary>
@@ -120,7 +120,6 @@ namespace MISA.WebFresher052023.Application
         /// Mã vị trí
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
-        [StringLength(36, ErrorMessage = "Id tối đa 36 ký tự")]
         public Guid? PositionId { get; set; }
     }
 }

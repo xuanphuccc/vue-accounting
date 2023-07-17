@@ -67,8 +67,8 @@ namespace MISA.WebFresher052023.Demo.Controllers
             return Ok(employee);
         }
 
-        [HttpGet("/NewEmployeeCode")]
-        public async Task<IActionResult> FindNewEmployeeCodeAsync ()
+        [HttpGet("NewEmployeeCode")]
+        public async Task<IActionResult> FindNewEmployeeCodeAsync()
         {
             var newEmployeeCode = await _employeeService.FindNewEmployeeCodeAsync();
 
@@ -118,9 +118,9 @@ namespace MISA.WebFresher052023.Demo.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteAsync([FromBody] IEnumerable<DeleteManyDto> employeeDeleteDtos)
+        public async Task<IActionResult> DeleteAsync([FromBody] IEnumerable<Guid> employeeIds)
         {
-            var result = await _employeeService.DeleteAsync(employeeDeleteDtos);
+            var result = await _employeeService.DeleteAsync(employeeIds);
 
             return Ok(result);
         }

@@ -48,22 +48,19 @@ namespace MISA.WebFresher052023.Infrastructure
             parameters.Add("@Page", currentPage);
             parameters.Add("@PageSize", pageSize);
             parameters.Add("@TotalRecords", dbType: DbType.Int32, direction: ParameterDirection.Output);
-            parameters.Add("@TotalPages", pageSize, direction: ParameterDirection.Output);
 
             var sql = "Proc_Employee_FilterAndPaging";
 
             // Lấy data nhân viên
             var employeeModels = await _connection.QueryAsync<EmployeeModel>(sql, parameters, commandType: CommandType.StoredProcedure);
 
-            // Lấy thông tin phân trang
-            var totalRecords = parameters.Get<int>("@TotalRecords");
-            var totalPages = parameters.Get<int>("@TotalPages");
+            // Lấy tổng số bản ghi
+            var totalRecords = parameters.Get<int?>("@TotalRecords");
 
             return new Pagination()
             {
                 Data = employeeModels,
                 TotalRecords = totalRecords,
-                TotalPages = totalPages,
             };
         }
 

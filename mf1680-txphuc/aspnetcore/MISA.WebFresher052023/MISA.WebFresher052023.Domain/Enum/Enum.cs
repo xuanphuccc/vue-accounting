@@ -21,4 +21,9 @@ namespace MISA.WebFresher052023.Domain
         /// CreatedBy: txphuc (14/07/2023)
         Other = 2,
     }
+
+    public enum Error
+    {
+
+    }
 }
