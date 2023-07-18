@@ -2,7 +2,7 @@
 
 namespace MISA.WebFresher052023.Domain
 {
-    public class Department
+    public class Department : BaseAuditEntity
     {
         /// <summary>
         /// Khoá chính
@@ -33,31 +33,5 @@ namespace MISA.WebFresher052023.Domain
         /// CreatedBy: txphuc (14/07/2023)
         [StringLength(255)]
         public string? Description { get; set; }
-
-        /// <summary>
-        /// Ngày tạo
-        /// </summary>
-        /// CreatedBy: txphuc (14/07/2023)
-        public DateTime? CreatedDate { get; set; }
-
-        /// <summary>
-        /// Người tạo
-        /// </summary>
-        /// CreatedBy: txphuc (14/07/2023)
-        [StringLength(255)]
-        public string? CreatedBy { get; set; }
-
-        /// <summary>
-        /// Ngày sửa
-        /// </summary>
-        /// CreatedBy: txphuc (14/07/2023)
-        public DateTime? ModifiedDate { get; set; }
-
-        /// <summary>
-        /// Người sửa
-        /// </summary>
-        /// CreatedBy: txphuc (14/07/2023)
-        [StringLength(255)]
-        public string? ModifiedBy { get; set; }
     }
 }

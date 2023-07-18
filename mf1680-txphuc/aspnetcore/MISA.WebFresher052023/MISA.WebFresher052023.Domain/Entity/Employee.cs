@@ -2,7 +2,7 @@
 
 namespace MISA.WebFresher052023.Domain
 {
-    public class Employee
+    public class Employee : BaseAuditEntity, IHasKey
     {
         /// <summary>
         /// Khoá chính
@@ -109,32 +109,6 @@ namespace MISA.WebFresher052023.Domain
         public string? BankBranch { get; set; }
 
         /// <summary>
-        /// Ngày tạo
-        /// </summary>
-        /// CreatedBy: txphuc (14/07/2023)
-        public DateTime? CreatedDate { get; set; }
-
-        /// <summary>
-        /// Người tạo
-        /// </summary>
-        /// CreatedBy: txphuc (14/07/2023)
-        [StringLength(255)]
-        public string? CreatedBy { get; set; }
-
-        /// <summary>
-        /// Ngày sửa
-        /// </summary>
-        /// CreatedBy: txphuc (14/07/2023)
-        public DateTime? ModifiedDate { get; set; }
-
-        /// <summary>
-        /// Người sửa
-        /// </summary>
-        /// CreatedBy: txphuc (14/07/2023)
-        [StringLength(255)]
-        public string? ModifiedBy { get; set; }
-
-        /// <summary>
         /// Mã đơn vị (khoá ngoại)
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
@@ -147,5 +121,15 @@ namespace MISA.WebFresher052023.Domain
         /// CreatedBy: txphuc (14/07/2023)
         [StringLength(36)]
         public Guid? PositionId { get; set; }
+
+        /// <summary>
+        /// Lấy Id của đối tượng
+        /// </summary>
+        /// <returns>Id của đối tượng</returns>
+        /// CreatedBy: txphuc (18/07/2023)
+        public Guid GetKey()
+        {
+            return EmployeeId;
+        }
     }
 }

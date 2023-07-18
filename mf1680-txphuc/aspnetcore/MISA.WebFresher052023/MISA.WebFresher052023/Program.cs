@@ -20,7 +20,7 @@ builder.Services.AddControllers()
 
             return new BadRequestObjectResult(new BaseException()
             {
-                ErrorCode = 1001,
+                ErrorCode = 400,
                 UserMessage = errorMsgs,
                 DevMessage = errorMsgs,
                 TraceId = context.HttpContext.TraceIdentifier,
@@ -45,15 +45,19 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Add repositories
 var connectionString = builder.Configuration.GetConnectionString("MisaAccounting");
 
-builder.Services.AddScoped<IEmployeeRepository>((option) => new EmployeeRepository(new MySqlConnection(connectionString)));
+builder.Services.AddScoped<IUnitOfWork>(provider => new UnitOfWork(connectionString));
+
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IDepartmentRepository>((option) => new DepartmentRepository(new MySqlConnection(connectionString)));
 builder.Services.AddScoped<IPositionRepository>((option) => new PositionRepository(new MySqlConnection(connectionString)));
 
 // Add services
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IEmployeeManager, EmployeeManager>();
+
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IDepartmentManager, DepartmentManager>();
+
 builder.Services.AddScoped<IPositionService, PositionService>();
 builder.Services.AddScoped<IPositionManager, PositionManager>();
 

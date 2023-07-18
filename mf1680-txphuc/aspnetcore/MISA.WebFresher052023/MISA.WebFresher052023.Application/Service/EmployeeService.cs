@@ -8,47 +8,26 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Application
 {
-    public class EmployeeService : IEmployeeService
+    public class EmployeeService : BaseCodeService<Employee,EmployeeDto, EmployeeCreateDto, EmployeeUpdateDto>, IEmployeeService
     {
         #region Fields
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IEmployeeManager _employeeManager;
-        private readonly IDepartmentRepository _departmentRepository;
-        private readonly IPositionRepository _positionRepository;
-        private readonly IMapper _mapper;
+
         #endregion
 
         #region Constructor
         public EmployeeService(
-            IEmployeeRepository employeeRepository,
-            IEmployeeManager employeeManager,
-            IDepartmentRepository departmentRepository,
-            IPositionRepository positionRepository,
-            IMapper mapper)
+            IEmployeeRepository employeeRepository, 
+            IEmployeeManager employeeManager, 
+            IMapper mapper) : base(employeeRepository, mapper)
         {
             _employeeRepository = employeeRepository;
             _employeeManager = employeeManager;
-            _departmentRepository = departmentRepository;
-            _positionRepository = positionRepository;
-            _mapper = mapper;
         }
         #endregion
 
         #region Methods
-        /// <summary>
-        /// Lấy tất cả nhân viên
-        /// </summary>
-        /// <returns>Danh sách nhân viên</returns>
-        /// CreatedBy: txphuc (14/07/2023)
-        public async Task<IEnumerable<EmployeeDto>> GetAllAsync()
-        {
-            var employees = await _employeeRepository.GetAllAsync();
-
-            var employeeDtos = _mapper.Map<IEnumerable<EmployeeDto>>(employees);
-
-            return employeeDtos;
-        }
-
         /// <summary>
         /// Tìm kiếm, filter và phân trang
         /// </summary>
@@ -79,40 +58,8 @@ namespace MISA.WebFresher052023.Application
             return pagedEmployees;
         }
 
-        /// <summary>
-        /// Lấy nhân viên theo Id
-        /// </summary>
-        /// <param name="employeeId">Id của nhân viên</param>
-        /// <returns>Nhân viên</returns>
-        /// CreatedBy: txphuc (14/07/2023)
-        public async Task<EmployeeDto> GetByIdAsync(Guid employeeId)
-        {
-            var employee = await _employeeRepository.GetByIdAsync(employeeId);
 
-            var employeeDto = _mapper.Map<EmployeeDto>(employee);
-
-            return employeeDto;
-        }
-
-        /// <summary>
-        /// Lấy mã nhân viên mới
-        /// </summary>
-        /// <returns>Mã nhân viên mới nhất</returns>
-        /// CreatedBy: txphuc (15/07/2023)
-        public async Task<string?> FindNewEmployeeCodeAsync()
-        {
-            var newEmployeeCode = await _employeeRepository.FindNewEmployeeCodeAsync();
-
-            return newEmployeeCode;
-        }
-
-        /// <summary>
-        /// Tạo nhân viên mới
-        /// </summary>
-        /// <param name="employeeCreateDto">Thông tin nhân viên</param>
-        /// <returns>Số bản ghi bị ảnh hưởng</returns>
-        /// CreatedBy: txphuc (14/07/2023)
-        public async Task<int> InsertAsync(EmployeeCreateDto employeeCreateDto)
+        protected override async Task<Employee> MapCreateDtoToEntityAsync(EmployeeCreateDto employeeCreateDto)
         {
             // Check trùng mã nhân viên
             await _employeeManager.CheckExistEmployeeCode(employeeCreateDto.EmployeeCode);
@@ -129,18 +76,10 @@ namespace MISA.WebFresher052023.Application
             employee.ModifiedDate = DateTime.Now;
             employee.ModifiedBy = "txphuc";
 
-            var result = await _employeeRepository.InsertAsync(employee);
-
-            return result;
+            return employee;
         }
 
-        /// <summary>
-        /// Cập nhật nhân viên
-        /// </summary>
-        /// <param name="employeeUpdateDto">Thông tin nhân viên</param>
-        /// <returns>Số bản ghi bị ảnh hưởng</returns>
-        /// CreatedBy: txphuc (14/07/2023)
-        public async Task<int> UpdateAsync(Guid employeeId, EmployeeUpdateDto employeeUpdateDto)
+        protected override async Task<Employee> MapUpdateDtoToEntityAsync(Guid employeeId, EmployeeUpdateDto employeeUpdateDto)
         {
             // Check nhân viên có tồn tại hay không
             var oldEmployee = await _employeeRepository.GetByIdAsync(employeeId);
@@ -157,48 +96,7 @@ namespace MISA.WebFresher052023.Application
             newEmployee.ModifiedDate = DateTime.Now;
             newEmployee.ModifiedBy = "txphuc";
 
-            var result = await _employeeRepository.UpdateAsync(newEmployee);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Xoá nhân viên theo Id
-        /// </summary>
-        /// <param name="employeeId">Id của nhân viên</param>
-        /// <returns>Số bản ghi bị ảnh hưởng</returns>
-        /// CreatedBy: txphuc (14/07/2023)
-        public async Task<int> DeleteByIdAsync(Guid employeeId)
-        {
-            // Check nhân viên có tồn tại hay không
-            var existEmployee = await _employeeRepository.GetByIdAsync(employeeId);
-
-            var reruslt = await _employeeRepository.DeleteByIdAsync(existEmployee);
-
-            return reruslt;
-        }
-
-        /// <summary>
-        /// Xoá nhiều nhân viên
-        /// </summary>
-        /// <param name="employeeIds">Danh sách Id của các nhân viên cần xoá</param>
-        /// <returns>Số bản ghi bị ảnh hưởng</returns>
-        /// CreatedBy: txphuc (16/07/2023)
-        public async Task<int> DeleteAsync(IEnumerable<Guid> employeeIds)
-        {
-            List<Employee> employees = new();
-
-            foreach (var employeeId in employeeIds)
-            {
-                // Check nhân viên có tồn tại hay không
-                var existEmployee = await _employeeRepository.GetByIdAsync(employeeId);
-
-                employees.Add(existEmployee);
-            }
-
-            var result = await _employeeRepository.DeleteAsync(employees);
-
-            return result;
+            return newEmployee;
         }
         #endregion
     }
