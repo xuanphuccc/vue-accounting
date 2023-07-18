@@ -81,7 +81,7 @@ namespace MISA.WebFresher052023.Infrastructure
 
             if (employee == null)
             {
-                throw new NotFoundException($"Nhân viên '{employeeId}' không tồn tại");
+                throw new NotFoundException($"Nhân viên '{employeeId}' không tồn tại", (int)ErrorCodes.NotFound);
             }
 
             return employee;

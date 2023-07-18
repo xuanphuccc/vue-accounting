@@ -10,19 +10,22 @@ namespace MISA.WebFresher052023.Application
 {
     public class PositionService : IPositionService
     {
+        #region Fields
         private readonly IPositionRepository _positionRepository;
         private readonly IPositionManager _positionManager;
         private readonly IMapper _mapper;
+        #endregion
 
+        #region Constructor
         public PositionService(IPositionRepository positionRepository, IPositionManager positionManager, IMapper mapper)
         {
             _positionRepository = positionRepository;
             _positionManager = positionManager;
             _mapper = mapper;
         }
+        #endregion
 
-
-
+        #region Methods
         /// <summary>
         /// Lấy danh sách toàn bộ vị trí
         /// </summary>
@@ -50,7 +53,6 @@ namespace MISA.WebFresher052023.Application
             var positionDto = _mapper.Map<PositionDto>(position);
 
             return positionDto;
-
         }
 
         /// <summary>
@@ -118,6 +120,7 @@ namespace MISA.WebFresher052023.Application
             var result = await _positionRepository.DeleteAsync(existPosition);
 
             return result;
-        }
+        } 
+        #endregion
     }
 }

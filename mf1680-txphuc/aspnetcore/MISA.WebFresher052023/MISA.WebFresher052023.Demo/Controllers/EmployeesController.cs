@@ -1,8 +1,6 @@
-﻿using Dapper;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MISA.WebFresher052023.Application;
-using MySqlConnector;
 using System.Data;
 
 namespace MISA.WebFresher052023.Demo.Controllers
@@ -45,7 +43,7 @@ namespace MISA.WebFresher052023.Demo.Controllers
         /// <param name="pageSize">Số phần tử trên trang</param>
         /// <returns>Danh sách nhân viên được lọc và phân trang</returns>
         /// CreatedBy: txphuc (15/07/2023)
-        [HttpGet("filter")]
+        [HttpGet("Filter")]
         public async Task<IActionResult> FilterAsync([FromQuery] string? search, [FromQuery] int? page, [FromQuery] int? pageSize)
         {
             var pagedEmployees = await _employeeService.FilterAsync(search, page, pageSize);
@@ -117,7 +115,7 @@ namespace MISA.WebFresher052023.Demo.Controllers
             return Ok(result);
         }
 
-        [HttpDelete]
+        [HttpPost("Delete")]
         public async Task<IActionResult> DeleteAsync([FromBody] IEnumerable<Guid> employeeIds)
         {
             var result = await _employeeService.DeleteAsync(employeeIds);

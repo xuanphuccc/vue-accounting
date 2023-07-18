@@ -109,26 +109,16 @@ namespace MISA.WebFresher052023.Application
         /// <summary>
         /// Tạo nhân viên mới
         /// </summary>
-        /// <param name="employee">Thông tin nhân viên</param>
+        /// <param name="employeeCreateDto">Thông tin nhân viên</param>
+        /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (14/07/2023)
         public async Task<int> InsertAsync(EmployeeCreateDto employeeCreateDto)
         {
-
-            var existEmployee = await _employeeRepository.FindByCodeAsync(employeeCreateDto.EmployeeCode);
-            if (existEmployee != null)
-            {
-                throw new ConflictException("Mã nhân viên đã tồn tại");
-            }
-
             // Check trùng mã nhân viên
             await _employeeManager.CheckExistEmployeeCode(employeeCreateDto.EmployeeCode);
 
             // Check departmentId và positionId có tồn tại hay không
-            await _departmentRepository.GetByIdAsync(employeeCreateDto.DepartmentId);
-            if (employeeCreateDto.PositionId != null)
-            {
-                await _positionRepository.GetByIdAsync(employeeCreateDto.PositionId.Value);
-            }
+            await _employeeManager.CheckValidConstraint(employeeCreateDto.DepartmentId, employeeCreateDto.PositionId);
 
             var employee = _mapper.Map<Employee>(employeeCreateDto);
 
@@ -147,19 +137,16 @@ namespace MISA.WebFresher052023.Application
         /// <summary>
         /// Cập nhật nhân viên
         /// </summary>
-        /// <param name="employee">Thông tin nhân viên</param>
+        /// <param name="employeeUpdateDto">Thông tin nhân viên</param>
+        /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (14/07/2023)
         public async Task<int> UpdateAsync(Guid employeeId, EmployeeUpdateDto employeeUpdateDto)
         {
-            // Check departmentId và positionId có tồn tại hay không
-            await _departmentRepository.GetByIdAsync(employeeUpdateDto.DepartmentId);
-            if (employeeUpdateDto.PositionId != null)
-            {
-                await _positionRepository.GetByIdAsync(employeeUpdateDto.PositionId.Value);
-            }
-
             // Check nhân viên có tồn tại hay không
             var oldEmployee = await _employeeRepository.GetByIdAsync(employeeId);
+
+            // Check departmentId và positionId có tồn tại hay không
+            await _employeeManager.CheckValidConstraint(employeeUpdateDto.DepartmentId, employeeUpdateDto.PositionId);
 
             // Check trùng mã nhân viên
             await _employeeManager.CheckExistEmployeeCode(employeeUpdateDto.EmployeeCode, oldEmployee.EmployeeCode);
@@ -178,7 +165,8 @@ namespace MISA.WebFresher052023.Application
         /// <summary>
         /// Xoá nhân viên theo Id
         /// </summary>
-        /// <param name="employee">Id của nhân viên</param>
+        /// <param name="employeeId">Id của nhân viên</param>
+        /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (14/07/2023)
         public async Task<int> DeleteByIdAsync(Guid employeeId)
         {

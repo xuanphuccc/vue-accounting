@@ -32,7 +32,7 @@ namespace MISA.WebFresher052023.Domain
 
             if (existDeparment != null && existDeparment.DepartmentCode != oldDepartmentCode)
             {
-                throw new ConflictException($"Mã đơn vị '{departmentCode}' đã tồn tại");
+                throw new ConflictException($"Mã đơn vị '{departmentCode}' đã tồn tại", (int)ErrorCodes.ConflictCode);
             }
         }
         #endregion

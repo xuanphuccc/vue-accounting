@@ -10,12 +10,19 @@ namespace MISA.WebFresher052023.Domain
     {
         #region Fields
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IPositionRepository _positionRepository;
         #endregion
 
         #region Constructor
-        public EmployeeManager(IEmployeeRepository employeeRepository)
+        public EmployeeManager(
+            IEmployeeRepository employeeRepository,
+            IDepartmentRepository departmentRepository,
+            IPositionRepository positionRepository)
         {
             _employeeRepository = employeeRepository;
+            _departmentRepository = departmentRepository;
+            _positionRepository = positionRepository;
         }
         #endregion
 
@@ -32,7 +39,22 @@ namespace MISA.WebFresher052023.Domain
 
             if (existEmployee != null && existEmployee.EmployeeCode != oldEmployeeCode)
             {
-                throw new ConflictException($"Mã nhân viên '{employeeCode}' đã tồn tại");
+                throw new ConflictException($"Mã nhân viên '{employeeCode}' đã tồn tại", (int)ErrorCodes.ConflictCode);
+            }
+        }
+
+        /// <summary>
+        /// Check các khoá ngoại có tồn tại hay không
+        /// </summary>
+        /// <param name="departmentId">Id của đơn vị</param>
+        /// <param name="positionId">Id của vị trí</param>
+        /// CreatedBy: txphuc (17/07/2023)
+        public async Task CheckValidConstraint(Guid departmentId, Guid? positionId)
+        {
+            await _departmentRepository.GetByIdAsync(departmentId);
+            if (positionId != null)
+            {
+                await _positionRepository.GetByIdAsync(positionId.Value);
             }
         }
         #endregion

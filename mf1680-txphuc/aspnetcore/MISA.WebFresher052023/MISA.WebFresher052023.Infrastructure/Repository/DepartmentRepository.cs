@@ -57,7 +57,7 @@ namespace MISA.WebFresher052023.Infrastructure
 
             if (department == null)
             {
-                throw new NotFoundException("Đơn vị không tồn tại");
+                throw new NotFoundException("Đơn vị không tồn tại", (int)ErrorCodes.NotFound);
             }
 
             return department;

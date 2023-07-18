@@ -14,6 +14,14 @@ namespace MISA.WebFresher052023.Domain
         /// <param name="employeeCode">Mã nhân viên cần check</param>
         /// <param name="oldEmployeeCode">Mã nhân viên cũ (trong trường hợp cập nhật mã)</param>
         /// CreatedBy: txphuc (14/07/2023)
-        Task CheckExistEmployeeCode(string employeeCode, string? oldEmployeeCode = null); 
+        Task CheckExistEmployeeCode(string employeeCode, string? oldEmployeeCode = null);
+
+        /// <summary>
+        /// Check các khoá ngoại có tồn tại hay không
+        /// </summary>
+        /// <param name="departmentId">Id của đơn vị</param>
+        /// <param name="positionId">Id của vị trí</param>
+        /// CreatedBy: txphuc (17/07/2023)
+        Task CheckValidConstraint(Guid departmentId, Guid? positionId);
     }
 }

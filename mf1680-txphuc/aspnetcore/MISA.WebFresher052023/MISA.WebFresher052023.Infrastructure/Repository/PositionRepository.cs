@@ -55,7 +55,7 @@ namespace MISA.WebFresher052023.Infrastructure
 
             if (position == null)
             {
-                throw new NotFoundException("Vị trí không tồn tại");
+                throw new NotFoundException("Vị trí không tồn tại", (int)ErrorCodes.NotFound);
             }
 
             return position;
