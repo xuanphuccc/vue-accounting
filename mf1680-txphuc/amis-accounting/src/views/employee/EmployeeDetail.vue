@@ -94,12 +94,13 @@
                   for="input-date-of-birth"
                   space-bottom
                 >
-                  <MISAInput
+                  <MISADatePicker
                     tabindex="5"
                     v-model="formData.dateOfBirth"
-                    type="date"
+                    position="left"
                     id="input-date-of-birth"
                   />
+                  <!-- {{ console.log(formData.dateOfBirth) }} -->
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="7">
@@ -150,10 +151,10 @@
                   for="input-identity-date"
                   space-bottom
                 >
-                  <MISAInput
+                  <MISADatePicker
                     tabindex="10"
                     v-model="formData.identityDate"
-                    type="date"
+                    position="right"
                     id="input-identity-date"
                   />
                 </MISAFormGroup>
@@ -293,6 +294,7 @@ import MISADialog from "@/components/base/dialog/MISADialog.vue";
 import MISAButton from "@/components/base/button/MISAButton.vue";
 import MISAFormGroup from "@/components/base/input/MISAFormGroup.vue";
 import MISAInput from "@/components/base/input/MISAInput.vue";
+import MISADatePicker from "@/components/base/date-picker/MISADatePicker.vue";
 import MISARadioButton from "@/components/base/radio-button/MISARadioButton.vue";
 import MISASelect from "@/components/base/select/MISASelect.vue";
 import MISASpinner from "@/components/base/spinner/MISASpinner.vue";
@@ -593,16 +595,32 @@ const handleSubmitForm = async (isContinue = true) => {
 };
 
 /**
+ * Description: Xử lý format data trước khi gửi
+ * Author: txphuc (17/07/2023)
+ */
+const generateData = () => {
+  try {
+    const data = {
+      ...formData.value,
+      dateOfBirth: formatDate(formData.value.dateOfBirth, "YYYY-MM-DD"),
+      identityDate: formatDate(formData.value.identityDate, "YYYY-MM-DD"),
+      gender: Number(formData.value.gender),
+    };
+
+    return data;
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+/**
  * Description: Hàm xử lý gọi api tạo nhân viên
  * Author: txphuc (28/06/2023)
  */
 const handleCreateEmployee = async () => {
   try {
     if (employeeStore.mode === enums.form.mode.CREATE) {
-      const data = {
-        ...formData.value,
-        gender: Number(formData.value.gender),
-      };
+      const data = generateData();
 
       await employeeApi.create(data);
 
@@ -650,10 +668,10 @@ const handleLoadDataForUpdate = async () => {
         fullName: employeeData.FullName,
         departmentId: employeeData.DepartmentId,
         positionId: employeeData.PositionId,
-        dateOfBirth: formatDate(employeeData.DateOfBirth, "YYYY-MM-DD"),
+        dateOfBirth: new Date(employeeData.DateOfBirth),
         gender: employeeData.Gender + "",
         identityNumber: employeeData.IdentityNumber,
-        identityDate: formatDate(employeeData.IdentityDate, "YYYY-MM-DD"),
+        identityDate: new Date(employeeData.IdentityDate),
         identityPlace: employeeData.IdentityPlace,
         address: employeeData.Address,
         mobilePhoneNumber: employeeData.MobilePhoneNumber,
@@ -684,10 +702,7 @@ const handleUpdateEmployee = async () => {
     if (employeeStore.mode === enums.form.mode.UPDATE) {
       const employeeId = employeeStore.currentEmployee.EmployeeId;
 
-      const data = {
-        ...formData.value,
-        gender: Number(formData.value.gender),
-      };
+      const data = generateData();
 
       await employeeApi.update(employeeId, data);
 

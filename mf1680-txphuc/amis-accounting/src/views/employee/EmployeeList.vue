@@ -3,7 +3,7 @@
     <div class="page__header">
       <div class="page__title-wrapper">
         <h1 class="page__title">{{ MISAResource[globalStore.lang].Page.Employee.Title }}</h1>
-        <span class="page__title-icon ms-icon--angle-down-24" title="Dropdown"></span>
+        <MISAIcon icon="angle-down" />
       </div>
 
       <div class="page__header-controls">
@@ -50,12 +50,21 @@
               <MISAIcon size="20" icon="search" />
             </MISAInputAction>
           </MISAInputGroup>
+
           <MISAButton
             @click="handleResetFilter"
             v-tooltip.left="MISAResource[globalStore.lang].Tooltip.Reload"
             type="secondary"
           >
             <template #icon><MISAIcon size="20" icon="reload" /></template>
+          </MISAButton>
+
+          <MISAButton type="secondary">
+            <template #icon><MISAIcon icon="excel-gray" no-color /></template>
+          </MISAButton>
+
+          <MISAButton type="secondary">
+            <template #icon><MISAIcon icon="setting" /></template>
           </MISAButton>
         </div>
       </div>
@@ -261,10 +270,10 @@ const getEmployeeData = async () => {
       employee.DateOfBirthFormated = formatDate(employee.DateOfBirth);
       employee.GenderFormated =
         employee.Gender === enums.gender.MALE
-          ? "Nam"
+          ? MISAResource[globalStore.lang].Gender.Male
           : employee.Gender === enums.gender.FEMALE
-          ? "Nữ"
-          : "Khác";
+          ? MISAResource[globalStore.lang].Gender.Female
+          : MISAResource[globalStore.lang].Gender.Other;
 
       return employee;
     });
@@ -319,13 +328,9 @@ const handleDeleteEmployee = async () => {
  */
 const deleteSelectedEmployee = async () => {
   try {
-    const responseArr = selectedRowsState.value.map(async (employee) => {
-      const response = await employeeApi.delete(employee.EmployeeId);
+    const deleteIds = selectedRowsState.value.map((row) => row.EmployeeId);
 
-      return response;
-    });
-
-    await Promise.all(responseArr);
+    await employeeApi.delete(deleteIds);
 
     dialogState.value.active = false;
     await getEmployeeData();
@@ -346,7 +351,7 @@ const deleteSelectedEmployee = async () => {
  */
 const deleteActiveEmployee = async () => {
   try {
-    await employeeApi.delete(activeRowState.value?.EmployeeId);
+    await employeeApi.deleteById(activeRowState.value?.EmployeeId);
 
     dialogState.value.active = false;
     await getEmployeeData();

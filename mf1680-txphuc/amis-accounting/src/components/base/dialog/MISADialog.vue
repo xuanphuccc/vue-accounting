@@ -11,7 +11,9 @@
       </div>
 
       <div class="ms-dialog__content">
-        <div :class="[`ms-dialog__icon`, `ms-icon--${props.type}-24`]"></div>
+        <div class="ms-dialog__icon">
+          <MISAIcon :icon="props.type" />
+        </div>
         <p class="ms-dialog__text">
           {{ props.description }}
         </p>

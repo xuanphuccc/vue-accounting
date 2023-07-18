@@ -26,8 +26,6 @@
 }
 
 .ms-toast__icon {
-  width: 24px;
-  height: 24px;
   display: flex;
   flex-shrink: 0;
 }

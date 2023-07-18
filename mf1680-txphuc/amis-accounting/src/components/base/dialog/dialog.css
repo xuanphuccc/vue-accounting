@@ -53,10 +53,7 @@
 }
 
 .ms-dialog__icon {
-  width: 24px;
-  height: 24px;
   margin-right: 12px;
-  flex-shrink: 0;
 }
 
 .ms-dialog__text {

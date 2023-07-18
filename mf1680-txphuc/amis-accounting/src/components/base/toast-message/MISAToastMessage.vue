@@ -1,6 +1,8 @@
 <template>
   <div :class="['ms-toast', `--${props.type}`]">
-    <span :class="['ms-toast__icon', `ms-icon--${props.type}-24`]"></span>
+    <div class="ms-toast__icon">
+      <MISAIcon :icon="props.type" />
+    </div>
     <div class="ms-toast__content">
       <span class="ms-toast__title">{{ props.title }}</span
       >{{ " " }}

@@ -17,7 +17,11 @@ const employeeApi = {
       params: params,
     });
   },
-  delete(id) {
+  delete(data) {
+    const url = `${rootUrl}/delete`;
+    return axiosClient.post(url, data);
+  },
+  deleteById(id) {
     const url = `${rootUrl}/${id}`;
     return axiosClient.delete(url);
   },
