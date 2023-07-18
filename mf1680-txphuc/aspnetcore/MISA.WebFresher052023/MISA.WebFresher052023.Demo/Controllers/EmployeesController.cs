@@ -115,7 +115,7 @@ namespace MISA.WebFresher052023.Demo.Controllers
             return Ok(result);
         }
 
-        [HttpPost("Delete")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteAsync([FromBody] IEnumerable<Guid> employeeIds)
         {
             var result = await _employeeService.DeleteAsync(employeeIds);
