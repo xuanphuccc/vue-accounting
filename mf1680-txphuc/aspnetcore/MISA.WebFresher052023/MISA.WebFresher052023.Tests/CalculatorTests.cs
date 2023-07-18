@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MISA.WebFresher052023.Demo;
+using MISA.WebFresher052023;
 using NUnit.Framework;
 
 namespace MISA.WebFresher052023.Tests

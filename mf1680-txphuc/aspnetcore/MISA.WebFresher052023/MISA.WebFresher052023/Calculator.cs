@@ -1,4 +1,4 @@
-﻿namespace MISA.WebFresher052023.Demo
+﻿namespace MISA.WebFresher052023
 {
     public class Calculator
     {

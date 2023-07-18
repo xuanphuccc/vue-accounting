@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "MISA.WebFresher052023.Demo": {
+    "MISA.WebFresher052023": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

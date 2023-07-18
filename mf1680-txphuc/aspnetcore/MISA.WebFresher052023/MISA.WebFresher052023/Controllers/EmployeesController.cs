@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MISA.WebFresher052023.Application;
 using System.Data;
 
-namespace MISA.WebFresher052023.Demo.Controllers
+namespace MISA.WebFresher052023.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MISA.WebFresher052023.Demo", "MISA.WebFresher052023.Demo\MISA.WebFresher052023.Demo.csproj", "{03DEA375-199F-4AB3-BD21-E1C3FE3F1832}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MISA.WebFresher052023", "MISA.WebFresher052023\MISA.WebFresher052023.csproj", "{03DEA375-199F-4AB3-BD21-E1C3FE3F1832}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MISA.WebFresher052023.UnitTests", "MISA.WebFresher052023.Tests\MISA.WebFresher052023.UnitTests.csproj", "{D37A1CD4-EDDB-45BB-A948-FF686C6CAE17}"
 EndProject

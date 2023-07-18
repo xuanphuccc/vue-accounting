@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MISA.WebFresher052023.Application;
-using MISA.WebFresher052023.Demo;
+using MISA.WebFresher052023;
 using MISA.WebFresher052023.Domain;
 using MISA.WebFresher052023.Infrastructure;
 using MySqlConnector;

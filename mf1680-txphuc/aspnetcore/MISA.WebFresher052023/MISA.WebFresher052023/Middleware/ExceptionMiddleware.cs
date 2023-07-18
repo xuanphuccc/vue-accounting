@@ -1,6 +1,6 @@
 ﻿using MISA.WebFresher052023.Domain;
 
-namespace MISA.WebFresher052023.Demo
+namespace MISA.WebFresher052023
 {
     public class ExceptionMiddleware
     {
