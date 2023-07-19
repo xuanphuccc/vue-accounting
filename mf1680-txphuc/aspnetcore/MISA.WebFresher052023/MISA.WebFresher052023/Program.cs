@@ -48,8 +48,8 @@ var connectionString = builder.Configuration.GetConnectionString("MisaAccounting
 builder.Services.AddScoped<IUnitOfWork>(provider => new UnitOfWork(connectionString));
 
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-builder.Services.AddScoped<IDepartmentRepository>((option) => new DepartmentRepository(new MySqlConnection(connectionString)));
-builder.Services.AddScoped<IPositionRepository>((option) => new PositionRepository(new MySqlConnection(connectionString)));
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IPositionRepository, PositionRepository>();
 
 // Add services
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
@@ -61,6 +61,7 @@ builder.Services.AddScoped<IDepartmentManager, DepartmentManager>();
 builder.Services.AddScoped<IPositionService, PositionService>();
 builder.Services.AddScoped<IPositionManager, PositionManager>();
 
+// Add Cors policy
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policyBuilder =>

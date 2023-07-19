@@ -67,12 +67,17 @@ namespace MISA.WebFresher052023.Application
         /// <summary>
         /// Xoá nhiều đối tượng
         /// </summary>
-        /// <param name="employeeIds">Danh sách Id của các đối tượng cần xoá</param>
+        /// <param name="entityIds">Danh sách Id của các đối tượng cần xoá</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        public async Task<int> DeleteAsync(IEnumerable<Guid> employeeIds)
+        public async Task<int> DeleteAsync(IEnumerable<Guid> entityIds)
         {
-            throw new NotImplementedException();
+            // Biến đổi mảng chuỗi thành chuỗi các Id
+            var entityIdsString = string.Join(", ", entityIds.Select(entityId => $"'{entityId}'"));
+
+            var result = await _baseRepository.DeleteAsync(entityIdsString);
+
+            return result;
         }
 
         /// <summary>
@@ -84,11 +89,11 @@ namespace MISA.WebFresher052023.Application
         protected abstract Task<TEntity> MapCreateDtoToEntityAsync(TEntityCreateDto entityCreateDto);
 
         /// <summary>
-        /// Validate nghiệp vụ cho Insert
+        /// Validate nghiệp vụ cho Update
         /// </summary>
-        /// <param name="entityCreateDto">CreateDto</param>
+        /// <param name="entityUpdateDto">UpdateDto</param>
         /// <returns>Entity</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        protected abstract Task<TEntity> MapUpdateDtoToEntityAsync(Guid entityId, TEntityUpdateDto entityCreateDto);
+        protected abstract Task<TEntity> MapUpdateDtoToEntityAsync(Guid entityId, TEntityUpdateDto entityUpdateDto);
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Domain
 {
-    public class EmployeeModel : BaseAuditEntity
+    public class EmployeeModel : BaseAuditEntity, IHasKey
     {
         /// <summary>
         /// Khoá chính
@@ -122,5 +122,15 @@ namespace MISA.WebFresher052023.Domain
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
         public string? PositionName { get; set; }
+
+        /// <summary>
+        /// Lấy Id của đối tượng
+        /// </summary>
+        /// <returns>Id</returns>
+        /// CreatedBy: txphuc (19/07/2023)
+        public Guid GetKey()
+        {
+            return EmployeeId;
+        }
     }
 }

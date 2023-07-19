@@ -46,7 +46,7 @@ namespace MISA.WebFresher052023.Infrastructure
 
             if (entity == null)
             {
-                throw new NotFoundException($"Nhân viên '{entityId}' không tồn tại", (int)ErrorCodes.NotFound);
+                throw new NotFoundException($"Không tìm thấy '{entityId}'", (int)ErrorCodes.NotFound);
             }
 
             return entity;

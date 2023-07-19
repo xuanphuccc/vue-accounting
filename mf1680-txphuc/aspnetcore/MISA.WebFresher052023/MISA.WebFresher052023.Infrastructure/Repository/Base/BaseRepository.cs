@@ -23,7 +23,7 @@ namespace MISA.WebFresher052023.Infrastructure
         /// CreatedBy: txphuc (18/07/2023)
         public async Task<int> InsertAsync(TEntity entity)
         {
-            var param = MapEntity(entity);
+            var param = MapEntityToParams(entity);
 
             var sql = $"Proc_{TableName}_Create";
 
@@ -40,7 +40,7 @@ namespace MISA.WebFresher052023.Infrastructure
         /// CreatedBy: txphuc (18/07/2023)
         public async Task<int> UpdateAsync(TEntity entity)
         {
-            var param = MapEntity(entity);
+            var param = MapEntityToParams(entity);
 
             var sql = $"Proc_{TableName}_UpdateById";
 
@@ -76,7 +76,7 @@ namespace MISA.WebFresher052023.Infrastructure
         /// <summary>
         /// Xoá nhiều đối tượng
         /// </summary>
-        /// <param name="entities">Danh sách đối tượng cần xoá</param>
+        /// <param name="entities">Chuỗi các Id cần xoá</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (18/07/2023)
         public async Task<int> DeleteAsync(string entityIds)
@@ -98,7 +98,7 @@ namespace MISA.WebFresher052023.Infrastructure
         /// <param name="entity">Đối tượng</param>
         /// <returns>DynamicParameters</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        private DynamicParameters MapEntity(TEntity entity)
+        private DynamicParameters MapEntityToParams(TEntity entity)
         {
             var param = new DynamicParameters();
 
