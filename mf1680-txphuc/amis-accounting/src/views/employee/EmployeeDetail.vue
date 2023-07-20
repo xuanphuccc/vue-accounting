@@ -29,7 +29,7 @@
                     @input="validatedInputs.employeeCode = null"
                     focus
                     id="input-id"
-                    ref="employeeCodeRef"
+                    ref="inputsRef"
                   />
                 </MISAFormGroup>
               </MISACol>
@@ -47,7 +47,7 @@
                     @blur="validateFullName"
                     @input="validatedInputs.fullName = null"
                     id="input-name"
-                    ref="fullNameRef"
+                    ref="inputsRef"
                   />
                 </MISAFormGroup>
               </MISACol>
@@ -65,7 +65,6 @@
                     @focusout="validateDepartment"
                     :options="departmentOptions"
                     id="input-department"
-                    ref="departmentRef"
                   />
                 </MISAFormGroup>
               </MISACol>
@@ -353,9 +352,7 @@ const initialFormData = {
 };
 const formData = ref({ ...initialFormData });
 
-const employeeCodeRef = ref(null);
-const fullNameRef = ref(null);
-const departmentRef = ref(null);
+const inputsRef = ref([]);
 
 const validatedInputs = ref({
   employeeCode: null,
@@ -434,6 +431,7 @@ const closeDialog = () => {
  */
 const handleValidateInputs = () => {
   try {
+    console.log(inputsRef.value);
     return validateEmployeeCode() && validateFullName() && validateDepartment();
   } catch (error) {
     console.warn(error);
@@ -456,11 +454,6 @@ const validateEmployeeCode = () => {
         },
       ],
     });
-
-    // Focus vào khi lỗi
-    if (result) {
-      employeeCodeRef.value?.autoFocus();
-    }
 
     validatedInputs.value.employeeCode = result;
     return !result;
@@ -486,11 +479,6 @@ const validateFullName = () => {
       ],
     });
 
-    // Focus vào khi lỗi
-    if (result) {
-      fullNameRef.value?.autoFocus();
-    }
-
     validatedInputs.value.fullName = result;
     return !result;
   } catch (error) {
@@ -514,11 +502,6 @@ const validateDepartment = () => {
         },
       ],
     });
-
-    // Focus vào khi lỗi
-    if (result) {
-      departmentRef.value?.autoFocus();
-    }
 
     validatedInputs.value.department = result;
     return !result;

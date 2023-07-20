@@ -13,7 +13,7 @@
       :position="props.position"
       space-confirm
       offset="4"
-      placeholder="Chọn ngày"
+      placeholder="DD/MM/YYYY"
       input-class-name="ms-date-picker__input"
       menu-class-name="ms-date-picker__menu"
       calendar-class-name="ms-date-picker__calendar"

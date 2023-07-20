@@ -1,6 +1,7 @@
 <template>
   <div
     @focusin="onOpenDropdown"
+    @focusout="console.log('focus out')"
     @keydown.stop="preSelectOnPressArrow"
     ref="comboboxRef"
     tabindex="-1"
@@ -33,14 +34,15 @@
           </div>
         </li>
         <li
-          @click="selectOption(option)"
-          v-for="option in optionWithSearch"
+          @click="selectOption(option, index)"
+          v-for="(option, index) in optionWithSearch"
           :key="option.value"
           :class="[
             'ms-select__item',
             { '--selected': option.value === selectedValue },
             { '--pre-select': option.value === preSelectValue?.value },
           ]"
+          ref="menuItemRef"
         >
           {{ option.label }}
           <div class="ms-select__item-icon">
@@ -100,8 +102,10 @@ const props = defineProps({
 });
 
 const comboboxRef = ref(null);
+const menuItemRef = ref([]);
 const selectedValue = ref(null);
 const preSelectValue = ref(null);
+const preSelectIndex = ref(0);
 const searchValue = ref("");
 
 /**
@@ -180,13 +184,18 @@ watch(
  * Description: Hàm chọn giá trị của combobox
  * Author: txphuc (27/06/2023)
  */
-const selectOption = (option) => {
+const selectOption = (option, index) => {
   selectedValue.value = option.value;
   emit("update:modelValue", option.value);
 
   // Đóng dropdown
   if (comboboxRef.value) {
     comboboxRef.value.blur();
+  }
+
+  // Set vị trí cuộn cho phẩn tử được chọn
+  if (index !== undefined) {
+    preSelectIndex.value = index;
   }
 };
 
@@ -207,21 +216,28 @@ const preSelectOnPressArrow = (e) => {
       // Di chuyển lên, nếu đến đầu thì quay về cuối
       if (currentIndex > 0) {
         preSelectValue.value = optionWithSearch.value[currentIndex - 1];
+        preSelectIndex.value = currentIndex - 1;
       } else {
         preSelectValue.value = optionWithSearch.value[lastIndex];
+        preSelectIndex.value = lastIndex;
       }
     } else if (keyCode === enums.key.ARROW_DOWN) {
       // Di chuyển xuống, nếu đến cuối thì quay lại đầu
       if (currentIndex < lastIndex) {
         preSelectValue.value = optionWithSearch.value[currentIndex + 1];
+        preSelectIndex.value = currentIndex + 1;
       } else {
         preSelectValue.value = optionWithSearch.value[0];
+        preSelectIndex.value = 0;
       }
     } else if (keyCode === enums.key.ENTER) {
       // Chọn giá trị khi nhấn phím ENTER
       selectOption(preSelectValue.value);
       e.target.blur();
     }
+
+    // Cuộn item lên khung nhìn nếu item bị ẩn
+    handleScrollToView(preSelectIndex.value);
   } catch (error) {
     console.warn(error);
   }
@@ -254,6 +270,26 @@ const clearSelectedValue = (e) => {
  */
 const onOpenDropdown = () => {
   preSelectValue.value = selectedOption.value;
+  console.log("open dropdown", preSelectIndex.value);
+  handleScrollToView(preSelectIndex.value);
+};
+
+/**
+ * Description: Xử lý scroll item ẩn lên khung nhìn
+ * Author: txphuc (20/07/2023)
+ */
+const handleScrollToView = (index) => {
+  try {
+    if (menuItemRef.value.length > 0) {
+      menuItemRef.value[index]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "nearest",
+      });
+    }
+  } catch (error) {
+    console.warn(error);
+  }
 };
 
 /**
