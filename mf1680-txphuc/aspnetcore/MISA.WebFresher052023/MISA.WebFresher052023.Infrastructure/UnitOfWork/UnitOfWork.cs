@@ -25,6 +25,10 @@ namespace MISA.WebFresher052023.Infrastructure
 
         public DbTransaction? Transaction => _transaction;
 
+        /// <summary>
+        /// Bắt đầu một transaction
+        /// </summary>
+        /// CreatedBy: txphuc (18/07/2023)
         public void BeginTransaction()
         {
             if (_connection.State == ConnectionState.Open)
@@ -39,6 +43,10 @@ namespace MISA.WebFresher052023.Infrastructure
 
         }
 
+        /// <summary>
+        /// Bắt đầu một transaction bất đồng bộ
+        /// </summary>
+        /// CreatedBy: txphuc (18/07/2023)
         public async Task BeginTransactionAsync()
         {
             if (_connection.State == ConnectionState.Open)
@@ -53,12 +61,20 @@ namespace MISA.WebFresher052023.Infrastructure
             }
         }
 
+        /// <summary>
+        /// Xác nhận và thực thi
+        /// </summary>
+        /// CreatedBy: txphuc (18/07/2023)
         public void Commit()
         {
             _transaction?.Commit();
             Dispose();
         }
 
+        /// <summary>
+        /// Xác nhận và thực thi bất đồng bộ
+        /// </summary>
+        /// CreatedBy: txphuc (18/07/2023)
         public async Task CommitAsync()
         {
             if (_transaction != null)
@@ -71,6 +87,10 @@ namespace MISA.WebFresher052023.Infrastructure
 
         }
 
+        /// <summary>
+        /// Đóng kết nối
+        /// </summary>
+        /// CreatedBy: txphuc (18/07/2023)
         public void Dispose()
         {
             _transaction?.Dispose();
@@ -79,6 +99,10 @@ namespace MISA.WebFresher052023.Infrastructure
             _connection.Close();
         }
 
+        /// <summary>
+        /// Đóng kết nối bất đồng bộ
+        /// </summary>
+        /// CreatedBy: txphuc (18/07/2023)
         public async ValueTask DisposeAsync()
         {
             if (_transaction != null)
@@ -91,12 +115,20 @@ namespace MISA.WebFresher052023.Infrastructure
             await _connection.CloseAsync();
         }
 
+        /// <summary>
+        /// Hoàn tác transaction
+        /// </summary>
+        /// CreatedBy: txphuc (18/07/2023)
         public void RollBack()
         {
             _transaction?.Rollback();
             Dispose();
         }
 
+        /// <summary>
+        /// Hoàn tác transaction bất đồng bộ
+        /// </summary>
+        /// CreatedBy: txphuc (18/07/2023)
         public async Task RollBackAsync()
         {
             if (_transaction != null)
