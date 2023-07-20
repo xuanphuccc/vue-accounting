@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Infrastructure
 {
-    public class DepartmentRepository : BaseCodeRepository<Department>, IDepartmentRepository
+    public class DepartmentRepository : BaseCodeRepository<Department, Department>, IDepartmentRepository
     {
         public DepartmentRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {

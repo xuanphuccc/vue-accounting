@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Application
 {
-    public abstract class BaseCodeService<TEntity, TEntityDto, TEntityCreateDto, TEntityUpdateDto> : BaseService<TEntity, TEntityDto, TEntityCreateDto, TEntityUpdateDto>, IBaseCodeService<TEntityDto, TEntityCreateDto, TEntityUpdateDto>
+    public abstract class BaseCodeService<TEntity, TModel, TEntityDto, TEntityCreateDto, TEntityUpdateDto> : 
+        BaseService<TEntity, TModel, TEntityDto, TEntityCreateDto, TEntityUpdateDto>, 
+        IBaseCodeService<TEntityDto, TEntityCreateDto, TEntityUpdateDto>
     {
-        protected readonly IBaseCodeRepository<TEntity> _baseCodeRepository;
+        protected readonly IBaseCodeRepository<TEntity, TModel> _baseCodeRepository;
 
-        protected BaseCodeService(IBaseCodeRepository<TEntity> baseCodeRepository, IMapper mapper) : base(baseCodeRepository, mapper)
+        protected BaseCodeService(IBaseCodeRepository<TEntity, TModel> baseCodeRepository, IMapper mapper) : base(baseCodeRepository, mapper)
         {
             _baseCodeRepository = baseCodeRepository;
         }

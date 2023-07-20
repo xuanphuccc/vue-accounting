@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Infrastructure
 {
-    public abstract class BaseRepository<TEntity> : BaseReadOnlyRepository<TEntity>, IBaseRepository<TEntity> where TEntity : IHasKey
+    public abstract class BaseRepository<TEntity, TModel> : BaseReadOnlyRepository<TEntity, TModel>, IBaseRepository<TEntity, TModel> where TEntity : IHasKey
     {
         protected BaseRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {

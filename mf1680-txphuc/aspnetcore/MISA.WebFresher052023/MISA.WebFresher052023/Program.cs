@@ -61,6 +61,11 @@ builder.Services.AddScoped<IDepartmentManager, DepartmentManager>();
 builder.Services.AddScoped<IPositionService, PositionService>();
 builder.Services.AddScoped<IPositionManager, PositionManager>();
 
+builder.Services.AddLocalization(options =>
+{
+    options.ResourcesPath = "Resources";
+});
+
 // Add Cors policy
 builder.Services.AddCors(options =>
 {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Domain
 {
-    public interface IBaseRepository<TEntity> : IBaseReadOnlyRepository<TEntity>
+    public interface IBaseRepository<TEntity, TModel> : IBaseReadOnlyRepository<TEntity, TModel>
     {
         /// <summary>
         /// Tạo đối tượng mới

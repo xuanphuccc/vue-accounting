@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Application
 {
-    public class PositionService : BaseCodeService<Position, PositionDto, PositionCreateDto, PositionUpdateDto>, IPositionService
+    public class PositionService : BaseCodeService<Position, Position, PositionDto, PositionCreateDto, PositionUpdateDto>, IPositionService
     {
         #region Fields
         private readonly IPositionRepository _positionRepository;

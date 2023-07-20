@@ -18,15 +18,17 @@ const employeeApi = {
     });
   },
   delete(data) {
-    const url = `${rootUrl}/delete`;
-    return axiosClient.post(url, data);
+    const url = `${rootUrl}`;
+    return axiosClient.delete(url, {
+      data: data,
+    });
   },
   deleteById(id) {
     const url = `${rootUrl}/${id}`;
     return axiosClient.delete(url);
   },
   getNewCode() {
-    const url = `${rootUrl}/NewEmployeeCode`;
+    const url = `${rootUrl}/NewCode`;
     return axiosClient.get(url);
   },
   create(data) {

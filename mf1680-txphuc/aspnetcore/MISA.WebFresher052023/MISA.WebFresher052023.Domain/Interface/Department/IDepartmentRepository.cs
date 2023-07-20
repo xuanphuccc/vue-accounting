@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Domain
 {
-    public interface IDepartmentRepository : IBaseCodeRepository<Department>
+    public interface IDepartmentRepository : IBaseCodeRepository<Department, Department>
     {
         
     }

@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Application
 {
-    public class DepartmentService : BaseCodeService<Department, DepartmentDto, DepartmentCreateDto, DepartmentUpdateDto>, IDepartmentService
+    public class DepartmentService : 
+        BaseCodeService<Department, Department, DepartmentDto, DepartmentCreateDto, DepartmentUpdateDto>, 
+        IDepartmentService
     {
         #region Fields
         private readonly IDepartmentRepository _departmentRepository;

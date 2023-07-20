@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Domain
 {
-    public interface IEmployeeRepository : IBaseCodeRepository<Employee>
+    public interface IEmployeeRepository : IBaseCodeRepository<Employee, EmployeeModel>
     {
         /// <summary>
         /// Tìm kiếm, filter và phân trang

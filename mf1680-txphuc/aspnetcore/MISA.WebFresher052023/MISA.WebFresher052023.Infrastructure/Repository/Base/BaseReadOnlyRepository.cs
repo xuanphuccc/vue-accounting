@@ -9,27 +9,32 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Infrastructure
 {
-    public abstract class BaseReadOnlyRepository<TEntity> : IBaseReadOnlyRepository<TEntity>
+    public abstract class BaseReadOnlyRepository<TEntity, TModel> : IBaseReadOnlyRepository<TEntity, TModel>
     {
+        #region Fields & Properties
         protected readonly IUnitOfWork _unitOfWork;
         public virtual string TableName { get; protected set; } = typeof(TEntity).Name;
         public virtual string TableId { get; protected set; } = $"{typeof(TEntity).Name}Id";
+        #endregion
 
+        #region Constructor
         protected BaseReadOnlyRepository(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Lấy tất cả đối tượng
         /// </summary>
         /// <returns>Danh sách đối tượng</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task<IEnumerable<TModel>> GetAllAsync()
         {
             var sql = $"Proc_{TableName}_GetAll";
 
-            var entities = await _unitOfWork.Connection.QueryAsync<TEntity>(sql, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
+            var entities = await _unitOfWork.Connection.QueryAsync<TModel>(sql, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
 
             return entities;
         }
@@ -68,6 +73,7 @@ namespace MISA.WebFresher052023.Infrastructure
             var entity = await _unitOfWork.Connection.QueryFirstOrDefaultAsync<TEntity>(sql, param, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
 
             return entity;
-        }
+        } 
+        #endregion
     }
 }

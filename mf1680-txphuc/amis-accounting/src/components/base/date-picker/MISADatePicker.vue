@@ -23,7 +23,9 @@
       <!-- menu header -->
       <template #month-year="{ month, year, handleMonthYearChange }">
         <div class="ms-date-picker__header">
-          <div class="ms-date-picker__header-date">Tháng {{ month + 1 }}, {{ year }}</div>
+          <div class="ms-date-picker__header-date">
+            {{ MISAResource[globalStore.lang].Month["M" + (month + 1)] }}, {{ year }}
+          </div>
           <div class="ms-date-picker__header-controls">
             <MISAIcon @click="handleMonthYearChange(false)" icon="angle-left" />
             <MISAIcon @click="handleMonthYearChange(true)" icon="angle-right" />
@@ -33,11 +35,15 @@
 
       <!-- calendar header -->
       <template #calendar-header="{ day }">
-        <div class="ms-date-picker__calendar-header-item">{{ day }}</div>
+        <div class="ms-date-picker__calendar-header-item">
+          {{ MISAResource[globalStore.lang].Day[day] }}
+        </div>
       </template>
 
       <template #action-row>
-        <div @click="getToday" class="ms-date-picker__action">Hôm nay</div>
+        <div @click="getToday" class="ms-date-picker__action">
+          {{ MISAResource[globalStore.lang].Day["Today"] }}
+        </div>
       </template>
     </VueDatePicker>
     <MISAIcon icon="date" />
@@ -48,10 +54,14 @@
 import VueDatePicker from "@vuepic/vue-datepicker";
 import MISAIcon from "../icon/MISAIcon.vue";
 import formatDate from "../../../helper/format-date";
+import MISAResource from "@/helper/resource";
+import { useGlobalStore } from "@/stores/global-store";
 import { ref } from "vue";
 
 const emit = defineEmits(["update:modelValue"]);
 const datePickerRef = ref(null);
+
+const globalStore = useGlobalStore();
 
 const props = defineProps({
   // Giá trị
@@ -60,7 +70,7 @@ const props = defineProps({
   // Tabindex
   tabindex: [String, Number],
 
-  // Vị trí của menu
+  // Vị trí của menu: left | right | center
   position: {
     type: String,
     default: "center",

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Infrastructure
 {
-    public class PositionRepository : BaseCodeRepository<Position>, IPositionRepository
+    public class PositionRepository : BaseCodeRepository<Position, Position>, IPositionRepository
     {
         #region Constructor
         public PositionRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
