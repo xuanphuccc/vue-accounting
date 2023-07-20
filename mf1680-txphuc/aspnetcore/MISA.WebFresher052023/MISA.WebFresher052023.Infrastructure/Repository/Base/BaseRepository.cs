@@ -11,10 +11,13 @@ namespace MISA.WebFresher052023.Infrastructure
 {
     public abstract class BaseRepository<TEntity, TModel> : BaseReadOnlyRepository<TEntity, TModel>, IBaseRepository<TEntity, TModel> where TEntity : IHasKey
     {
+        #region Constructors
         protected BaseRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Tạo đối tượng mới
         /// </summary>
@@ -111,6 +114,7 @@ namespace MISA.WebFresher052023.Infrastructure
             }
 
             return param;
-        }
+        } 
+        #endregion
     }
 }

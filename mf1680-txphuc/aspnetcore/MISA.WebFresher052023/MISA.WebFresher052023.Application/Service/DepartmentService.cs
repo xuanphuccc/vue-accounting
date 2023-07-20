@@ -17,7 +17,7 @@ namespace MISA.WebFresher052023.Application
         private readonly IDepartmentManager _departmentManager;
         #endregion
 
-        #region Constructor
+        #region Constructors
         public DepartmentService(
             IDepartmentRepository departmentRepository, 
             IDepartmentManager departmentManager, 

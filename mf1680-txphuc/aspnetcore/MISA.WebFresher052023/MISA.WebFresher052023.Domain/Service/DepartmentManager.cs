@@ -12,7 +12,7 @@ namespace MISA.WebFresher052023.Domain
         private readonly IDepartmentRepository _departmentRepository;
         #endregion
 
-        #region Constructor
+        #region Constructors
         public DepartmentManager(IDepartmentRepository departmentRepository)
         {
             _departmentRepository = departmentRepository;

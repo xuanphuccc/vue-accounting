@@ -13,18 +13,25 @@ namespace MISA.WebFresher052023.Infrastructure
 {
     public sealed class UnitOfWork : IUnitOfWork
     {
+        #region Fields
         private readonly DbConnection _connection;
         private DbTransaction? _transaction = null;
+        #endregion
 
+        #region Constructors
         public UnitOfWork(string connectionString)
         {
             _connection = new MySqlConnection(connectionString);
         }
+        #endregion
 
+        #region Properties
         public DbConnection Connection => _connection;
 
         public DbTransaction? Transaction => _transaction;
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Bắt đầu một transaction
         /// </summary>
@@ -137,6 +144,7 @@ namespace MISA.WebFresher052023.Infrastructure
             }
 
             await DisposeAsync();
-        }
+        } 
+        #endregion
     }
 }

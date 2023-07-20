@@ -12,13 +12,18 @@ namespace MISA.WebFresher052023.Application
         BaseService<TEntity, TModel, TEntityDto, TEntityCreateDto, TEntityUpdateDto>, 
         IBaseCodeService<TEntityDto, TEntityCreateDto, TEntityUpdateDto>
     {
-        protected readonly IBaseCodeRepository<TEntity, TModel> _baseCodeRepository;
+        #region Fields
+        protected readonly IBaseCodeRepository<TEntity, TModel> _baseCodeRepository; 
+        #endregion
 
+        #region Constructors
         protected BaseCodeService(IBaseCodeRepository<TEntity, TModel> baseCodeRepository, IMapper mapper) : base(baseCodeRepository, mapper)
         {
             _baseCodeRepository = baseCodeRepository;
-        }
+        } 
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Lấy mã mới
         /// </summary>
@@ -29,6 +34,7 @@ namespace MISA.WebFresher052023.Application
             var newCode = await _baseCodeRepository.FindNewCodeAsync();
 
             return newCode;
-        }
+        } 
+        #endregion
     }
 }

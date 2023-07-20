@@ -12,7 +12,7 @@ namespace MISA.WebFresher052023.Domain
         private readonly IPositionRepository _positionRepository;
         #endregion
 
-        #region Constructor
+        #region Constructors
         public PositionManager(IPositionRepository positionRepository)
         {
             _positionRepository = positionRepository;

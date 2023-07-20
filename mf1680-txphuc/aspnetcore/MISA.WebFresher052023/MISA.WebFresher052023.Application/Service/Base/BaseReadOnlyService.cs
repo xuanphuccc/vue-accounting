@@ -10,15 +10,20 @@ namespace MISA.WebFresher052023.Application
 {
     public abstract class BaseReadOnlyService<TEntity, TModel, TEntityDto> : IBaseReadOnlyService<TEntityDto>
     {
+        #region Fields
         protected readonly IBaseReadOnlyRepository<TEntity, TModel> _baseReadOnlyRepository;
         protected readonly IMapper _mapper;
+        #endregion
 
+        #region Constructors
         protected BaseReadOnlyService(IBaseReadOnlyRepository<TEntity, TModel> repository, IMapper mapper)
         {
             _baseReadOnlyRepository = repository;
             _mapper = mapper;
         }
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Lấy tất cả đối tượng
         /// </summary>
@@ -46,6 +51,7 @@ namespace MISA.WebFresher052023.Application
             var entityDto = _mapper.Map<TEntityDto>(entity);
 
             return entityDto;
-        }
+        } 
+        #endregion
     }
 }

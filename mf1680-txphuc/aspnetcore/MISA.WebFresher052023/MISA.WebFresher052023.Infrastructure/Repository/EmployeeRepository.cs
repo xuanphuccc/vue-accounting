@@ -12,10 +12,13 @@ namespace MISA.WebFresher052023.Infrastructure
 {
     public class EmployeeRepository : BaseCodeRepository<Employee, EmployeeModel>, IEmployeeRepository
     {
+        #region Constructors
         public EmployeeRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Tìm kiếm, filter và phân trang
         /// </summary>
@@ -45,6 +48,7 @@ namespace MISA.WebFresher052023.Infrastructure
                 Data = employeeModels,
                 TotalRecords = totalRecords,
             };
-        }
+        } 
+        #endregion
     }
 }

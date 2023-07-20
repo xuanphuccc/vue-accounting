@@ -12,15 +12,20 @@ namespace MISA.WebFresher052023.Application
         BaseReadOnlyService<TEntity, TModel, TEntityDto>, 
         IBaseService<TEntityDto, TEntityCreateDto, TEntityUpdateDto>
     {
+        #region Fields
         protected readonly IBaseRepository<TEntity, TModel> _baseRepository;
+        #endregion
 
+        #region Constructor
         protected BaseService(
             IBaseRepository<TEntity, TModel> baseRepository,
             IMapper mapper) : base(baseRepository, mapper)
         {
             _baseRepository = baseRepository;
         }
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Tạo đối tượng mới
         /// </summary>
@@ -95,6 +100,7 @@ namespace MISA.WebFresher052023.Application
         /// <param name="entityUpdateDto">UpdateDto</param>
         /// <returns>Entity</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        protected abstract Task<TEntity> MapUpdateDtoToEntityAsync(Guid entityId, TEntityUpdateDto entityUpdateDto);
+        protected abstract Task<TEntity> MapUpdateDtoToEntityAsync(Guid entityId, TEntityUpdateDto entityUpdateDto); 
+        #endregion
     }
 }

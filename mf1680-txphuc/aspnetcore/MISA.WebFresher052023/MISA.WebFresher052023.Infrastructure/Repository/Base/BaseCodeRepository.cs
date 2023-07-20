@@ -11,10 +11,13 @@ namespace MISA.WebFresher052023.Infrastructure
 {
     public abstract class BaseCodeRepository<TEntity, TModel> : BaseRepository<TEntity, TModel>, IBaseCodeRepository<TEntity, TModel> where TEntity : IHasKey
     {
+        #region Constructors
         public BaseCodeRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
-        }
+        } 
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Lấy đối tượng theo mã đối tượng
         /// </summary>
@@ -45,6 +48,7 @@ namespace MISA.WebFresher052023.Infrastructure
             var entity = await _unitOfWork.Connection.QueryFirstOrDefaultAsync<string>(sql, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
 
             return entity;
-        }
+        } 
+        #endregion
     }
 }

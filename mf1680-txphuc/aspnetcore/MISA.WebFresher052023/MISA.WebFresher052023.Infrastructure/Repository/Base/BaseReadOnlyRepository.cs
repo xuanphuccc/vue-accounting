@@ -17,7 +17,7 @@ namespace MISA.WebFresher052023.Infrastructure
         public virtual string TableId { get; protected set; } = $"{typeof(TEntity).Name}Id";
         #endregion
 
-        #region Constructor
+        #region Constructors
         protected BaseReadOnlyRepository(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
