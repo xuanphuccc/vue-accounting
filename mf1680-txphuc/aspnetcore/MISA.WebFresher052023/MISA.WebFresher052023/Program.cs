@@ -4,6 +4,8 @@ using MISA.WebFresher052023;
 using MISA.WebFresher052023.Domain;
 using MISA.WebFresher052023.Infrastructure;
 using MySqlConnector;
+using System.Globalization;
+using MISA.WebFresher052023.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,10 +63,19 @@ builder.Services.AddScoped<IDepartmentManager, DepartmentManager>();
 builder.Services.AddScoped<IPositionService, PositionService>();
 builder.Services.AddScoped<IPositionManager, PositionManager>();
 
-builder.Services.AddLocalization(options =>
+// Localization config
+builder.Services.AddLocalization();
+var localizationOptions = new RequestLocalizationOptions();
+var supportedCultures = new[]
 {
-    options.ResourcesPath = "Resources";
-});
+    new CultureInfo("en-US"),
+    new CultureInfo("vi-VN"),
+};
+localizationOptions.SupportedCultures = supportedCultures;
+localizationOptions.SupportedUICultures = supportedCultures;
+localizationOptions.SetDefaultCulture("en-US");
+localizationOptions.ApplyCurrentCultureToResponseHeaders = true;
+
 
 // Add Cors policy
 builder.Services.AddCors(options =>
@@ -78,6 +89,9 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+app.UseRequestLocalization(localizationOptions);
+app.UseMiddleware<LocalizationMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

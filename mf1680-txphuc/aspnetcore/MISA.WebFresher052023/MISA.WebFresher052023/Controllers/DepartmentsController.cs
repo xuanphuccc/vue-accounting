@@ -12,19 +12,9 @@ namespace MISA.WebFresher052023.Controllers
     public class DepartmentsController : BaseCodeController<DepartmentDto, DepartmentCreateDto, DepartmentUpdateDto>
     {
         private readonly IDepartmentService _departmentService;
-        private readonly IStringLocalizer<ErrorMessages> _localizer;
         public DepartmentsController(IDepartmentService departmentService, IStringLocalizer<ErrorMessages> localizer) : base(departmentService)
         {
             _departmentService = departmentService;
-            _localizer = localizer;
-        }
-
-        [HttpGet("resource")]
-        public IActionResult TestResource ()
-        {
-            var localiString = _localizer["NotFound"];
-
-            return Ok(localiString);
         }
     }
 }

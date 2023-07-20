@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.Localization;
+using MISA.WebFresher052023.Domain;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;

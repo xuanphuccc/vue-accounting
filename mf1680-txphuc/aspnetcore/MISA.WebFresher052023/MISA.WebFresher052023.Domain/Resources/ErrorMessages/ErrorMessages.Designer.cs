@@ -61,11 +61,20 @@ namespace MISA.WebFresher052023.Domain.Resources.ErrorMessages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to abc.
+        ///   Looks up a localized string similar to Not found.
         /// </summary>
         internal static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hello World.
+        /// </summary>
+        internal static string Wellcome {
+            get {
+                return ResourceManager.GetString("Wellcome", resourceCulture);
             }
         }
     }
