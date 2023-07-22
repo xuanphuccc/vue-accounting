@@ -117,22 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="abc" xml:space="preserve">
-    <value />
+  <data name="ConflictCode" xml:space="preserve">
+    <value>Mã đã tồn tại</value>
   </data>
-  <data name="CodeFormat" xml:space="preserve">
-    <value>Mã phải có định dạng xx-xxxx trong đó xxxx là số lớn hơn 1000</value>
+  <data name="NotFound" xml:space="preserve">
+    <value>Không tìm thấy tài nguyên</value>
   </data>
-  <data name="CodeIsRequired" xml:space="preserve">
-    <value>Mã không không được để trống</value>
-  </data>
-  <data name="CodeMaxStringLength20" xml:space="preserve">
-    <value>Mã tối đa 20 ký tự</value>
-  </data>
-  <data name="NameIsRequired" xml:space="preserve">
-    <value>Tên không được để trống</value>
-  </data>
-  <data name="NameMaxStringLength255" xml:space="preserve">
-    <value>Tên tối đa 255 ký tự</value>
+  <data name="ServerError" xml:space="preserve">
+    <value>Lỗi hệ thống, vui lòng thử lại sau</value>
   </data>
 </root>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MISA.WebFresher052023.Domain;
+using MISA.WebFresher052023.Domain.Resources.InputValidation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,24 +15,24 @@ namespace MISA.WebFresher052023.Application
         /// Mã vị trí
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
-        [Required(ErrorMessage = "Mã vị trí không được để trống")]
-        [StringLength(20, ErrorMessage = "Mã vị trí tối đa 20 ký tự")]
-        [RegularExpression(@"[a-zA-Z]{1,}-[0-9]{4,}", ErrorMessage = "Mã vị trí phải có định dạng xx-xxxx trong đó sau xx- có ít nhất 4 số")]
+        [Required(ErrorMessageResourceName = nameof(InputValidation.IsRequired), ErrorMessageResourceType = typeof(InputValidation))]
+        [StringLength(20, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
+        [RegularExpression(@"[a-zA-Z]{1,}-[0-9]{4,}", ErrorMessageResourceName = nameof(InputValidation.CodeFormat), ErrorMessageResourceType = typeof(InputValidation))]
         public string PositionCode { get; set; } = string.Empty;
 
         /// <summary>
         /// Tên vị trí
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
-        [Required(ErrorMessage = "Tên vị trí không được để trống")]
-        [StringLength(255, ErrorMessage = "Tên vị trí tối đa 255 ký tự")]
+        [Required(ErrorMessageResourceName = nameof(InputValidation.IsRequired), ErrorMessageResourceType = typeof(InputValidation))]
+        [StringLength(255, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string PositionName { get; set; } = string.Empty;
 
         /// <summary>
         /// Mô tả
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
-        [StringLength(255, ErrorMessage = "Mô tả tối đa 255 ký tự")]
+        [StringLength(255, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? Description { get; set; }
     }
 }

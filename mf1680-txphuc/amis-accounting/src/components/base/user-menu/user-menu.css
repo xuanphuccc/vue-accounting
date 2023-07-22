@@ -1,15 +1,15 @@
 .ms-user-menu {
   position: absolute;
   top: calc(100% + 8px);
-  right: 16px;
+  right: 24px;
   width: 300px;
   padding: 24px 0 16px;
   background: var(--white);
   box-shadow: var(--box-shadow-medium);
   border-radius: 4px;
-  z-index: 4;
+  z-index: 20;
   user-select: none;
-  animation: fadeIn 0.2s ease;
+  animation: fadeInRight 0.2s ease;
 }
 
 /* info */

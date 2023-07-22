@@ -1,4 +1,5 @@
 ﻿using MISA.WebFresher052023.Domain;
+using MISA.WebFresher052023.Domain.Resources.InputValidation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,17 +15,17 @@ namespace MISA.WebFresher052023.Application
         /// Mã nhân viên
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
-        [Required(ErrorMessage = "Mã nhân viên không được để trống", ErrorMessageResourceName = "test")]
-        [StringLength(20, ErrorMessage = "Mã tối đa 20 ký tự")]
-        [RegularExpression(@"[a-zA-Z]{1,}-[0-9]{4,}", ErrorMessage = "Mã nhân viên phải có định dạng xx-xxxx trong đó sau xx- có ít nhất 4 số")]
+        [Required(ErrorMessageResourceName = nameof(InputValidation.IsRequired), ErrorMessageResourceType = typeof(InputValidation))]
+        [StringLength(20, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
+        [RegularExpression(@"[a-zA-Z]{1,}-[0-9]{4,}", ErrorMessageResourceName = nameof(InputValidation.CodeFormat), ErrorMessageResourceType = typeof(InputValidation))]
         public string EmployeeCode { get; set; } = string.Empty;
 
         /// <summary>
         /// Tên nhân viên
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
-        [Required(ErrorMessage = "Tên nhân viên không được để trống")]
-        [StringLength(100, ErrorMessage = "Tên tối đa 100 ký tự")]
+        [Required(ErrorMessageResourceName = nameof(InputValidation.IsRequired), ErrorMessageResourceType = typeof(InputValidation))]
+        [StringLength(100, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string FullName { get; set; } = string.Empty;
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace MISA.WebFresher052023.Application
         /// Số Chứng minh nhân dân
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
-        [StringLength(25, ErrorMessage = "Số CCCD tối đa 25 ký tự")]
+        [StringLength(25, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? IdentityNumber { get; set; }
 
         /// <summary>
@@ -56,64 +57,64 @@ namespace MISA.WebFresher052023.Application
         /// Nơi cấp Chứng minh nhân dân
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
-        [StringLength(255, ErrorMessage = "Nơi cấp tối đa 255 ký tự")]
+        [StringLength(255, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? IdentityPlace { get; set; }
 
         /// <summary>
         /// Địa chỉ
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
-        [StringLength(255, ErrorMessage = "Địa chỉ tối đa 255 ký tự")]
+        [StringLength(255, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? Address { get; set; }
 
         /// <summary>
         /// Số điện thoại di động
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
-        [StringLength(50, ErrorMessage = "Số điện thoại di động tối đa 50 ký tự")]
+        [StringLength(50, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? MobilePhoneNumber { get; set; }
 
         /// <summary>
         /// Số điện thoại cố định
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
-        [StringLength(50, ErrorMessage = "Số điện thoại cố định tối đa 50 ký tự")]
+        [StringLength(50, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? LandlineNumber { get; set; }
 
         /// <summary>
         /// Email
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
-        [StringLength(100, ErrorMessage = "Email tối đa 100 ký tự")]
-        [RegularExpression(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", ErrorMessage = "Email không đúng định dạng")]
+        [StringLength(100, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
+        [RegularExpression(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", ErrorMessageResourceName = nameof(InputValidation.IncorrectFormat), ErrorMessageResourceType = typeof(InputValidation))]
         public string? Email { get; set; }
 
         /// <summary>
         /// Tài khoản ngân hàng
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
-        [StringLength(25, ErrorMessage = "Tài khoản ngân hàng tối đa 25 ký tự")]
+        [StringLength(25, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? BankAccount { get; set; }
 
         /// <summary>
         /// Tên ngân hàng
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
-        [StringLength(255, ErrorMessage = $"Tên ngân hàng tối đa 255 ký tự")]
+        [StringLength(255, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? BankName { get; set; }
 
         /// <summary>
         /// Chi nhánh ngân hàng
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
-        [StringLength(255, ErrorMessage = $"Chi nhánh tối đa 255 ký tự")]
+        [StringLength(255, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? BankBranch { get; set; }
 
         /// <summary>
         /// Mã đơn vị
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)
-        [Required(ErrorMessage = "Mã đơn vị không được để trống")]
+        [Required(ErrorMessageResourceName = nameof(InputValidation.IsRequired), ErrorMessageResourceType = typeof(InputValidation))]
         public Guid DepartmentId { get; set; }
 
         /// <summary>

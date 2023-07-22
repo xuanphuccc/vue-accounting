@@ -1,13 +1,14 @@
 <template>
   <div
-    @focusin="onOpenDropdown"
-    @focusout="console.log('focus out')"
+    @focusin="openDropdown"
+    @click="openDropdown"
     @keydown.stop="preSelectOnPressArrow"
     ref="comboboxRef"
     tabindex="-1"
     :class="['ms-select', { '--show-search': props.search }]"
   >
     <input
+      @mousedown.stop=""
       :tabindex="props.tabindex"
       class="ms-select__input"
       :readonly="!props.search"
@@ -17,15 +18,22 @@
       v-model="searchValue"
     />
 
-    <div class="ms-select__toggle" title="Combobox">
+    <div @mousedown.stop="" class="ms-select__toggle" title="Combobox">
       <MISAIcon size="16" icon="angle-down" />
     </div>
 
-    <div @click="clearSelectedValue" class="ms-select__clear">
+    <div @focusin.stop="" @click.stop="clearSelectedValue" tabindex="-1" class="ms-select__clear">
       <MISAIcon size="16" icon="times" />
     </div>
 
-    <div class="ms-select__list-container">
+    <div
+      @mousedown.stop=""
+      @click.stop=""
+      @focusin.stop=""
+      tabindex="-1"
+      v-show="isOpen"
+      class="ms-select__list-container"
+    >
       <ul class="ms-select__select-list">
         <li :class="['ms-select__item', { '--selected': !selectedValue }]">
           -- {{ props.placeholder }} --
@@ -57,10 +65,10 @@
 <script setup>
 import enums from "@/helper/enum";
 import MISAIcon from "../icon/MISAIcon.vue";
-import { computed, watch } from "vue";
+import { computed, onMounted, onUnmounted, watch } from "vue";
 import { ref } from "vue";
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "close"]);
 
 const props = defineProps({
   // Danh sách các lựa chọn
@@ -101,6 +109,7 @@ const props = defineProps({
   },
 });
 
+const isOpen = ref(false);
 const comboboxRef = ref(null);
 const menuItemRef = ref([]);
 const selectedValue = ref(null);
@@ -188,15 +197,14 @@ const selectOption = (option, index) => {
   selectedValue.value = option.value;
   emit("update:modelValue", option.value);
 
-  // Đóng dropdown
-  if (comboboxRef.value) {
-    comboboxRef.value.blur();
-  }
-
   // Set vị trí cuộn cho phẩn tử được chọn
   if (index !== undefined) {
     preSelectIndex.value = index;
   }
+
+  // Đóng dropdown khi chọn xong giá trị
+  isOpen.value = false;
+  console.log("select");
 };
 
 /**
@@ -233,7 +241,8 @@ const preSelectOnPressArrow = (e) => {
     } else if (keyCode === enums.key.ENTER) {
       // Chọn giá trị khi nhấn phím ENTER
       selectOption(preSelectValue.value);
-      e.target.blur();
+    } else if (keyCode === enums.key.TAB) {
+      closeDropdown();
     }
 
     // Cuộn item lên khung nhìn nếu item bị ẩn
@@ -247,31 +256,20 @@ const preSelectOnPressArrow = (e) => {
  * Description: Reset giá trị đã chọn về rỗng (chế độ dropdown list)
  * Author: txphuc (04/07/2023)
  */
-const clearSelectedValue = (e) => {
+const clearSelectedValue = () => {
   try {
     // Cập nhật binding hai chiều
     emit("update:modelValue", null);
     selectedValue.value = null;
 
-    // Đóng dropdown
-    e.target?.parentElement?.parentElement?.blur();
-
     // Xoá search value
     searchValue.value = "";
+
+    // Cuộn về phần tử đầu tiên
+    preSelectIndex.value = 0;
   } catch (error) {
     console.warn(error);
   }
-};
-
-/**
- * Description: Set lại giá trị cho preSelectValue mỗi khi
- * dropdown được focus (khi mở dropdown)
- * Author: txphuc (04/07/2023)
- */
-const onOpenDropdown = () => {
-  preSelectValue.value = selectedOption.value;
-  console.log("open dropdown", preSelectIndex.value);
-  handleScrollToView(preSelectIndex.value);
 };
 
 /**
@@ -280,17 +278,62 @@ const onOpenDropdown = () => {
  */
 const handleScrollToView = (index) => {
   try {
-    if (menuItemRef.value.length > 0) {
-      menuItemRef.value[index]?.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-        inline: "nearest",
-      });
-    }
+    setTimeout(() => {
+      if (menuItemRef.value.length > 0) {
+        menuItemRef.value[index]?.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "nearest",
+        });
+      }
+    }, 100);
   } catch (error) {
     console.warn(error);
   }
 };
+
+/**
+ * Description: Sự kiện mở Dropdown
+ * Author: txphuc (04/07/2023)
+ */
+const openDropdown = () => {
+  console.log("open drop down");
+  isOpen.value = true;
+
+  //Set lại giá trị cho preSelectValue khi mở dropdown
+  preSelectValue.value = selectedOption.value;
+
+  // Cuộn đến phần tử được chọn khi mở dropdown
+  handleScrollToView(preSelectIndex.value);
+};
+
+/**
+ * Description: Sự kiện đóng Dropdown
+ * Author: txphuc (20/07/2023)
+ */
+const closeDropdown = () => {
+  if (isOpen.value) {
+    emit("close");
+  }
+
+  isOpen.value = false;
+};
+
+/**
+ * Description: Sự kiện click outside
+ * Author: txphuc (20/07/2023)
+ */
+onMounted(() => {
+  window.addEventListener("mousedown", closeDropdown);
+});
+
+/**
+ * Description: Huỷ sự kiện click outside
+ * Author: txphuc (20/07/2023)
+ */
+onUnmounted(() => {
+  window.removeEventListener("mousedown", closeDropdown);
+});
 
 /**
  * Description: Xử lý auto focus khi gọi từ component cha

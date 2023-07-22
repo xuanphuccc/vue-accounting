@@ -379,6 +379,22 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
+.ms-icon--draggable-dots-20 {
+  -webkit-mask-image: url("../../../assets/img/draggabledots.svg");
+  mask-image: url("../../../assets/img/draggabledots.svg");
+  -webkit-mask-position: contain;
+  mask-position: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ms-icon--paper-clip-20 {
+  -webkit-mask-image: url("../../../assets/img/paper-clip.svg");
+  mask-image: url("../../../assets/img/paper-clip.svg");
+  -webkit-mask-position: contain;
+  mask-position: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
 
 /* background */
 .ms-icon--success-24 {

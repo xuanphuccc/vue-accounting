@@ -63,7 +63,7 @@ builder.Services.AddScoped<IDepartmentManager, DepartmentManager>();
 builder.Services.AddScoped<IPositionService, PositionService>();
 builder.Services.AddScoped<IPositionManager, PositionManager>();
 
-// Localization config
+//Localization config
 builder.Services.AddLocalization();
 var localizationOptions = new RequestLocalizationOptions();
 var supportedCultures = new[]

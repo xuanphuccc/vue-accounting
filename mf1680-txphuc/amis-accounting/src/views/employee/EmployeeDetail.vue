@@ -29,7 +29,7 @@
                     @input="validatedInputs.employeeCode = null"
                     focus
                     id="input-id"
-                    ref="inputsRef"
+                    ref="inputsRef.input1"
                   />
                 </MISAFormGroup>
               </MISACol>
@@ -47,7 +47,7 @@
                     @blur="validateFullName"
                     @input="validatedInputs.fullName = null"
                     id="input-name"
-                    ref="inputsRef"
+                    ref="inputsRef.input2"
                   />
                 </MISAFormGroup>
               </MISACol>
@@ -352,7 +352,10 @@ const initialFormData = {
 };
 const formData = ref({ ...initialFormData });
 
-const inputsRef = ref([]);
+const inputsRef = {
+  input1: ref(null),
+  input2: ref(null),
+};
 
 const validatedInputs = ref({
   employeeCode: null,
@@ -431,7 +434,7 @@ const closeDialog = () => {
  */
 const handleValidateInputs = () => {
   try {
-    console.log(inputsRef.value);
+    console.log(inputsRef);
     return validateEmployeeCode() && validateFullName() && validateDepartment();
   } catch (error) {
     console.warn(error);

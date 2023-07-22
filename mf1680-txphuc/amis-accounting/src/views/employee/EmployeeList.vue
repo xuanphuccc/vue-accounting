@@ -7,9 +7,19 @@
       </div>
 
       <div class="page__header-controls">
-        <MISAButton @click="employeeStore.openFormForCreate" type="primary">{{
-          MISAResource[globalStore.lang].Page.Employee.AddButton
-        }}</MISAButton>
+        <MISAButtonGroup>
+          <MISAButton @click="employeeStore.openFormForCreate" type="primary">{{
+            MISAResource[globalStore.lang].Page.Employee.AddButton
+          }}</MISAButton>
+          <MISAButton type="primary">
+            <template #icon>
+              <MISAIcon size="16" icon="angle-down" />
+            </template>
+            <template #dropdown>
+              <MISAButton>abc</MISAButton>
+            </template>
+          </MISAButton>
+        </MISAButtonGroup>
       </div>
     </div>
 
@@ -59,11 +69,11 @@
             <template #icon><MISAIcon size="20" icon="reload" /></template>
           </MISAButton>
 
-          <MISAButton type="secondary">
+          <MISAButton @click="downloadExcel" type="secondary">
             <template #icon><MISAIcon icon="excel-gray" no-color /></template>
           </MISAButton>
 
-          <MISAButton type="secondary">
+          <MISAButton @click.stop="isCustomizeTable = true" type="secondary">
             <template #icon><MISAIcon icon="setting" /></template>
           </MISAButton>
         </div>
@@ -123,6 +133,15 @@
 
       <!-- Employee detail -->
       <EmployeeDetail v-if="employeeStore.isOpenForm" @submit="getEmployeeData"></EmployeeDetail>
+
+      <!-- Table customize -->
+      <MISATableCusomize
+        :columns="columns"
+        :default-columns="defaultColumns"
+        @change="applyTableCustomize"
+        @close="isCustomizeTable = false"
+        v-if="isCustomizeTable"
+      />
     </div>
   </div>
 </template>
@@ -132,10 +151,12 @@ import { ref, watch } from "vue";
 
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import MISAButton from "@/components/base/button/MISAButton.vue";
+import MISAButtonGroup from "@/components/base/button/MISAButtonGroup.vue";
 import MISAInput from "@/components/base/input/MISAInput.vue";
 import MISAInputGroup from "@/components/base/input/MISAInputGroup.vue";
 import MISAInputAction from "@/components/base/input/MISAInputAction.vue";
 import MISATable from "@/components/base/table/MISATable.vue";
+import MISATableCusomize from "@/components/base/table-customize/MISATableCustomize.vue";
 import MISAContextMenu from "@/components/base/context-menu/MISAContextMenu.vue";
 import MISAContextItem from "@/components/base/context-menu/MISAContextItem.vue";
 import MISADialog from "@/components/base/dialog/MISADialog.vue";
@@ -168,11 +189,78 @@ const dialogState = ref({
   description: "",
 });
 const isLoading = ref(false);
+const isCustomizeTable = ref(false);
 
 const globalStore = useGlobalStore();
 const employeeStore = useEmployeeStore();
 const toastStore = useToastStore();
 
+const defaultColumns = [
+  {
+    key: 1,
+    title: MISAResource[globalStore.lang].Page.Employee.EmployeeCode.SubTitle,
+    dataIndex: "EmployeeCode",
+    width: 130,
+    sticky: "left",
+  },
+  {
+    key: 2,
+    title: MISAResource[globalStore.lang].Page.Employee.FullName.SubTitle,
+    dataIndex: "FullName",
+    width: 200,
+    sticky: "left",
+  },
+  {
+    key: 3,
+    title: MISAResource[globalStore.lang].Page.Employee.Gender.Title,
+    dataIndex: "GenderFormated",
+  },
+  {
+    key: 4,
+    title: MISAResource[globalStore.lang].Page.Employee.DateOfBirth.Title,
+    dataIndex: "DateOfBirthFormated",
+    align: "center",
+  },
+  {
+    key: 5,
+    title: MISAResource[globalStore.lang].Page.Employee.IdentityNumber.Title,
+    dataIndex: "IdentityNumber",
+    desc: MISAResource[globalStore.lang].Page.Employee.IdentityNumber.Desc,
+    align: "right",
+  },
+  {
+    key: 6,
+    title: MISAResource[globalStore.lang].Page.Employee.Position.Title,
+    dataIndex: "PositionName",
+    width: 180,
+  },
+  {
+    key: 7,
+    title: MISAResource[globalStore.lang].Page.Employee.Department.Title,
+    dataIndex: "DepartmentName",
+    width: 240,
+  },
+  {
+    key: 8,
+    title: MISAResource[globalStore.lang].Page.Employee.BankAccount.SubTitle,
+    dataIndex: "BankAccount",
+    align: "right",
+    width: 180,
+  },
+  {
+    key: 9,
+    title: MISAResource[globalStore.lang].Page.Employee.BankName.Title,
+    dataIndex: "BankName",
+    width: 180,
+  },
+  {
+    key: 10,
+    title: MISAResource[globalStore.lang].Page.Employee.BankBranch.SubTitle,
+    dataIndex: "BankBranch",
+    desc: MISAResource[globalStore.lang].Page.Employee.BankBranch.Desc,
+    width: 240,
+  },
+];
 const columns = ref([]);
 
 /**
@@ -182,72 +270,7 @@ const columns = ref([]);
 watch(
   () => globalStore.lang,
   () => {
-    columns.value = [
-      {
-        key: 1,
-        title: MISAResource[globalStore.lang].Page.Employee.EmployeeCode.SubTitle,
-        dataIndex: "EmployeeCode",
-        width: 130,
-        sticky: "left",
-      },
-      {
-        key: 2,
-        title: MISAResource[globalStore.lang].Page.Employee.FullName.SubTitle,
-        dataIndex: "FullName",
-        width: 200,
-        sticky: "left",
-      },
-      {
-        key: 3,
-        title: MISAResource[globalStore.lang].Page.Employee.Gender.Title,
-        dataIndex: "GenderFormated",
-      },
-      {
-        key: 4,
-        title: MISAResource[globalStore.lang].Page.Employee.DateOfBirth.Title,
-        dataIndex: "DateOfBirthFormated",
-        align: "center",
-      },
-      {
-        key: 5,
-        title: MISAResource[globalStore.lang].Page.Employee.IdentityNumber.Title,
-        dataIndex: "IdentityNumber",
-        desc: MISAResource[globalStore.lang].Page.Employee.IdentityNumber.Desc,
-        align: "right",
-      },
-      {
-        key: 6,
-        title: MISAResource[globalStore.lang].Page.Employee.Position.Title,
-        dataIndex: "PositionName",
-        width: 180,
-      },
-      {
-        key: 7,
-        title: MISAResource[globalStore.lang].Page.Employee.Department.Title,
-        dataIndex: "DepartmentName",
-        width: 240,
-      },
-      {
-        key: 8,
-        title: MISAResource[globalStore.lang].Page.Employee.BankAccount.SubTitle,
-        dataIndex: "BankAccount",
-        align: "right",
-        width: 180,
-      },
-      {
-        key: 9,
-        title: MISAResource[globalStore.lang].Page.Employee.BankName.Title,
-        dataIndex: "BankName",
-        width: 180,
-      },
-      {
-        key: 10,
-        title: MISAResource[globalStore.lang].Page.Employee.BankBranch.SubTitle,
-        dataIndex: "BankBranch",
-        desc: MISAResource[globalStore.lang].Page.Employee.BankBranch.Desc,
-        width: 240,
-      },
-    ];
+    columns.value = defaultColumns;
   },
   {
     immediate: true,
@@ -286,6 +309,29 @@ const getEmployeeData = async () => {
     pagingInfoState.value.totalPage = Math.ceil(totalRecords / pageSize);
 
     isLoading.value = false;
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+/**
+ * Description: Download excel danh sách nhân viên
+ * Author: txphuc (21/07/2023)
+ */
+const downloadExcel = async () => {
+  try {
+    const response = await employeeApi.downloadExcel();
+
+    const blob = new Blob([response.data], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const linkElement = document.createElement("a");
+    linkElement.href = url;
+    linkElement.download = "employee.xlsx";
+    linkElement.click();
   } catch (error) {
     console.warn(error);
   }
@@ -461,6 +507,14 @@ const handleResetFilter = () => {
   };
 
   searchFieldState.value = "";
+};
+
+/**
+ * Description: Áp dụng thay đổi khi customize bảng
+ * Author: txphuc (22/07/2023)
+ */
+const applyTableCustomize = (newColums) => {
+  columns.value = newColums;
 };
 </script>
 

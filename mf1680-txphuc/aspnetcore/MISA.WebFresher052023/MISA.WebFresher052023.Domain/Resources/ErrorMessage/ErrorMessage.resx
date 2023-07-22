@@ -117,11 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="NotFound" xml:space="preserve">
-    <value>Not found abc</value>
+  <data name="ConflictCode" xml:space="preserve">
+    <value>The code already exists</value>
   </data>
-  <data name="Wellcome" xml:space="preserve">
-    <value>Wellcome to my API</value>
-    <comment>Abc</comment>
+  <data name="NotFound" xml:space="preserve">
+    <value>Resource not found</value>
+  </data>
+  <data name="ServerError" xml:space="preserve">
+    <value>System error, please try again later</value>
   </data>
 </root>

@@ -15,31 +15,32 @@
               <span class="ms-table__border-bottom"></span>
             </th>
 
-            <th
-              v-for="column in columsWithPos"
-              :key="column.key"
-              :style="{
-                width: column.width ? column.width + 'px' : '',
-                maxWidth: column.width ? column.width + 'px' : '',
-                left: column.sticky && column.left + 'px',
-              }"
-              :class="[`--align-${column.align || ''}`, `--sticky-${column.sticky}`]"
-              v-tooltip.bottom="column.desc || column.title"
-              ref="columsRef"
-            >
-              <div class="ms-table__table-text-wrap">
-                {{ column.title }}
-              </div>
+            <template v-for="column in columsWithPos" :key="column.key">
+              <th
+                v-if="!column.hide"
+                :style="{
+                  width: column.width ? column.width + 'px' : '',
+                  maxWidth: column.width ? column.width + 'px' : '',
+                  left: column.sticky && column.left + 'px',
+                }"
+                :class="[`--align-${column.align || ''}`, `--sticky-${column.sticky}`]"
+                v-tooltip.bottom="column.desc || column.title"
+                ref="columsRef"
+              >
+                <div class="ms-table__table-text-wrap">
+                  {{ column.title }}
+                </div>
 
-              <!-- resize column -->
-              <span @mousedown="activeResize($event, column)" class="ms-table__col-resize"></span>
+                <!-- resize column -->
+                <span @mousedown="activeResize($event, column)" class="ms-table__col-resize"></span>
 
-              <!-- fake borders -->
-              <span class="ms-table__border-bottom"></span>
-              <span class="ms-table__border-right"></span>
-            </th>
+                <!-- fake borders -->
+                <span class="ms-table__border-bottom"></span>
+                <span class="ms-table__border-right"></span>
+              </th>
+            </template>
 
-            <th class="--sticky-right">
+            <th class="--sticky-right --align-center">
               {{ MISAResource[globalStore.lang].Table.Functions }}
               <!-- fake borders -->
               <span class="ms-table__border-left"></span>
@@ -65,6 +66,7 @@
 
               <template v-for="column in columsWithPos" :key="column.key">
                 <td
+                  v-if="!column.hide"
                   :style="{
                     width: column.width ? column.width + 'px' : '',
                     maxWidth: column.width ? column.width + 'px' : '',
@@ -476,8 +478,10 @@ const calculateColumnsPos = () => {
       }
 
       // Vị trí của cột hiện tại so với vị trí đầu bảng
+      // bằng tổng chiều dài của các cột đứng trước nó
+      // (không tính cột bị ẩn)
       const leftPos = columsWithPos.value.reduce((left, column, currentIndex) => {
-        if (currentIndex < index) {
+        if (currentIndex < index && !column.hide) {
           return left + (column.width || defaultWidth);
         } else {
           return left;

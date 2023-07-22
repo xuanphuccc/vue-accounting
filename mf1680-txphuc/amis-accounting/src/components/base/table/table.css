@@ -188,7 +188,7 @@
 }
 
 .ms-table__action-context {
-  position: absolute;
+  position: fixed;
   top: 50%;
   right: 56px;
   z-index: 2;

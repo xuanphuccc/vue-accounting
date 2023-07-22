@@ -39,6 +39,10 @@ const employeeApi = {
     const url = `${rootUrl}/${id}`;
     return axiosClient.put(url, data);
   },
+  downloadExcel() {
+    const url = `${rootUrl}/Excel`;
+    return axiosClient.get(url, { responseType: "arraybuffer" });
+  },
 };
 
 export default employeeApi;
