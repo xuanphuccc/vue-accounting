@@ -56,6 +56,7 @@ builder.Services.AddScoped<IPositionRepository, PositionRepository>();
 // Add services
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IEmployeeManager, EmployeeManager>();
+builder.Services.AddScoped<IEmployeeExcelService, EmployeeExcelService>();
 
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IDepartmentManager, DepartmentManager>();

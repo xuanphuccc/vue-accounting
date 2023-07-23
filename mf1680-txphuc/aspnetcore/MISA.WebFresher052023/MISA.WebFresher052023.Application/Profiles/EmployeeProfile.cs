@@ -21,6 +21,9 @@ namespace MISA.WebFresher052023.Application
 
             // Trường hợp trả về dữ liệu bao gồm tên của đơn vị và vị trí làm việc
             CreateMap<EmployeeModel, EmployeeDto>();
+            
+            // Trường hợp trả về file Excel
+            CreateMap<EmployeeModel, EmployeeExcelDto>();
 
             // Trường hợp tạo mới
             CreateMap<EmployeeCreateDto, Employee>();

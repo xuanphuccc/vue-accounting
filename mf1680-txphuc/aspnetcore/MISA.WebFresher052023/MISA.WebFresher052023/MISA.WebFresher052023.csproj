@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-    <PackageReference Include="EPPlus" Version="6.2.6" />
+    <PackageReference Include="EPPlus" Version="6.2.7" />
     <PackageReference Include="MySqlConnector" Version="2.2.6" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="System.Resources.ResourceManager" Version="4.0.1" />
