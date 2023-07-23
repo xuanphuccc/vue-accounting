@@ -18,8 +18,8 @@ const enums = {
     TAB: 9,
   },
   language: {
-    VN: "VN",
-    EN: "EN",
+    VN: "vi-VN",
+    EN: "en-US",
   },
 };
 

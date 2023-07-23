@@ -14,7 +14,7 @@
   background: var(--gray-100);
 }
 
-.ms-select:focus {
+.ms-select:focus-within {
   border-color: var(--primary-color-500);
 }
 

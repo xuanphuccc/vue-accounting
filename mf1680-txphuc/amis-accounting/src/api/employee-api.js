@@ -41,7 +41,9 @@ const employeeApi = {
   },
   downloadExcel() {
     const url = `${rootUrl}/Excel`;
-    return axiosClient.get(url, { responseType: "arraybuffer" });
+    return axiosClient.get(url, {
+      responseType: "arraybuffer",
+    });
   },
 };
 

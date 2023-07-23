@@ -41,7 +41,7 @@
             </template>
 
             <th class="--sticky-right --align-center">
-              {{ MISAResource[globalStore.lang].Table.Functions }}
+              {{ MISAResource[globalStore.lang]?.Table?.Functions }}
               <!-- fake borders -->
               <span class="ms-table__border-left"></span>
               <span class="ms-table__border-bottom"></span>
@@ -91,7 +91,7 @@
               <td class="--sticky-right">
                 <div class="ms-table__action">
                   <div @click="returnRow(row)" class="ms-table__action-text">
-                    {{ MISAResource[globalStore.lang].Button.Update }}
+                    {{ MISAResource[globalStore.lang]?.Button?.Update }}
                   </div>
                   <div
                     @dblclick.stop=""
@@ -126,13 +126,13 @@
     <!-- table footer -->
     <div class="ms-table__footer">
       <p class="total-row">
-        <span>{{ MISAResource[globalStore.lang].Paging.TotalRecords }}: </span>
+        <span>{{ MISAResource[globalStore.lang]?.Paging?.TotalRecords }}: </span>
         <span class="text-bold">{{ props.totalRecords }}</span>
       </p>
       <div class="ms-table__page-infor">
         <!-- page size dropdown -->
         <div class="ms-table__page-size">
-          <div>{{ MISAResource[globalStore.lang].Paging.ItemsPerPage }}:</div>
+          <div>{{ MISAResource[globalStore.lang]?.Paging?.ItemsPerPage }}:</div>
           <div @click="togglePageSizeDropdown" class="ms-table__page-size-btn">
             {{ props.pageSize }}
             <div class="ms-table__page-size-btn-icon" title="Dropdown">
@@ -159,7 +159,7 @@
           <p>
             {{ recordsRange.min }} -
             <span class="text-bold">{{ recordsRange.max }}</span>
-            {{ MISAResource[globalStore.lang].Paging.Records }}
+            {{ MISAResource[globalStore.lang]?.Paging?.Records }}
           </p>
         </div>
 
@@ -168,13 +168,13 @@
           <span
             @click="handlePrevPage"
             :class="['ms-table__prev-btn', { '--disable': props.currentPage <= 1 }]"
-            :title="MISAResource[globalStore.lang].Paging.PrevPage"
+            :title="MISAResource[globalStore.lang]?.Paging?.PrevPage"
             ><MISAIcon icon="angle-left"
           /></span>
           <span
             @click="handleNextPage"
             :class="['ms-table__next-btn', { '--disable': props.currentPage >= props.totalPage }]"
-            :title="MISAResource[globalStore.lang].Paging.NextPage"
+            :title="MISAResource[globalStore.lang]?.Paging?.NextPage"
           >
             <MISAIcon icon="angle-right" />
           </span>

@@ -6,8 +6,8 @@
       :width="880"
       :title="
         employeeStore.mode === enums.form.mode.CREATE
-          ? MISAResource[globalStore.lang].Page.Employee.Form.CreateTitle
-          : MISAResource[globalStore.lang].Page.Employee.Form.UpdateTitle
+          ? MISAResource[globalStore.lang]?.Page?.Employee?.Form?.CreateTitle
+          : MISAResource[globalStore.lang]?.Page?.Employee?.Form?.UpdateTitle
       "
     >
       <template #default>
@@ -17,7 +17,7 @@
               <MISACol span="5">
                 <MISAFormGroup
                   :error-msg="validatedInputs.employeeCode"
-                  :label="MISAResource[globalStore.lang].Page.Employee.EmployeeCode.Title"
+                  :label="MISAResource[globalStore.lang]?.Page?.Employee?.EmployeeCode?.Title"
                   for="input-id"
                   required-mark
                   space-bottom
@@ -36,7 +36,7 @@
               <MISACol span="7">
                 <MISAFormGroup
                   :error-msg="validatedInputs.fullName"
-                  :label="MISAResource[globalStore.lang].Page.Employee.FullName.Title"
+                  :label="MISAResource[globalStore.lang]?.Page?.Employee?.FullName?.Title"
                   for="input-name"
                   required-mark
                   space-bottom
@@ -54,7 +54,7 @@
               <MISACol span="12">
                 <MISAFormGroup
                   :error-msg="validatedInputs.department"
-                  :label="MISAResource[globalStore.lang].Page.Employee.Department.Title"
+                  :label="MISAResource[globalStore.lang]?.Page?.Employee?.Department?.Title"
                   for="input-department"
                   required-mark
                   space-bottom
@@ -70,7 +70,7 @@
               </MISACol>
               <MISACol span="12">
                 <MISAFormGroup
-                  :label="MISAResource[globalStore.lang].Page.Employee.Position.Title"
+                  :label="MISAResource[globalStore.lang]?.Page?.Employee?.Position?.Title"
                   for="input-position"
                   space-bottom
                 >
@@ -89,7 +89,7 @@
             <MISARow :gutter="{ x: 8 }">
               <MISACol span="5">
                 <MISAFormGroup
-                  :label="MISAResource[globalStore.lang].Page.Employee.DateOfBirth.Title"
+                  :label="MISAResource[globalStore.lang]?.Page?.Employee?.DateOfBirth?.Title"
                   for="input-date-of-birth"
                   space-bottom
                 >
@@ -104,7 +104,7 @@
               </MISACol>
               <MISACol span="7">
                 <MISAFormGroup
-                  :label="MISAResource[globalStore.lang].Page.Employee.Gender.Title"
+                  :label="MISAResource[globalStore.lang]?.Page?.Employee?.Gender?.Title"
                   for=""
                   space-bottom
                 >
@@ -113,27 +113,29 @@
                       tabindex="6"
                       v-model="formData.gender"
                       :value="enums.gender.MALE + ''"
-                      :label="MISAResource[globalStore.lang].Gender.Male"
+                      :label="MISAResource[globalStore.lang]?.Gender?.Male"
                     />
                     <MISARadioButton
                       tabindex="7"
                       v-model="formData.gender"
                       :value="enums.gender.FEMALE + ''"
-                      :label="MISAResource[globalStore.lang].Gender.Female"
+                      :label="MISAResource[globalStore.lang]?.Gender?.Female"
                     />
                     <MISARadioButton
                       tabindex="8"
                       v-model="formData.gender"
                       :value="enums.gender.OTHER + ''"
-                      :label="MISAResource[globalStore.lang].Gender.Other"
+                      :label="MISAResource[globalStore.lang]?.Gender?.Other"
                     />
                   </div>
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="7">
                 <MISAFormGroup
-                  v-tooltip.top="MISAResource[globalStore.lang].Page.Employee.IdentityNumber.Desc"
-                  :label="MISAResource[globalStore.lang].Page.Employee.IdentityNumber.Title"
+                  v-tooltip.top="
+                    MISAResource[globalStore.lang]?.Page?.Employee?.IdentityNumber?.Desc
+                  "
+                  :label="MISAResource[globalStore.lang]?.Page?.Employee?.IdentityNumber?.Title"
                   for="input-identity-number"
                   space-bottom
                 >
@@ -146,7 +148,7 @@
               </MISACol>
               <MISACol span="5">
                 <MISAFormGroup
-                  :label="MISAResource[globalStore.lang].Page.Employee.IdentityDate.Title"
+                  :label="MISAResource[globalStore.lang]?.Page?.Employee?.IdentityDate?.Title"
                   for="input-identity-date"
                   space-bottom
                 >
@@ -160,7 +162,7 @@
               </MISACol>
               <MISACol span="12">
                 <MISAFormGroup
-                  :label="MISAResource[globalStore.lang].Page.Employee.IdentityPlace.Title"
+                  :label="MISAResource[globalStore.lang]?.Page?.Employee?.IdentityPlace?.Title"
                   for="input-identity-place"
                   space-bottom
                 >
@@ -178,7 +180,7 @@
         <MISARow :gutter="{ x: 8 }">
           <MISACol span="12">
             <MISAFormGroup
-              :label="MISAResource[globalStore.lang].Page.Employee.Address.Title"
+              :label="MISAResource[globalStore.lang]?.Page?.Employee?.Address?.Title"
               for="input-address"
               space-bottom
             >
@@ -190,8 +192,8 @@
         <MISARow :gutter="{ x: 8 }">
           <MISACol span="3">
             <MISAFormGroup
-              v-tooltip.top="MISAResource[globalStore.lang].Page.Employee.MobilePhone.Desc"
-              :label="MISAResource[globalStore.lang].Page.Employee.MobilePhone.Title"
+              v-tooltip.top="MISAResource[globalStore.lang]?.Page?.Employee?.MobilePhone?.Desc"
+              :label="MISAResource[globalStore.lang]?.Page?.Employee?.MobilePhone?.Title"
               for="input-mobile-phone"
               space-bottom
             >
@@ -204,8 +206,8 @@
           </MISACol>
           <MISACol span="3">
             <MISAFormGroup
-              v-tooltip.top="MISAResource[globalStore.lang].Page.Employee.LandlinePhone.Desc"
-              :label="MISAResource[globalStore.lang].Page.Employee.LandlinePhone.Title"
+              v-tooltip.top="MISAResource[globalStore.lang]?.Page?.Employee?.LandlinePhone?.Desc"
+              :label="MISAResource[globalStore.lang]?.Page?.Employee?.LandlinePhone?.Title"
               for="input-landline-phone"
               space-bottom
             >
@@ -218,7 +220,7 @@
           </MISACol>
           <MISACol span="3">
             <MISAFormGroup
-              :label="MISAResource[globalStore.lang].Page.Employee.Email.Title"
+              :label="MISAResource[globalStore.lang]?.Page?.Employee?.Email?.Title"
               for="input-email"
               space-bottom
             >
@@ -230,7 +232,7 @@
         <MISARow :gutter="{ x: 8 }">
           <MISACol span="3">
             <MISAFormGroup
-              :label="MISAResource[globalStore.lang].Page.Employee.BankAccount.Title"
+              :label="MISAResource[globalStore.lang]?.Page?.Employee?.BankAccount?.Title"
               for="bank-account"
             >
               <MISAInput tabindex="16" v-model="formData.bankAccount" id="bank-account" />
@@ -238,7 +240,7 @@
           </MISACol>
           <MISACol span="3">
             <MISAFormGroup
-              :label="MISAResource[globalStore.lang].Page.Employee.BankName.Title"
+              :label="MISAResource[globalStore.lang]?.Page?.Employee?.BankName?.Title"
               for="bank-name"
             >
               <MISAInput tabindex="17" v-model="formData.bankName" id="bank-name" />
@@ -246,7 +248,7 @@
           </MISACol>
           <MISACol span="3">
             <MISAFormGroup
-              :label="MISAResource[globalStore.lang].Page.Employee.BankBranch.Title"
+              :label="MISAResource[globalStore.lang]?.Page?.Employee?.BankBranch?.Title"
               for="branch"
             >
               <MISAInput tabindex="18" v-model="formData.bankBranch" id="branch" />
@@ -257,20 +259,20 @@
 
       <template #controls-left>
         <MISAButton tabindex="21" @click="employeeStore.closeForm" type="secondary">{{
-          MISAResource[globalStore.lang].Button.Cancel
+          MISAResource[globalStore.lang]?.Button?.Cancel
         }}</MISAButton>
       </template>
       <template #controls-right>
         <MISAButton tabindex="20" @click="handleSubmitForm(false)" type="secondary">
           <MISASpinner v-if="loading.submit" absolute />
           <span :style="{ opacity: loading.submit ? 0 : 1 }">{{
-            MISAResource[globalStore.lang].Button.Save
+            MISAResource[globalStore.lang]?.Button?.Save
           }}</span>
         </MISAButton>
         <MISAButton tabindex="19" @click="handleSubmitForm()" type="primary">
           <MISASpinner v-if="loading.submitAndContinue" absolute />
           <span :style="{ opacity: loading.submitAndContinue ? 0 : 1 }">{{
-            MISAResource[globalStore.lang].Button.SaveAndContinue
+            MISAResource[globalStore.lang]?.Button?.SaveAndContinue
           }}</span>
         </MISAButton>
       </template>
@@ -282,7 +284,7 @@
       v-bind="dialogState"
       @cancel="closeDialog"
       @ok="closeDialog"
-      :ok-text="MISAResource[globalStore.lang].Button.OK"
+      :ok-text="MISAResource[globalStore.lang]?.Button?.OK"
     />
   </Teleport>
 </template>
@@ -453,7 +455,7 @@ const validateEmployeeCode = () => {
       rules: [
         {
           checker: required,
-          errorMsg: MISAResource[globalStore.lang].Page.Employee.Validate.EmployeeCode,
+          errorMsg: MISAResource[globalStore.lang]?.Page?.Employee?.Validate?.EmployeeCode,
         },
       ],
     });
@@ -477,7 +479,7 @@ const validateFullName = () => {
       rules: [
         {
           checker: required,
-          errorMsg: MISAResource[globalStore.lang].Page.Employee.Validate.FullName,
+          errorMsg: MISAResource[globalStore.lang]?.Page?.Employee?.Validate?.FullName,
         },
       ],
     });
@@ -501,7 +503,7 @@ const validateDepartment = () => {
       rules: [
         {
           checker: required,
-          errorMsg: MISAResource[globalStore.lang].Page.Employee.Validate.Department,
+          errorMsg: MISAResource[globalStore.lang]?.Page?.Employee?.Validate?.Department,
         },
       ],
     });
@@ -612,7 +614,7 @@ const handleCreateEmployee = async () => {
 
       // Hiện toast message thành công
       toastStore.pushSuccessMessage({
-        message: MISAResource[globalStore.lang].Page.Employee.Toast.CreateSuccess,
+        message: MISAResource[globalStore.lang]?.Page?.Employee?.Toast?.CreateSuccess,
       });
 
       return true;
@@ -624,7 +626,7 @@ const handleCreateEmployee = async () => {
     dialogState.value = {
       active: true,
       type: "error",
-      title: MISAResource[globalStore.lang].Dialog.ErrorTitle,
+      title: MISAResource[globalStore.lang]?.Dialog?.ErrorTitle,
       description: error?.response?.data?.UserMessage,
     };
 
@@ -694,7 +696,7 @@ const handleUpdateEmployee = async () => {
 
       // Hiện toast message thành công
       toastStore.pushSuccessMessage({
-        message: MISAResource[globalStore.lang].Page.Employee.Toast.UpdateSuccess,
+        message: MISAResource[globalStore.lang]?.Page?.Employee?.Toast?.UpdateSuccess,
       });
 
       return true;
@@ -706,7 +708,7 @@ const handleUpdateEmployee = async () => {
     dialogState.value = {
       active: true,
       type: "error",
-      title: MISAResource[globalStore.lang].Dialog.ErrorTitle,
+      title: MISAResource[globalStore.lang]?.Dialog?.ErrorTitle,
       description: error?.response?.data?.UserMessage,
     };
 
@@ -730,7 +732,7 @@ const handleDuplicateEmployee = async () => {
 
       // Hiện toast message nhân bản thành công
       toastStore.pushSuccessMessage({
-        message: MISAResource[globalStore.lang].Page.Employee.Toast.DuplicateSuccess,
+        message: MISAResource[globalStore.lang]?.Page?.Employee?.Toast?.DuplicateSuccess,
       });
 
       return true;
@@ -742,7 +744,7 @@ const handleDuplicateEmployee = async () => {
     dialogState.value = {
       active: true,
       type: "error",
-      title: MISAResource[globalStore.lang].Dialog.ErrorTitle,
+      title: MISAResource[globalStore.lang]?.Dialog?.ErrorTitle,
       description: error?.response?.data?.UserMessage,
     };
 

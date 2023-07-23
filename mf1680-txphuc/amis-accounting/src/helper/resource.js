@@ -1,7 +1,7 @@
 const MISAResource = {
-  VN: {
+  "vi-VN": {
     Language: "Tiếng Việt",
-    LanguageCode: "VN",
+    LanguageCode: "vi-VN",
     Product: "Kế toán",
     FullProductName: "AMIS Kế toán",
     Company: "Công ty Cổ phần MISA",
@@ -215,9 +215,9 @@ const MISAResource = {
       },
     },
   },
-  EN: {
+  "en-US": {
     Language: "English",
-    LanguageCode: "EN",
+    LanguageCode: "en-US",
     Product: "Accounting",
     FullProductName: "AMIS Accounting",
     Company: "MISA Joint Stock Company",

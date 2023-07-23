@@ -329,6 +329,14 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
+.ms-icon--import-24 {
+  -webkit-mask-image: url("../../../assets/img/Sprites.64af8f61.svg");
+  mask-image: url("../../../assets/img/Sprites.64af8f61.svg");
+  -webkit-mask-position: -480px -200px;
+  mask-position: -480px -200px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
 
 /* auto sizing */
 .ms-icon--gift-24 {
@@ -395,6 +403,14 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
+.ms-icon--download-24 {
+  -webkit-mask-image: url("../../../assets/img/download.svg");
+  mask-image: url("../../../assets/img/download.svg");
+  -webkit-mask-position: contain;
+  mask-position: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
 
 /* background */
 .ms-icon--success-24 {
@@ -414,9 +430,9 @@
   background: url("../../../assets/img/Sprites.64af8f61.svg") no-repeat -705px -256px;
 }
 
-.ms-icon--VN-24 {
+.ms-icon--vi-VN-24 {
   background: url("../../../assets/img/Sprites.64af8f61.svg") no-repeat -1648px -259px;
 }
-.ms-icon--EN-24 {
+.ms-icon--en-US-24 {
   background: url("../../../assets/img/Sprites.64af8f61.svg") no-repeat -1687px -259px;
 }

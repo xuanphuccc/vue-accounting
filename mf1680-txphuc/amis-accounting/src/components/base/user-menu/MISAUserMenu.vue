@@ -9,30 +9,34 @@
     </div>
 
     <div class="ms-user-menu__company">
-      {{ MISAResource[globalStore.lang].Company }}
+      {{ MISAResource[globalStore.lang]?.Company }}
       <MISAIcon size="16" icon="angle-right" />
     </div>
 
     <ul class="ms-user-menu__menu">
       <li class="ms-user-menu__menu-item">
-        <MISAIcon icon="key" />{{ MISAResource[globalStore.lang].UserMenu.ChangePassword }}
+        <MISAIcon icon="key" />{{ MISAResource[globalStore.lang]?.UserMenu?.ChangePassword }}
       </li>
       <li class="ms-user-menu__menu-item">
-        <MISAIcon icon="user-circle" />{{ MISAResource[globalStore.lang].UserMenu.AccountSettings }}
+        <MISAIcon icon="user-circle" />{{
+          MISAResource[globalStore.lang]?.UserMenu?.AccountSettings
+        }}
       </li>
       <li class="ms-user-menu__menu-item">
-        <MISAIcon icon="shield" />{{ MISAResource[globalStore.lang].UserMenu.SecuritySettings }}
+        <MISAIcon icon="shield" />{{ MISAResource[globalStore.lang]?.UserMenu?.SecuritySettings }}
       </li>
       <li class="ms-user-menu__menu-item">
-        <MISAIcon icon="newspaper" />{{ MISAResource[globalStore.lang].UserMenu.LicenseAndPayment }}
+        <MISAIcon icon="newspaper" />{{
+          MISAResource[globalStore.lang]?.UserMenu?.LicenseAndPayment
+        }}
       </li>
       <li class="ms-user-menu__menu-item">
-        <MISAIcon icon="gift" />{{ MISAResource[globalStore.lang].UserMenu.ReferralsEarnPoints }}
+        <MISAIcon icon="gift" />{{ MISAResource[globalStore.lang]?.UserMenu?.ReferralsEarnPoints }}
       </li>
       <li @click="toggleLanguageDropdown" class="ms-user-menu__menu-item">
         <MISAIcon :icon="globalStore.lang" />
-        {{ MISAResource[globalStore.lang].UserMenu.Language }}:
-        {{ MISAResource[globalStore.lang].Language }}
+        {{ MISAResource[globalStore.lang]?.UserMenu?.Language }}:
+        {{ MISAResource[globalStore.lang]?.Language }}
         <MISAIcon size="16" icon="angle-down" />
         <div class="language-dropdown">
           <ul v-if="isOpenLanguageDropdown" class="language-dropdown__menu">
@@ -57,7 +61,7 @@
 
     <div class="ms-user-menu__sign-out">
       <MISAIcon icon="sign-out" />
-      {{ MISAResource[globalStore.lang].UserMenu.SignOut }}
+      {{ MISAResource[globalStore.lang]?.UserMenu?.SignOut }}
     </div>
   </div>
 </template>

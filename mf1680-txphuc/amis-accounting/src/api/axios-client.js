@@ -5,6 +5,7 @@ const axiosClient = axios.create({
   baseURL: "https://localhost:7047/api/v1",
   headers: {
     "Content-Type": "application/json",
+    ContentLanguage: "vi-VN",
   },
 });
 

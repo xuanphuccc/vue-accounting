@@ -19,7 +19,7 @@ export const useToastStore = defineStore("toast-message", {
 
         message.key = uuidv4();
         message.type = "success";
-        message.title = MISAResource[globalStore.lang].Toast.Success;
+        message.title = MISAResource[globalStore.lang]?.Toast?.Success;
 
         this.toastArr.push(message);
 

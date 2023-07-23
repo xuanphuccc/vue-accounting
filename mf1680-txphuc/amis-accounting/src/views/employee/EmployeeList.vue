@@ -2,21 +2,31 @@
   <div class="page-container">
     <div class="page__header">
       <div class="page__title-wrapper">
-        <h1 class="page__title">{{ MISAResource[globalStore.lang].Page.Employee.Title }}</h1>
+        <h1 class="page__title">{{ MISAResource[globalStore.lang]?.Page?.Employee?.Title }}</h1>
         <MISAIcon icon="angle-down" />
       </div>
 
       <div class="page__header-controls">
         <MISAButtonGroup>
           <MISAButton @click="employeeStore.openFormForCreate" type="primary">{{
-            MISAResource[globalStore.lang].Page.Employee.AddButton
+            MISAResource[globalStore.lang]?.Page?.Employee?.AddButton
           }}</MISAButton>
           <MISAButton type="primary">
             <template #icon>
               <MISAIcon size="16" icon="angle-down" />
             </template>
             <template #dropdown>
-              <MISAButton>abc</MISAButton>
+              <MISAContextMenu width="215" small>
+                <MISAContextItem>
+                  <input type="file" name="" id="" hidden />
+                  <template #icon><MISAIcon icon="import" /></template>
+                  Nhập từ Excel
+                </MISAContextItem>
+                <MISAContextItem>
+                  <template #icon><MISAIcon icon="download" /></template>
+                  Tải tệp mẫu
+                </MISAContextItem>
+              </MISAContextMenu>
             </template>
           </MISAButton>
         </MISAButtonGroup>
@@ -28,23 +38,23 @@
         <div class="filter__left">
           <div :class="['filter__select-infor', { '--active': selectedRowsState.length > 0 }]">
             <div>
-              {{ MISAResource[globalStore.lang].Text.Selected }}
+              {{ MISAResource[globalStore.lang]?.Text?.Selected }}
               <span id="selected-count" class="text-bold">{{ selectedRowsState.length }}</span>
             </div>
             <MISAButton @click="uncheckedAllRows()" type="link" class="ms-16">{{
-              MISAResource[globalStore.lang].Button.UnChecked
+              MISAResource[globalStore.lang]?.Button?.UnChecked
             }}</MISAButton>
             <MISAButton
               @click="
                 showDeleteConfirmDialog(
-                  MISAResource[globalStore.lang].Page.Employee.Dialog.MultipleDeleteConfirmDesc(
+                  MISAResource[globalStore.lang]?.Page?.Employee?.Dialog.MultipleDeleteConfirmDesc(
                     selectedRowsState.length
                   )
                 )
               "
               type="secondary"
               class="ms-24"
-              >{{ MISAResource[globalStore.lang].Button.Delete }}</MISAButton
+              >{{ MISAResource[globalStore.lang]?.Button?.Delete }}</MISAButton
             >
           </div>
         </div>
@@ -53,7 +63,7 @@
             <MISAInput
               @keydown.enter="handleSearchEmployee"
               v-model="searchFieldState"
-              :placeholder="MISAResource[globalStore.lang].Page.Employee.SearchPlaceholder"
+              :placeholder="MISAResource[globalStore.lang]?.Page?.Employee?.SearchPlaceholder"
               id="search-input"
             />
             <MISAInputAction @click="handleSearchEmployee">
@@ -63,7 +73,7 @@
 
           <MISAButton
             @click="handleResetFilter"
-            v-tooltip.left="MISAResource[globalStore.lang].Tooltip.Reload"
+            v-tooltip.left="MISAResource[globalStore.lang]?.Tooltip?.Reload"
             type="secondary"
           >
             <template #icon><MISAIcon size="20" icon="reload" /></template>
@@ -100,20 +110,20 @@
         <template #context-menu>
           <MISAContextMenu small>
             <MISAContextItem @click="employeeStore.openFormForDuplicate(activeRowState)">{{
-              MISAResource[globalStore.lang].ContextMenu.Duplicate
+              MISAResource[globalStore.lang]?.ContextMenu?.Duplicate
             }}</MISAContextItem>
             <MISAContextItem
               @click="
                 showDeleteConfirmDialog(
-                  MISAResource[globalStore.lang].Page.Employee.Dialog.DeleteConfirmDesc(
+                  MISAResource[globalStore.lang]?.Page?.Employee?.Dialog.DeleteConfirmDesc(
                     activeRowState.FullName
                   )
                 )
               "
-              >{{ MISAResource[globalStore.lang].ContextMenu.Delete }}</MISAContextItem
+              >{{ MISAResource[globalStore.lang]?.ContextMenu?.Delete }}</MISAContextItem
             >
             <MISAContextItem>{{
-              MISAResource[globalStore.lang].ContextMenu.StopUsing
+              MISAResource[globalStore.lang]?.ContextMenu?.StopUsing
             }}</MISAContextItem>
           </MISAContextMenu>
         </template>
@@ -123,10 +133,10 @@
       <Teleport to="#app">
         <MISADialog v-if="dialogState.active" v-bind="dialogState" @cancel="hideConfirmDialog">
           <MISAButton @click="hideConfirmDialog" type="secondary">{{
-            MISAResource[globalStore.lang].Button.Cancel
+            MISAResource[globalStore.lang]?.Button?.Cancel
           }}</MISAButton>
           <MISAButton @click="handleDeleteEmployee" type="danger">{{
-            MISAResource[globalStore.lang].Button.Delete
+            MISAResource[globalStore.lang]?.Button?.Delete
           }}</MISAButton>
         </MISADialog>
       </Teleport>
@@ -198,66 +208,66 @@ const toastStore = useToastStore();
 const defaultColumns = [
   {
     key: 1,
-    title: MISAResource[globalStore.lang].Page.Employee.EmployeeCode.SubTitle,
+    title: MISAResource[globalStore.lang]?.Page?.Employee?.EmployeeCode?.SubTitle,
     dataIndex: "EmployeeCode",
     width: 130,
     sticky: "left",
   },
   {
     key: 2,
-    title: MISAResource[globalStore.lang].Page.Employee.FullName.SubTitle,
+    title: MISAResource[globalStore.lang]?.Page?.Employee?.FullName?.SubTitle,
     dataIndex: "FullName",
     width: 200,
     sticky: "left",
   },
   {
     key: 3,
-    title: MISAResource[globalStore.lang].Page.Employee.Gender.Title,
+    title: MISAResource[globalStore.lang]?.Page?.Employee?.Gender?.Title,
     dataIndex: "GenderFormated",
   },
   {
     key: 4,
-    title: MISAResource[globalStore.lang].Page.Employee.DateOfBirth.Title,
+    title: MISAResource[globalStore.lang]?.Page?.Employee?.DateOfBirth?.Title,
     dataIndex: "DateOfBirthFormated",
     align: "center",
   },
   {
     key: 5,
-    title: MISAResource[globalStore.lang].Page.Employee.IdentityNumber.Title,
+    title: MISAResource[globalStore.lang]?.Page?.Employee?.IdentityNumber?.Title,
     dataIndex: "IdentityNumber",
-    desc: MISAResource[globalStore.lang].Page.Employee.IdentityNumber.Desc,
+    desc: MISAResource[globalStore.lang]?.Page?.Employee?.IdentityNumber?.Desc,
     align: "right",
   },
   {
     key: 6,
-    title: MISAResource[globalStore.lang].Page.Employee.Position.Title,
+    title: MISAResource[globalStore.lang]?.Page?.Employee?.Position?.Title,
     dataIndex: "PositionName",
     width: 180,
   },
   {
     key: 7,
-    title: MISAResource[globalStore.lang].Page.Employee.Department.Title,
+    title: MISAResource[globalStore.lang]?.Page?.Employee?.Department?.Title,
     dataIndex: "DepartmentName",
     width: 240,
   },
   {
     key: 8,
-    title: MISAResource[globalStore.lang].Page.Employee.BankAccount.SubTitle,
+    title: MISAResource[globalStore.lang]?.Page?.Employee?.BankAccount?.SubTitle,
     dataIndex: "BankAccount",
     align: "right",
     width: 180,
   },
   {
     key: 9,
-    title: MISAResource[globalStore.lang].Page.Employee.BankName.Title,
+    title: MISAResource[globalStore.lang]?.Page?.Employee?.BankName?.Title,
     dataIndex: "BankName",
     width: 180,
   },
   {
     key: 10,
-    title: MISAResource[globalStore.lang].Page.Employee.BankBranch.SubTitle,
+    title: MISAResource[globalStore.lang]?.Page?.Employee?.BankBranch?.SubTitle,
     dataIndex: "BankBranch",
-    desc: MISAResource[globalStore.lang].Page.Employee.BankBranch.Desc,
+    desc: MISAResource[globalStore.lang]?.Page?.Employee?.BankBranch?.Desc,
     width: 240,
   },
 ];
@@ -293,10 +303,10 @@ const getEmployeeData = async () => {
       employee.DateOfBirthFormated = formatDate(employee.DateOfBirth);
       employee.GenderFormated =
         employee.Gender === enums.gender.MALE
-          ? MISAResource[globalStore.lang].Gender.Male
+          ? MISAResource[globalStore.lang]?.Gender?.Male
           : employee.Gender === enums.gender.FEMALE
-          ? MISAResource[globalStore.lang].Gender.Female
-          : MISAResource[globalStore.lang].Gender.Other;
+          ? MISAResource[globalStore.lang]?.Gender?.Female
+          : MISAResource[globalStore.lang]?.Gender?.Other;
 
       return employee;
     });
@@ -384,7 +394,7 @@ const deleteSelectedEmployee = async () => {
 
     // Hiện toast message xoá thành công
     toastStore.pushSuccessMessage({
-      message: MISAResource[globalStore.lang].Page.Employee.Toast.DeleteSuccess,
+      message: MISAResource[globalStore.lang]?.Page?.Employee?.Toast?.DeleteSuccess,
     });
   } catch (error) {
     console.warn(error);
@@ -405,7 +415,7 @@ const deleteActiveEmployee = async () => {
 
     // Hiện toast message xoá thành công
     toastStore.pushSuccessMessage({
-      message: MISAResource[globalStore.lang].Page.Employee.Toast.DeleteSuccess,
+      message: MISAResource[globalStore.lang]?.Page?.Employee?.Toast?.DeleteSuccess,
     });
   } catch (error) {
     console.warn(error);
@@ -443,7 +453,7 @@ const setActiveRow = (row) => {
 const showDeleteConfirmDialog = (description) => {
   dialogState.value = {
     active: true,
-    title: MISAResource[globalStore.lang].Page.Employee.Dialog.DeleteConfirmTitle,
+    title: MISAResource[globalStore.lang]?.Page?.Employee?.Dialog?.DeleteConfirmTitle,
     type: "warning",
     description: description,
   };

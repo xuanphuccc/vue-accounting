@@ -204,7 +204,6 @@ const selectOption = (option, index) => {
 
   // Đóng dropdown khi chọn xong giá trị
   isOpen.value = false;
-  console.log("select");
 };
 
 /**
@@ -297,7 +296,6 @@ const handleScrollToView = (index) => {
  * Author: txphuc (04/07/2023)
  */
 const openDropdown = () => {
-  console.log("open drop down");
   isOpen.value = true;
 
   //Set lại giá trị cho preSelectValue khi mở dropdown

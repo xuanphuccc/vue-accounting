@@ -1,11 +1,12 @@
 <template>
   <button
-    @click="handleOnClick"
+    @click.stop="handleOnClick"
     :class="[
       `ms-btn`,
       `ms-btn--${props.type}`,
       { 'ms-btn--icon': $slots.icon && !$slots.default },
       { 'ms-btn--with-icon': $slots.icon && $slots.default },
+      { 'ms-btn--has-dropdown': $slots.dropdown && isOpenDropdown },
     ]"
     :disabled="props.disabled"
   >
@@ -48,7 +49,7 @@ const props = defineProps({
     default: false,
   },
 
-  // Vị trí dropdown (bottom-right, bottom-left)
+  // Vị trí dropdown (bottom-right | bottom-left)
   dropdownPos: {
     type: String,
     default: "bottom-right",
@@ -73,6 +74,10 @@ const closeDropdown = () => {
   isOpenDropdown.value = false;
 };
 
+/**
+ * Description: Thêm sự kiện click outside để tắt dropdown
+ * Author: txphuc (25/06/2023)
+ */
 onMounted(() => {
   document.addEventListener("click", closeDropdown);
 });

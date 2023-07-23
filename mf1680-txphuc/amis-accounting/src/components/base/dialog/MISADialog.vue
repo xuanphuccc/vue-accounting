@@ -5,7 +5,7 @@
       <div
         @click="$emit('cancel')"
         class="ms-dialog__close"
-        :title="MISAResource[globalStore.lang].Tooltip.Close"
+        :title="MISAResource[globalStore.lang]?.Tooltip?.Close"
       >
         <MISAIcon icon="times" />
       </div>

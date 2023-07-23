@@ -177,7 +177,7 @@
 .ms-btn__dropdown {
   position: absolute;
   display: none;
-  z-index: 1;
+  z-index: 6;
 }
 
 .ms-btn__dropdown.--active {
@@ -185,11 +185,18 @@
 }
 
 .ms-btn__dropdown.--pos-bottom-right {
-  top: calc(100% + 1px);
+  top: calc(100% + 4px);
   right: 0;
 }
 
 .ms-btn__dropdown.--pos-bottom-left {
   top: calc(100% + 1px);
   right: 0;
+}
+
+.ms-btn.ms-btn--has-dropdown.ms-btn--primary:active,
+.ms-btn.ms-btn--has-dropdown.ms-btn--primary:hover,
+.ms-btn.ms-btn--has-dropdown.ms-btn--primary:focus {
+  background: var(--primary-color-500);
+  border-color: var(--primary-color-500);
 }

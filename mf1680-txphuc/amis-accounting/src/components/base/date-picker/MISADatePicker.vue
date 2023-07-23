@@ -24,7 +24,7 @@
       <template #month-year="{ month, year, handleMonthYearChange }">
         <div class="ms-date-picker__header">
           <div class="ms-date-picker__header-date">
-            {{ MISAResource[globalStore.lang].Month["M" + (month + 1)] }}, {{ year }}
+            {{ MISAResource[globalStore.lang]?.Month["M" + (month + 1)] }}, {{ year }}
           </div>
           <div class="ms-date-picker__header-controls">
             <MISAIcon @click="handleMonthYearChange(false)" icon="angle-left" />
@@ -36,13 +36,13 @@
       <!-- calendar header -->
       <template #calendar-header="{ day }">
         <div class="ms-date-picker__calendar-header-item">
-          {{ MISAResource[globalStore.lang].Day[day] }}
+          {{ MISAResource[globalStore.lang]?.Day[day] }}
         </div>
       </template>
 
       <template #action-row>
         <div @click="getToday" class="ms-date-picker__action">
-          {{ MISAResource[globalStore.lang].Day["Today"] }}
+          {{ MISAResource[globalStore.lang]?.Day["Today"] }}
         </div>
       </template>
     </VueDatePicker>
