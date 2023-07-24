@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { v4 as uuidv4 } from "uuid";
-import MISAResource from "@/helper/resource";
+import MISAResource from "@/resource/resource";
 import { useGlobalStore } from "./global-store";
 
 export const useToastStore = defineStore("toast-message", {

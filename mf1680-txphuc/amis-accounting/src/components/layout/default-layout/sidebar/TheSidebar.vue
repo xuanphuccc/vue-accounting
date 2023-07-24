@@ -92,7 +92,7 @@
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import { ref } from "vue";
 import { useGlobalStore } from "@/stores/global-store";
-import MISAResource from "@/helper/resource";
+import MISAResource from "@/resource/resource";
 
 const tippyRef = ref(null);
 

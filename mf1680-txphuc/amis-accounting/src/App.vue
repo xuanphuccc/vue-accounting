@@ -13,4 +13,17 @@
 <script setup>
 import TheDefaultLayout from "./components/layout/default-layout/TheDefaultLayout.vue";
 import TheEmptyLayout from "./components/layout/empty-layout/TheEmptyLayout.vue";
+import MISAResource from "@/resource/resource";
+import { useGlobalStore } from "./stores/global-store";
+import { onMounted } from "vue";
+
+const globalStore = useGlobalStore();
+
+/**
+ * Description: Thay đổi tiêu đề trình duyệt theo ngôn ngữ
+ * Author: txphuc (23/07/2023)
+ */
+onMounted(() => {
+  document.title = MISAResource[globalStore.lang]?.FullProductName;
+});
 </script>

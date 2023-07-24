@@ -20,11 +20,11 @@
                 <MISAContextItem>
                   <input type="file" name="" id="" hidden />
                   <template #icon><MISAIcon icon="import" /></template>
-                  Nhập từ Excel
+                  {{ MISAResource[globalStore.lang]?.ContextMenu?.ImportFromExcel }}
                 </MISAContextItem>
                 <MISAContextItem>
                   <template #icon><MISAIcon icon="download" /></template>
-                  Tải tệp mẫu
+                  {{ MISAResource[globalStore.lang]?.ContextMenu?.DownloadSampleFile }}
                 </MISAContextItem>
               </MISAContextMenu>
             </template>
@@ -79,7 +79,7 @@
             <template #icon><MISAIcon size="20" icon="reload" /></template>
           </MISAButton>
 
-          <MISAButton @click="downloadExcel" type="secondary">
+          <MISAButton @click="downloadExcel" :loading="loading.excel" type="secondary">
             <template #icon><MISAIcon icon="excel-gray" no-color /></template>
           </MISAButton>
 
@@ -95,7 +95,7 @@
         :data-source="employeeData"
         :selected-rows="selectedRowsState"
         :active-row="activeRowState"
-        :loading="isLoading"
+        :loading="loading.table"
         :total-page="pagingInfoState.totalPage"
         :total-records="pagingInfoState.totalRecords"
         :current-page="filterParamsState.page"
@@ -174,7 +174,7 @@ import EmployeeDetail from "./EmployeeDetail.vue";
 import employeeApi from "@/api/employee-api";
 import formatDate from "@/helper/format-date";
 import enums from "@/helper/enum";
-import MISAResource from "@/helper/resource";
+import MISAResource from "@/resource/resource";
 import { useGlobalStore } from "@/stores/global-store";
 import { useEmployeeStore } from "@/stores/employee-store";
 import { useToastStore } from "@/stores/toast-store";
@@ -198,7 +198,10 @@ const dialogState = ref({
   title: "",
   description: "",
 });
-const isLoading = ref(false);
+const loading = ref({
+  table: false,
+  excel: false,
+});
 const isCustomizeTable = ref(false);
 
 const globalStore = useGlobalStore();
@@ -293,7 +296,7 @@ watch(
  */
 const getEmployeeData = async () => {
   try {
-    isLoading.value = true;
+    loading.value.table = true;
 
     const response = await employeeApi.filter(filterParamsState.value);
 
@@ -318,7 +321,7 @@ const getEmployeeData = async () => {
     pagingInfoState.value.totalRecords = totalRecords;
     pagingInfoState.value.totalPage = Math.ceil(totalRecords / pageSize);
 
-    isLoading.value = false;
+    loading.value.table = false;
   } catch (error) {
     console.warn(error);
   }
@@ -330,6 +333,7 @@ const getEmployeeData = async () => {
  */
 const downloadExcel = async () => {
   try {
+    loading.value.excel = true;
     const response = await employeeApi.downloadExcel();
 
     const blob = new Blob([response.data], {
@@ -342,8 +346,11 @@ const downloadExcel = async () => {
     linkElement.href = url;
     linkElement.download = "employee.xlsx";
     linkElement.click();
+
+    loading.value.excel = false;
   } catch (error) {
     console.warn(error);
+    loading.value.excel = false;
   }
 };
 

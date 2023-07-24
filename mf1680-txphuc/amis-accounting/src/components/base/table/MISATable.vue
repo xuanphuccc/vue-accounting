@@ -189,7 +189,7 @@ import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import MISASkeletonRow from "../skeleton-loader/MISASkeletonRow.vue";
 import MISACheckbox from "../checkbox/MISACheckbox.vue";
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
-import MISAResource from "@/helper/resource";
+import MISAResource from "@/resource/resource";
 import { useGlobalStore } from "@/stores/global-store";
 
 const emit = defineEmits([

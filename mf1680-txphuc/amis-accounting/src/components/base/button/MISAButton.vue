@@ -10,13 +10,18 @@
     ]"
     :disabled="props.disabled"
   >
-    <!-- Chỉ chứa icon -->
-    <div v-if="$slots.icon" class="ms-btn__icon">
-      <slot name="icon"></slot>
-    </div>
+    <!-- Trạng thái loading -->
+    <MISASpinner v-if="props.loading" absolute />
 
-    <!-- Chứa text-->
-    <slot></slot>
+    <div class="ms-btn__content" :style="{ opacity: props.loading ? 0 : 1 }">
+      <!-- Chỉ chứa icon -->
+      <div v-if="$slots.icon" class="ms-btn__icon">
+        <slot name="icon"></slot>
+      </div>
+
+      <!-- Chứa text-->
+      <slot></slot>
+    </div>
 
     <!-- Menu dropdown (nếu có) -->
     <div
@@ -30,6 +35,7 @@
 </template>
 
 <script setup>
+import MISASpinner from "../spinner/MISASpinner.vue";
 import { ref, onMounted, onUnmounted } from "vue";
 
 const isOpenDropdown = ref(false);
@@ -53,6 +59,12 @@ const props = defineProps({
   dropdownPos: {
     type: String,
     default: "bottom-right",
+  },
+
+  // Trạng thái loading
+  loading: {
+    type: Boolean,
+    default: false,
   },
 });
 

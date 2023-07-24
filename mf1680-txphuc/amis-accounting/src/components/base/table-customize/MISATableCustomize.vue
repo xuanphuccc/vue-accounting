@@ -1,7 +1,9 @@
 <template>
   <div @click.stop="" class="ms-table-customize">
     <div class="ms-table-customize__header">
-      <div class="ms-table-customize__header-title">Tuỳ chỉnh cột</div>
+      <div class="ms-table-customize__header-title">
+        {{ MISAResource[globalStore.lang]?.Table?.CustomTableTitle }}
+      </div>
       <div @click="emit('close')" class="ms-table-customize__close">
         <MISAIcon icon="times" />
       </div>
@@ -12,7 +14,11 @@
         <MISAInputAction>
           <MISAIcon size="20" icon="search" />
         </MISAInputAction>
-        <MISAInput v-model="search" placeholder="Tìm kiếm" id="table-customize-search" />
+        <MISAInput
+          v-model="search"
+          :placeholder="MISAResource[globalStore.lang]?.PlaceHolder?.Search"
+          id="table-customize-search"
+        />
       </MISAInputGroup>
     </div>
 
@@ -47,8 +53,12 @@
     </div>
 
     <div class="ms-table-customize__footer">
-      <MISAButton @click="resetDefault" type="secondary">Lấy lại mặc định</MISAButton>
-      <MISAButton @click="saveChange" type="primary">Lưu</MISAButton>
+      <MISAButton @click="resetDefault" type="secondary">{{
+        MISAResource[globalStore.lang]?.Button?.RestoreDefault
+      }}</MISAButton>
+      <MISAButton @click="saveChange" type="primary">{{
+        MISAResource[globalStore.lang]?.Button?.SaveS
+      }}</MISAButton>
     </div>
     <!-- {{ console.log(localColumns) }} -->
   </div>
@@ -62,11 +72,14 @@ import MISAIcon from "../icon/MISAIcon.vue";
 import MISAInput from "../input/MISAInput.vue";
 import MISAInputAction from "../input/MISAInputAction.vue";
 import MISAInputGroup from "../input/MISAInputGroup.vue";
+import MISAResource from "@/resource/resource";
+import { useGlobalStore } from "@/stores/global-store";
 import draggable from "vuedraggable";
 
 const emit = defineEmits(["close", "change"]);
 
 const props = defineProps({
+  // Mảng các cột của bảng
   columns: {
     type: Array,
     default() {
@@ -74,6 +87,7 @@ const props = defineProps({
     },
   },
 
+  // Mảng các cột mặc định
   defaultColumns: {
     type: Array,
     default() {
@@ -86,6 +100,8 @@ const props = defineProps({
 const localColumns = ref(JSON.parse(JSON.stringify(props.columns) ?? []));
 
 const search = ref("");
+
+const globalStore = useGlobalStore();
 
 /**
  * Description: Lưu lại sự thay đổi

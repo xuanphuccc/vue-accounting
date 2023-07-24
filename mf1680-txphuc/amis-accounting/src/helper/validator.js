@@ -48,7 +48,8 @@ export const email = (value, message) => {
   try {
     var regex =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return regex.test(value) ? null : message || "Vui lòng nhập email";
+
+    return !value || regex.test(value) ? null : message || "Vui lòng nhập email";
   } catch (error) {
     console.warn(error);
     return "error";
@@ -62,4 +63,32 @@ export const email = (value, message) => {
  */
 export const minLength = (value, min, message) => {
   return value.length >= min ? null : message || `Vui lòng nhập tối thiểu ${min} kí tự`;
+};
+
+/**
+ * Description: Hàm kiểm tra mã theo định dạng XX-1000 +
+ * Author: txphuc (23/07/2023)
+ */
+export const codeFormat = (value, message) => {
+  try {
+    var regex = /^[a-zA-Z]{1,}-[0-9]{4,}$/;
+
+    return regex.test(value) ? null : message || "Mã không đúng định dạng";
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+/**
+ * Description: Hàm kiểm tra số điện thoại di động
+ * Author: txphuc (24/07/2023)
+ */
+export const mobilePhoneFormat = (value, message) => {
+  try {
+    var regex = /^0\d{9}$/;
+
+    return !value || regex.test(value) ? null : message || "Số điện thoại không đúng định dạng";
+  } catch (error) {
+    console.warn(error);
+  }
 };

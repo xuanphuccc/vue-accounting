@@ -34,7 +34,7 @@
 <script setup>
 import MISAButton from "../button/MISAButton.vue";
 import MISAIcon from "../icon/MISAIcon.vue";
-import MISAResource from "@/helper/resource";
+import MISAResource from "@/resource/resource";
 import { useGlobalStore } from "@/stores/global-store";
 
 defineEmits(["cancel", "ok"]);

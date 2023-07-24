@@ -65,6 +65,7 @@
                     @focusout="validateDepartment"
                     :options="departmentOptions"
                     id="input-department"
+                    :placeholder="MISAResource[globalStore.lang]?.PlaceHolder?.SelectAValue"
                   />
                 </MISAFormGroup>
               </MISACol>
@@ -78,8 +79,9 @@
                     tabindex="4"
                     v-model="formData.positionId"
                     :options="positionOptions"
-                    id="input-position"
                     :search="true"
+                    id="input-position"
+                    :placeholder="MISAResource[globalStore.lang]?.PlaceHolder?.SelectAValue"
                   />
                 </MISAFormGroup>
               </MISACol>
@@ -193,6 +195,7 @@
           <MISACol span="3">
             <MISAFormGroup
               v-tooltip.top="MISAResource[globalStore.lang]?.Page?.Employee?.MobilePhone?.Desc"
+              :error-msg="validatedInputs.mobilePhoneNumber"
               :label="MISAResource[globalStore.lang]?.Page?.Employee?.MobilePhone?.Title"
               for="input-mobile-phone"
               space-bottom
@@ -200,6 +203,8 @@
               <MISAInput
                 tabindex="13"
                 v-model="formData.mobilePhoneNumber"
+                @blur="validateMobilePhone"
+                @input="validatedInputs.mobilePhoneNumber = null"
                 id="input-mobile-phone"
               />
             </MISAFormGroup>
@@ -220,11 +225,18 @@
           </MISACol>
           <MISACol span="3">
             <MISAFormGroup
+              :error-msg="validatedInputs.email"
               :label="MISAResource[globalStore.lang]?.Page?.Employee?.Email?.Title"
               for="input-email"
               space-bottom
             >
-              <MISAInput tabindex="15" v-model="formData.email" id="input-email" />
+              <MISAInput
+                tabindex="15"
+                v-model="formData.email"
+                @blur="validateEmail"
+                @input="validatedInputs.email = null"
+                id="input-email"
+              />
             </MISAFormGroup>
           </MISACol>
         </MISARow>
@@ -263,17 +275,21 @@
         }}</MISAButton>
       </template>
       <template #controls-right>
-        <MISAButton tabindex="20" @click="handleSubmitForm(false)" type="secondary">
-          <MISASpinner v-if="loading.submit" absolute />
-          <span :style="{ opacity: loading.submit ? 0 : 1 }">{{
-            MISAResource[globalStore.lang]?.Button?.Save
-          }}</span>
+        <MISAButton
+          tabindex="20"
+          @click="handleSubmitForm(false)"
+          :loading="loading.submit"
+          type="secondary"
+        >
+          {{ MISAResource[globalStore.lang]?.Button?.Save }}
         </MISAButton>
-        <MISAButton tabindex="19" @click="handleSubmitForm()" type="primary">
-          <MISASpinner v-if="loading.submitAndContinue" absolute />
-          <span :style="{ opacity: loading.submitAndContinue ? 0 : 1 }">{{
-            MISAResource[globalStore.lang]?.Button?.SaveAndContinue
-          }}</span>
+        <MISAButton
+          tabindex="19"
+          @click="handleSubmitForm()"
+          :loading="loading.submitAndContinue"
+          type="primary"
+        >
+          {{ MISAResource[globalStore.lang]?.Button?.SaveAndContinue }}
         </MISAButton>
       </template>
     </MISAPopup>
@@ -298,7 +314,6 @@ import MISAInput from "@/components/base/input/MISAInput.vue";
 import MISADatePicker from "@/components/base/date-picker/MISADatePicker.vue";
 import MISARadioButton from "@/components/base/radio-button/MISARadioButton.vue";
 import MISASelect from "@/components/base/select/MISASelect.vue";
-import MISASpinner from "@/components/base/spinner/MISASpinner.vue";
 import MISARow from "@/components/base/grid/MISARow.vue";
 import MISACol from "@/components/base/grid/MISACol.vue";
 
@@ -311,8 +326,8 @@ import { useGlobalStore } from "@/stores/global-store";
 import { useEmployeeStore } from "@/stores/employee-store";
 import { useToastStore } from "@/stores/toast-store";
 import enums from "@/helper/enum";
-import MISAResource from "@/helper/resource";
-import { validator, required } from "@/helper/validator";
+import MISAResource from "@/resource/resource";
+import { validator, required, codeFormat, email, mobilePhoneFormat } from "@/helper/validator";
 
 const emit = defineEmits(["submit"]);
 
@@ -344,6 +359,8 @@ const initialFormData = {
   identityNumber: null,
   identityDate: null,
   identityPlace: null,
+  isCustomer: null,
+  isSupplier: null,
   address: null,
   mobilePhoneNumber: null,
   landlineNumber: null,
@@ -363,6 +380,9 @@ const validatedInputs = ref({
   employeeCode: null,
   fullName: null,
   department: null,
+  mobilePhoneNumber: null,
+  landlineNumber: null,
+  email: null,
 });
 
 /**
@@ -437,7 +457,7 @@ const closeDialog = () => {
 const handleValidateInputs = () => {
   try {
     console.log(inputsRef);
-    return validateEmployeeCode() && validateFullName() && validateDepartment();
+    return validateEmployeeCode() && validateFullName() && validateDepartment() && validateEmail();
   } catch (error) {
     console.warn(error);
     return false;
@@ -456,6 +476,10 @@ const validateEmployeeCode = () => {
         {
           checker: required,
           errorMsg: MISAResource[globalStore.lang]?.Page?.Employee?.Validate?.EmployeeCode,
+        },
+        {
+          checker: codeFormat,
+          errorMsg: MISAResource[globalStore.lang]?.Page?.Employee?.Validate?.CodeFormat,
         },
       ],
     });
@@ -509,6 +533,54 @@ const validateDepartment = () => {
     });
 
     validatedInputs.value.department = result;
+    return !result;
+  } catch (error) {
+    console.warn(error);
+    return false;
+  }
+};
+
+/**
+ * Description: Hàm validate email
+ * Author: txphuc (24/07/2023)
+ */
+const validateEmail = () => {
+  try {
+    const result = validator({
+      value: formData.value.email,
+      rules: [
+        {
+          checker: email,
+          errorMsg: MISAResource[globalStore.lang]?.Page?.Employee?.Validate?.EmailFormat,
+        },
+      ],
+    });
+
+    validatedInputs.value.email = result;
+    return !result;
+  } catch (error) {
+    console.warn(error);
+    return false;
+  }
+};
+
+/**
+ * Description: Hàm validate số điện thoại di động
+ * Author: txphuc (24/07/2023)
+ */
+const validateMobilePhone = () => {
+  try {
+    const result = validator({
+      value: formData.value.mobilePhoneNumber,
+      rules: [
+        {
+          checker: mobilePhoneFormat,
+          errorMsg: MISAResource[globalStore.lang]?.Page?.Employee?.Validate?.MobilePhoneFormat,
+        },
+      ],
+    });
+
+    validatedInputs.value.mobilePhoneNumber = result;
     return !result;
   } catch (error) {
     console.warn(error);
@@ -627,7 +699,7 @@ const handleCreateEmployee = async () => {
       active: true,
       type: "error",
       title: MISAResource[globalStore.lang]?.Dialog?.ErrorTitle,
-      description: error?.response?.data?.UserMessage,
+      description: MISAResource[globalStore.lang]?.ErrorMessage[error?.response?.data?.ErrorCode],
     };
 
     return false;
@@ -661,6 +733,8 @@ const handleLoadDataForUpdate = async () => {
         identityNumber: employeeData.IdentityNumber,
         identityDate: new Date(employeeData.IdentityDate),
         identityPlace: employeeData.IdentityPlace,
+        isCustomer: employeeData.IsCustomer,
+        isSupplier: employeeData.IsSupplier,
         address: employeeData.Address,
         mobilePhoneNumber: employeeData.MobilePhoneNumber,
         landlineNumber: employeeData.LandlineNumber,
@@ -709,7 +783,7 @@ const handleUpdateEmployee = async () => {
       active: true,
       type: "error",
       title: MISAResource[globalStore.lang]?.Dialog?.ErrorTitle,
-      description: error?.response?.data?.UserMessage,
+      description: MISAResource[globalStore.lang]?.ErrorMessage[error?.response?.data?.ErrorCode],
     };
 
     return false;
@@ -745,7 +819,7 @@ const handleDuplicateEmployee = async () => {
       active: true,
       type: "error",
       title: MISAResource[globalStore.lang]?.Dialog?.ErrorTitle,
-      description: error?.response?.data?.UserMessage,
+      description: MISAResource[globalStore.lang]?.ErrorMessage[error?.response?.data?.ErrorCode],
     };
 
     return false;

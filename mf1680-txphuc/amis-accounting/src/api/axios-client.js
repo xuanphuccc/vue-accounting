@@ -1,11 +1,12 @@
 import axios from "axios";
+import enums from "@/helper/enum";
 
 // Create new instance
 const axiosClient = axios.create({
   baseURL: "https://localhost:7047/api/v1",
   headers: {
     "Content-Type": "application/json",
-    ContentLanguage: "vi-VN",
+    ContentLanguage: localStorage.getItem("lang") ?? enums?.language?.VN,
   },
 });
 

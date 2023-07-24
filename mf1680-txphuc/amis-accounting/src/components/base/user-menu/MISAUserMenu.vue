@@ -68,7 +68,7 @@
 
 <script setup>
 import MISAIcon from "../icon/MISAIcon.vue";
-import MISAResource from "../../../helper/resource";
+import MISAResource from "@/resource/resource";
 import { useGlobalStore } from "../../../stores/global-store";
 import { computed, ref } from "vue";
 
@@ -107,9 +107,6 @@ const toggleLanguageDropdown = () => {
  */
 const changeLanguage = (language) => {
   globalStore.changeLanguage(language.LanguageCode);
-
-  // Thay đổi tiêu đề trình duyệt
-  document.title = language.FullProductName;
 };
 </script>
 

@@ -54,7 +54,7 @@
 import VueDatePicker from "@vuepic/vue-datepicker";
 import MISAIcon from "../icon/MISAIcon.vue";
 import formatDate from "../../../helper/format-date";
-import MISAResource from "@/helper/resource";
+import MISAResource from "@/resource/resource";
 import { useGlobalStore } from "@/stores/global-store";
 import { ref } from "vue";
 

@@ -51,7 +51,7 @@
 import MISAUserMenu from "@/components/base/user-menu/MISAUserMenu.vue";
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import { useGlobalStore } from "@/stores/global-store";
-import MISAResource from "@/helper/resource";
+import MISAResource from "@/resource/resource";
 import { onMounted, ref } from "vue";
 
 const isOpenUserMenu = ref(false);

@@ -25,6 +25,12 @@
   cursor: default;
 }
 
+.ms-btn__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* button link */
 .ms-btn--link {
   min-width: auto;
@@ -158,7 +164,7 @@
   border-radius: 0;
 }
 
-.ms-btn-group :not(.ms-btn:first-child) {
+.ms-btn-group > :not(.ms-btn:first-child) {
   border-left-color: var(--white) !important;
 }
 
