@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,7 +35,7 @@ namespace MISA.WebFresher052023.Domain
 
             if (existPosition != null && existPosition.PositionCode != oldPositionCode)
             {
-                throw new ConflictException($"Mã vị trí '{positionCode}' đã tồn tại");
+                throw new ConflictException($"{ErrorMessage.ConflictCode}: '{positionCode}'", ErrorCode.ConflictCode);
             }
         }
         #endregion

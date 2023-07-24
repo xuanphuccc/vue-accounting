@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Domain
 {
-    public enum ErrorCodes
+    public enum ErrorCode
     {
+        /// <summary>
+        /// Mã lỗi nhập liệu
+        /// </summary>
+        /// CreatedBy: txphuc (17/07/2023)
+        BadRequest = 1000,
+
         /// <summary>
         /// Mã lỗi không tìm thấy tài nguyên
         /// </summary>

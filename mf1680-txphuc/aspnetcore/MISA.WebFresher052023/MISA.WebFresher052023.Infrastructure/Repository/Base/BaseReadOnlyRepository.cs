@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using MISA.WebFresher052023.Domain;
+using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -51,10 +52,30 @@ namespace MISA.WebFresher052023.Infrastructure
 
             if (entity == null)
             {
-                throw new NotFoundException($"Không tìm thấy '{entityId}'", (int)ErrorCodes.NotFound);
+                throw new NotFoundException($"{ErrorMessage.NotFound} '{entityId}'", ErrorCode.NotFound);
             }
 
             return entity;
+        }
+
+        /// <summary>
+        /// Lấy danh sách đối tượng theo Id
+        /// </summary>
+        /// <param name="entityIds">Danh sách Id</param>
+        /// <returns>Danh sách đối tượng thoả mãn</returns>
+        /// CreatedBy: txphuc (24/07/2023)
+        public async Task<IEnumerable<TEntity>> GetListByIdsAsync(IEnumerable<Guid> entityIds)
+        {
+            var entityIdsString = string.Join(", ", entityIds.Select(entityId => $"'{entityId}'"));
+
+            var param = new DynamicParameters();
+            param.Add($"@{TableId}s", entityIdsString);
+
+            var sql = $"Proc_{TableName}_GetListByIds";
+
+            var entities = await _unitOfWork.Connection.QueryAsync<TEntity>(sql, param, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
+
+            return entities;
         }
 
         /// <summary>
@@ -73,7 +94,7 @@ namespace MISA.WebFresher052023.Infrastructure
             var entity = await _unitOfWork.Connection.QueryFirstOrDefaultAsync<TEntity>(sql, param, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
 
             return entity;
-        } 
+        }
         #endregion
     }
 }

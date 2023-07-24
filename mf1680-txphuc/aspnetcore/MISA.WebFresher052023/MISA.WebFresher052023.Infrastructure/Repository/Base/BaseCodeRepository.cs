@@ -24,7 +24,7 @@ namespace MISA.WebFresher052023.Infrastructure
         /// <param name="entityCode">Mã đối tượng</param>
         /// <returns>Nhân viên (trả về null nếu không tìm thấy)</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        public async Task<TEntity> FindByCodeAsync(string entityCode)
+        public async Task<TEntity?> FindByCodeAsync(string entityCode)
         {
             var param = new DynamicParameters();
             param.Add($"@{TableName}Code", entityCode);

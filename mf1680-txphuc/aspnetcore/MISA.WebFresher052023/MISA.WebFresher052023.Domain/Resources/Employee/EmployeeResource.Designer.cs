@@ -133,6 +133,24 @@ namespace MISA.WebFresher052023.Domain.Resources.Employee {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Employee.
+        /// </summary>
+        public static string ExcelSheetName {
+            get {
+                return ResourceManager.GetString("ExcelSheetName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LIST OF EMPLOYEES.
+        /// </summary>
+        public static string ExcelSheetTitle {
+            get {
+                return ResourceManager.GetString("ExcelSheetTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string FullName {
@@ -174,6 +192,24 @@ namespace MISA.WebFresher052023.Domain.Resources.Employee {
         public static string IdentityPlace {
             get {
                 return ResourceManager.GetString("IdentityPlace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customer.
+        /// </summary>
+        public static string IsCustomer {
+            get {
+                return ResourceManager.GetString("IsCustomer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Supplier.
+        /// </summary>
+        public static string IsSupplier {
+            get {
+                return ResourceManager.GetString("IsSupplier", resourceCulture);
             }
         }
         

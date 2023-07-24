@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MISA.WebFresher052023.Application
 {
     public abstract class BaseService<TEntity, TModel, TEntityDto, TEntityCreateDto, TEntityUpdateDto> :
-        BaseReadOnlyService<TEntity, TModel, TEntityDto>, 
+        BaseReadOnlyService<TEntity, TModel, TEntityDto>,
         IBaseService<TEntityDto, TEntityCreateDto, TEntityUpdateDto>
     {
         #region Fields
@@ -76,12 +76,20 @@ namespace MISA.WebFresher052023.Application
         /// <param name="entityIds">Danh sách Id của các đối tượng cần xoá</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        public async Task<int> DeleteAsync(IEnumerable<Guid> entityIds)
+        public async Task<int> DeleteAsync(List<Guid> entityIds)
         {
-            // Biến đổi mảng chuỗi thành chuỗi các Id
-            var entityIdsString = string.Join(", ", entityIds.Select(entityId => $"'{entityId}'"));
+            var entities = (await _baseRepository.GetListByIdsAsync(entityIds)).ToList();
 
-            var result = await _baseRepository.DeleteAsync(entityIdsString);
+            if (entityIds.Count == 0)
+            {
+                throw new Exception("Không thể xoá danh sách rỗng");
+            }
+            else if (entities.Count < entityIds.Count)
+            {
+                throw new Exception("Không thể xoá do có đối tượng không tồn tại");
+            }
+
+            var result = await _baseRepository.DeleteAsync(entities);
 
             return result;
         }
@@ -100,7 +108,7 @@ namespace MISA.WebFresher052023.Application
         /// <param name="entityUpdateDto">UpdateDto</param>
         /// <returns>Entity</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        protected abstract Task<TEntity> MapUpdateDtoToEntityAsync(Guid entityId, TEntityUpdateDto entityUpdateDto); 
+        protected abstract Task<TEntity> MapUpdateDtoToEntityAsync(Guid entityId, TEntityUpdateDto entityUpdateDto);
         #endregion
     }
 }

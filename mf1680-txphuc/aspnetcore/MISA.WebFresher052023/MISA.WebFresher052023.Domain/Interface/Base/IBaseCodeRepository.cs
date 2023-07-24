@@ -14,7 +14,7 @@ namespace MISA.WebFresher052023.Domain
         /// <param name="entityCode">Mã</param>
         /// <returns>Đối tượng (trả về null nếu không tìm thấy)</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        Task<TEntity> FindByCodeAsync(string entityCode);
+        Task<TEntity?> FindByCodeAsync(string entityCode);
 
         /// <summary>
         /// Lấy mã mới

@@ -60,6 +60,18 @@ namespace MISA.WebFresher052023.Domain
         public string? IdentityPlace { get; set; }
 
         /// <summary>
+        /// Là khách hàng
+        /// </summary>
+        /// CreatedBy: txphuc (24/07/2023)
+        public bool? IsCustomer { get; set; }
+
+        /// <summary>
+        /// Là nhà cung cấp
+        /// </summary>
+        /// CreatedBy: txphuc (24/07/2023)
+        public bool? IsSupplier { get; set; }
+
+        /// <summary>
         /// Địa chỉ
         /// </summary>
         /// CreatedBy: txphuc (14/07/2023)

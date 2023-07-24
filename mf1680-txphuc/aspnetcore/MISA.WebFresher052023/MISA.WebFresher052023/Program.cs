@@ -6,6 +6,7 @@ using MISA.WebFresher052023.Infrastructure;
 using MySqlConnector;
 using System.Globalization;
 using MISA.WebFresher052023.Middleware;
+using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,8 +23,8 @@ builder.Services.AddControllers()
 
             return new BadRequestObjectResult(new BaseException()
             {
-                ErrorCode = 400,
-                UserMessage = errorMsgs,
+                ErrorCode = ErrorCode.BadRequest,
+                UserMessage = ErrorMessage.BadRequest,
                 DevMessage = errorMsgs,
                 TraceId = context.HttpContext.TraceIdentifier,
                 MoreInfo = "",

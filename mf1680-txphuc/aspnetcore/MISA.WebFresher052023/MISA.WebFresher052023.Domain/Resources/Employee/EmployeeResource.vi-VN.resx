@@ -141,6 +141,12 @@
   <data name="EmployeeCode" xml:space="preserve">
     <value>Mã nhân viên</value>
   </data>
+  <data name="ExcelSheetName" xml:space="preserve">
+    <value>Nhân viên</value>
+  </data>
+  <data name="ExcelSheetTitle" xml:space="preserve">
+    <value>DANH SÁCH NHÂN VIÊN</value>
+  </data>
   <data name="FullName" xml:space="preserve">
     <value>Tên nhân viên</value>
   </data>
@@ -155,6 +161,12 @@
   </data>
   <data name="IdentityPlace" xml:space="preserve">
     <value>Nơi cấp</value>
+  </data>
+  <data name="IsCustomer" xml:space="preserve">
+    <value>Là Khách hàng</value>
+  </data>
+  <data name="IsSupplier" xml:space="preserve">
+    <value>Là Nhà cung cấp</value>
   </data>
   <data name="LandlineNumber" xml:space="preserve">
     <value>Số điện thoại cố định</value>

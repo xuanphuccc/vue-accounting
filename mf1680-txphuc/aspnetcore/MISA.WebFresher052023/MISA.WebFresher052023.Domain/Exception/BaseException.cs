@@ -9,7 +9,7 @@ namespace MISA.WebFresher052023.Domain
 {
     public class BaseException
     {
-        public int ErrorCode { get; set; }
+        public ErrorCode ErrorCode { get; set; }
 
         public string? DevMessage { get; set; }
         public string? UserMessage { get; set; }

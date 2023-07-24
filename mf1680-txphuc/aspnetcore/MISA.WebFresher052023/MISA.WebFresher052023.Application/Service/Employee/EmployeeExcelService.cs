@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MISA.WebFresher052023.Domain;
+using MISA.WebFresher052023.Domain.Resources.Employee;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,8 @@ namespace MISA.WebFresher052023.Application
     {
         public EmployeeExcelService(IEmployeeRepository employeeRepository, IMapper mapper) : base(employeeRepository, mapper)
         {
-            SheetName = "Nhân viên";
-            SheetTitle = "DANH SÁCH NHÂN VIÊN";
+            SheetName = EmployeeResource.ExcelSheetName;
+            SheetTitle = EmployeeResource.ExcelSheetTitle;
         }
     }
 }

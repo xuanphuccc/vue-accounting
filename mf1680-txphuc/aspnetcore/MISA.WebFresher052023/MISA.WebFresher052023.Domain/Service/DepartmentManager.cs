@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,7 +33,7 @@ namespace MISA.WebFresher052023.Domain
 
             if (existDeparment != null && existDeparment.DepartmentCode != oldDepartmentCode)
             {
-                throw new ConflictException($"Mã đơn vị '{departmentCode}' đã tồn tại", (int)ErrorCodes.ConflictCode);
+                throw new ConflictException($"{ErrorMessage.ConflictCode}: '{departmentCode}'", ErrorCode.ConflictCode);
             }
         }
         #endregion

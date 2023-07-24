@@ -64,7 +64,7 @@ namespace MISA.WebFresher052023
         /// <returns>Trả về số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (18/07/2023)
         [HttpDelete]
-        public async Task<IActionResult> DeleteAsync([FromBody] IEnumerable<Guid> entityIds)
+        public async Task<IActionResult> DeleteAsync([FromBody] List<Guid> entityIds)
         {
             var result = await _baseService.DeleteAsync(entityIds);
 

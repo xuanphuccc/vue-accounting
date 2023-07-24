@@ -1,4 +1,5 @@
 ﻿using MISA.WebFresher052023.Domain;
+using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
 
 namespace MISA.WebFresher052023
 {
@@ -52,8 +53,8 @@ namespace MISA.WebFresher052023
                     await context.Response.WriteAsync(
                             new BaseException()
                             {
-                                ErrorCode = StatusCodes.Status404NotFound,
-                                UserMessage = exception.Message,
+                                ErrorCode = ErrorCode.NotFound,
+                                UserMessage = ErrorMessage.NotFound,
                                 DevMessage = exception.Message,
                                 TraceId = context.TraceIdentifier,
                                 MoreInfo = exception.HelpLink
@@ -67,8 +68,8 @@ namespace MISA.WebFresher052023
                     await context.Response.WriteAsync(
                             new BaseException()
                             {
-                                ErrorCode = StatusCodes.Status409Conflict,
-                                UserMessage = exception.Message,
+                                ErrorCode = ErrorCode.ConflictCode,
+                                UserMessage = ErrorMessage.ConflictCode,
                                 DevMessage = exception.Message,
                                 TraceId = context.TraceIdentifier,
                                 MoreInfo = exception.HelpLink
@@ -82,8 +83,8 @@ namespace MISA.WebFresher052023
                     await context.Response.WriteAsync(
                             new BaseException()
                             {
-                                ErrorCode = StatusCodes.Status500InternalServerError,
-                                UserMessage = "Lỗi hệ thống, vui lòng thử lại sau",
+                                ErrorCode = ErrorCode.ServerError,
+                                UserMessage = ErrorMessage.ServerError,
                                 DevMessage = exception.Message,
                                 TraceId = context.TraceIdentifier,
                                 MoreInfo = exception.HelpLink

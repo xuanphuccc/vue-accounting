@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MISA.WebFresher052023.Domai
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MISA.WebFresher052023.Infrastructure", "MISA.WebFresher052023.Infrastructure\MISA.WebFresher052023.Infrastructure.csproj", "{52270F33-C229-43A1-9D38-55CDE6CB692F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MISA.WebFresher052023.Domain.UnitTests", "MISA.WebFresher052023.Domain.UnitTests\MISA.WebFresher052023.Domain.UnitTests.csproj", "{9EB6F3CB-19F8-4B59-91C8-EDB969BD2265}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MISA.WebFresher052023.Application.UnitTests", "MISA.WebFresher052023.Application.UnitTests\MISA.WebFresher052023.Application.UnitTests.csproj", "{F44FB21B-C0C5-4306-83E8-9260BD08F258}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{52270F33-C229-43A1-9D38-55CDE6CB692F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52270F33-C229-43A1-9D38-55CDE6CB692F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52270F33-C229-43A1-9D38-55CDE6CB692F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EB6F3CB-19F8-4B59-91C8-EDB969BD2265}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EB6F3CB-19F8-4B59-91C8-EDB969BD2265}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EB6F3CB-19F8-4B59-91C8-EDB969BD2265}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EB6F3CB-19F8-4B59-91C8-EDB969BD2265}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F44FB21B-C0C5-4306-83E8-9260BD08F258}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F44FB21B-C0C5-4306-83E8-9260BD08F258}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F44FB21B-C0C5-4306-83E8-9260BD08F258}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F44FB21B-C0C5-4306-83E8-9260BD08F258}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

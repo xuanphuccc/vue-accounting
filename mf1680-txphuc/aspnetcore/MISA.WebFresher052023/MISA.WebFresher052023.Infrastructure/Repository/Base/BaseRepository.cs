@@ -79,13 +79,15 @@ namespace MISA.WebFresher052023.Infrastructure
         /// <summary>
         /// Xoá nhiều đối tượng
         /// </summary>
-        /// <param name="entities">Chuỗi các Id cần xoá</param>
+        /// <param name="entities">Danh sách đối tượng cần xoá</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        public async Task<int> DeleteAsync(string entityIds)
+        public async Task<int> DeleteAsync(IEnumerable<TEntity> entities)
         {
+            var entityIdsString = string.Join(", ", entities.Select(entity => $"'{entity.GetKey()}'"));
+
             var param = new DynamicParameters();
-            param.Add($"@{TableId}s", entityIds);
+            param.Add($"@{TableId}s", entityIdsString);
 
             var sql = $"Proc_{TableName}_Delete";
 
@@ -114,7 +116,7 @@ namespace MISA.WebFresher052023.Infrastructure
             }
 
             return param;
-        } 
+        }
         #endregion
     }
 }

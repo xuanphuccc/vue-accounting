@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,7 +40,7 @@ namespace MISA.WebFresher052023.Domain
 
             if (existEmployee != null && existEmployee.EmployeeCode != oldEmployeeCode)
             {
-                throw new ConflictException($"Mã nhân viên '{employeeCode}' đã tồn tại", (int)ErrorCodes.ConflictCode);
+                throw new ConflictException($"{ErrorMessage.ConflictCode}: '{employeeCode}'", ErrorCode.ConflictCode);
             }
         }
 

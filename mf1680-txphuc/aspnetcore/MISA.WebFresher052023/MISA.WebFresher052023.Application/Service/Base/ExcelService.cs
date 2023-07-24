@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MISA.WebFresher052023.Domain;
+using MISA.WebFresher052023.Domain.Resources.Common;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System;
@@ -69,14 +70,14 @@ namespace MISA.WebFresher052023.Application
             titleRange.Style.Font.Size = 16;
             titleRange.Style.Font.Name = "Arial";
             titleRange.Style.Font.Bold = true;
-            titleRange.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            titleRange.Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
             titleRange.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
             worksheet.Rows[1].Height = 28;
 
             // Tên các cột
             var headerRow = 3;
             var colPos = 2;
-            worksheet.Cells[headerRow, 1].Value = "STT";
+            worksheet.Cells[headerRow, 1].Value = CommonResource.Order;
 
             foreach (var property in properties)
             {

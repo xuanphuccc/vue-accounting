@@ -24,6 +24,14 @@ namespace MISA.WebFresher052023.Domain
         Task<TEntity> GetByIdAsync(Guid entityId);
 
         /// <summary>
+        /// Lấy danh sách đối tượng theo Id
+        /// </summary>
+        /// <param name="entityIds">Danh sách Id</param>
+        /// <returns>Danh sách đối tượng thoả mãn</returns>
+        /// CreatedBy: txphuc (24/07/2023)
+        Task<IEnumerable<TEntity>> GetListByIdsAsync(IEnumerable<Guid> entityIds);
+
+        /// <summary>
         /// Tìm đối tượng theo Id
         /// </summary>
         /// <param name="entityId">Id của đối tượng</param>

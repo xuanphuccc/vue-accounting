@@ -37,6 +37,6 @@ namespace MISA.WebFresher052023.Application
         /// <param name="employeeIds">Danh sách Id của các đối tượng cần xoá</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        Task<int> DeleteAsync(IEnumerable<Guid> entityIds);
+        Task<int> DeleteAsync(List<Guid> entityIds);
     }
 }

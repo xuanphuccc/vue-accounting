@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MISA.WebFresher052023.Domain.Resources.ErrorMessage {
+namespace MISA.WebFresher052023.Domain.Resources.Common {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace MISA.WebFresher052023.Domain.Resources.ErrorMessage {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ErrorMessage {
+    public class CommonResource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ErrorMessage() {
+        internal CommonResource() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace MISA.WebFresher052023.Domain.Resources.ErrorMessage {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MISA.WebFresher052023.Domain.Resources.ErrorMessage.ErrorMessage", typeof(ErrorMessage).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MISA.WebFresher052023.Domain.Resources.Common.CommonResource", typeof(CommonResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,38 +61,11 @@ namespace MISA.WebFresher052023.Domain.Resources.ErrorMessage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid data input.
+        ///   Looks up a localized string similar to Order.
         /// </summary>
-        public static string BadRequest {
+        public static string Order {
             get {
-                return ResourceManager.GetString("BadRequest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The code already exists.
-        /// </summary>
-        public static string ConflictCode {
-            get {
-                return ResourceManager.GetString("ConflictCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Resource not found.
-        /// </summary>
-        public static string NotFound {
-            get {
-                return ResourceManager.GetString("NotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to System error, please try again later.
-        /// </summary>
-        public static string ServerError {
-            get {
-                return ResourceManager.GetString("ServerError", resourceCulture);
+                return ResourceManager.GetString("Order", resourceCulture);
             }
         }
     }
