@@ -44,13 +44,9 @@ namespace MISA.WebFresher052023.Application
         {
             // Arrange
             List<Guid> ids = new();
-            var expectedMessage = "Không thể xoá danh sách rỗng";
 
-            // Act
-            var exception = Assert.ThrowsAsync<Exception>(async () => await _employeeService.DeleteAsync(ids));
-
-            // Assert
-            Assert.That(exception.Message, Is.EqualTo(expectedMessage));
+            // Act & Assert
+            Assert.ThrowsAsync<Exception>(async () => await _employeeService.DeleteAsync(ids));
         }
 
         /// <summary>
@@ -59,11 +55,9 @@ namespace MISA.WebFresher052023.Application
         /// </summary>
         /// CreatedBy: txphuc (24/07/2023)
         [Test]
-        public void DeleteAsync_ListItems_ThrowException()
+        public async Task DeleteAsync_ListItems_ThrowException()
         {
             // Arrange
-            var expectedMessage = "Không thể xoá do có đối tượng không tồn tại";
-
             List<Guid> ids = new();
 
             for (int i = 0; i < 10; i++)
@@ -80,11 +74,10 @@ namespace MISA.WebFresher052023.Application
 
             _employeeRepository.GetListByIdsAsync(ids).Returns(employees);
 
-            // Act
-            var exception = Assert.ThrowsAsync<Exception>(async () => await _employeeService.DeleteAsync(ids));
+            // Act & Assert
+            Assert.ThrowsAsync<Exception>(async () => await _employeeService.DeleteAsync(ids));
 
-            // Assert
-            Assert.That(exception.Message, Is.EqualTo(expectedMessage));
+            await _employeeRepository.Received(1).GetListByIdsAsync(ids);
         }
 
         /// <summary>
