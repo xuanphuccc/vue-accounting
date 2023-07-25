@@ -56,53 +56,6 @@ namespace MISA.WebFresher052023.Controllers
 
             return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "employees.xlsx");
         }
-
-        /// <summary>
-        /// Nhập Excel danh sách nhân viên (Test)
-        /// </summary>
-        /// <returns></returns>
-        /// CreatedBy: txphuc (23/07/2023)
-        [HttpPost("Excel")]
-        public async Task<IActionResult> UploadExcel(IFormFile employees)
-        {
-            if (ModelState.IsValid)
-            {
-                if (employees.Length > 0)
-                {
-                    // convert to a stream
-                    var stream = employees.OpenReadStream();
-
-
-                    using var excelPackage = new ExcelPackage(stream);
-
-                    var worksheet = excelPackage.Workbook.Worksheets.First();
-                    var rowsCount = worksheet.Dimension.Rows;
-
-                    List<EmployeeCreateDto> employeeCreateDtos = new();
-
-                    for (var row = 2; row <= rowsCount; row++)
-                    {
-                        var employeeCode = worksheet.Cells[row, 1].Value?.ToString();
-                        var fullName = worksheet.Cells[row, 2].Value?.ToString();
-                        //var departmentCode = worksheet.Cells[row, 3].Value?.ToString();
-                        //var positionCode = worksheet.Cells[row, 4].Value?.ToString();
-
-                        var employeeCreateDto = new EmployeeCreateDto()
-                        {
-                            EmployeeCode = employeeCode,
-                            FullName = fullName,
-                        };
-
-                        employeeCreateDtos.Add(employeeCreateDto);
-                    }
-
-                    return Ok(employeeCreateDtos);
-
-                }
-            }
-
-            return BadRequest();
-        }
         #endregion
     }
 }
