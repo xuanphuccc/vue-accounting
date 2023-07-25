@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MISA.WebFresher052023.Domain;
+using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,11 +91,11 @@ namespace MISA.WebFresher052023.Application
 
                 if (entityIds.Count == 0)
                 {
-                    throw new Exception("Không thể xoá danh sách rỗng");
+                    throw new NotFoundException(ErrorMessage.NotFound, ErrorCode.NotFound);
                 }
                 else if (entities.ToList().Count < entityIds.Count)
                 {
-                    throw new Exception("Không thể xoá do có đối tượng không tồn tại");
+                    throw new NotFoundException(ErrorMessage.NotFound, ErrorCode.NotFound);
                 }
 
                 var result = await _baseRepository.DeleteAsync(entities);

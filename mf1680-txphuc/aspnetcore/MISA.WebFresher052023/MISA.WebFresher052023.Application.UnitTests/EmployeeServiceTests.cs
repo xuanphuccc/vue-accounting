@@ -46,7 +46,7 @@ namespace MISA.WebFresher052023.Application
             List<Guid> ids = new();
 
             // Act & Assert
-            Assert.ThrowsAsync<Exception>(async () => await _employeeService.DeleteAsync(ids));
+            Assert.ThrowsAsync<NotFoundException>(async () => await _employeeService.DeleteAsync(ids));
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace MISA.WebFresher052023.Application
             _employeeRepository.GetListByIdsAsync(ids).Returns(employees);
 
             // Act & Assert
-            Assert.ThrowsAsync<Exception>(async () => await _employeeService.DeleteAsync(ids));
+            Assert.ThrowsAsync<NotFoundException>(async () => await _employeeService.DeleteAsync(ids));
 
             await _employeeRepository.Received(1).GetListByIdsAsync(ids);
         }
