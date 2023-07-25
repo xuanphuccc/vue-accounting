@@ -13,20 +13,20 @@ namespace MISA.WebFresher052023.Domain.UnitTests
     public class EmployeeManagerTests
     {
         #region Fields
-        public IDepartmentRepository departmentRepository { get; set; }
-        public IPositionRepository positionRepository { get; set; }
-        public IEmployeeRepository employeeRepository { get; set; }
-        public EmployeeManager employeeManager { get; set; }
+        private IDepartmentRepository _departmentRepository;
+        private IPositionRepository _positionRepository;
+        private IEmployeeRepository _employeeRepository;
+        private EmployeeManager _employeeManager;
         #endregion
 
         #region Methods
         [SetUp]
         public void Setup()
         {
-            departmentRepository = Substitute.For<IDepartmentRepository>();
-            positionRepository = Substitute.For<IPositionRepository>();
-            employeeRepository = Substitute.For<IEmployeeRepository>();
-            employeeManager = new EmployeeManager(employeeRepository, departmentRepository, positionRepository);
+            _departmentRepository = Substitute.For<IDepartmentRepository>();
+            _positionRepository = Substitute.For<IPositionRepository>();
+            _employeeRepository = Substitute.For<IEmployeeRepository>();
+            _employeeManager = new EmployeeManager(_employeeRepository, _departmentRepository, _positionRepository);
         }
 
         /// <summary>
@@ -42,14 +42,14 @@ namespace MISA.WebFresher052023.Domain.UnitTests
             var oldCode = "unittest"; // Mã cũ (trong trường hợp cập nhật mã)
 
             // Giá trị trả về khi gọi FindByCodeAsync
-            employeeRepository.FindByCodeAsync(code).Returns(new Employee() { EmployeeCode = code });
+            _employeeRepository.FindByCodeAsync(code).Returns(new Employee() { EmployeeCode = code });
 
             // Act & Assert
             Assert.ThrowsAsync<ConflictException>(async () =>
-            await employeeManager.CheckExistEmployeeCode(code, oldCode));
+            await _employeeManager.CheckExistEmployeeCode(code, oldCode));
 
             // Đảm bảo FindByCodeAsync chỉ được gọi 1 lần
-            await employeeRepository.Received(1).FindByCodeAsync(code);
+            await _employeeRepository.Received(1).FindByCodeAsync(code);
         }
 
         /// <summary>
@@ -63,13 +63,13 @@ namespace MISA.WebFresher052023.Domain.UnitTests
             // Arrange
             var code = "txphuc";
 
-            employeeRepository.FindByCodeAsync(code).Returns(Task.FromResult<Employee?>(null));
+            _employeeRepository.FindByCodeAsync(code).Returns(Task.FromResult<Employee?>(null));
 
             // Act
-            await employeeManager.CheckExistEmployeeCode(code);
+            await _employeeManager.CheckExistEmployeeCode(code);
 
             // Assert
-            await employeeRepository.Received(1).FindByCodeAsync(code);
+            await _employeeRepository.Received(1).FindByCodeAsync(code);
         }
 
         /// <summary>
@@ -84,15 +84,15 @@ namespace MISA.WebFresher052023.Domain.UnitTests
             var departmentId = Guid.NewGuid();
             var positionId = Guid.NewGuid();
 
-            departmentRepository.GetByIdAsync(departmentId).Returns(new Department());
-            positionRepository.GetByIdAsync(positionId).Returns(new Position());
+            _departmentRepository.GetByIdAsync(departmentId).Returns(new Department());
+            _positionRepository.GetByIdAsync(positionId).Returns(new Position());
 
             // Act
-            await employeeManager.CheckValidConstraint(departmentId, positionId);
+            await _employeeManager.CheckValidConstraint(departmentId, positionId);
 
             // Assert
-            await departmentRepository.Received(1).GetByIdAsync(departmentId);
-            await positionRepository.Received(1).GetByIdAsync(positionId);
+            await _departmentRepository.Received(1).GetByIdAsync(departmentId);
+            await _positionRepository.Received(1).GetByIdAsync(positionId);
         }
 
         /// <summary>
@@ -107,11 +107,11 @@ namespace MISA.WebFresher052023.Domain.UnitTests
             var departmentId = Guid.NewGuid();
             var positionId = Guid.NewGuid();
 
-            departmentRepository.GetByIdAsync(departmentId).ThrowsAsync(new NotFoundException());
-            positionRepository.GetByIdAsync(positionId).ThrowsAsync(new NotFoundException());
+            _departmentRepository.GetByIdAsync(departmentId).ThrowsAsync(new NotFoundException());
+            _positionRepository.GetByIdAsync(positionId).ThrowsAsync(new NotFoundException());
 
             // Act & Assert
-            Assert.ThrowsAsync<NotFoundException>(async () => await employeeManager.CheckValidConstraint(departmentId, positionId));
+            Assert.ThrowsAsync<NotFoundException>(async () => await _employeeManager.CheckValidConstraint(departmentId, positionId));
         } 
         #endregion
     }

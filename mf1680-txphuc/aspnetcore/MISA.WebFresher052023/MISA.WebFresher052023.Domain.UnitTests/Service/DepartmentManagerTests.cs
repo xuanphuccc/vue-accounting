@@ -12,16 +12,16 @@ namespace MISA.WebFresher052023.Domain.UnitTests
     public class DepartmentManagerTests
     {
         #region Fields
-        public IDepartmentRepository departmentRepository { get; set; }
-        public DepartmentManager departmentManager { get; set; }
+        private IDepartmentRepository _departmentRepository;
+        private DepartmentManager _departmentManager;
         #endregion
 
         #region Methods
         [SetUp]
         public void Setup()
         {
-            departmentRepository = Substitute.For<IDepartmentRepository>();
-            departmentManager = new DepartmentManager(departmentRepository);
+            _departmentRepository = Substitute.For<IDepartmentRepository>();
+            _departmentManager = new DepartmentManager(_departmentRepository);
         }
 
         /// <summary>
@@ -36,14 +36,14 @@ namespace MISA.WebFresher052023.Domain.UnitTests
             var code = "txphuc";
             var oldCode = "unittest"; // Mã cũ (trong trường hợp cập nhật mã)
 
-            departmentRepository.FindByCodeAsync(code).Returns(new Department() { DepartmentCode = code });
+            _departmentRepository.FindByCodeAsync(code).Returns(new Department() { DepartmentCode = code });
 
             // Act & Assert
             Assert.ThrowsAsync<ConflictException>(async () =>
-            await departmentManager.CheckExistDepartmentCode(code, oldCode));
+            await _departmentManager.CheckExistDepartmentCode(code, oldCode));
 
             // Đảm bảo FindByCodeAsync chỉ được gọi 1 lần
-            await departmentRepository.Received(1).FindByCodeAsync(code);
+            await _departmentRepository.Received(1).FindByCodeAsync(code);
         }
 
         /// <summary>
@@ -57,13 +57,13 @@ namespace MISA.WebFresher052023.Domain.UnitTests
             // Arrange
             var code = "txphuc";
 
-            departmentRepository.FindByCodeAsync(code).Returns(Task.FromResult<Department?>(null));
+            _departmentRepository.FindByCodeAsync(code).Returns(Task.FromResult<Department?>(null));
 
             // Act
-            await departmentManager.CheckExistDepartmentCode(code);
+            await _departmentManager.CheckExistDepartmentCode(code);
 
             // Assert
-            await departmentRepository.Received(1).FindByCodeAsync(code);
+            await _departmentRepository.Received(1).FindByCodeAsync(code);
         } 
         #endregion
     }

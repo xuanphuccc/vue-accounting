@@ -18,12 +18,13 @@ namespace MISA.WebFresher052023.Controllers
         private readonly IEmployeeService _employeeService;
         private readonly IEmployeeExcelService _employeeExcelService;
         #endregion
+
+        #region Constructor
         public EmployeesController(IEmployeeService employeeService, IEmployeeExcelService employeeExcelService) : base(employeeService)
         {
             _employeeService = employeeService;
             _employeeExcelService = employeeExcelService;
         }
-        #region Constructor
 
         #endregion
 

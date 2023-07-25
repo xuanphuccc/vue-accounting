@@ -12,16 +12,16 @@ namespace MISA.WebFresher052023.Domain.UnitTests
     public class PositionManagerTests
     {
         #region Fields
-        public IPositionRepository positionRepository { get; set; }
-        public PositionManager positionManager { get; set; }
+        private IPositionRepository _positionRepository;
+        private PositionManager _positionManager;
         #endregion
 
         #region Methods
         [SetUp]
         public void Setup()
         {
-            positionRepository = Substitute.For<IPositionRepository>();
-            positionManager = new PositionManager(positionRepository);
+            _positionRepository = Substitute.For<IPositionRepository>();
+            _positionManager = new PositionManager(_positionRepository);
         }
 
         /// <summary>
@@ -36,14 +36,14 @@ namespace MISA.WebFresher052023.Domain.UnitTests
             var code = "txphuc";
             var oldCode = "unittest"; // Mã cũ (trong trường hợp cập nhật mã)
 
-            positionRepository.FindByCodeAsync(code).Returns(new Position() { PositionCode = code });
+            _positionRepository.FindByCodeAsync(code).Returns(new Position() { PositionCode = code });
 
             // Act & Assert
             Assert.ThrowsAsync<ConflictException>(async () =>
-            await positionManager.CheckExistPositionCode(code, oldCode));
+            await _positionManager.CheckExistPositionCode(code, oldCode));
 
             // Đảm bảo FindByCodeAsync chỉ được gọi 1 lần
-            await positionRepository.Received(1).FindByCodeAsync(code);
+            await _positionRepository.Received(1).FindByCodeAsync(code);
         }
 
         /// <summary>
@@ -57,13 +57,13 @@ namespace MISA.WebFresher052023.Domain.UnitTests
             // Arrange
             var code = "txphuc";
 
-            positionRepository.FindByCodeAsync(code).Returns(Task.FromResult<Position?>(null));
+            _positionRepository.FindByCodeAsync(code).Returns(Task.FromResult<Position?>(null));
 
             // Act
-            await positionManager.CheckExistPositionCode(code);
+            await _positionManager.CheckExistPositionCode(code);
 
             // Assert
-            await positionRepository.Received(1).FindByCodeAsync(code);
+            await _positionRepository.Received(1).FindByCodeAsync(code);
         } 
         #endregion
     }

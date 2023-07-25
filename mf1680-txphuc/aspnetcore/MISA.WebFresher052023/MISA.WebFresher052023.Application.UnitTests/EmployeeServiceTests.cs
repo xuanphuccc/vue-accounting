@@ -14,11 +14,11 @@ namespace MISA.WebFresher052023.Application
     public class EmployeeServiceTests
     {
         #region Fields
-        public IEmployeeRepository employeeRepository { get; set; }
-        public IEmployeeManager employeeManager { get; set; }
-        public IMapper mapper { get; set; }
-        public IUnitOfWork unitOfWork { get; set; }
-        public EmployeeService employeeService { get; set; }
+        private IEmployeeRepository _employeeRepository;
+        private IEmployeeManager _employeeManager;
+        private IMapper _mapper;
+        private IUnitOfWork _unitOfWork;
+        private EmployeeService _employeeService;
         #endregion
 
         /// <summary>
@@ -28,11 +28,11 @@ namespace MISA.WebFresher052023.Application
         [SetUp]
         public void Setup()
         {
-            employeeRepository = Substitute.For<IEmployeeRepository>();
-            employeeManager = Substitute.For<IEmployeeManager>();
-            unitOfWork = Substitute.For<IUnitOfWork>();
-            employeeService = new EmployeeService(employeeRepository, employeeManager, unitOfWork, mapper);
-            mapper = Substitute.For<IMapper>();
+            _employeeRepository = Substitute.For<IEmployeeRepository>();
+            _employeeManager = Substitute.For<IEmployeeManager>();
+            _unitOfWork = Substitute.For<IUnitOfWork>();
+            _employeeService = new EmployeeService(_employeeRepository, _employeeManager, _unitOfWork, _mapper);
+            _mapper = Substitute.For<IMapper>();
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace MISA.WebFresher052023.Application
             var expectedMessage = "Không thể xoá danh sách rỗng";
 
             // Act
-            var exception = Assert.ThrowsAsync<Exception>(async () => await employeeService.DeleteAsync(ids));
+            var exception = Assert.ThrowsAsync<Exception>(async () => await _employeeService.DeleteAsync(ids));
 
             // Assert
             Assert.That(exception.Message, Is.EqualTo(expectedMessage));
@@ -78,10 +78,10 @@ namespace MISA.WebFresher052023.Application
                 employees.Add(new Employee());
             }
 
-            employeeRepository.GetListByIdsAsync(ids).Returns(employees);
+            _employeeRepository.GetListByIdsAsync(ids).Returns(employees);
 
             // Act
-            var exception = Assert.ThrowsAsync<Exception>(async () => await employeeService.DeleteAsync(ids));
+            var exception = Assert.ThrowsAsync<Exception>(async () => await _employeeService.DeleteAsync(ids));
 
             // Assert
             Assert.That(exception.Message, Is.EqualTo(expectedMessage));
@@ -110,15 +110,15 @@ namespace MISA.WebFresher052023.Application
                 employees.Add(new Employee());
             }
 
-            employeeRepository.GetListByIdsAsync(ids).Returns(employees);
+            _employeeRepository.GetListByIdsAsync(ids).Returns(employees);
 
             // Act
-            await employeeService.DeleteAsync(ids);
+            await _employeeService.DeleteAsync(ids);
 
             // Assert
-            await employeeRepository.Received(1).GetListByIdsAsync(ids);
+            await _employeeRepository.Received(1).GetListByIdsAsync(ids);
 
-            await employeeRepository.Received(1).DeleteAsync(employees);
+            await _employeeRepository.Received(1).DeleteAsync(employees);
         }
     }
 }
