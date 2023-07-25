@@ -19,7 +19,9 @@ namespace MISA.WebFresher052023.Application
         public PositionService(
             IPositionRepository positionRepository,
             IPositionManager positionManager,
-            IMapper mapper) : base(positionRepository, mapper)
+            IUnitOfWork unitOfWork,
+            IMapper mapper
+            ) : base(positionRepository, unitOfWork, mapper)
         {
             _positionRepository = positionRepository;
             _positionManager = positionManager;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Application
 {
-    public class EmployeeService : BaseCodeService<Employee, EmployeeModel,EmployeeDto, EmployeeCreateDto, EmployeeUpdateDto>, IEmployeeService
+    public class EmployeeService : BaseCodeService<Employee, EmployeeModel, EmployeeDto, EmployeeCreateDto, EmployeeUpdateDto>, IEmployeeService
     {
         #region Fields
         private readonly IEmployeeRepository _employeeRepository;
@@ -18,9 +18,11 @@ namespace MISA.WebFresher052023.Application
 
         #region Constructors
         public EmployeeService(
-            IEmployeeRepository employeeRepository, 
-            IEmployeeManager employeeManager, 
-            IMapper mapper) : base(employeeRepository, mapper)
+            IEmployeeRepository employeeRepository,
+            IEmployeeManager employeeManager,
+            IUnitOfWork unitOfWork,
+            IMapper mapper
+            ) : base(employeeRepository, unitOfWork, mapper)
         {
             _employeeRepository = employeeRepository;
             _employeeManager = employeeManager;

@@ -10,6 +10,8 @@ namespace MISA.WebFresher052023.Domain
     {
         public ErrorCode ErrorCode { get; set; }
 
+        public NotFoundException() { }
+
         public NotFoundException(string message) : base(message) { }
 
         public NotFoundException(string message, ErrorCode errorCode) : base(message)

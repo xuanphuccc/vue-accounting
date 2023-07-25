@@ -14,14 +14,18 @@ namespace MISA.WebFresher052023.Application
     {
         #region Fields
         protected readonly IBaseRepository<TEntity, TModel> _baseRepository;
+        protected readonly IUnitOfWork _unitOfWork;
         #endregion
 
         #region Constructor
         protected BaseService(
             IBaseRepository<TEntity, TModel> baseRepository,
-            IMapper mapper) : base(baseRepository, mapper)
+            IUnitOfWork unitOfWork,
+            IMapper mapper
+            ) : base(baseRepository, mapper)
         {
             _baseRepository = baseRepository;
+            _unitOfWork = unitOfWork;
         }
         #endregion
 
@@ -78,20 +82,32 @@ namespace MISA.WebFresher052023.Application
         /// CreatedBy: txphuc (18/07/2023)
         public async Task<int> DeleteAsync(List<Guid> entityIds)
         {
-            var entities = (await _baseRepository.GetListByIdsAsync(entityIds)).ToList();
-
-            if (entityIds.Count == 0)
+            try
             {
-                throw new Exception("Không thể xoá danh sách rỗng");
+                await _unitOfWork.BeginTransactionAsync();
+
+                var entities = await _baseRepository.GetListByIdsAsync(entityIds);
+
+                if (entityIds.Count == 0)
+                {
+                    throw new Exception("Không thể xoá danh sách rỗng");
+                }
+                else if (entities.ToList().Count < entityIds.Count)
+                {
+                    throw new Exception("Không thể xoá do có đối tượng không tồn tại");
+                }
+
+                var result = await _baseRepository.DeleteAsync(entities);
+
+                await _unitOfWork.CommitAsync();
+
+                return result;
             }
-            else if (entities.Count < entityIds.Count)
+            catch (Exception ex)
             {
-                throw new Exception("Không thể xoá do có đối tượng không tồn tại");
+                await _unitOfWork.RollBackAsync();
+                throw;
             }
-
-            var result = await _baseRepository.DeleteAsync(entities);
-
-            return result;
         }
 
         /// <summary>

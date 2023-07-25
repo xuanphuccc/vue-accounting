@@ -8,19 +8,23 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Application
 {
-    public abstract class BaseCodeService<TEntity, TModel, TEntityDto, TEntityCreateDto, TEntityUpdateDto> : 
-        BaseService<TEntity, TModel, TEntityDto, TEntityCreateDto, TEntityUpdateDto>, 
+    public abstract class BaseCodeService<TEntity, TModel, TEntityDto, TEntityCreateDto, TEntityUpdateDto> :
+        BaseService<TEntity, TModel, TEntityDto, TEntityCreateDto, TEntityUpdateDto>,
         IBaseCodeService<TEntityDto, TEntityCreateDto, TEntityUpdateDto>
     {
         #region Fields
-        protected readonly IBaseCodeRepository<TEntity, TModel> _baseCodeRepository; 
+        protected readonly IBaseCodeRepository<TEntity, TModel> _baseCodeRepository;
         #endregion
 
         #region Constructors
-        protected BaseCodeService(IBaseCodeRepository<TEntity, TModel> baseCodeRepository, IMapper mapper) : base(baseCodeRepository, mapper)
+        protected BaseCodeService(
+            IBaseCodeRepository<TEntity, TModel> baseCodeRepository,
+            IUnitOfWork unitOfWork,
+            IMapper mapper
+            ) : base(baseCodeRepository, unitOfWork, mapper)
         {
             _baseCodeRepository = baseCodeRepository;
-        } 
+        }
         #endregion
 
         #region Methods
@@ -34,7 +38,7 @@ namespace MISA.WebFresher052023.Application
             var newCode = await _baseCodeRepository.FindNewCodeAsync();
 
             return newCode;
-        } 
+        }
         #endregion
     }
 }

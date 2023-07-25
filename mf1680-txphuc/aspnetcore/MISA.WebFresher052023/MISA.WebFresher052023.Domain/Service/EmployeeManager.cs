@@ -52,10 +52,10 @@ namespace MISA.WebFresher052023.Domain
         /// CreatedBy: txphuc (17/07/2023)
         public async Task CheckValidConstraint(Guid departmentId, Guid? positionId)
         {
-            await _departmentRepository.GetByIdAsync(departmentId);
+            var department = await _departmentRepository.GetByIdAsync(departmentId);
             if (positionId != null)
             {
-                await _positionRepository.GetByIdAsync(positionId.Value);
+                var position = await _positionRepository.GetByIdAsync(positionId.Value);
             }
         }
         #endregion

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Application
 {
-    public class DepartmentService : 
-        BaseCodeService<Department, Department, DepartmentDto, DepartmentCreateDto, DepartmentUpdateDto>, 
+    public class DepartmentService :
+        BaseCodeService<Department, Department, DepartmentDto, DepartmentCreateDto, DepartmentUpdateDto>,
         IDepartmentService
     {
         #region Fields
@@ -19,9 +19,11 @@ namespace MISA.WebFresher052023.Application
 
         #region Constructors
         public DepartmentService(
-            IDepartmentRepository departmentRepository, 
-            IDepartmentManager departmentManager, 
-            IMapper mapper) : base(departmentRepository, mapper)
+            IDepartmentRepository departmentRepository,
+            IDepartmentManager departmentManager,
+            IUnitOfWork unitOfWork,
+            IMapper mapper
+            ) : base(departmentRepository, unitOfWork, mapper)
         {
             _departmentRepository = departmentRepository;
             _departmentManager = departmentManager;
