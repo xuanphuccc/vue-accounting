@@ -10,6 +10,21 @@
           : MISAResource[globalStore.lang]?.Page?.Employee?.Form?.UpdateTitle
       "
     >
+      <template #header-controls>
+        <MISACheckboxVue
+          v-model="formData.isCustomer"
+          :value="true"
+          :checked="formData.isCustomer"
+          :label="MISAResource[globalStore.lang]?.Page?.Employee?.IsCustomer?.Title"
+        />
+        <MISACheckboxVue
+          v-model="formData.isSupplier"
+          :value="true"
+          :checked="formData.isSupplier"
+          :label="MISAResource[globalStore.lang]?.Page?.Employee?.IsSupplier?.Title"
+        />
+      </template>
+
       <template #default>
         <MISARow :gutter="{ x: 24 }">
           <MISACol span="6">
@@ -313,6 +328,7 @@ import MISAFormGroup from "@/components/base/input/MISAFormGroup.vue";
 import MISAInput from "@/components/base/input/MISAInput.vue";
 import MISADatePicker from "@/components/base/date-picker/MISADatePicker.vue";
 import MISARadioButton from "@/components/base/radio-button/MISARadioButton.vue";
+import MISACheckboxVue from "@/components/base/checkbox/MISACheckbox.vue";
 import MISASelect from "@/components/base/select/MISASelect.vue";
 import MISARow from "@/components/base/grid/MISARow.vue";
 import MISACol from "@/components/base/grid/MISACol.vue";
@@ -359,8 +375,8 @@ const initialFormData = {
   identityNumber: null,
   identityDate: null,
   identityPlace: null,
-  isCustomer: null,
-  isSupplier: null,
+  isCustomer: false,
+  isSupplier: false,
   address: null,
   mobilePhoneNumber: null,
   landlineNumber: null,

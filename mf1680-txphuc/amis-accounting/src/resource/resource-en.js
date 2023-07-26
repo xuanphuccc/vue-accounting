@@ -202,6 +202,14 @@ const resourceEn = {
         Title: "Issue Place",
         Desc: "Issue Place",
       },
+      IsCustomer: {
+        Title: "Customer",
+        Desc: "Customer",
+      },
+      IsSupplier: {
+        Title: "Supplier",
+        Desc: "Supplier",
+      },
       Address: {
         Title: "Address",
         Desc: "Address",

@@ -1,9 +1,9 @@
 .toast-container {
   position: fixed;
-  bottom: 0;
+  top: 0;
   right: 0;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   padding: 16px;
   z-index: 12;
   transition: all 0.2s ease;
@@ -22,7 +22,7 @@
 }
 
 .ms-toast + .ms-toast {
-  margin-bottom: 16px;
+  margin-top: 16px;
 }
 
 .ms-toast__icon {

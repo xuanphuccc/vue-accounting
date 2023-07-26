@@ -1,21 +1,14 @@
 <template>
-  <label @dblclick.stop="" @click.stop="" class="ms-checkbox" :for="props.value">
-    <input
-      @click="handleChecked"
-      :id="props.value"
-      :value="props.value"
-      :checked="isChecked || checked"
-      type="checkbox"
-      class="ms-checkbox__input"
-    />
+  <div @dblclick.stop="" @click.stop="handleChecked" class="ms-checkbox">
+    <input :checked="!!props.checked" type="checkbox" class="ms-checkbox__input" />
     <div class="ms-checkbox__check-mark"></div>
 
     <div v-if="props.label" class="ms-checkbox__label">{{ props.label }}</div>
-  </label>
+  </div>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { ref } from "vue";
 
 const emit = defineEmits(["update:modelValue"]);
 
@@ -52,7 +45,7 @@ const prev = ref(props.modelValue);
  * một mảng hoặc một giá trị bất kỳ
  * Author: txphuc (27/06/2023)
  */
-const handleChecked = (e) => {
+const handleChecked = () => {
   try {
     if (Array.isArray(props.modelValue)) {
       // Nếu là mảng:
@@ -61,10 +54,10 @@ const handleChecked = (e) => {
 
       let prevArr = [...props.modelValue];
 
-      if (prevArr.includes(e.target.value)) {
-        prevArr = prevArr.filter((value) => value !== e.target.value);
+      if (prevArr.includes(props.value)) {
+        prevArr = prevArr.filter((value) => value !== props.value);
       } else {
-        prevArr.push(e.target.value);
+        prevArr.push(props.value);
       }
 
       emit("update:modelValue", prevArr);
@@ -73,8 +66,8 @@ const handleChecked = (e) => {
       // Là giá trị của checkbox nếu được checked
       // ngược lại lấy giá trị ban đầu
 
-      if (e.target.checked) {
-        emit("update:modelValue", e.target.value);
+      if (props.modelValue !== props.value) {
+        emit("update:modelValue", props.value);
       } else {
         emit("update:modelValue", prev.value);
       }
@@ -83,26 +76,6 @@ const handleChecked = (e) => {
     console.warn(error);
   }
 };
-
-/**
- * Description: Kiểm tra checkbox có được checked hay không
- * Author: txphuc (27/06/2023)
- */
-const isChecked = computed(() => {
-  try {
-    if (props.modelValue && props.value) {
-      if (Array.isArray(props.modelValue)) {
-        return props.modelValue.includes(props.value);
-      } else {
-        return props.modelValue === props.value;
-      }
-    }
-    return false;
-  } catch (error) {
-    console.warn(error);
-    return false;
-  }
-});
 </script>
 
 <style scoped>

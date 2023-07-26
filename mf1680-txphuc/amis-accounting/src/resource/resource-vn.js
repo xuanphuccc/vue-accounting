@@ -202,6 +202,14 @@ const resourceVn = {
         Title: "Nơi cấp",
         Desc: "Nơi cấp",
       },
+      IsCustomer: {
+        Title: "Là khách hàng",
+        Desc: "Là khách hàng",
+      },
+      IsSupplier: {
+        Title: "Là nhà cung cấp",
+        Desc: "Là nhà cung cấp",
+      },
       Address: {
         Title: "Địa chỉ",
         Desc: "Địa chỉ",

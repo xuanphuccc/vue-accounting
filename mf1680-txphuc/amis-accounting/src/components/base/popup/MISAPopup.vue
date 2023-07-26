@@ -6,7 +6,12 @@
     class="ms-popup-overlay"
   >
     <div @click.stop="" class="ms-popup" :style="{ width: props.width + 'px' }">
-      <h4 class="ms-popup__title">{{ props.title }}</h4>
+      <div class="ms-popup__header">
+        <h4 class="ms-popup__title">{{ props.title }}</h4>
+        <div class="ms-popup__header-controls">
+          <slot name="header-controls"></slot>
+        </div>
+      </div>
       <div @click="$emit('close')" class="ms-popup__close" title="Đóng">
         <MISAIcon icon="times" />
       </div>

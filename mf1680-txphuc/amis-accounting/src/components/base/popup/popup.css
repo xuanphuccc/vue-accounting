@@ -26,12 +26,24 @@
   animation: fadeInUp 0.3s ease;
 }
 
+.ms-popup__header {
+  display: flex;
+  align-items: center;
+  padding: 24px 24px 0;
+}
+
+.ms-popup__header-controls {
+  display: flex;
+  align-items: center;
+  margin-left: 16px;
+  column-gap: 16px;
+}
+
 .ms-popup__title {
   font-size: 24px;
   line-height: 24px;
   font-weight: 700;
   color: var(--primary-text-color);
-  padding: 24px 24px 0;
 }
 
 .ms-popup__close {
