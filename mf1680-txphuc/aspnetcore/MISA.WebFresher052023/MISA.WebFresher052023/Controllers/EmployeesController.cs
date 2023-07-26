@@ -50,12 +50,24 @@ namespace MISA.WebFresher052023.Controllers
         /// </summary>
         /// <returns>File Excel danh sách nhân viên</returns>
         /// CreatedBy: txphuc (23/07/2023)
-        [HttpGet("Excel")]
-        public async Task<IActionResult> ExportToExcel()
+        [HttpPost("Excel/Export")]
+        public async Task<IActionResult> ExportToExcel([FromBody] ExcelRequestDto excelRequestDto)
         {
-            var bytes = await _employeeExcelService.ExportToExcelAsync();
+            var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            var fileName = "employees.xlsx";
 
-            return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "employees.xlsx");
+            // Xuất theo các bản ghi được chọn
+            if (excelRequestDto.EntityIds.Count > 0)
+            {
+                var bytes = await _employeeExcelService.ExportList(excelRequestDto.EntityIds, excelRequestDto.Columns);
+
+                return File(bytes, contentType, fileName);
+            }
+
+            // Xuất toàn bộ danh sách
+            var allRecordsBytes = await _employeeExcelService.ExportAll(excelRequestDto.Columns);
+
+            return File(allRecordsBytes, contentType, fileName);
         }
         #endregion
     }

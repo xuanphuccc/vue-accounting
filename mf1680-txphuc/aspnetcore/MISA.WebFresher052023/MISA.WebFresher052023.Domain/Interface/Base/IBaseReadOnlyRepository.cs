@@ -9,32 +9,40 @@ namespace MISA.WebFresher052023.Domain
     public interface IBaseReadOnlyRepository<TEntity, TModel>
     {
         /// <summary>
-        /// Lấy tất cả đối tượng
+        /// Lấy tất cả bản ghi
         /// </summary>
-        /// <returns>Danh sách đối tượng</returns>
+        /// <returns>Danh sách bản ghi</returns>
         /// CreatedBy: txphuc (18/07/2023)
         Task<IEnumerable<TModel>> GetAllAsync();
 
         /// <summary>
-        /// Lấy đối tượng theo Id
+        /// Lấy bản ghi theo Id
         /// </summary>
-        /// <param name="entityId">Id của đối tượng</param>
+        /// <param name="entityId">Id của bản ghi</param>
         /// <returns>Đối tượng (trả về NotFoundException nếu không tìm thấy)</returns>
         /// CreatedBy: txphuc (18/07/2023)
         Task<TEntity> GetByIdAsync(Guid entityId);
 
         /// <summary>
-        /// Lấy danh sách đối tượng theo Id
+        /// Lấy danh sách bản ghi theo Id
         /// </summary>
         /// <param name="entityIds">Danh sách Id</param>
-        /// <returns>Danh sách đối tượng thoả mãn</returns>
+        /// <returns>Danh sách bản ghi thoả mãn</returns>
         /// CreatedBy: txphuc (24/07/2023)
         Task<IEnumerable<TEntity>> GetListByIdsAsync(IEnumerable<Guid> entityIds);
 
         /// <summary>
-        /// Tìm đối tượng theo Id
+        /// Lấy danh sách bản ghi đầy đủ thông tin đơn vị và vị trí theo Id
         /// </summary>
-        /// <param name="entityId">Id của đối tượng</param>
+        /// <param name="entityIds">Danh sách Id</param>
+        /// <returns>Danh sách bản ghi thoả mãn</returns>
+        /// CreatedBy: txphuc (26/07/2023)
+        Task<IEnumerable<TModel>> GetListInfoByIdsAsync(IEnumerable<Guid> entityIds);
+
+        /// <summary>
+        /// Tìm bản ghi theo Id
+        /// </summary>
+        /// <param name="entityId">Id của bản ghi</param>
         /// <returns>Đối tượng (trả về null nếu không tìm thấy)</returns>
         /// CreatedBy: txphuc (18/07/2023)
         Task<TEntity?> FindByIdAsync(Guid entityId);

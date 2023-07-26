@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MISA.WebFresher052023.Application;
 using MISA.WebFresher052023.Domain;
 using MISA.WebFresher052023.Domain.Resources.Employee;
 using System;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MISA.WebFresher052023.Application
+namespace MISA.WebFresher052023.Infrastructure
 {
     public class EmployeeExcelService : ExcelService<Employee, EmployeeModel, EmployeeExcelDto>, IEmployeeExcelService
     {

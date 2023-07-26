@@ -79,6 +79,26 @@ namespace MISA.WebFresher052023.Infrastructure
         }
 
         /// <summary>
+        /// Lấy danh sách bản ghi đầy đủ thông tin đơn vị và vị trí theo Id
+        /// </summary>
+        /// <param name="entityIds">Danh sách Id</param>
+        /// <returns>Danh sách bản ghi thoả mãn</returns>
+        /// CreatedBy: txphuc (26/07/2023)
+        public async Task<IEnumerable<TModel>> GetListInfoByIdsAsync(IEnumerable<Guid> entityIds)
+        {
+            var entityIdsString = string.Join(", ", entityIds.Select(entityId => $"'{entityId}'"));
+
+            var param = new DynamicParameters();
+            param.Add($"@{TableId}s", entityIdsString);
+
+            var sql = $"Proc_{TableName}_GetListInfoByIds";
+
+            var entities = await _unitOfWork.Connection.QueryAsync<TModel>(sql, param, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
+
+            return entities;
+        }
+
+        /// <summary>
         /// Tìm đối tượng theo Id
         /// </summary>
         /// <param name="entityId">Id của đối tượng</param>

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MISA.WebFresher052023.Domain;
+﻿using MISA.WebFresher052023.Application;
 using MISA.WebFresher052023.Domain.Resources.Common;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
@@ -13,34 +12,20 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MISA.WebFresher052023.Application
+namespace MISA.WebFresher052023.Infrastructure
 {
-    public abstract class ExcelService<TEntity, TModel, TEntityDto> : IExcelService
+    public abstract class ExcelCore<TEntityDto> : IExcelCore<TEntityDto>
     {
-        private readonly IBaseReadOnlyRepository<TEntity, TModel> _baseReadOnlyRepository;
-        private readonly IMapper _mapper;
-
-        protected virtual string SheetName { get; set; } = "Sheet 1";
-        protected virtual string SheetTitle { get; set; } = "Sheet title";
-
-        protected ExcelService(IBaseReadOnlyRepository<TEntity, TModel> baseReadOnlyRepository, IMapper mapper)
-        {
-            _baseReadOnlyRepository = baseReadOnlyRepository;
-            _mapper = mapper;
-        }
+        protected string SheetName { get; set; } = "Sheet 1";
+        protected string SheetTitle { get; set; } = "Sheet title";
 
         /// <summary>
         /// Xử lý xuất file Excel
         /// </summary>
         /// <returns>Mảng bytes của file Excel</returns>
         /// CreatedBy: txphuc (23/07/2023)
-        public async Task<byte[]> ExportToExcelAsync()
+        public byte[] ExportToExcelAsync(IEnumerable<TEntityDto> entityDtos, IEnumerable<string> columns)
         {
-
-            // Lấy danh sách đối tượng
-            var entity = await _baseReadOnlyRepository.GetAllAsync();
-            var entityDtos = _mapper.Map<IEnumerable<TEntityDto>>(entity);
-
             // Tạo luồng download file
             var stream = new MemoryStream();
 
@@ -61,7 +46,7 @@ namespace MISA.WebFresher052023.Application
             // Tổng số cột
             var properties = typeof(TEntityDto).GetProperties();
             var bonusOrderCol = 1;
-            var totalColumns = properties.Length + bonusOrderCol;
+            var totalColumns = columns.ToList().Count + bonusOrderCol;
 
             // Tạo kiểu cho tiêu đề
             worksheet.Cells["A1"].Value = SheetTitle;
@@ -74,16 +59,24 @@ namespace MISA.WebFresher052023.Application
             titleRange.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
             worksheet.Rows[1].Height = 28;
 
-            // Tên các cột
+            // Tên các cột theo danh sách và thứ tự được cung cấp
             var headerRow = 3;
             var colPos = 2;
             worksheet.Cells[headerRow, 1].Value = CommonResource.Order;
 
-            foreach (var property in properties)
+            foreach (var column in columns)
             {
-                worksheet.Cells[headerRow, colPos].Value = GetDisplayName(property);
+                foreach (var property in properties)
+                {
+                    if (property.Name.ToLower() == column.ToLower())
+                    {
+                        worksheet.Cells[headerRow, colPos].Value = AttributeGetter.GetDisplayAttribute(property) + property.PropertyType.Name;
 
-                colPos++;
+                        colPos++;
+
+                        break;
+                    }
+                }
             }
 
             // Style cho tên cột
@@ -103,11 +96,17 @@ namespace MISA.WebFresher052023.Application
                 var currentCol = 2;
                 worksheet.Cells[currentRow, 1].Value = order;
 
-                foreach (var property in properties)
+                foreach (var column in columns)
                 {
-                    worksheet.Cells[currentRow, currentCol].Value = property.GetValue(entityDto);
+                    foreach (var property in properties)
+                    {
+                        if (property.Name.ToLower() == column.ToLower())
+                        {
+                            worksheet.Cells[currentRow, currentCol].Value = property.GetValue(entityDto);
 
-                    currentCol++;
+                            currentCol++;
+                        }
+                    }
                 }
 
                 // Tạo kiểu cho các ô và các hàng
@@ -133,65 +132,9 @@ namespace MISA.WebFresher052023.Application
         /// </summary>
         /// <returns>Mảng bytes của file Excel</returns>
         /// CreatedBy: txphuc (23/07/2023)
-        public async Task ImportExcelAsync()
+        public void ImportFromExcelAsync()
         {
             throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Lấy ra thuộc tính DisplayName của Property để hiển thị
-        /// </summary>
-        /// <param name="property">Property</param>
-        /// <returns>Tên hiển thị</returns>
-        /// CreatedBy: txphuc (23/07/2023)
-        private string GetAttributeDisplayName(PropertyInfo property)
-        {
-            var atts = property.GetCustomAttributes(typeof(DisplayNameAttribute), true);
-
-            if (atts.Length > 0)
-            {
-                // Ép kiểu phần tử đầu tiên về DisplayNameAttribute
-                //var displayNameAttribute = atts.FirstOrDefault() as DisplayNameAttribute;
-                if (atts.FirstOrDefault() is DisplayNameAttribute displayNameAttribute)
-                {
-
-                    return displayNameAttribute.DisplayName;
-                }
-                else
-                {
-                    return property.Name;
-                }
-            }
-
-            return property.Name;
-        }
-
-        /// <summary>
-        /// Lấy ra thuộc tính Display của Property để hiển thị đa ngôn ngữ
-        /// </summary>
-        /// <param name="property">Property</param>
-        /// <returns>Tên hiển thị theo ngôn ngữ</returns>
-        /// CreatedBy: txphuc (23/07/2023)
-        private string GetDisplayName(PropertyInfo property)
-        {
-            var atts = property.GetCustomAttributes(typeof(DisplayAttribute), true);
-
-            if (atts.Length > 0)
-            {
-                // Ép kiểu phần tử đầu tiên về DisplayAttribute
-                if (atts.FirstOrDefault() is DisplayAttribute displayNameAttribute)
-                {
-                    // Lấy ra giá trị của Name
-                    var displayName = displayNameAttribute.GetName();
-
-                    if (displayName != null)
-                    {
-                        return displayName;
-                    }
-                }
-            }
-
-            return property.Name;
         }
     }
 }
