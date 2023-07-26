@@ -40,7 +40,7 @@
               </th>
             </template>
 
-            <th class="--sticky-right --align-center">
+            <th :style="{ width: '108px' }" class="--sticky-right --align-center">
               {{ MISAResource[globalStore.lang]?.Table?.Functions }}
               <!-- fake borders -->
               <span class="ms-table__border-left"></span>
@@ -88,7 +88,7 @@
               </template>
 
               <!-- table action -->
-              <td class="--sticky-right">
+              <td :style="{ width: '108px' }" class="--sticky-right">
                 <div class="ms-table__action">
                   <div @click="returnRow(row)" class="ms-table__action-text">
                     {{ MISAResource[globalStore.lang]?.Button?.Update }}

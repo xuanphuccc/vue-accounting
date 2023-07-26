@@ -62,6 +62,8 @@ const resourceVn = {
     Duplicate: "Nhân bản",
     Delete: "Xoá",
     StopUsing: "Ngừng sử dụng",
+    ExportAllToExcel: "Xuất tất cả",
+    ExportListToExcel: "Xuất các dòng được chọn",
     ImportFromExcel: "Nhập từ Excel",
     DownloadSampleFile: "Tải tệp mẫu",
   },

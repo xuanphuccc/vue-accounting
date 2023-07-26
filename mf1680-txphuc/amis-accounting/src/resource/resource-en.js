@@ -62,6 +62,8 @@ const resourceEn = {
     Duplicate: "Duplicate",
     Delete: "Delete",
     StopUsing: "Stop Using",
+    ExportAllToExcel: "Export all",
+    ExportListToExcel: "Export selected records",
     ImportFromExcel: "Import from Excel",
     DownloadSampleFile: "Download sample",
   },

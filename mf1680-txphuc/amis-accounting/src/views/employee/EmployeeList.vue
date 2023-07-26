@@ -16,7 +16,7 @@
               <MISAIcon size="16" icon="angle-down" />
             </template>
             <template #dropdown>
-              <MISAContextMenu width="215" small>
+              <MISAContextMenu width="204" small>
                 <MISAContextItem>
                   <input type="file" name="" id="" hidden />
                   <template #icon><MISAIcon icon="import" /></template>
@@ -79,8 +79,19 @@
             <template #icon><MISAIcon size="20" icon="reload" /></template>
           </MISAButton>
 
-          <MISAButton @click="downloadExcel" :loading="loading.excel" type="secondary">
+          <MISAButton :loading="loading.excel" type="secondary">
             <template #icon><MISAIcon icon="excel-gray" no-color /></template>
+
+            <template #dropdown>
+              <MISAContextMenu width="215" small>
+                <MISAContextItem @click="downloadAllRecords">
+                  {{ MISAResource[globalStore.lang]?.ContextMenu?.ExportAllToExcel }}
+                </MISAContextItem>
+                <MISAContextItem @click="downloadSelectedRecords">
+                  {{ MISAResource[globalStore.lang]?.ContextMenu?.ExportListToExcel }}
+                </MISAContextItem>
+              </MISAContextMenu>
+            </template>
           </MISAButton>
 
           <MISAButton @click.stop="isCustomizeTable = true" type="secondary">
@@ -213,6 +224,7 @@ const defaultColumns = [
     key: 1,
     title: MISAResource[globalStore.lang]?.Page?.Employee?.EmployeeCode?.SubTitle,
     dataIndex: "EmployeeCode",
+    originName: "EmployeeCode",
     width: 130,
     sticky: "left",
   },
@@ -220,6 +232,7 @@ const defaultColumns = [
     key: 2,
     title: MISAResource[globalStore.lang]?.Page?.Employee?.FullName?.SubTitle,
     dataIndex: "FullName",
+    originName: "FullName",
     width: 200,
     sticky: "left",
   },
@@ -227,17 +240,20 @@ const defaultColumns = [
     key: 3,
     title: MISAResource[globalStore.lang]?.Page?.Employee?.Gender?.Title,
     dataIndex: "GenderFormated",
+    originName: "Gender",
   },
   {
     key: 4,
     title: MISAResource[globalStore.lang]?.Page?.Employee?.DateOfBirth?.Title,
     dataIndex: "DateOfBirthFormated",
+    originName: "DateOfBirth",
     align: "center",
   },
   {
     key: 5,
     title: MISAResource[globalStore.lang]?.Page?.Employee?.IdentityNumber?.Title,
     dataIndex: "IdentityNumber",
+    originName: "IdentityNumber",
     desc: MISAResource[globalStore.lang]?.Page?.Employee?.IdentityNumber?.Desc,
     align: "right",
   },
@@ -245,18 +261,21 @@ const defaultColumns = [
     key: 6,
     title: MISAResource[globalStore.lang]?.Page?.Employee?.Position?.Title,
     dataIndex: "PositionName",
+    originName: "PositionName",
     width: 180,
   },
   {
     key: 7,
     title: MISAResource[globalStore.lang]?.Page?.Employee?.Department?.Title,
     dataIndex: "DepartmentName",
+    originName: "DepartmentName",
     width: 240,
   },
   {
     key: 8,
     title: MISAResource[globalStore.lang]?.Page?.Employee?.BankAccount?.SubTitle,
     dataIndex: "BankAccount",
+    originName: "BankAccount",
     align: "right",
     width: 180,
   },
@@ -264,12 +283,14 @@ const defaultColumns = [
     key: 9,
     title: MISAResource[globalStore.lang]?.Page?.Employee?.BankName?.Title,
     dataIndex: "BankName",
+    originName: "BankName",
     width: 180,
   },
   {
     key: 10,
     title: MISAResource[globalStore.lang]?.Page?.Employee?.BankBranch?.SubTitle,
     dataIndex: "BankBranch",
+    originName: "BankBranch",
     desc: MISAResource[globalStore.lang]?.Page?.Employee?.BankBranch?.Desc,
     width: 240,
   },
@@ -331,10 +352,10 @@ const getEmployeeData = async () => {
  * Description: Download excel danh sách nhân viên
  * Author: txphuc (21/07/2023)
  */
-const downloadExcel = async () => {
+const downloadExcel = async (columns = [], employeeIds = []) => {
   try {
     loading.value.excel = true;
-    const response = await employeeApi.downloadExcel();
+    const response = await employeeApi.downloadExcel(columns, employeeIds);
 
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -351,6 +372,41 @@ const downloadExcel = async () => {
   } catch (error) {
     console.warn(error);
     loading.value.excel = false;
+  }
+};
+
+/**
+ * Description: Download tất cả danh sách nhân viên
+ * Author: txphuc(26/07/2023)
+ */
+const downloadAllRecords = async () => {
+  try {
+    // Lấy danh sách các cột không bị ẩn
+    const requestColumns = columns.value.filter((col) => !col.hide).map((col) => col.originName);
+
+    await downloadExcel(requestColumns);
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+/**
+ * Description: Download tất cả danh sách nhân viên
+ * Author: txphuc(26/07/2023)
+ */
+const downloadSelectedRecords = async () => {
+  try {
+    // Lấy danh sách các cột không bị ẩn
+    const requestColumns = columns.value.filter((col) => !col.hide).map((col) => col.originName);
+
+    // Danh sách Id của các bản ghi cần xuất
+    const employeeIds = selectedRowsState.value.map((employee) => employee.EmployeeId);
+
+    if (employeeIds.length > 0) {
+      await downloadExcel(requestColumns, employeeIds);
+    }
+  } catch (error) {
+    console.warn(error);
   }
 };
 
