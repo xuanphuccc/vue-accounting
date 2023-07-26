@@ -1,5 +1,6 @@
 <template>
   <label @focus="openMenu" :tabindex="props.tabindex" class="ms-date-picker">
+    <div tabindex="-1" ref="focusFlag"></div>
     <VueDatePicker
       :model-value="props.modelValue"
       @update:model-value="setDate"
@@ -60,6 +61,7 @@ import { ref } from "vue";
 
 const emit = defineEmits(["update:modelValue"]);
 const datePickerRef = ref(null);
+const focusFlag = ref(null);
 
 const globalStore = useGlobalStore();
 
@@ -89,6 +91,8 @@ const textInputOptions = ref({
  */
 const setDate = (value) => {
   emit("update:modelValue", value);
+
+  focusFlag.value.focus();
 };
 
 /**
@@ -103,6 +107,7 @@ const getToday = () => {
 
     // Đóng menu chọn ngày
     if (datePickerRef.value) {
+      datePickerRef.value.switchView("year");
       datePickerRef.value.closeMenu();
     }
   } catch (error) {

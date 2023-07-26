@@ -8,6 +8,10 @@
   cursor: pointer;
 }
 
+.ms-date-picker:focus-within {
+  border-color: var(--primary-color-500);
+}
+
 .ms-date-picker__input {
   height: 35px;
   border: none;

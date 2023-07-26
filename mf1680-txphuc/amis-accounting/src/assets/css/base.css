@@ -38,6 +38,7 @@
   --green-700: #055b27;
   --green-500: #089740;
   --green-400: #39ac66;
+  --green-200: #9cd5b3;
   --green-100: #ceead9;
   --green-50: #e7f5ec;
 
@@ -78,6 +79,7 @@
   --primary-color-700: var(--green-700);
   --primary-color-500: var(--green-500);
   --primary-color-400: var(--green-400);
+  --primary-color-200: var(--green-200);
   --primary-color-100: var(--green-100);
   --primary-color-50: var(--green-50);
 }

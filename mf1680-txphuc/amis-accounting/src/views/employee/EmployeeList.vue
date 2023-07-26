@@ -52,7 +52,7 @@
                   )
                 )
               "
-              type="secondary"
+              type="danger"
               class="ms-24"
               >{{ MISAResource[globalStore.lang]?.Button?.Delete }}</MISAButton
             >

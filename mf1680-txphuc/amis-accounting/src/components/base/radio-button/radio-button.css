@@ -10,7 +10,8 @@
 }
 
 .ms-radio-btn:focus-within .ms-radio-btn__check-mark {
-  opacity: 80%;
+  /* opacity: 80%; */
+  outline: 3px solid var(--primary-color-200);
 }
 
 .ms-radio-btn:hover .ms-radio-btn__check-mark {
