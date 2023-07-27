@@ -32,7 +32,7 @@
             <MISARow :gutter="{ x: 8 }">
               <MISACol span="5">
                 <MISAFormGroup
-                  :error-msg="validatedInputs.employeeCode"
+                  :error-msg="errorMessages.employeeCode"
                   :label="MISAResource[globalStore.lang]?.Page?.Employee?.EmployeeCode?.Title"
                   for="input-id"
                   required-mark
@@ -42,7 +42,7 @@
                     tabindex="1"
                     v-model="formData.employeeCode"
                     @blur="validateEmployeeCode"
-                    @input="validatedInputs.employeeCode = null"
+                    @input="errorMessages.employeeCode = null"
                     focus
                     id="input-id"
                   />
@@ -50,7 +50,7 @@
               </MISACol>
               <MISACol span="7">
                 <MISAFormGroup
-                  :error-msg="validatedInputs.fullName"
+                  :error-msg="errorMessages.fullName"
                   :label="MISAResource[globalStore.lang]?.Page?.Employee?.FullName?.Title"
                   for="input-name"
                   required-mark
@@ -60,14 +60,14 @@
                     tabindex="2"
                     v-model="formData.fullName"
                     @blur="validateFullName"
-                    @input="validatedInputs.fullName = null"
+                    @input="errorMessages.fullName = null"
                     id="input-name"
                   />
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="12">
                 <MISAFormGroup
-                  :error-msg="validatedInputs.department"
+                  :error-msg="errorMessages.department"
                   :label="MISAResource[globalStore.lang]?.Page?.Employee?.Department?.Title"
                   for="input-department"
                   required-mark
@@ -209,7 +209,7 @@
           <MISACol span="3">
             <MISAFormGroup
               v-tooltip.top="MISAResource[globalStore.lang]?.Page?.Employee?.MobilePhone?.Desc"
-              :error-msg="validatedInputs.mobilePhoneNumber"
+              :error-msg="errorMessages.mobilePhoneNumber"
               :label="MISAResource[globalStore.lang]?.Page?.Employee?.MobilePhone?.Title"
               for="input-mobile-phone"
               space-bottom
@@ -218,7 +218,7 @@
                 tabindex="13"
                 v-model="formData.mobilePhoneNumber"
                 @blur="validateMobilePhone"
-                @input="validatedInputs.mobilePhoneNumber = null"
+                @input="errorMessages.mobilePhoneNumber = null"
                 id="input-mobile-phone"
               />
             </MISAFormGroup>
@@ -239,7 +239,7 @@
           </MISACol>
           <MISACol span="3">
             <MISAFormGroup
-              :error-msg="validatedInputs.email"
+              :error-msg="errorMessages.email"
               :label="MISAResource[globalStore.lang]?.Page?.Employee?.Email?.Title"
               for="input-email"
               space-bottom
@@ -248,7 +248,7 @@
                 tabindex="15"
                 v-model="formData.email"
                 @blur="validateEmail"
-                @input="validatedInputs.email = null"
+                @input="errorMessages.email = null"
                 id="input-email"
               />
             </MISAFormGroup>
@@ -386,7 +386,7 @@ const initialFormData = {
 };
 const formData = ref({ ...initialFormData });
 
-const validatedInputs = ref({
+const errorMessages = ref({
   employeeCode: null,
   fullName: null,
   department: null,
@@ -466,7 +466,12 @@ const closeDialog = () => {
  */
 const handleValidateInputs = () => {
   try {
-    return validateEmployeeCode() && validateFullName() && validateDepartment() && validateEmail();
+    const employeeResult = validateEmployeeCode();
+    const fullNameResult = validateFullName();
+    const departmentResult = validateDepartment();
+    const emailResult = validateEmail();
+
+    return employeeResult && fullNameResult && departmentResult && emailResult;
   } catch (error) {
     console.warn(error);
     return false;
@@ -493,7 +498,7 @@ const validateEmployeeCode = () => {
       ],
     });
 
-    validatedInputs.value.employeeCode = result;
+    errorMessages.value.employeeCode = result;
     return !result;
   } catch (error) {
     console.warn(error);
@@ -517,7 +522,7 @@ const validateFullName = () => {
       ],
     });
 
-    validatedInputs.value.fullName = result;
+    errorMessages.value.fullName = result;
     return !result;
   } catch (error) {
     console.warn(error);
@@ -541,7 +546,7 @@ const validateDepartment = () => {
       ],
     });
 
-    validatedInputs.value.department = result;
+    errorMessages.value.department = result;
     return !result;
   } catch (error) {
     console.warn(error);
@@ -565,7 +570,7 @@ const validateEmail = () => {
       ],
     });
 
-    validatedInputs.value.email = result;
+    errorMessages.value.email = result;
     return !result;
   } catch (error) {
     console.warn(error);
@@ -589,7 +594,7 @@ const validateMobilePhone = () => {
       ],
     });
 
-    validatedInputs.value.mobilePhoneNumber = result;
+    errorMessages.value.mobilePhoneNumber = result;
     return !result;
   } catch (error) {
     console.warn(error);
