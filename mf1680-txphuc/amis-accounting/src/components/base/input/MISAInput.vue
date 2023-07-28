@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 
 const emit = defineEmits(["update:modelValue", "blur", "input"]);
 
@@ -34,12 +34,6 @@ const props = defineProps({
 
   // Gợi ý
   placeholder: String,
-
-  // Trạng thái focus khi component được mounted
-  focus: {
-    type: Boolean,
-    default: false,
-  },
 });
 
 const inputRef = ref(null);
@@ -62,16 +56,6 @@ const autoFocus = () => {
     inputRef.value.focus();
   }
 };
-
-/**
- * Description: Xử lý auto focus vào input khi component được mounted
- * Author: txphuc (26/06/2023)
- */
-onMounted(() => {
-  if (props.focus) {
-    inputRef.value.focus();
-  }
-});
 
 // Expose ra ngoài component cha
 defineExpose({ autoFocus });

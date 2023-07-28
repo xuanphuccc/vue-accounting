@@ -1,22 +1,23 @@
 <template>
-  <label @focus="openMenu" :tabindex="props.tabindex" class="ms-date-picker">
+  <div @focus="openMenu" @keydown.tab="closeMenu" :tabindex="props.tabindex" class="ms-date-picker">
     <div tabindex="-1" ref="focusFlag"></div>
     <VueDatePicker
       :model-value="props.modelValue"
       @update:model-value="setDate"
       :format="formatInput"
+      :max-date="props.maxDate"
       :text-input-options="textInputOptions"
       auto-apply
+      arrow-navigation
       keep-action-row
       :enable-time-picker="false"
       hide-input-icon
-      :teleport="true"
       :position="props.position"
       space-confirm
       offset="4"
-      placeholder="DD/MM/YYYY"
+      placeholder="dd/MM/yyyy"
       input-class-name="ms-date-picker__input"
-      menu-class-name="ms-date-picker__menu"
+      :menu-class-name="`ms-date-picker__menu ${props.position === 'right' && '--right'}`"
       calendar-class-name="ms-date-picker__calendar"
       calendar-cell-class-name="ms-date-picker__calendar-cell"
       ref="datePickerRef"
@@ -48,7 +49,7 @@
       </template>
     </VueDatePicker>
     <MISAIcon icon="date" />
-  </label>
+  </div>
 </template>
 
 <script setup>
@@ -76,6 +77,12 @@ const props = defineProps({
   position: {
     type: String,
     default: "center",
+  },
+
+  // Ngày tối đa có thể chọn
+  maxDate: {
+    type: Date,
+    default: new Date(),
   },
 });
 
@@ -107,8 +114,7 @@ const getToday = () => {
 
     // Đóng menu chọn ngày
     if (datePickerRef.value) {
-      datePickerRef.value.switchView("year");
-      datePickerRef.value.closeMenu();
+      closeMenu();
     }
   } catch (error) {
     console.warn(error);
@@ -131,8 +137,20 @@ const formatInput = (date) => {
   }
 };
 
+/**
+ * Description: Mở menu chọn ngày
+ * Author: txphuc (27/07/2023)
+ */
 const openMenu = () => {
   datePickerRef.value.openMenu();
+};
+
+/**
+ * Description: Đóng menu chọn ngày
+ * Author: txphuc (27/07/2023)
+ */
+const closeMenu = () => {
+  datePickerRef.value.closeMenu();
 };
 </script>
 

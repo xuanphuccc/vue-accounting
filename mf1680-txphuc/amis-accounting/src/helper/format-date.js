@@ -4,6 +4,8 @@
  */
 function formatDate(dateString, format = "DD/MM/YYYY") {
   try {
+    if (!dateString) return null;
+
     const dateObject = new Date(dateString);
 
     const data = {
@@ -29,7 +31,7 @@ function formatDate(dateString, format = "DD/MM/YYYY") {
 
     return formateDateString;
   } catch (error) {
-    return "";
+    return null;
   }
 }
 

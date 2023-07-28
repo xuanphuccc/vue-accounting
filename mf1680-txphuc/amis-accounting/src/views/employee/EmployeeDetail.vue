@@ -43,7 +43,6 @@
                     v-model="formData.employeeCode"
                     @blur="validateEmployeeCode"
                     @input="errorMessages.employeeCode = null"
-                    focus
                     id="input-id"
                   />
                 </MISAFormGroup>
@@ -308,14 +307,16 @@
       </template>
     </MISAPopup>
 
-    <!-- delete confirm dialog -->
-    <MISADialog
-      v-if="dialogState.active"
-      v-bind="dialogState"
-      @cancel="closeDialog"
-      @ok="closeDialog"
-      :ok-text="MISAResource[globalStore.lang]?.Button?.OK"
-    />
+    <!-- notification dialog -->
+    <Teleport to="#app">
+      <MISADialog
+        v-if="dialogState.active"
+        v-bind="dialogState"
+        @cancel="closeDialog"
+        @ok="closeDialog"
+        :ok-text="MISAResource[globalStore.lang]?.Button?.OK"
+      />
+    </Teleport>
   </Teleport>
 </template>
 
@@ -742,10 +743,10 @@ const handleLoadDataForUpdate = async () => {
         fullName: employeeData.FullName,
         departmentId: employeeData.DepartmentId,
         positionId: employeeData.PositionId,
-        dateOfBirth: new Date(employeeData.DateOfBirth),
+        dateOfBirth: employeeData.DateOfBirth && new Date(employeeData.DateOfBirth),
         gender: employeeData.Gender + "",
         identityNumber: employeeData.IdentityNumber,
-        identityDate: new Date(employeeData.IdentityDate),
+        identityDate: employeeData.IdentityDate && new Date(employeeData.IdentityDate),
         identityPlace: employeeData.IdentityPlace,
         isCustomer: employeeData.IsCustomer,
         isSupplier: employeeData.IsSupplier,

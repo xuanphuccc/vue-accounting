@@ -1,12 +1,16 @@
 <template>
   <button
     @click.stop="handleOnClick"
+    @focus="isShowOutline = true"
+    @focusout="isShowOutline = false"
+    @mousedown="isShowOutline = false"
     :class="[
       `ms-btn`,
       `ms-btn--${props.type}`,
       { 'ms-btn--icon': $slots.icon && !$slots.default },
       { 'ms-btn--with-icon': $slots.icon && $slots.default },
       { 'ms-btn--has-dropdown': $slots.dropdown && isOpenDropdown },
+      { '--outline': isShowOutline },
     ]"
     :disabled="props.disabled"
   >
@@ -38,8 +42,6 @@
 import MISASpinner from "../spinner/MISASpinner.vue";
 import { ref, onMounted, onUnmounted } from "vue";
 
-const isOpenDropdown = ref(false);
-
 const emit = defineEmits(["click"]);
 
 const props = defineProps({
@@ -68,6 +70,9 @@ const props = defineProps({
   },
 });
 
+const isOpenDropdown = ref(false);
+const isShowOutline = ref(false);
+
 /**
  * Description: Xử lý sự kiện click button
  * Author: txphuc (25/06/2023)
@@ -76,6 +81,7 @@ const handleOnClick = (event) => {
   emit("click", event);
 
   isOpenDropdown.value = !isOpenDropdown.value;
+  isShowOutline.value = false;
 };
 
 /**

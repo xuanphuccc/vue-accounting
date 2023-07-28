@@ -119,7 +119,7 @@
         @double-click="employeeStore.openFormForUpdate"
       >
         <template #context-menu>
-          <MISAContextMenu small>
+          <MISAContextMenu width="180" small>
             <MISAContextItem @click="employeeStore.openFormForDuplicate(activeRowState)">{{
               MISAResource[globalStore.lang]?.ContextMenu?.Duplicate
             }}</MISAContextItem>
@@ -143,10 +143,10 @@
       <!-- Modal -->
       <Teleport to="#app">
         <MISADialog v-if="dialogState.active" v-bind="dialogState" @cancel="hideConfirmDialog">
-          <MISAButton @click="hideConfirmDialog" type="secondary">{{
+          <MISAButton tabindex="1" @click="hideConfirmDialog" type="secondary">{{
             MISAResource[globalStore.lang]?.Button?.Cancel
           }}</MISAButton>
-          <MISAButton @click="handleDeleteEmployee" type="danger">{{
+          <MISAButton tabindex="2" @click="handleDeleteEmployee" type="danger">{{
             MISAResource[globalStore.lang]?.Button?.Delete
           }}</MISAButton>
         </MISADialog>

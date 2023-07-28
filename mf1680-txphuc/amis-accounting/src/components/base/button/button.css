@@ -16,13 +16,17 @@
   border: 1px solid transparent;
   outline: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease;
   user-select: none;
 }
 
 .ms-btn:disabled {
   opacity: 56%;
   cursor: default;
+}
+
+.ms-btn.--outline {
+  outline: 3px solid var(--primary-color-200);
 }
 
 .ms-btn__content {

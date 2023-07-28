@@ -9,8 +9,10 @@
   user-select: none;
 }
 
+.ms-radio-btn:focus-within {
+  outline: none;
+}
 .ms-radio-btn:focus-within .ms-radio-btn__check-mark {
-  /* opacity: 80%; */
   outline: 3px solid var(--primary-color-200);
 }
 
@@ -47,7 +49,7 @@
   background-color: transparent;
   border-radius: 50%;
   border: 2px solid var(--gray-600);
-  transition: all 0.2s ease;
+  transition: background 0.2s ease;
 }
 
 .ms-radio-btn__check-mark::after {

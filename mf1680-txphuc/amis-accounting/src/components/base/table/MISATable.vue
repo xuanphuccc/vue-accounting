@@ -542,19 +542,23 @@ const setActionContextPos = (e, row) => {
       const headRowHeight = 48;
       const space = 24;
 
+      let top = 0;
       if (actionPos.y - contextMenuHeight > tablePos.y + headRowHeight) {
         // Hiện lên trên của dropdown
-        actionContextMenu.value = {
-          isShow: true,
-          top: actionPos.y - contextMenuHeight,
-        };
+        top = actionPos.y - contextMenuHeight;
       } else {
         // Hiện bên dưới dropdown
-        actionContextMenu.value = {
-          isShow: true,
-          top: actionPos.y + space,
-        };
+        top = actionPos.y + space;
       }
+
+      // ẩn/hiện menu
+      actionContextMenu.value = {
+        isShow:
+          actionContextMenu.value.isShow === true && actionContextMenu.value.top === top
+            ? false
+            : true,
+        top: top,
+      };
 
       // set active cho hàng hiện tại
       setActiveRow(row);

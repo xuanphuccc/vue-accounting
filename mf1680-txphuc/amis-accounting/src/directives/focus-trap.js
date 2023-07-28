@@ -15,6 +15,7 @@ const focusTrapDirective = (el) => {
 
   // vị trí hiện tại của con trỏ
   let currentIndex = 0;
+  inputElements[currentIndex]?.focus();
 
   // Gán sự kiện tab cho từng input
   Array.from(inputElements).forEach((input) => {
@@ -38,14 +39,22 @@ const focusTrapDirective = (el) => {
           }
         }
 
+        console.log(currentIndex);
         // Focus vào vị trí hiện tại
         e.preventDefault();
-        inputElements[currentIndex].focus();
+        inputElements[currentIndex]?.focus();
+
+        console.log(inputElements[currentIndex]);
+
+        // Select toàn bộ giá trị
+        if (inputElements[currentIndex].value) {
+          inputElements[currentIndex]?.select();
+        }
       }
     };
 
     // Set lại index hiện tại sang index của input được click
-    input.onclick = () => {
+    input.onmousedown = () => {
       currentIndex = input.getAttribute("tabindex") - 1;
     };
   });

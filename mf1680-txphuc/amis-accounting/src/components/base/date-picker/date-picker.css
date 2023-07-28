@@ -24,6 +24,10 @@
   border: none;
 }
 
+.ms-date-picker__menu.--right {
+  transform: translate(calc(-100% + 31px), 0px) !important;
+}
+
 .dp__arrow_top {
   display: none;
 }

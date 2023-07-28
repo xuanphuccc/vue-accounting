@@ -153,7 +153,7 @@ const optionWithSearch = computed(() => {
   try {
     if (props.search) {
       return props.options.filter((option) =>
-        option?.label?.toLowerCase()?.includes(searchValue.value?.toLowerCase() || "")
+        option?.label?.toLowerCase()?.includes(searchValue.value?.toLowerCase().trim() || "")
       );
     } else {
       return props.options;

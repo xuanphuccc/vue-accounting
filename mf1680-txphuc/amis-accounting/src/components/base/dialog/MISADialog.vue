@@ -1,5 +1,5 @@
 <template>
-  <div @click="$emit('cancel')" :class="[`ms-dialog-overlay`, '--active']">
+  <div v-focustrap @click="$emit('cancel')" :class="[`ms-dialog-overlay`, '--active']">
     <div @click.stop="" class="ms-dialog">
       <h4 class="ms-dialog__title">{{ props.title }}</h4>
       <div
@@ -21,10 +21,16 @@
 
       <div class="ms-dialog__controls">
         <slot>
-          <MISAButton v-if="props.cancelText" @click="$emit('cancel')" type="secondary">{{
-            props.cancelText
+          <MISAButton
+            tabindex="2"
+            v-if="props.cancelText"
+            @click="$emit('cancel')"
+            type="secondary"
+            >{{ props.cancelText }}</MISAButton
+          >
+          <MISAButton tabindex="1" @click="$emit('ok')" type="primary">{{
+            props.okText
           }}</MISAButton>
-          <MISAButton @click="$emit('ok')" type="primary">{{ props.okText }}</MISAButton>
         </slot>
       </div>
     </div>
