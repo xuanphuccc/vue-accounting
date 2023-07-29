@@ -1,4 +1,5 @@
 ﻿using MISA.WebFresher052023.Application;
+using MISA.WebFresher052023.Domain;
 using MISA.WebFresher052023.Domain.Resources.Common;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
@@ -29,6 +30,7 @@ namespace MISA.WebFresher052023.Infrastructure
             // Tạo luồng download file
             var stream = new MemoryStream();
 
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
             using var excelPackage = new ExcelPackage(stream);
 
             // Định nghĩa một trang tính
@@ -44,7 +46,6 @@ namespace MISA.WebFresher052023.Infrastructure
             cellStyle.Style.Font.Name = "Arial";
 
             // Tổng số cột
-            var properties = typeof(TEntityDto).GetProperties();
             var bonusOrderCol = 1;
             var totalColumns = columns.ToList().Count + bonusOrderCol;
 
@@ -55,7 +56,7 @@ namespace MISA.WebFresher052023.Infrastructure
             titleRange.Style.Font.Size = 16;
             titleRange.Style.Font.Name = "Arial";
             titleRange.Style.Font.Bold = true;
-            titleRange.Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            titleRange.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             titleRange.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
             worksheet.Rows[1].Height = 28;
 
@@ -64,13 +65,15 @@ namespace MISA.WebFresher052023.Infrastructure
             var colPos = 2;
             worksheet.Cells[headerRow, 1].Value = CommonResource.Order;
 
+            var properties = typeof(TEntityDto).GetProperties();
+
             foreach (var column in columns)
             {
                 foreach (var property in properties)
                 {
                     if (property.Name.ToLower() == column.ToLower())
                     {
-                        worksheet.Cells[headerRow, colPos].Value = AttributeGetter.GetDisplayAttribute(property) + property.PropertyType.Name;
+                        worksheet.Cells[headerRow, colPos].Value = AttributeGetter.GetDisplayAttribute(property);
 
                         colPos++;
 
@@ -93,8 +96,13 @@ namespace MISA.WebFresher052023.Infrastructure
             var order = 1;
             foreach (var entityDto in entityDtos)
             {
+                // Tạo kiểu cho các ô và các hàng
+                worksheet.Cells[currentRow, 1, currentRow, totalColumns].StyleName = cellStyle.Name;
+                worksheet.Cells.AutoFitColumns();
+                worksheet.Rows[currentRow].Height = 28;
+
                 var currentCol = 2;
-                worksheet.Cells[currentRow, 1].Value = order;
+                worksheet.Cells[currentRow, 1].Value = order.ToString();
 
                 foreach (var column in columns)
                 {
@@ -102,17 +110,16 @@ namespace MISA.WebFresher052023.Infrastructure
                     {
                         if (property.Name.ToLower() == column.ToLower())
                         {
-                            worksheet.Cells[currentRow, currentCol].Value = property.GetValue(entityDto);
+                            var value = property.GetValue(entityDto);
+
+                            FormatData(worksheet, currentRow, currentCol, value);
 
                             currentCol++;
+
+                            break;
                         }
                     }
                 }
-
-                // Tạo kiểu cho các ô và các hàng
-                worksheet.Cells[currentRow, 1, currentRow, totalColumns].StyleName = cellStyle.Name;
-                worksheet.Cells.AutoFitColumns();
-                worksheet.Rows[currentRow].Height = 28;
 
                 currentRow++;
                 order++;
@@ -125,6 +132,32 @@ namespace MISA.WebFresher052023.Infrastructure
             var bytes = stream.ToArray();
 
             return bytes;
+        }
+
+        /// <summary>
+        /// Hàm định dạng dữ liệu khi xuất Excel
+        /// </summary>
+        /// <param name="worksheet">Trang tính</param>
+        /// <param name="row">Vị trí hàng của ô</param>
+        /// <param name="col">Vị trí cột của ô</param>
+        /// <param name="value">Giá trị của ô</param>
+        private void FormatData(ExcelWorksheet worksheet, int row, int col, object? value)
+        {
+            worksheet.Cells[row, col].Value = value;
+
+            switch (value)
+            {
+                case DateTime:
+                    worksheet.Cells[row, col].Value = ((DateTime)value).ToString("dd/MM/yyyy");
+                    worksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    break;
+                case Gender:
+                    worksheet.Cells[row, col].Value = (Gender)value == Gender.Male ?
+                        CommonResource.Male : (Gender)value == Gender.Female ? CommonResource.Female : CommonResource.Other;
+                    break;
+                default:
+                    break;
+            }
         }
 
         /// <summary>

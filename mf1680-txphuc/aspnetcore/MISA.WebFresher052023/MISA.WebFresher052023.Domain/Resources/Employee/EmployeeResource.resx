@@ -132,6 +132,9 @@
   <data name="DateOfBirth" xml:space="preserve">
     <value>Date of birth</value>
   </data>
+  <data name="DepartmentCode" xml:space="preserve">
+    <value>Department code</value>
+  </data>
   <data name="DepartmentName" xml:space="preserve">
     <value>Department name</value>
   </data>
@@ -148,7 +151,7 @@
     <value>LIST OF EMPLOYEES</value>
   </data>
   <data name="FullName" xml:space="preserve">
-    <value>Name</value>
+    <value>Employee name</value>
   </data>
   <data name="Gender" xml:space="preserve">
     <value>Gender</value>

@@ -40,6 +40,12 @@ namespace MISA.WebFresher052023.Application
         {
             var entity = await MapCreateDtoToEntityAsync(entityCreateDto);
 
+            if (entity is BaseAuditEntity baseAuditEntity)
+            {
+                baseAuditEntity.CreatedDate = DateTime.Now;
+                baseAuditEntity.CreatedBy = "Helloworld";
+            }
+
             var result = await _baseRepository.InsertAsync(entity);
 
             return result;
@@ -104,7 +110,7 @@ namespace MISA.WebFresher052023.Application
 
                 return result;
             }
-            catch (Exception ex)
+            catch (NotFoundException)
             {
                 await _unitOfWork.RollBackAsync();
                 throw;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Application
 {
-    public class ExcelRequestDto
+    public class ExcelExportRequestDto
     {
         /// <summary>
         /// Danh sách Id của các bản ghi muốn xuất Excel

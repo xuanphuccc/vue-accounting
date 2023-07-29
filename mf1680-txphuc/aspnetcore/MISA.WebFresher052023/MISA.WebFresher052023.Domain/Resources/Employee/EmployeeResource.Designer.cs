@@ -106,6 +106,15 @@ namespace MISA.WebFresher052023.Domain.Resources.Employee {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Department code.
+        /// </summary>
+        public static string DepartmentCode {
+            get {
+                return ResourceManager.GetString("DepartmentCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Department name.
         /// </summary>
         public static string DepartmentName {
@@ -151,7 +160,7 @@ namespace MISA.WebFresher052023.Domain.Resources.Employee {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to Employee name.
         /// </summary>
         public static string FullName {
             get {

@@ -56,7 +56,9 @@ namespace MISA.WebFresher052023.Infrastructure
             var bytes = ExportToExcelAsync(entityDtos, columns);
 
             return bytes;
-        } 
+        }
+
+
         #endregion
     }
 }

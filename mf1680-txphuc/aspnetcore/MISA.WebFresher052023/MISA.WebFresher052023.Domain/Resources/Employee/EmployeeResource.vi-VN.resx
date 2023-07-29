@@ -132,6 +132,9 @@
   <data name="DateOfBirth" xml:space="preserve">
     <value>Ngày sinh</value>
   </data>
+  <data name="DepartmentCode" xml:space="preserve">
+    <value>Mã đơn vị</value>
+  </data>
   <data name="DepartmentName" xml:space="preserve">
     <value>Tên đơn vị</value>
   </data>
