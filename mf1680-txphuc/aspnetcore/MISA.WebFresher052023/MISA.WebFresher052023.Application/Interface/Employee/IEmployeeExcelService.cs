@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Application
 {
-    public interface IEmployeeExcelService : IExcelService<EmployeeExcelDto>
+    public interface IEmployeeExcelService : IExcelService<EmployeeExcelDto, EmployeeExcelInsertDto>
     {
     }
 }

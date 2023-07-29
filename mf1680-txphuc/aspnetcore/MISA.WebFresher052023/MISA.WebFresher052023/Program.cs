@@ -3,7 +3,6 @@ using MISA.WebFresher052023.Application;
 using MISA.WebFresher052023;
 using MISA.WebFresher052023.Domain;
 using MISA.WebFresher052023.Infrastructure;
-using MySqlConnector;
 using System.Globalization;
 using MISA.WebFresher052023.Middleware;
 using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
@@ -91,6 +90,8 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+AppProvider.ContentRootPath = app.Services.GetService<IWebHostEnvironment>()?.ContentRootPath ?? "";
 
 app.UseRequestLocalization(localizationOptions);
 app.UseMiddleware<LocalizationMiddleware>();

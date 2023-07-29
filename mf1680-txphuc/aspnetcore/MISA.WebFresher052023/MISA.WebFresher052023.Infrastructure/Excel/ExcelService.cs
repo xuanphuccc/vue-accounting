@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Infrastructure
 {
-    public abstract class ExcelService<TEntity, TModel, TEntityDto> : ExcelCore<TEntityDto>, IExcelService<TEntityDto>
+    public abstract class ExcelService<TEntity, TModel, TEntityDto, TEntityExcelInsertDto> : ExcelCore<TEntityDto, TEntityExcelInsertDto>, IExcelService<TEntityDto, TEntityExcelInsertDto>
     {
         #region Fields
         protected readonly IBaseReadOnlyRepository<TEntity, TModel> _baseReadOnlyRepository;
@@ -36,7 +36,7 @@ namespace MISA.WebFresher052023.Infrastructure
             var entities = await _baseReadOnlyRepository.GetAllAsync();
             var entityDtos = _mapper.Map<IEnumerable<TEntityDto>>(entities);
 
-            var bytes = ExportToExcelAsync(entityDtos, columns);
+            var bytes = ExportToExcel(entityDtos, columns);
 
             return bytes;
         }
@@ -53,7 +53,7 @@ namespace MISA.WebFresher052023.Infrastructure
             var entities = await _baseReadOnlyRepository.GetListInfoByIdsAsync(entityIds);
             var entityDtos = _mapper.Map<IEnumerable<TEntityDto>>(entities);
 
-            var bytes = ExportToExcelAsync(entityDtos, columns);
+            var bytes = ExportToExcel(entityDtos, columns);
 
             return bytes;
         }

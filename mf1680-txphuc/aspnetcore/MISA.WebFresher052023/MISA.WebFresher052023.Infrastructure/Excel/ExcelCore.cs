@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Infrastructure
 {
-    public abstract class ExcelCore<TEntityDto> : IExcelCore<TEntityDto>
+    public abstract class ExcelCore<TEntityDto, TEntityExcelInsertDto> : IExcelCore<TEntityDto, TEntityExcelInsertDto>
     {
         protected string SheetName { get; set; } = "Sheet 1";
         protected string SheetTitle { get; set; } = "Sheet title";
@@ -25,7 +25,7 @@ namespace MISA.WebFresher052023.Infrastructure
         /// </summary>
         /// <returns>Mảng bytes của file Excel</returns>
         /// CreatedBy: txphuc (23/07/2023)
-        public byte[] ExportToExcelAsync(IEnumerable<TEntityDto> entityDtos, IEnumerable<string> columns)
+        public byte[] ExportToExcel(IEnumerable<TEntityDto> entityDtos, IEnumerable<string> columns)
         {
             // Tạo luồng download file
             var stream = new MemoryStream();
@@ -161,13 +161,131 @@ namespace MISA.WebFresher052023.Infrastructure
         }
 
         /// <summary>
-        /// Xử lý nhập file Excel
+        /// Lấy dữ liệu về tên các cột trong file Excel
+        /// và tên các thuộc tính của đối tượng cần map từ các cột đó
         /// </summary>
-        /// <returns>Mảng bytes của file Excel</returns>
-        /// CreatedBy: txphuc (23/07/2023)
-        public void ImportFromExcelAsync()
+        /// <param name="excelGetMapDto">Thông tin của file Excel</param>
+        /// <returns>
+        /// Gồm hai danh sách:
+        /// - Danh sách tên các cột trong file Excel và vị trí cột
+        /// - Danh sách tên các thuộc tính của đối tượng
+        /// </returns>
+        /// CreatedBy: txphuc (29/07/2023)
+        public ExcelMapResponseDto GetMapExcel(ExcelGetMapDto excelGetMapDto)
         {
-            throw new NotImplementedException();
+            //var fileName = excelGetMapRequestDto.FileName;
+            var fileName = "import" + ".xlsx";
+            var filePath = Path.Combine(AppProvider.ContentRootPath, "StaticFile", "Excel", fileName);
+            using var stream = new FileStream(filePath, FileMode.Open);
+
+            //var headerRowIndex = excelGetMapRequestDto.HeaderRowIndex;
+            var headerRowIndex = 8;
+            var sheetIndex = excelGetMapDto.SheetIndex ?? 0;
+
+            // Đọc file excel
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+            using var excelPackage = new ExcelPackage(stream);
+
+            var worksheet = excelPackage.Workbook.Worksheets[sheetIndex];
+            var colCount = worksheet.Dimension.Columns;
+
+            // Đọc các cột tiêu đề trong file Excel
+            List<ExcelColumnDto> excelColumns = new();
+
+            for (var col = 1; col <= colCount; col++)
+            {
+                var headerName = worksheet.Cells[headerRowIndex, col].Value.ToString();
+
+                var excelColumn = new ExcelColumnDto()
+                {
+                    ColumnName = headerName ?? "",
+                    Index = col,
+                };
+
+                excelColumns.Add(excelColumn);
+            }
+
+            // Đọc các Property của đối tượng cần mapping với các cột Excel
+            var properties = typeof(TEntityExcelInsertDto).GetProperties();
+            List<MappingColumnDto> mappingColumns = new();
+            foreach (var property in properties)
+            {
+                var mappingColumn = new MappingColumnDto()
+                {
+                    PropertyName = property.Name,
+                    DisplayName = AttributeGetter.GetDisplayAttribute(property),
+                };
+
+                mappingColumns.Add(mappingColumn);
+            }
+
+            var excelMapResponseDto = new ExcelMapResponseDto()
+            {
+                ExcelColumns = excelColumns,
+                MappingColumns = mappingColumns,
+            };
+
+            return excelMapResponseDto;
         }
+
+        /// <summary>
+        /// Đọc data từ file Excel và map sang đối tượng
+        /// </summary>
+        /// <param name="mapRequestDto">
+        /// Chứa thông tin về file Excel và danh sách hướng dẫn map
+        /// </param>
+        /// <returns>Danh sách các đối tượng đã đọc từ file Excel</returns>
+        public IEnumerable<TEntityExcelInsertDto> ReadExcelData(ExcelMapRequestDto mapRequestDto)
+        {
+            //var fileName = excelGetMapRequestDto.FileName;
+            var fileName = "import" + ".xlsx";
+            var filePath = Path.Combine(AppProvider.ContentRootPath, "StaticFile", "Excel", fileName);
+            using var stream = new FileStream(filePath, FileMode.Open);
+
+            //var headerRowIndex = excelGetMapRequestDto.HeaderRowIndex;
+            var headerRowIndex = 8;
+            var sheetIndex = mapRequestDto.SheetIndex ?? 0;
+
+            // Đọc file excel
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+            using var excelPackage = new ExcelPackage(stream);
+
+            var worksheet = excelPackage.Workbook.Worksheets[sheetIndex];
+            var rowCount = worksheet.Dimension.Rows;
+
+            // Lặp qua các dòng để lấy dữ liệu
+            List<TEntityExcelInsertDto> employeeExcelInsertDtos = new();
+            for (var row = headerRowIndex + 1; row <= rowCount; row++)
+            {
+                var employeeExcelInsertDto = GetEntityInsertDtoInstance();
+                var type = typeof(TEntityExcelInsertDto);
+
+                // Set giá trị cho đối tượng theo cấu hình đã được map
+                if (mapRequestDto.MappingConfigColumns != null)
+                {
+                    foreach (var mappingConfigCol in mapRequestDto.MappingConfigColumns)
+                    {
+                        var property = type.GetProperty(mappingConfigCol.PropertyName);
+                        if (property != null && property.CanWrite)
+                        {
+                            var value = worksheet.Cells[row, mappingConfigCol.MapIndex].Value;
+
+                            property.SetValue(employeeExcelInsertDto, value);
+                        }
+                    }
+                }
+
+                employeeExcelInsertDtos.Add(employeeExcelInsertDto);
+            }
+
+            return employeeExcelInsertDtos;
+        }
+
+        /// <summary>
+        /// Lấy instance của đối tượng để có thể gán giá trị cho đối tượng generic
+        /// </summary>
+        /// <returns>Instance của TEntityExcelInsertDto</returns>
+        /// CreatedBy: txphuc (29/07/2023)
+        protected abstract TEntityExcelInsertDto GetEntityInsertDtoInstance();
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Application.Interface
 {
-    public interface IExcelService<TEntityDto> : IExcelCore<TEntityDto>
+    public interface IExcelService<TEntityDto, TEntityExcelInsertDto> : IExcelCore<TEntityDto, TEntityExcelInsertDto>
     {
         /// <summary>
         /// Xuất toàn bộ danh sách theo các cột được chỉ định

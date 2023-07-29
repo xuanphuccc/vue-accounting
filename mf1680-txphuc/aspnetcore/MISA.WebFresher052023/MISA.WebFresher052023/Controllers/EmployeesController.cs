@@ -90,60 +90,7 @@ namespace MISA.WebFresher052023.Controllers
         [HttpPost("Excel/GetMap")]
         public IActionResult GetMap([FromBody] ExcelGetMapDto excelGetMapDto)
         {
-            //var fileName = excelGetMapRequestDto.FileName;
-            var fileName = "import" + ".xlsx";
-            var filePath = Path.Combine(_webhostEnvironment.ContentRootPath, "StaticFile", "Excel", fileName);
-
-            //var headerRowIndex = excelGetMapRequestDto.HeaderRowIndex;
-            var headerRowIndex = 8;
-            var sheetIndex = excelGetMapDto.SheetIndex ?? 0;
-
-            using var stream = new FileStream(filePath, FileMode.Open);
-
-            // Đọc file excel
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            using var excelPackage = new ExcelPackage(stream);
-
-            var worksheets = excelPackage.Workbook.Worksheets;
-
-            var worksheet = excelPackage.Workbook.Worksheets[sheetIndex];
-            var colCount = worksheet.Dimension.Columns;
-
-            // Đọc các cột tiêu đề trong file Excel
-            List<ExcelColumnDto> excelColumns = new();
-
-            for (var col = 1; col <= colCount; col++)
-            {
-                var headerName = worksheet.Cells[headerRowIndex, col].Value.ToString();
-
-                var excelColumn = new ExcelColumnDto()
-                {
-                    ColumnName = headerName ?? "",
-                    Index = col,
-                };
-
-                excelColumns.Add(excelColumn);
-            }
-
-            // Đọc các Property của đối tượng cần mapping với các cột Excel
-            var properties = typeof(EmployeeExcelInsertDto).GetProperties();
-            List<MappingColumnDto> mappingColumns = new();
-            foreach (var property in properties)
-            {
-                var mappingColumn = new MappingColumnDto()
-                {
-                    PropertyName = property.Name,
-                    DisplayName = AttributeGetter.GetDisplayAttribute(property),
-                };
-
-                mappingColumns.Add(mappingColumn);
-            }
-
-            var excelMapResponseDto = new ExcelMapResponseDto()
-            {
-                ExcelColumns = excelColumns,
-                MappingColumns = mappingColumns,
-            };
+            var excelMapResponseDto = _employeeExcelService.GetMapExcel(excelGetMapDto);
 
             return Ok(excelMapResponseDto);
         }
@@ -151,49 +98,7 @@ namespace MISA.WebFresher052023.Controllers
         [HttpPost("Excel/Validate")]
         public IActionResult ValidateData([FromBody] ExcelMapRequestDto mapRequestDto)
         {
-            //var fileName = excelGetMapRequestDto.FileName;
-            var fileName = "import" + ".xlsx";
-            var filePath = Path.Combine(_webhostEnvironment.ContentRootPath, "StaticFile", "Excel", fileName);
-
-            //var headerRowIndex = excelGetMapRequestDto.HeaderRowIndex;
-            var headerRowIndex = 8;
-            var sheetIndex = mapRequestDto.SheetIndex ?? 0;
-
-            using var stream = new FileStream(filePath, FileMode.Open);
-
-            // Đọc file excel
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            using var excelPackage = new ExcelPackage(stream);
-
-            var worksheets = excelPackage.Workbook.Worksheets;
-
-            var worksheet = excelPackage.Workbook.Worksheets[sheetIndex];
-            var rowCount = worksheet.Dimension.Rows;
-
-            // Lặp qua các dòng để lấy dữ liệu
-            List<EmployeeExcelInsertDto> employeeExcelInsertDtos = new();
-            for (var row = headerRowIndex + 1; row <= rowCount; row++)
-            {
-                var employeeExcelInsertDto = new EmployeeExcelInsertDto();
-                var type = typeof(EmployeeExcelInsertDto);
-
-                // Set giá trị cho đối tượng theo cấu hình đã được map
-                if(mapRequestDto.MappingConfigColumns != null)
-                {
-                    foreach (var mappingConfigCol in mapRequestDto.MappingConfigColumns)
-                    {
-                        var property = type.GetProperty(mappingConfigCol.PropertyName);
-                        if(property != null && property.CanWrite)
-                        {
-                            var value = worksheet.Cells[row, mappingConfigCol.MapIndex].Value;
-
-                            property.SetValue(employeeExcelInsertDto, value);
-                        }
-                    }
-                }
-
-                employeeExcelInsertDtos.Add(employeeExcelInsertDto);
-            }
+            var employeeExcelInsertDtos = _employeeExcelService.ReadExcelData(mapRequestDto);
 
             return Ok(employeeExcelInsertDtos);
         }
