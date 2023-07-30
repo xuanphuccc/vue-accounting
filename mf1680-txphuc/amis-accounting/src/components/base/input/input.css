@@ -35,7 +35,6 @@
 
 .ms-input:hover {
   background: var(--gray-100);
-  cursor: pointer;
 }
 
 .ms-input:focus {

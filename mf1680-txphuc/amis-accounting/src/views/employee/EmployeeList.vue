@@ -143,7 +143,7 @@
       <!-- Modal -->
       <Teleport to="#app">
         <MISADialog v-if="dialogState.active" v-bind="dialogState" @cancel="hideConfirmDialog">
-          <MISAButton tabindex="1" @click="hideConfirmDialog" type="secondary">{{
+          <MISAButton auto-focus tabindex="1" @click="hideConfirmDialog" type="secondary">{{
             MISAResource[globalStore.lang]?.Button?.Cancel
           }}</MISAButton>
           <MISAButton tabindex="2" @click="handleDeleteEmployee" type="danger">{{

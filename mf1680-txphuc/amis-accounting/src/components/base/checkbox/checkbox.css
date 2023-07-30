@@ -12,6 +12,13 @@
   border-color: var(--gray-500);
 }
 
+.ms-checkbox:focus-within {
+  outline: none;
+}
+.ms-checkbox:focus-within .ms-checkbox__check-mark {
+  outline: 3px solid var(--primary-color-200);
+}
+
 .ms-checkbox__label {
   line-height: 18px;
   padding-left: 8px;
@@ -43,7 +50,7 @@
   background-color: transparent;
   border-radius: 4px;
   border: 2px solid var(--gray-600);
-  transition: all 0.2s ease;
+  transition: background 0.2s ease;
 }
 
 .ms-checkbox__check-mark::after {

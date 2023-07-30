@@ -13,12 +13,14 @@
     >
       <template #header-controls>
         <MISACheckboxVue
+          tabindex="22"
           v-model="formData.isCustomer"
           :value="true"
           :checked="formData.isCustomer"
           :label="MISAResource[globalStore.lang]?.Page?.Employee?.IsCustomer?.Title"
         />
         <MISACheckboxVue
+          tabindex="23"
           v-model="formData.isSupplier"
           :value="true"
           :checked="formData.isSupplier"
@@ -34,7 +36,7 @@
                 <MISAFormGroup
                   :error-msg="errorMessages.employeeCode"
                   :label="MISAResource[globalStore.lang]?.Page?.Employee?.EmployeeCode?.Title"
-                  for="input-id"
+                  for="employee-code"
                   required-mark
                   space-bottom
                 >
@@ -43,7 +45,8 @@
                     v-model="formData.employeeCode"
                     @blur="validateEmployeeCode"
                     @input="errorMessages.employeeCode = null"
-                    id="input-id"
+                    id="employee-code"
+                    auto-focus
                   />
                 </MISAFormGroup>
               </MISACol>
@@ -51,7 +54,7 @@
                 <MISAFormGroup
                   :error-msg="errorMessages.fullName"
                   :label="MISAResource[globalStore.lang]?.Page?.Employee?.FullName?.Title"
-                  for="input-name"
+                  for="full-name"
                   required-mark
                   space-bottom
                 >
@@ -60,7 +63,7 @@
                     v-model="formData.fullName"
                     @blur="validateFullName"
                     @input="errorMessages.fullName = null"
-                    id="input-name"
+                    id="full-name"
                   />
                 </MISAFormGroup>
               </MISACol>
@@ -486,7 +489,7 @@ const handleValidateInputs = () => {
 const validateEmployeeCode = () => {
   try {
     const result = validator({
-      value: formData.value.employeeCode,
+      value: formData.value.employeeCode.trim(),
       rules: [
         {
           checker: required,
@@ -677,6 +680,7 @@ const generateData = () => {
   try {
     const data = {
       ...formData.value,
+      employeeCode: formData.value.employeeCode.trim(),
       dateOfBirth: formatDate(formData.value.dateOfBirth, "YYYY-MM-DD"),
       identityDate: formatDate(formData.value.identityDate, "YYYY-MM-DD"),
       gender: Number(formData.value.gender),

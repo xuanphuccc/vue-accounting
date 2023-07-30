@@ -65,7 +65,7 @@
 
 .navbar__sidebar-toggle {
   color: var(--secondary-text-color);
-  margin: 0 12px;
+  margin: 0 20px;
   cursor: pointer;
 }
 
@@ -86,7 +86,7 @@
   height: 100%;
   display: flex;
   align-items: center;
-  padding-right: 16px;
+  padding-right: 18px;
 }
 
 .navbar__button {

@@ -13,6 +13,7 @@
       { '--outline': isShowOutline },
     ]"
     :disabled="props.disabled"
+    ref="buttonRef"
   >
     <!-- Trạng thái loading -->
     <MISASpinner v-if="props.loading" absolute />
@@ -68,8 +69,15 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+
+  // Tự động focus vào button khi được mounted
+  autoFocus: {
+    type: Boolean,
+    default: false,
+  },
 });
 
+const buttonRef = ref(null);
 const isOpenDropdown = ref(false);
 const isShowOutline = ref(false);
 
@@ -97,6 +105,10 @@ const closeDropdown = () => {
  * Author: txphuc (25/06/2023)
  */
 onMounted(() => {
+  if (props.autoFocus && buttonRef.value) {
+    buttonRef.value.focus();
+  }
+
   document.addEventListener("click", closeDropdown);
 });
 

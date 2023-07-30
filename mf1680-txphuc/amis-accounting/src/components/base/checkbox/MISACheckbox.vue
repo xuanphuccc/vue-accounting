@@ -1,7 +1,12 @@
 <template>
-  <div @dblclick.stop="" @click.stop="handleChecked" class="ms-checkbox">
+  <div
+    @dblclick.stop=""
+    @click.stop="handleChecked"
+    @keydown.space="handleChecked"
+    class="ms-checkbox"
+  >
     <input :checked="!!props.checked" type="checkbox" class="ms-checkbox__input" />
-    <div class="ms-checkbox__check-mark"></div>
+    <div tabindex="-1" class="ms-checkbox__check-mark"></div>
 
     <div v-if="props.label" class="ms-checkbox__label">{{ props.label }}</div>
   </div>

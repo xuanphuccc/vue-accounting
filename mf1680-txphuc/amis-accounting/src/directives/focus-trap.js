@@ -6,16 +6,13 @@ import enums from "@/helper/enum";
  * Author: txphuc (26/07/2023)
  */
 const focusTrapDirective = (el) => {
+  let currentIndex = 0; // vị trí hiện tại của con trỏ
   let inputElements = el.querySelectorAll("[tabindex]:not([tabindex='-1'])");
 
   // Sắp xếp tăng dần theo thứ tự tabindex
   inputElements = Array.from(inputElements).sort(
     (prev, next) => prev.getAttribute("tabindex") - next.getAttribute("tabindex")
   );
-
-  // vị trí hiện tại của con trỏ
-  let currentIndex = 0;
-  inputElements[currentIndex]?.focus();
 
   // Gán sự kiện tab cho từng input
   Array.from(inputElements).forEach((input) => {
@@ -39,14 +36,11 @@ const focusTrapDirective = (el) => {
           }
         }
 
-        console.log(currentIndex);
         // Focus vào vị trí hiện tại
         e.preventDefault();
         inputElements[currentIndex]?.focus();
 
-        console.log(inputElements[currentIndex]);
-
-        // Select toàn bộ giá trị
+        // Select toàn bộ giá trị khi input được focus
         if (inputElements[currentIndex].value) {
           inputElements[currentIndex]?.select();
         }

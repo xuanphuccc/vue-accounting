@@ -28,7 +28,7 @@
             type="secondary"
             >{{ props.cancelText }}</MISAButton
           >
-          <MISAButton tabindex="1" @click="$emit('ok')" type="primary">{{
+          <MISAButton auto-focus tabindex="1" @click="$emit('ok')" type="primary">{{
             props.okText
           }}</MISAButton>
         </slot>
