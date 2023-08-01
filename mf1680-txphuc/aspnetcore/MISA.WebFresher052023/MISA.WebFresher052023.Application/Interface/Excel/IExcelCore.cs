@@ -13,7 +13,7 @@ namespace MISA.WebFresher052023.Application
         /// </summary>
         /// <returns>Mảng bytes của file Excel</returns>
         /// CreatedBy: txphuc (23/07/2023)
-        byte[] ExportToExcel(IEnumerable<TEntityDto> entityDtos, IEnumerable<string> columns);
+        byte[] ExportToExcel(IEnumerable<TEntityDto> entityDtos, IEnumerable<ExcelColumnDto> columns);
 
         /// <summary>
         /// Lấy dữ liệu về tên các cột trong file Excel

@@ -1,6 +1,7 @@
 ﻿using MISA.WebFresher052023.Application;
 using MISA.WebFresher052023.Domain;
 using MISA.WebFresher052023.Domain.Resources.Common;
+using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System;
@@ -17,15 +18,18 @@ namespace MISA.WebFresher052023.Infrastructure
 {
     public abstract class ExcelCore<TEntityDto, TEntityExcelInsertDto> : IExcelCore<TEntityDto, TEntityExcelInsertDto>
     {
+        #region Fields
         protected string SheetName { get; set; } = "Sheet 1";
         protected string SheetTitle { get; set; } = "Sheet title";
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Xử lý xuất file Excel
         /// </summary>
         /// <returns>Mảng bytes của file Excel</returns>
         /// CreatedBy: txphuc (23/07/2023)
-        public byte[] ExportToExcel(IEnumerable<TEntityDto> entityDtos, IEnumerable<string> columns)
+        public byte[] ExportToExcel(IEnumerable<TEntityDto> entityDtos, IEnumerable<ExcelColumnDto> columns)
         {
             // Tạo luồng download file
             var stream = new MemoryStream();
@@ -61,35 +65,32 @@ namespace MISA.WebFresher052023.Infrastructure
             worksheet.Rows[1].Height = 28;
 
             // Tên các cột theo danh sách và thứ tự được cung cấp
-            var headerRow = 3;
-            var colPos = 2;
-            worksheet.Cells[headerRow, 1].Value = CommonResource.Order;
+            var headerRowIndex = 3;
+            var orderColIndex = 1;
+            worksheet.Cells[headerRowIndex, orderColIndex].Value = CommonResource.Order;
 
             var properties = typeof(TEntityDto).GetProperties();
 
-            foreach (var column in columns)
+            foreach (var property in properties)
             {
-                foreach (var property in properties)
+                // Tìm thông tin cột tương ứng với tên thuộc tính
+                var column = columns.FirstOrDefault(col => col.ColumnName.ToLower() == property.Name.ToLower());
+
+                // Ghi tên cột ra file Excel
+                if (column != null)
                 {
-                    if (property.Name.ToLower() == column.ToLower())
-                    {
-                        worksheet.Cells[headerRow, colPos].Value = AttributeGetter.GetDisplayAttribute(property);
-
-                        colPos++;
-
-                        break;
-                    }
+                    worksheet.Cells[headerRowIndex, column.Index + orderColIndex].Value = AttributeGetter.GetDisplayAttribute(property);
                 }
             }
 
             // Style cho tên cột
-            using var columnNameRange = worksheet.Cells[headerRow, 1, headerRow, totalColumns];
+            using var columnNameRange = worksheet.Cells[headerRowIndex, 1, headerRowIndex, totalColumns];
             columnNameRange.StyleName = cellStyle.Name;
             columnNameRange.Style.Font.Bold = true;
             columnNameRange.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             columnNameRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
             columnNameRange.Style.Fill.BackgroundColor.SetColor(Color.LightGray);
-            worksheet.Rows[headerRow].Height = 28;
+            worksheet.Rows[headerRowIndex].Height = 28;
 
             // Nội dung
             var currentRow = 4;
@@ -101,23 +102,19 @@ namespace MISA.WebFresher052023.Infrastructure
                 worksheet.Cells.AutoFitColumns();
                 worksheet.Rows[currentRow].Height = 28;
 
-                var currentCol = 2;
-                worksheet.Cells[currentRow, 1].Value = order.ToString();
+                // Số thứ tự
+                worksheet.Cells[currentRow, orderColIndex].Value = order;
 
-                foreach (var column in columns)
+                foreach (var property in properties)
                 {
-                    foreach (var property in properties)
+                    // Tìm thông tin cột tương ứng với tên thuộc tính
+                    var column = columns.FirstOrDefault(col => col.ColumnName.ToLower() == property.Name.ToLower());
+
+                    if (column != null)
                     {
-                        if (property.Name.ToLower() == column.ToLower())
-                        {
-                            var value = property.GetValue(entityDto);
+                        var value = property.GetValue(entityDto);
 
-                            FormatData(worksheet, currentRow, currentCol, value);
-
-                            currentCol++;
-
-                            break;
-                        }
+                        FormatData(worksheet, currentRow, column.Index + orderColIndex, value, column.Align);
                     }
                 }
 
@@ -141,21 +138,35 @@ namespace MISA.WebFresher052023.Infrastructure
         /// <param name="row">Vị trí hàng của ô</param>
         /// <param name="col">Vị trí cột của ô</param>
         /// <param name="value">Giá trị của ô</param>
-        private void FormatData(ExcelWorksheet worksheet, int row, int col, object? value)
+        private void FormatData(ExcelWorksheet worksheet, int row, int col, object? value, string? align)
         {
-            worksheet.Cells[row, col].Value = value;
+            var horizontalAlign = ExcelHorizontalAlignment.Left;
+
+            switch (align)
+            {
+                case "right":
+                    horizontalAlign = ExcelHorizontalAlignment.Right;
+                    break;
+                case "center":
+                    horizontalAlign = ExcelHorizontalAlignment.Center;
+                    break;
+                default:
+                    break;
+            }
+
+            worksheet.Cells[row, col].Style.HorizontalAlignment = horizontalAlign;
 
             switch (value)
             {
                 case DateTime:
                     worksheet.Cells[row, col].Value = ((DateTime)value).ToString("dd/MM/yyyy");
-                    worksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     break;
                 case Gender:
                     worksheet.Cells[row, col].Value = (Gender)value == Gender.Male ?
                         CommonResource.Male : (Gender)value == Gender.Female ? CommonResource.Female : CommonResource.Other;
                     break;
                 default:
+                    worksheet.Cells[row, col].Value = value;
                     break;
             }
         }
@@ -287,5 +298,6 @@ namespace MISA.WebFresher052023.Infrastructure
         /// <returns>Instance của TEntityExcelInsertDto</returns>
         /// CreatedBy: txphuc (29/07/2023)
         protected abstract TEntityExcelInsertDto GetEntityInsertDtoInstance();
+        #endregion
     }
 }

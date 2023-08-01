@@ -70,7 +70,7 @@ namespace MISA.WebFresher052023.Domain.Resources.Employee {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bank account.
+        ///   Looks up a localized string similar to Account number.
         /// </summary>
         public static string BankAccount {
             get {
@@ -115,7 +115,7 @@ namespace MISA.WebFresher052023.Domain.Resources.Employee {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Department name.
+        ///   Looks up a localized string similar to Department.
         /// </summary>
         public static string DepartmentName {
             get {
@@ -187,7 +187,7 @@ namespace MISA.WebFresher052023.Domain.Resources.Employee {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Identity number.
+        ///   Looks up a localized string similar to ID number.
         /// </summary>
         public static string IdentityNumber {
             get {
@@ -241,7 +241,7 @@ namespace MISA.WebFresher052023.Domain.Resources.Employee {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position name.
+        ///   Looks up a localized string similar to Position.
         /// </summary>
         public static string PositionName {
             get {

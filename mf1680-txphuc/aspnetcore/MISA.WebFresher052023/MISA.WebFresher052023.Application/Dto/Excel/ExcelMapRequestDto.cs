@@ -32,28 +32,4 @@ namespace MISA.WebFresher052023.Application
         [Required]
         public List<MappingConfigColumnDto>? MappingConfigColumns { get; set; }
     }
-
-    public class MappingConfigColumnDto
-    {
-        /// <summary>
-        /// Tên trường dữ liệu
-        /// </summary>
-        /// CreatedBy: txphuc (29/07/2023)
-        [Required]
-        public string PropertyName { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Thứ tự cột dữ liệu cần lấy trong file Excel
-        /// </summary>
-        /// CreatedBy: txphuc (29/07/2023)
-        [Required]
-        public int MapIndex { get; set; }
-
-        /// <summary>
-        /// Là thuộc tính có dữ liệu trong file Excel hay không
-        /// </summary>
-        /// CreatedBy: txphuc (29/07/2023)
-        [Required]
-        public bool Show { get; set; }
-    }
 }

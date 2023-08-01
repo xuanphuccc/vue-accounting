@@ -43,7 +43,7 @@ namespace MISA.WebFresher052023.Application
             if (entity is BaseAuditEntity baseAuditEntity)
             {
                 baseAuditEntity.CreatedDate = DateTime.Now;
-                baseAuditEntity.CreatedBy = "Helloworld";
+                baseAuditEntity.CreatedBy = "txphuc";
             }
 
             var result = await _baseRepository.InsertAsync(entity);

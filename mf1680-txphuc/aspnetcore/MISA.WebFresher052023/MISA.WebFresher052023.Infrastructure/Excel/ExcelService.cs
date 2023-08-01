@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MISA.WebFresher052023.Application;
 using MISA.WebFresher052023.Application.Interface;
 using MISA.WebFresher052023.Domain;
 using System;
@@ -31,7 +32,7 @@ namespace MISA.WebFresher052023.Infrastructure
         /// <param name="columns">Danh sách các cột muốn hiển thị</param>
         /// <returns>Mảng bytes của file Excel</returns>
         /// CreatedBy: txphuc (26/07/2023)
-        public async Task<byte[]> ExportAll(IEnumerable<string> columns)
+        public async Task<byte[]> ExportAll(IEnumerable<ExcelColumnDto> columns)
         {
             var entities = await _baseReadOnlyRepository.GetAllAsync();
             var entityDtos = _mapper.Map<IEnumerable<TEntityDto>>(entities);
@@ -48,7 +49,7 @@ namespace MISA.WebFresher052023.Infrastructure
         /// <param name="columns">Danh sách các cột muốn hiển thị</param>
         /// <returns>Mảng bytes của file Excel</returns>
         /// CreatedBy: txphuc (26/07/2023)
-        public async Task<byte[]> ExportList(IEnumerable<Guid> entityIds, IEnumerable<string> columns)
+        public async Task<byte[]> ExportList(IEnumerable<Guid> entityIds, IEnumerable<ExcelColumnDto> columns)
         {
             var entities = await _baseReadOnlyRepository.GetListInfoByIdsAsync(entityIds);
             var entityDtos = _mapper.Map<IEnumerable<TEntityDto>>(entities);

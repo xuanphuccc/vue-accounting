@@ -121,10 +121,10 @@
     <value>Địa chỉ</value>
   </data>
   <data name="BankAccount" xml:space="preserve">
-    <value>Số tài khoản ngân hàng</value>
+    <value>Số tài khoản</value>
   </data>
   <data name="BankBranch" xml:space="preserve">
-    <value>Chi nhánh</value>
+    <value>Chi nhánh TK ngân hàng</value>
   </data>
   <data name="BankName" xml:space="preserve">
     <value>Tên ngân hàng</value>
@@ -136,7 +136,7 @@
     <value>Mã đơn vị</value>
   </data>
   <data name="DepartmentName" xml:space="preserve">
-    <value>Tên đơn vị</value>
+    <value>Đơn vị</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>Email</value>
@@ -160,7 +160,7 @@
     <value>Ngày cấp</value>
   </data>
   <data name="IdentityNumber" xml:space="preserve">
-    <value>Số Chứng minh nhân dân</value>
+    <value>Số CMND</value>
   </data>
   <data name="IdentityPlace" xml:space="preserve">
     <value>Nơi cấp</value>

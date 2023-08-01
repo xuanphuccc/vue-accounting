@@ -7,20 +7,26 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Application
 {
-    public class ExcelMapResponseDto
+    public class ExcelColumnDto
     {
         /// <summary>
-        /// Danh sách cột tiêu đề trong file Excel
+        /// Tên cột tiêu đề trong file Excel
         /// </summary>
         /// CreatedBy: txphuc (29/07/2023)
         [Required]
-        public List<ExcelColumnDto>? ExcelColumns { get; set; }
+        public string ColumnName { get; set; } = string.Empty;
 
         /// <summary>
-        /// Danh sách thuộc tính cần mapping dữ liệu
+        /// Vị trí cột trong file Excel
         /// </summary>
         /// CreatedBy: txphuc (29/07/2023)
         [Required]
-        public List<MappingColumnDto>? MappingColumns { get; set; }
+        public int Index { get; set; }
+
+        /// <summary>
+        /// Căn lề của dữ liệu
+        /// </summary>
+        /// CreatedBy: txphuc (31/07/2023)
+        public string? Align { get; set; } = "left";
     }
 }
