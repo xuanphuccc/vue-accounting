@@ -9,7 +9,7 @@ const resourceVn = {
   ErrorMessage: {
     1000: "Thông tin nhập liệu không hợp lệ",
     1001: "Không tìm thấy tài nguyên",
-    1002: "Mã đã tồn tại",
+    1002: "Mã <@code> đã tồn tại trong hệ thống, vui lòng kiểm tra lại",
     1003: "Lỗi hệ thống, vui lòng thử lại sau",
   },
 
@@ -111,7 +111,7 @@ const resourceVn = {
     Account: "Tài khoản",
     Close: "Đóng",
     ExportExcel: "Xuất ra Excel",
-    Setting: "Cài đặt",
+    Setting: "Tuỳ chỉnh cột",
   },
 
   Text: {
@@ -174,6 +174,7 @@ const resourceVn = {
         CodeFormat: "Mã phải có dạng NV-1000 +",
         EmailFormat: "Email không đúng định dạng",
         MobilePhoneFormat: "ĐT di động không đúng định dạng",
+        MaxLength: "Không nhập quá @char ký tự",
       },
 
       EmployeeCode: {

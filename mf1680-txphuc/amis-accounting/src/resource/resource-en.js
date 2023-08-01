@@ -9,7 +9,7 @@ const resourceEn = {
   ErrorMessage: {
     1000: "Invalid data input",
     1001: "Resource not found",
-    1002: "The code already exists",
+    1002: "The code <@code> already exists in the system, please check again.",
     1003: "System error, please try again later",
   },
 
@@ -111,7 +111,7 @@ const resourceEn = {
     Account: "Account",
     Close: "Close",
     ExportExcel: "Export to Excel",
-    Setting: "Setting",
+    Setting: "Customize columns",
   },
 
   Text: {
@@ -174,6 +174,7 @@ const resourceEn = {
         CodeFormat: "Code format is NV-1000 +",
         EmailFormat: "Email invalidate",
         MobilePhoneFormat: "Mobile phone invalidate",
+        MaxLength: "Max @char characters",
       },
 
       EmployeeCode: {

@@ -40,10 +40,11 @@
                   <MISAInput
                     tabindex="1"
                     v-model="formData.employeeCode"
-                    @blur="validateEmployeeCode"
+                    @blur="errorMessages.employeeCode = validateEmployeeCode(formData.employeeCode)"
                     @input="errorMessages.employeeCode = null"
                     id="employee-code"
                     auto-focus
+                    ref="employeeCodeRef"
                   />
                 </MISAFormGroup>
               </MISACol>
@@ -58,15 +59,16 @@
                   <MISAInput
                     tabindex="2"
                     v-model="formData.fullName"
-                    @blur="validateFullName"
+                    @blur="errorMessages.fullName = validateFullName(formData.fullName)"
                     @input="errorMessages.fullName = null"
                     id="full-name"
+                    ref="fullNameRef"
                   />
                 </MISAFormGroup>
               </MISACol>
               <MISACol span="12">
                 <MISAFormGroup
-                  :error-msg="errorMessages.department"
+                  :error-msg="errorMessages.departmentId"
                   :label="MISAResource[globalStore.lang]?.Page?.Employee?.Department?.Title"
                   for="input-department"
                   required-mark
@@ -75,11 +77,12 @@
                   <MISASelect
                     tabindex="3"
                     v-model="formData.departmentId"
-                    @close="validateDepartment"
+                    @close="errorMessages.departmentId = validateDepartment(formData.departmentId)"
                     :options="departmentOptions"
                     id="input-department"
                     :placeholder="MISAResource[globalStore.lang]?.PlaceHolder?.SelectAValue"
                     clear-icon
+                    ref="departmentRef"
                   />
                 </MISAFormGroup>
               </MISACol>
@@ -148,6 +151,7 @@
               </MISACol>
               <MISACol span="7">
                 <MISAFormGroup
+                  :error-msg="errorMessages.identityNumber"
                   :tooltip="MISAResource[globalStore.lang]?.Page?.Employee?.IdentityNumber?.Desc"
                   :label="MISAResource[globalStore.lang]?.Page?.Employee?.IdentityNumber?.Title"
                   for="input-identity-number"
@@ -156,7 +160,12 @@
                   <MISAInput
                     tabindex="9"
                     v-model="formData.identityNumber"
+                    @blur="
+                      errorMessages.identityNumber = validateIdentityNumber(formData.identityNumber)
+                    "
+                    @input="errorMessages.identityNumber = null"
                     id="input-identity-number"
+                    ref="identityNumberRef"
                   />
                 </MISAFormGroup>
               </MISACol>
@@ -176,6 +185,7 @@
               </MISACol>
               <MISACol span="12">
                 <MISAFormGroup
+                  :error-msg="errorMessages.identityPlace"
                   :label="MISAResource[globalStore.lang]?.Page?.Employee?.IdentityPlace?.Title"
                   for="input-identity-place"
                   space-bottom
@@ -183,7 +193,12 @@
                   <MISAInput
                     tabindex="11"
                     v-model="formData.identityPlace"
+                    @blur="
+                      errorMessages.identityPlace = validateIdentityPlace(formData.identityPlace)
+                    "
+                    @input="errorMessages.identityPlace = null"
                     id="input-identity-place"
+                    ref="identityPlaceRef"
                   />
                 </MISAFormGroup>
               </MISACol>
@@ -194,11 +209,19 @@
         <MISARow :gutter="{ x: 8 }">
           <MISACol span="12">
             <MISAFormGroup
+              :error-msg="errorMessages.address"
               :label="MISAResource[globalStore.lang]?.Page?.Employee?.Address?.Title"
               for="input-address"
               space-bottom
             >
-              <MISAInput tabindex="12" v-model="formData.address" id="input-address" />
+              <MISAInput
+                tabindex="12"
+                v-model="formData.address"
+                @blur="errorMessages.address = validateAddress(formData.address)"
+                @input="errorMessages.address = null"
+                id="input-address"
+                ref="addressRef"
+              />
             </MISAFormGroup>
           </MISACol>
         </MISARow>
@@ -215,15 +238,19 @@
               <MISAInput
                 tabindex="13"
                 v-model="formData.mobilePhoneNumber"
-                @blur="validateMobilePhone"
+                @blur="
+                  errorMessages.mobilePhoneNumber = validateMobilePhone(formData.mobilePhoneNumber)
+                "
                 @input="errorMessages.mobilePhoneNumber = null"
                 id="input-mobile-phone"
+                ref="mobilePhoneNumberRef"
               />
             </MISAFormGroup>
           </MISACol>
           <MISACol span="3">
             <MISAFormGroup
               :tooltip="MISAResource[globalStore.lang]?.Page?.Employee?.LandlinePhone?.Desc"
+              :error-msg="errorMessages.landlineNumber"
               :label="MISAResource[globalStore.lang]?.Page?.Employee?.LandlinePhone?.Title"
               for="input-landline-phone"
               space-bottom
@@ -231,7 +258,12 @@
               <MISAInput
                 tabindex="14"
                 v-model="formData.landlineNumber"
+                @blur="
+                  errorMessages.landlineNumber = validateLandlineNumber(formData.landlineNumber)
+                "
+                @input="errorMessages.landlineNumber = null"
                 id="input-landline-phone"
+                ref="landlineNumberRef"
               />
             </MISAFormGroup>
           </MISACol>
@@ -245,9 +277,10 @@
               <MISAInput
                 tabindex="15"
                 v-model="formData.email"
-                @blur="validateEmail"
+                @blur="errorMessages.email = validateEmail(formData.email)"
                 @input="errorMessages.email = null"
                 id="input-email"
+                ref="emailRef"
               />
             </MISAFormGroup>
           </MISACol>
@@ -256,26 +289,53 @@
         <MISARow :gutter="{ x: 8 }">
           <MISACol span="3">
             <MISAFormGroup
+              :error-msg="errorMessages.bankAccount"
               :label="MISAResource[globalStore.lang]?.Page?.Employee?.BankAccount?.Title"
               for="bank-account"
+              space-bottom
             >
-              <MISAInput tabindex="16" v-model="formData.bankAccount" id="bank-account" />
+              <MISAInput
+                tabindex="16"
+                v-model="formData.bankAccount"
+                @blur="errorMessages.bankAccount = validateBankAccount(formData.bankAccount)"
+                @input="errorMessages.bankAccount = null"
+                id="bank-account"
+                ref="bankAccountRef"
+              />
             </MISAFormGroup>
           </MISACol>
           <MISACol span="3">
             <MISAFormGroup
+              :error-msg="errorMessages.bankName"
               :label="MISAResource[globalStore.lang]?.Page?.Employee?.BankName?.Title"
               for="bank-name"
+              space-bottom
             >
-              <MISAInput tabindex="17" v-model="formData.bankName" id="bank-name" />
+              <MISAInput
+                tabindex="17"
+                v-model="formData.bankName"
+                @blur="errorMessages.bankName = validateBankName(formData.bankName)"
+                @input="errorMessages.bankName = null"
+                id="bank-name"
+                ref="bankNameRef"
+              />
             </MISAFormGroup>
           </MISACol>
           <MISACol span="3">
             <MISAFormGroup
+              :error-msg="errorMessages.bankBranch"
               :label="MISAResource[globalStore.lang]?.Page?.Employee?.BankBranch?.Title"
               for="branch"
+              space-bottom
             >
-              <MISAInput tabindex="18" v-model="formData.bankBranch" id="branch" />
+              <MISAInput
+                tabindex="18"
+                v-model="formData.bankBranch"
+                @blur="errorMessages.bankBranch = validateBankBranch(formData.bankBranch)"
+                @input="errorMessages.bankBranch = null"
+                id="branch"
+                ref="bankBranchRef"
+              />
             </MISAFormGroup>
           </MISACol>
         </MISARow>
@@ -372,7 +432,21 @@ import { useEmployeeStore } from "@/stores/employee-store";
 import { useToastStore } from "@/stores/toast-store";
 import enums from "@/helper/enum";
 import MISAResource from "@/resource/resource";
-import { validator, required, codeFormat, email, mobilePhoneFormat } from "@/helper/validator";
+
+import {
+  validateEmployeeCode,
+  validateFullName,
+  validateDepartment,
+  validateIdentityNumber,
+  validateIdentityPlace,
+  validateAddress,
+  validateMobilePhone,
+  validateLandlineNumber,
+  validateEmail,
+  validateBankAccount,
+  validateBankName,
+  validateBankBranch,
+} from "@/validate/validate-employee";
 
 const emit = defineEmits(["submit"]);
 
@@ -425,14 +499,35 @@ const initialFormData = {
 };
 const formData = ref({ ...initialFormData });
 
+// ---- Thông báo lỗi validate ----
 const errorMessages = ref({
   employeeCode: null,
   fullName: null,
-  department: null,
+  departmentId: null,
+  identityNumber: null,
+  identityPlace: null,
+  address: null,
   mobilePhoneNumber: null,
   landlineNumber: null,
   email: null,
+  bankAccount: null,
+  bankName: null,
+  bankBranch: null,
 });
+
+// ---- Ref của các input cần validate ----
+const employeeCodeRef = ref(null);
+const fullNameRef = ref(null);
+const departmentRef = ref(null);
+const identityNumberRef = ref(null);
+const identityPlaceRef = ref(null);
+const addressRef = ref(null);
+const mobilePhoneNumberRef = ref(null);
+const landlineNumberRef = ref(null);
+const emailRef = ref(null);
+const bankAccountRef = ref(null);
+const bankNameRef = ref(null);
+const bankBranchRef = ref(null);
 
 const modifiedInput = ref(false);
 const isLoadData = ref(false);
@@ -557,136 +652,109 @@ const confirmChangeOnCloseForm = () => {
  */
 const handleValidateInputs = () => {
   try {
-    const employeeResult = validateEmployeeCode();
-    const fullNameResult = validateFullName();
-    const departmentResult = validateDepartment();
-    const emailResult = validateEmail();
+    const inputRefs = [
+      {
+        value: formData.value.employeeCode,
+        validator: validateEmployeeCode,
+        ref: employeeCodeRef.value,
+        errorIndex: "employeeCode",
+      },
+      {
+        value: formData.value.fullName,
+        validator: validateFullName,
+        ref: fullNameRef.value,
+        errorIndex: "fullName",
+      },
+      {
+        value: formData.value.departmentId,
+        validator: validateDepartment,
+        ref: departmentRef.value,
+        errorIndex: "departmentId",
+      },
+      {
+        value: formData.value.identityNumber,
+        validator: validateIdentityNumber,
+        ref: identityNumberRef.value,
+        errorIndex: "identityNumber",
+      },
+      {
+        value: formData.value.identityPlace,
+        validator: validateIdentityPlace,
+        ref: identityPlaceRef.value,
+        errorIndex: "identityPlace",
+      },
+      {
+        value: formData.value.address,
+        validator: validateAddress,
+        ref: addressRef.value,
+        errorIndex: "address",
+      },
+      {
+        value: formData.value.mobilePhoneNumber,
+        validator: validateMobilePhone,
+        ref: mobilePhoneNumberRef.value,
+        errorIndex: "mobilePhoneNumber",
+      },
+      {
+        value: formData.value.landlineNumber,
+        validator: validateLandlineNumber,
+        ref: landlineNumberRef.value,
+        errorIndex: "landlineNumber",
+      },
+      {
+        value: formData.value.email,
+        validator: validateEmail,
+        ref: emailRef.value,
+        errorIndex: "email",
+      },
+      {
+        value: formData.value.bankAccount,
+        validator: validateBankAccount,
+        ref: bankAccountRef.value,
+        errorIndex: "bankAccount",
+      },
+      {
+        value: formData.value.bankName,
+        validator: validateBankName,
+        ref: bankNameRef.value,
+        errorIndex: "bankName",
+      },
+      {
+        value: formData.value.bankBranch,
+        validator: validateBankBranch,
+        ref: bankBranchRef.value,
+        errorIndex: "bankBranch",
+      },
+    ];
 
-    return employeeResult && fullNameResult && departmentResult && emailResult;
-  } catch (error) {
-    console.warn(error);
-    return false;
-  }
-};
+    // Chứa tất cả thông báo lỗi
+    const errorMessagesObj = {};
+    // Kết quả validate toàn bộ input
+    let result = true;
+    // Đánh dấu chỉ một input lỗi được focus
+    let focusFlag = 0;
 
-/**
- * Description: Hàm validate employee code
- * Author: txphuc (01/07/2023)
- */
-const validateEmployeeCode = () => {
-  try {
-    const result = validator({
-      value: formData.value.employeeCode.trim(),
-      rules: [
-        {
-          checker: required,
-          errorMsg: MISAResource[globalStore.lang]?.Page?.Employee?.Validate?.EmployeeCode,
-        },
-        {
-          checker: codeFormat,
-          errorMsg: MISAResource[globalStore.lang]?.Page?.Employee?.Validate?.CodeFormat,
-        },
-      ],
+    inputRefs.forEach((input) => {
+      const message = input.validator(input.value);
+
+      // Lấy thông báo lỗi
+      errorMessagesObj[input.errorIndex] = message;
+
+      if (message) {
+        if (input.ref && focusFlag !== 1) {
+          // Focus vào input lỗi đầu tiên
+          input.ref.focus();
+          focusFlag = 1;
+        }
+
+        result = false;
+      }
     });
 
-    errorMessages.value.employeeCode = result;
-    return !result;
-  } catch (error) {
-    console.warn(error);
-    return false;
-  }
-};
+    // Hiển thị tất cả thông báo lỗi
+    errorMessages.value = errorMessagesObj;
 
-/**
- * Description: Hàm validate full name
- * Author: txphuc (01/07/2023)
- */
-const validateFullName = () => {
-  try {
-    const result = validator({
-      value: formData.value.fullName,
-      rules: [
-        {
-          checker: required,
-          errorMsg: MISAResource[globalStore.lang]?.Page?.Employee?.Validate?.FullName,
-        },
-      ],
-    });
-
-    errorMessages.value.fullName = result;
-    return !result;
-  } catch (error) {
-    console.warn(error);
-    return false;
-  }
-};
-
-/**
- * Description: Hàm validate department
- * Author: txphuc (01/07/2023)
- */
-const validateDepartment = () => {
-  try {
-    const result = validator({
-      value: formData.value.departmentId,
-      rules: [
-        {
-          checker: required,
-          errorMsg: MISAResource[globalStore.lang]?.Page?.Employee?.Validate?.Department,
-        },
-      ],
-    });
-
-    errorMessages.value.department = result;
-    return !result;
-  } catch (error) {
-    console.warn(error);
-    return false;
-  }
-};
-
-/**
- * Description: Hàm validate email
- * Author: txphuc (24/07/2023)
- */
-const validateEmail = () => {
-  try {
-    const result = validator({
-      value: formData.value.email,
-      rules: [
-        {
-          checker: email,
-          errorMsg: MISAResource[globalStore.lang]?.Page?.Employee?.Validate?.EmailFormat,
-        },
-      ],
-    });
-
-    errorMessages.value.email = result;
-    return !result;
-  } catch (error) {
-    console.warn(error);
-    return false;
-  }
-};
-
-/**
- * Description: Hàm validate số điện thoại di động
- * Author: txphuc (24/07/2023)
- */
-const validateMobilePhone = () => {
-  try {
-    const result = validator({
-      value: formData.value.mobilePhoneNumber,
-      rules: [
-        {
-          checker: mobilePhoneFormat,
-          errorMsg: MISAResource[globalStore.lang]?.Page?.Employee?.Validate?.MobilePhoneFormat,
-        },
-      ],
-    });
-
-    errorMessages.value.mobilePhoneNumber = result;
-    return !result;
+    return result;
   } catch (error) {
     console.warn(error);
     return false;
@@ -739,8 +807,10 @@ const handleSubmitForm = async (isContinue = true) => {
       } else if (employeeStore.mode === enums.form.mode.UPDATE) {
         result = await handleUpdateEmployee();
 
-        // Reset lại trạng thái form
-        modifiedInput.value = false;
+        if (result) {
+          // Reset lại trạng thái form
+          modifiedInput.value = false;
+        }
       } else if (employeeStore.mode === enums.form.mode.DUPLICATE) {
         result = await handleDuplicateEmployee();
       }
@@ -750,6 +820,11 @@ const handleSubmitForm = async (isContinue = true) => {
       // Reset intpus và reload bảng
       await resetInputs();
       emit("submit");
+
+      // Focus vào ô đầu tiên
+      if (employeeCodeRef.value) {
+        employeeCodeRef.value.focus();
+      }
     } else if (result) {
       // Đóng form và reload lại bảng
       employeeStore.closeForm();
@@ -806,12 +881,7 @@ const handleCreateEmployee = async () => {
     console.warn(error);
 
     // Hiện dialog báo lỗi
-    errorDialogState.value = {
-      active: true,
-      type: "error",
-      title: MISAResource[globalStore.lang]?.Dialog?.ErrorTitle,
-      description: MISAResource[globalStore.lang]?.ErrorMessage[error?.response?.data?.ErrorCode],
-    };
+    showErrorDialog(error);
 
     return false;
   }
@@ -893,12 +963,7 @@ const handleUpdateEmployee = async () => {
     console.warn(error);
 
     // Hiện dialog báo lỗi
-    errorDialogState.value = {
-      active: true,
-      type: "error",
-      title: MISAResource[globalStore.lang]?.Dialog?.ErrorTitle,
-      description: MISAResource[globalStore.lang]?.ErrorMessage[error?.response?.data?.ErrorCode],
-    };
+    showErrorDialog(error);
 
     return false;
   }
@@ -926,15 +991,28 @@ const handleDuplicateEmployee = async () => {
     console.warn(error);
 
     // Hiện dialog báo lỗi
-    errorDialogState.value = {
-      active: true,
-      type: "error",
-      title: MISAResource[globalStore.lang]?.Dialog?.ErrorTitle,
-      description: MISAResource[globalStore.lang]?.ErrorMessage[error?.response?.data?.ErrorCode],
-    };
+    showErrorDialog(error);
 
     return false;
   }
+};
+
+/**
+ * Description: Xử lý hiện thông báo lỗi
+ * Author: txphuc (01/08/2023)
+ */
+const showErrorDialog = (error) => {
+  const dialogData = {
+    active: true,
+    type: "error",
+    title: MISAResource[globalStore.lang]?.Dialog?.ErrorTitle,
+    description: MISAResource[globalStore.lang]?.ErrorMessage[error?.response?.data?.ErrorCode],
+  };
+
+  // Thay mã tương ứng vào thông báo
+  dialogData.description = dialogData.description.replace("@code", formData.value.employeeCode);
+
+  errorDialogState.value = dialogData;
 };
 </script>
 

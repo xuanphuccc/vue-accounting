@@ -50,12 +50,19 @@
   position: absolute;
   top: 24px;
   right: 24px;
+  color: var(--secondary-text-color);
   cursor: pointer;
   user-select: none;
+  transition: all 0.2s ease;
+}
+
+.ms-popup__close:hover {
+  color: var(--primary-text-color);
 }
 
 .ms-popup__content {
   padding: 24px;
+  padding-bottom: 4px;
   overflow-y: visible;
 }
 

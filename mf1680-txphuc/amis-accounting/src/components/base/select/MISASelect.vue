@@ -369,14 +369,14 @@ onUnmounted(() => {
  * Description: Xử lý auto focus khi gọi từ component cha
  * Author: txphuc (12/07/2023)
  */
-const autoFocus = () => {
+const focus = () => {
   if (comboboxRef.value) {
     comboboxRef.value.focus();
   }
 };
 
 // Expose ra ngoài component cha
-defineExpose({ autoFocus });
+defineExpose({ focus });
 </script>
 
 <style scoped>

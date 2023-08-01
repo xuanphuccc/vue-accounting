@@ -20,6 +20,7 @@ const enums = {
     ARROW_RIGHT: 39,
     ARROW_DOWN: 40,
     NUM_1: 49,
+    D: 68,
     S: 83,
     Y: 89,
   },

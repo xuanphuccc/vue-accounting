@@ -44,6 +44,11 @@
   color: var(--secondary-text-color);
   cursor: pointer;
   user-select: none;
+  transition: all 0.2s ease;
+}
+
+.ms-dialog__close:hover {
+  color: var(--primary-text-color);
 }
 
 .ms-dialog__content {

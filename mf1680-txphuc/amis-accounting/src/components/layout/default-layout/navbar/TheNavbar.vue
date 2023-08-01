@@ -29,13 +29,12 @@
           <MISAIcon icon="bell" />
         </div>
 
-        <div @click.stop="toggleUserMenu" class="navbar__avatar-wrap">
-          <img
-            class="navbar__avatar"
-            src="../../../../assets/img/avatar-default.png"
-            v-tippy="{ content: MISAResource[globalStore.lang]?.Tooltip?.Account }"
-            alt=""
-          />
+        <div
+          @click.stop="toggleUserMenu"
+          v-tippy="{ content: MISAResource[globalStore.lang]?.Tooltip?.Account }"
+          class="navbar__avatar-wrap"
+        >
+          <img class="navbar__avatar" src="../../../../assets/img/avatar-default.png" alt="" />
           <div class="navbar__avatar-name">
             <span>{{ MISAResource[globalStore.lang]?.UserName }}</span>
             <div class="navbar__avatar-toggle">

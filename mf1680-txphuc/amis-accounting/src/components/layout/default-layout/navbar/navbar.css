@@ -65,8 +65,16 @@
 
 .navbar__sidebar-toggle {
   color: var(--secondary-text-color);
-  margin: 0 20px;
+  margin: 0 12px 0 20px;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navbar__sidebar-toggle:hover {
+  color: var(--primary-text-color);
+}
+.navbar__sidebar-toggle:active {
+  color: var(--secondary-text-color);
 }
 
 .navbar__title {
@@ -93,6 +101,14 @@
   cursor: pointer;
   color: var(--secondary-text-color);
   margin-right: 24px;
+  transition: all 0.2s ease;
+}
+
+.navbar__button:hover {
+  color: var(--primary-text-color);
+}
+.navbar__button:active {
+  color: var(--secondary-text-color);
 }
 
 .navbar__avatar-wrap {

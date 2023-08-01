@@ -633,6 +633,18 @@ const handleKeyboardEvent = (e) => {
           employeeStore.openFormForCreate();
         }
         break;
+      case enums.key.D:
+        e.preventDefault();
+        if (ctrlKey) {
+          if (selectedRowsState.value.length > 0) {
+            showDeleteConfirmDialog(
+              MISAResource[globalStore.lang]?.Page?.Employee?.Dialog.MultipleDeleteConfirmDesc(
+                selectedRowsState.value.length
+              )
+            );
+          }
+        }
+        break;
       default:
         break;
     }
@@ -658,9 +670,4 @@ onUnmounted(() => {
 });
 </script>
 
-<style scoped>
-.test {
-  height: 48px;
-  width: 100%;
-}
-</style>
+<style scoped></style>

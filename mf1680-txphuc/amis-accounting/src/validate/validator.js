@@ -6,7 +6,13 @@ export const validator = (input = { value: "", rules: [] }) => {
   try {
     let errorMsg = null;
     for (let rule of input.rules) {
-      const message = rule.checker(input.value, rule.errorMsg);
+      let message = "";
+
+      if (rule.max) {
+        message = rule.checker(input.value, rule.max, rule.errorMsg);
+      } else {
+        message = rule.checker(input.value, rule.errorMsg);
+      }
 
       if (message) {
         errorMsg = message;
@@ -49,7 +55,11 @@ export const email = (value, message) => {
     var regex =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    return !value || regex.test(value) ? null : message || "Vui lòng nhập email";
+    if (!value) {
+      return null;
+    }
+
+    return regex.test(value) ? null : message || "Vui lòng nhập email";
   } catch (error) {
     console.warn(error);
     return "error";
@@ -62,7 +72,19 @@ export const email = (value, message) => {
  * Author: txphuc (01/07/2023)
  */
 export const minLength = (value, min, message) => {
+  if (!value) {
+    return null;
+  }
+
   return value.length >= min ? null : message || `Vui lòng nhập tối thiểu ${min} kí tự`;
+};
+
+export const maxLength = (value, max, message) => {
+  if (!value) {
+    return null;
+  }
+
+  return value.length <= max ? null : message || `Vui lòng nhập tối đa ${max} kí tự`;
 };
 
 /**
@@ -72,6 +94,10 @@ export const minLength = (value, min, message) => {
 export const codeFormat = (value, message) => {
   try {
     var regex = /^[a-zA-Z]{1,}-[0-9]{4,}$/;
+
+    if (!value) {
+      return null;
+    }
 
     return regex.test(value) ? null : message || "Mã không đúng định dạng";
   } catch (error) {
@@ -87,7 +113,11 @@ export const mobilePhoneFormat = (value, message) => {
   try {
     var regex = /^0\d{9}$/;
 
-    return !value || regex.test(value) ? null : message || "Số điện thoại không đúng định dạng";
+    if (!value) {
+      return null;
+    }
+
+    return regex.test(value) ? null : message || "Số điện thoại không đúng định dạng";
   } catch (error) {
     console.warn(error);
   }
