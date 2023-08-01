@@ -6,7 +6,7 @@
       { '--space-bottom': props.spaceBottom },
     ]"
   >
-    <label :for="props.for" class="ms-label"
+    <label v-tippy="{ content: props.tooltip || '' }" :for="props.for" class="ms-label"
       >{{ props.label }}
       <span v-if="requiredMark" class="ms-label--requried">*</span>
     </label>
@@ -41,6 +41,11 @@ const props = defineProps({
   spaceBottom: {
     type: Boolean,
     default: false,
+  },
+
+  // Hiện tooltip cho label
+  tooltip: {
+    type: String,
   },
 });
 </script>

@@ -1,5 +1,10 @@
 <template>
-  <div @focus="openMenu" @keydown.tab="closeMenu" :tabindex="props.tabindex" class="ms-date-picker">
+  <div
+    @focus="openMenu"
+    @keydown="handleOnKeyDown"
+    :tabindex="props.tabindex"
+    class="ms-date-picker"
+  >
     <div tabindex="-1" ref="focusFlag"></div>
     <VueDatePicker
       :model-value="props.modelValue"
@@ -23,14 +28,33 @@
       ref="datePickerRef"
     >
       <!-- menu header -->
-      <template #month-year="{ month, year, handleMonthYearChange }">
+      <template #month-year="{ month, year, years, updateMonthYear, handleMonthYearChange }">
         <div class="ms-date-picker__header">
           <div class="ms-date-picker__header-date">
-            {{ MISAResource[globalStore.lang]?.Month["M" + (month + 1)] }}, {{ year }}
+            {{ MISAResource[globalStore.lang]?.Month["M" + (month + 1)] }},
+
+            <select
+              ref="yearSelectRef"
+              class="ms-date-picker__year-select"
+              :value="year"
+              @change="updateMonthYear(month, Number($event.target.value))"
+            >
+              <option v-for="y in years" :key="y.value" :value="y.value">{{ y.text }}</option>
+            </select>
           </div>
           <div class="ms-date-picker__header-controls">
-            <MISAIcon @click="handleMonthYearChange(false)" icon="angle-left" />
-            <MISAIcon @click="handleMonthYearChange(true)" icon="angle-right" />
+            <MISAIcon
+              tabindex="0"
+              ref="prevBtnRef"
+              @click="handleMonthYearChange(false)"
+              icon="angle-left"
+            />
+            <MISAIcon
+              tabindex="0"
+              ref="nextBtnRef"
+              @click="handleMonthYearChange(true)"
+              icon="angle-right"
+            />
           </div>
         </div>
       </template>
@@ -59,9 +83,13 @@ import formatDate from "../../../helper/format-date";
 import MISAResource from "@/resource/resource";
 import { useGlobalStore } from "@/stores/global-store";
 import { ref } from "vue";
+import enums from "@/helper/enum";
 
 const emit = defineEmits(["update:modelValue"]);
 const datePickerRef = ref(null);
+const nextBtnRef = ref(null);
+const prevBtnRef = ref(null);
+const yearSelectRef = ref(null);
 const focusFlag = ref(null);
 
 const globalStore = useGlobalStore();
@@ -151,6 +179,49 @@ const openMenu = () => {
  */
 const closeMenu = () => {
   datePickerRef.value.closeMenu();
+};
+
+/**
+ * Description: Xử lý sự kiện bàn phím
+ * Author: txphuc (31/07/2023)
+ */
+const handleOnKeyDown = (e) => {
+  try {
+    const keyCode = e.keyCode;
+    const ctrlKey = e.ctrlKey;
+
+    switch (keyCode) {
+      case enums.key.TAB:
+        // Đóng menu khi nhấn Tab
+        closeMenu();
+        break;
+      case enums.key.ARROW_LEFT:
+        // Chuyển sang tháng trước khi nhấn Ctrl + mũi tên trái
+        if (ctrlKey && prevBtnRef.value) {
+          prevBtnRef.value.click();
+          prevBtnRef.value.focus();
+        }
+        break;
+      case enums.key.ARROW_RIGHT:
+        // Chuyển sang tháng sau khi nhấn Ctrl + mũi tên phải
+        if (ctrlKey && nextBtnRef.value) {
+          nextBtnRef.value.click();
+          nextBtnRef.value.focus();
+        }
+        break;
+      case enums.key.Y:
+        // Focus vào ô chọn năm khi nhấn Ctrl + Y
+        if (ctrlKey && yearSelectRef.value) {
+          yearSelectRef.value.focus();
+        }
+        break;
+
+      default:
+        break;
+    }
+  } catch (error) {
+    console.warn(error);
+  }
 };
 </script>
 

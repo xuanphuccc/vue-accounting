@@ -29,7 +29,8 @@
   background-color: transparent;
   padding: 0 12px;
   font-size: 14px;
-  flex: 1;
+  /* flex: 1; */
+  width: 100%;
   cursor: pointer;
 }
 
@@ -67,18 +68,26 @@
 /* select list */
 .ms-select__list-container {
   position: absolute;
-  top: calc(100% + 1px);
   left: 0;
   right: 0;
   display: flex;
   flex-direction: column;
   max-height: 200px;
   background-color: var(--white);
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   padding: 8px;
   z-index: 2;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
   cursor: default;
+}
+
+.ms-select__list-container.--position-top {
+  bottom: calc(100% + 1px);
+}
+
+.ms-select__list-container.--position-bottom {
+  top: calc(100% + 1px);
 }
 
 .ms-select__select-list {

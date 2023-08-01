@@ -4,6 +4,7 @@ const resourceVn = {
   Product: "Kế toán",
   FullProductName: "AMIS Kế toán",
   Company: "Công ty Cổ phần MISA",
+  UserName: "Trần Xuân Phúc",
 
   ErrorMessage: {
     1000: "Thông tin nhập liệu không hợp lệ",
@@ -47,6 +48,8 @@ const resourceVn = {
     SaveAndContinue: "Cất và thêm",
     Cancel: "Huỷ",
     OK: "Đồng ý",
+    Yes: "Có",
+    No: "Không",
     UnChecked: "Bỏ chọn",
     Delete: "Xoá",
     Update: "Sửa",
@@ -79,7 +82,7 @@ const resourceVn = {
 
   Paging: {
     TotalRecords: "Tổng",
-    ItemsPerPage: "Số bản ghi/trang",
+    ItemsPerPage: "Số bản ghi/Trang",
     Records: "Bản ghi",
     NextPage: "Trang Sau",
     PrevPage: "Trang Trước",
@@ -87,9 +90,13 @@ const resourceVn = {
 
   Dialog: {
     ErrorTitle: "Đã có lỗi",
+    WarningTitle: "Cảnh báo",
+    CloseFormWarning: "Dữ liệu đã bị thay đổi. Bạn có muốn cất không?",
   },
 
-  Popup: {},
+  Popup: {
+    Close: "Đóng (ESC)",
+  },
 
   Toast: {
     Success: "Thành công!",
@@ -103,6 +110,8 @@ const resourceVn = {
     Notification: "Thông báo",
     Account: "Tài khoản",
     Close: "Đóng",
+    ExportExcel: "Xuất ra Excel",
+    Setting: "Cài đặt",
   },
 
   Text: {
@@ -143,6 +152,7 @@ const resourceVn = {
       Form: {
         CreateTitle: "Thêm nhân viên",
         UpdateTitle: "Sửa nhân viên",
+        DuplicateTitle: "Nhân bản nhân viên",
       },
       Toast: {
         CreateSuccess: "Thêm nhân viên thành công",
@@ -161,7 +171,7 @@ const resourceVn = {
         EmployeeCode: "Mã không được để trống",
         FullName: "Tên không được để trống",
         Department: "Đơn vị không được để trống",
-        CodeFormat: "Mã phải có dạng XX-1000 +",
+        CodeFormat: "Mã phải có dạng NV-1000 +",
         EmailFormat: "Email không đúng định dạng",
         MobilePhoneFormat: "ĐT di động không đúng định dạng",
       },

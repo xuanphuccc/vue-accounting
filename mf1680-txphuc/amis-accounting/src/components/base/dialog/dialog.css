@@ -64,7 +64,19 @@
 
 .ms-dialog__controls {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ms-dialog__left-controls {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.ms-dialog__right-controls {
+  display: flex;
+  align-items: center;
   column-gap: 8px;
 }
 

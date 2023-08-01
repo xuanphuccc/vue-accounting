@@ -1,6 +1,6 @@
 .ms-user-menu {
   position: absolute;
-  top: calc(100% + 8px);
+  top: 100%;
   right: 24px;
   width: 300px;
   padding: 24px 0 16px;

@@ -22,7 +22,10 @@
         </div>
       </div>
       <div class="navbar__controls">
-        <div :title="MISAResource[globalStore.lang]?.Tooltip?.Notification" class="navbar__button">
+        <div
+          v-tippy="{ content: MISAResource[globalStore.lang]?.Tooltip?.Notification }"
+          class="navbar__button"
+        >
           <MISAIcon icon="bell" />
         </div>
 
@@ -30,11 +33,11 @@
           <img
             class="navbar__avatar"
             src="../../../../assets/img/avatar-default.png"
-            :title="MISAResource[globalStore.lang]?.Tooltip?.Account"
+            v-tippy="{ content: MISAResource[globalStore.lang]?.Tooltip?.Account }"
             alt=""
           />
           <div class="navbar__avatar-name">
-            <span>Trần Xuân Phúc</span>
+            <span>{{ MISAResource[globalStore.lang]?.UserName }}</span>
             <div class="navbar__avatar-toggle">
               <MISAIcon icon="angle-down" />
             </div>

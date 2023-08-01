@@ -7,6 +7,7 @@
     :class="['ms-input']"
     :id="props.id"
     :placeholder="props.placeholder"
+    autocomplete="off"
     ref="inputRef"
   />
 </template>

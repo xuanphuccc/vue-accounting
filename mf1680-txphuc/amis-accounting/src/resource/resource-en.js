@@ -4,6 +4,7 @@ const resourceEn = {
   Product: "Accounting",
   FullProductName: "AMIS Accounting",
   Company: "MISA Joint Stock Company",
+  UserName: "Tran Xuan Phuc",
 
   ErrorMessage: {
     1000: "Invalid data input",
@@ -47,6 +48,8 @@ const resourceEn = {
     SaveAndContinue: "Save and continue",
     Cancel: "Cancel",
     OK: "OK",
+    Yes: "Yes",
+    No: "No",
     UnChecked: "Uncheck",
     Delete: "Delete",
     Update: "Edit",
@@ -61,7 +64,7 @@ const resourceEn = {
   ContextMenu: {
     Duplicate: "Duplicate",
     Delete: "Delete",
-    StopUsing: "Stop Using",
+    StopUsing: "Stop using",
     ExportAllToExcel: "Export all",
     ExportListToExcel: "Export selected records",
     ImportFromExcel: "Import from Excel",
@@ -79,17 +82,21 @@ const resourceEn = {
 
   Paging: {
     TotalRecords: "Total",
-    ItemsPerPage: "Records per page",
+    ItemsPerPage: "Records/Page",
     Records: "Records",
-    NextPage: "Next Page",
-    PrevPage: "Previous Page",
+    NextPage: "Next page",
+    PrevPage: "Previous page",
   },
 
   Dialog: {
     ErrorTitle: "Error",
+    WarningTitle: "Warning",
+    CloseFormWarning: "The data has been modified. Do you want to save?",
   },
 
-  Popup: {},
+  Popup: {
+    Close: "Close (ESC)",
+  },
 
   Toast: {
     Success: "Success!",
@@ -103,6 +110,8 @@ const resourceEn = {
     Notification: "Notification",
     Account: "Account",
     Close: "Close",
+    ExportExcel: "Export to Excel",
+    Setting: "Setting",
   },
 
   Text: {
@@ -141,8 +150,9 @@ const resourceEn = {
       AddButton: "Add new employee",
       SearchPlaceholder: "Search by code or name",
       Form: {
-        CreateTitle: "Add Employee",
-        UpdateTitle: "Edit Employee",
+        CreateTitle: "Add employee",
+        UpdateTitle: "Edit employee",
+        DuplicateTitle: "Duplicate employee",
       },
       Toast: {
         CreateSuccess: "Successfully added employee",
@@ -151,7 +161,7 @@ const resourceEn = {
         DuplicateSuccess: "Successfully duplicated employee",
       },
       Dialog: {
-        DeleteConfirmTitle: "Delete Employee",
+        DeleteConfirmTitle: "Delete employee",
         DeleteConfirmDesc: (name) =>
           `Delete employee "${name}". The employee cannot be recovered after deletion`,
         MultipleDeleteConfirmDesc: (count) =>
@@ -161,7 +171,7 @@ const resourceEn = {
         EmployeeCode: "Code is required",
         FullName: "Name is required",
         Department: "Department is required",
-        CodeFormat: "Code format is XX-1000 +",
+        CodeFormat: "Code format is NV-1000 +",
         EmailFormat: "Email invalidate",
         MobilePhoneFormat: "Mobile phone invalidate",
       },
@@ -185,24 +195,24 @@ const resourceEn = {
         Desc: "Position",
       },
       DateOfBirth: {
-        Title: "Date of Birth",
-        Desc: "Date of Birth",
+        Title: "Date of birth",
+        Desc: "Date of birth",
       },
       Gender: {
         Title: "Gender",
         Desc: "Gender",
       },
       IdentityNumber: {
-        Title: "ID Number",
-        Desc: "Identity Card Number",
+        Title: "ID number",
+        Desc: "Identity card number",
       },
       IdentityDate: {
-        Title: "Issue Date",
-        Desc: "Issue Date",
+        Title: "Issue date",
+        Desc: "Issue date",
       },
       IdentityPlace: {
-        Title: "Issue Place",
-        Desc: "Issue Place",
+        Title: "Issue place",
+        Desc: "Issue place",
       },
       IsCustomer: {
         Title: "Customer",
@@ -217,30 +227,30 @@ const resourceEn = {
         Desc: "Address",
       },
       MobilePhone: {
-        Title: "Mobile Phone",
-        Desc: "Mobile Phone",
+        Title: "Mobile phone",
+        Desc: "Mobile phone",
       },
       LandlinePhone: {
-        Title: "Landline Phone",
-        Desc: "Landline Phone",
+        Title: "Landline phone",
+        Desc: "Landline phone",
       },
       Email: {
         Title: "Email",
         Desc: "Email",
       },
       BankAccount: {
-        Title: "Bank Account",
-        SubTitle: "Account Number",
-        Desc: "Bank Account",
+        Title: "Bank account",
+        SubTitle: "Account number",
+        Desc: "Bank account",
       },
       BankName: {
-        Title: "Bank Name",
-        Desc: "Bank Name",
+        Title: "Bank name",
+        Desc: "Bank name",
       },
       BankBranch: {
-        Title: "Bank Branch",
-        SubTitle: "Bank Account Branch",
-        Desc: "Bank Account Branch",
+        Title: "Bank branch",
+        SubTitle: "Bank branch",
+        Desc: "Bank branch",
       },
     },
   },

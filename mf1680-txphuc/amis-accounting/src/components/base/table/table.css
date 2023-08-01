@@ -212,12 +212,15 @@
 }
 
 .ms-table__page-size {
-  position: relative;
   display: flex;
   align-items: center;
 }
 
-.ms-table__page-size-btn {
+.ms-table__page-size-text {
+  margin-right: 8px;
+}
+
+/* .ms-table__page-size-btn {
   display: flex;
   align-items: center;
   padding-left: 4px;
@@ -258,7 +261,7 @@
 .ms-table__page-size-icon {
   display: block;
   color: var(--primary-color-500);
-}
+} */
 
 .ms-table__records-range {
   margin-left: 16px;
@@ -286,6 +289,7 @@
 .ms-table__prev-btn.--disable,
 .ms-table__next-btn.--disable {
   color: var(--disable-color);
+  cursor: not-allowed;
 }
 
 .ms-table__next-btn {

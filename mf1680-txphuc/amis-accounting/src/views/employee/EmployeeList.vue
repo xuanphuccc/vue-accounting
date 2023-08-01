@@ -2,15 +2,20 @@
   <div class="page-container">
     <div class="page__header">
       <div class="page__title-wrapper">
-        <h1 class="page__title">{{ MISAResource[globalStore.lang]?.Page?.Employee?.Title }}</h1>
+        <h1 class="page__title">
+          {{ MISAResource[globalStore.lang]?.Page?.Employee?.Title }}
+        </h1>
         <MISAIcon icon="angle-down" />
       </div>
 
       <div class="page__header-controls">
         <MISAButtonGroup>
-          <MISAButton @click="employeeStore.openFormForCreate" type="primary">{{
-            MISAResource[globalStore.lang]?.Page?.Employee?.AddButton
-          }}</MISAButton>
+          <MISAButton
+            v-tippy="{ content: 'Ctrl + 1' }"
+            @click="employeeStore.openFormForCreate"
+            type="primary"
+            >{{ MISAResource[globalStore.lang]?.Page?.Employee?.AddButton }}</MISAButton
+          >
           <MISAButton type="primary">
             <template #icon>
               <MISAIcon size="16" icon="angle-down" />
@@ -45,6 +50,7 @@
               MISAResource[globalStore.lang]?.Button?.UnChecked
             }}</MISAButton>
             <MISAButton
+              v-tippy="{ content: 'Ctrl + D' }"
               @click="
                 showDeleteConfirmDialog(
                   MISAResource[globalStore.lang]?.Page?.Employee?.Dialog.MultipleDeleteConfirmDesc(
@@ -73,13 +79,17 @@
 
           <MISAButton
             @click="handleResetFilter"
-            v-tooltip.left="MISAResource[globalStore.lang]?.Tooltip?.Reload"
+            v-tippy="{ content: MISAResource[globalStore.lang]?.Tooltip?.Reload }"
             type="secondary"
           >
             <template #icon><MISAIcon size="20" icon="reload" /></template>
           </MISAButton>
 
-          <MISAButton :loading="loading.excel" type="secondary">
+          <MISAButton
+            v-tippy="{ content: MISAResource[globalStore.lang]?.Tooltip?.ExportExcel }"
+            :loading="loading.excel"
+            type="secondary"
+          >
             <template #icon><MISAIcon icon="excel-gray" no-color /></template>
 
             <template #dropdown>
@@ -94,7 +104,11 @@
             </template>
           </MISAButton>
 
-          <MISAButton @click.stop="isCustomizeTable = true" type="secondary">
+          <MISAButton
+            v-tippy="{ content: MISAResource[globalStore.lang]?.Tooltip?.Setting }"
+            @click.stop="isCustomizeTable = true"
+            type="secondary"
+          >
             <template #icon><MISAIcon icon="setting" /></template>
           </MISAButton>
         </div>
@@ -102,21 +116,14 @@
 
       <!-- table -->
       <MISATable
+        @select-row="selectTableRows"
+        @active-row="setActiveRow"
+        @double-click="employeeStore.openFormForUpdate"
         :columns="columns"
         :data-source="employeeData"
         :selected-rows="selectedRowsState"
         :active-row="activeRowState"
         :loading="loading.table"
-        :total-page="pagingInfoState.totalPage"
-        :total-records="pagingInfoState.totalRecords"
-        :current-page="filterParamsState.page"
-        :page-size="filterParamsState.pageSize"
-        @select-row="selectTableRows"
-        @active-row="setActiveRow"
-        @next-page="handleNextPage"
-        @prev-page="handlePrevPage"
-        @select-page-size="handleChangePageSize"
-        @double-click="employeeStore.openFormForUpdate"
       >
         <template #context-menu>
           <MISAContextMenu width="180" small>
@@ -138,17 +145,31 @@
             }}</MISAContextItem>
           </MISAContextMenu>
         </template>
+
+        <template #footer>
+          <MISATableFooter
+            @next-page="handleNextPage"
+            @prev-page="handlePrevPage"
+            @select-page-size="handleChangePageSize"
+            :total-page="pagingInfoState.totalPage"
+            :total-records="pagingInfoState.totalRecords"
+            :current-page="filterParamsState.page"
+            :page-size="filterParamsState.pageSize"
+          />
+        </template>
       </MISATable>
 
       <!-- Modal -->
       <Teleport to="#app">
         <MISADialog v-if="dialogState.active" v-bind="dialogState" @cancel="hideConfirmDialog">
-          <MISAButton auto-focus tabindex="1" @click="hideConfirmDialog" type="secondary">{{
-            MISAResource[globalStore.lang]?.Button?.Cancel
-          }}</MISAButton>
-          <MISAButton tabindex="2" @click="handleDeleteEmployee" type="danger">{{
-            MISAResource[globalStore.lang]?.Button?.Delete
-          }}</MISAButton>
+          <template #right-controls>
+            <MISAButton tabindex="2" @click="hideConfirmDialog" type="secondary">{{
+              MISAResource[globalStore.lang]?.Button?.Cancel
+            }}</MISAButton>
+            <MISAButton auto-focus tabindex="1" @click="handleDeleteEmployee" type="danger">{{
+              MISAResource[globalStore.lang]?.Button?.Delete
+            }}</MISAButton>
+          </template>
         </MISADialog>
       </Teleport>
 
@@ -168,7 +189,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { onMounted, onUnmounted, ref, watch } from "vue";
 
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import MISAButton from "@/components/base/button/MISAButton.vue";
@@ -177,6 +198,7 @@ import MISAInput from "@/components/base/input/MISAInput.vue";
 import MISAInputGroup from "@/components/base/input/MISAInputGroup.vue";
 import MISAInputAction from "@/components/base/input/MISAInputAction.vue";
 import MISATable from "@/components/base/table/MISATable.vue";
+import MISATableFooter from "@/components/base/table/MISATableFooter.vue";
 import MISATableCusomize from "@/components/base/table-customize/MISATableCustomize.vue";
 import MISAContextMenu from "@/components/base/context-menu/MISAContextMenu.vue";
 import MISAContextItem from "@/components/base/context-menu/MISAContextItem.vue";
@@ -189,6 +211,11 @@ import MISAResource from "@/resource/resource";
 import { useGlobalStore } from "@/stores/global-store";
 import { useEmployeeStore } from "@/stores/employee-store";
 import { useToastStore } from "@/stores/toast-store";
+
+// ---- Store ----
+const globalStore = useGlobalStore();
+const employeeStore = useEmployeeStore();
+const toastStore = useToastStore();
 
 const employeeData = ref([]);
 const searchFieldState = ref("");
@@ -214,10 +241,6 @@ const loading = ref({
   excel: false,
 });
 const isCustomizeTable = ref(false);
-
-const globalStore = useGlobalStore();
-const employeeStore = useEmployeeStore();
-const toastStore = useToastStore();
 
 const defaultColumns = [
   {
@@ -382,7 +405,9 @@ const downloadExcel = async (columns = [], employeeIds = []) => {
 const downloadAllRecords = async () => {
   try {
     // Lấy danh sách các cột không bị ẩn
-    const requestColumns = columns.value.filter((col) => !col.hide).map((col) => col.originName);
+    const requestColumns = columns.value
+      .filter((col) => !col.hide)
+      .map((col, index) => ({ columnName: col.originName, index: index + 1, align: col.align }));
 
     await downloadExcel(requestColumns);
   } catch (error) {
@@ -397,7 +422,9 @@ const downloadAllRecords = async () => {
 const downloadSelectedRecords = async () => {
   try {
     // Lấy danh sách các cột không bị ẩn
-    const requestColumns = columns.value.filter((col) => !col.hide).map((col) => col.originName);
+    const requestColumns = columns.value
+      .filter((col) => !col.hide)
+      .map((col, index) => ({ columnName: col.originName, index: index + 1, align: col.align }));
 
     // Danh sách Id của các bản ghi cần xuất
     const employeeIds = selectedRowsState.value.map((employee) => employee.EmployeeId);
@@ -589,6 +616,51 @@ const handleResetFilter = () => {
 const applyTableCustomize = (newColums) => {
   columns.value = newColums;
 };
+
+/**
+ * Description: Xử lý sự kiện bàn phím
+ * Author: txphuc (01/08/2023)
+ */
+const handleKeyboardEvent = (e) => {
+  try {
+    const keyCode = e.keyCode;
+    // const shiftKey = e.shiftKey;
+    const ctrlKey = e.ctrlKey;
+
+    switch (keyCode) {
+      case enums.key.NUM_1:
+        if (ctrlKey) {
+          employeeStore.openFormForCreate();
+        }
+        break;
+      default:
+        break;
+    }
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+/**
+ * Description: Thêm sự kiện bàn phím khi component được mounted
+ * Author: txphuc (01/08/2023)
+ */
+onMounted(() => {
+  document.addEventListener("keydown", handleKeyboardEvent);
+});
+
+/**
+ * Description: Huỷ sự kiện bàn phím khi component được unMounted
+ * Author: txphuc (01/08/2023)
+ */
+onUnmounted(() => {
+  document.removeEventListener("keydown", handleKeyboardEvent);
+});
 </script>
 
-<style scoped></style>
+<style scoped>
+.test {
+  height: 48px;
+  width: 100%;
+}
+</style>

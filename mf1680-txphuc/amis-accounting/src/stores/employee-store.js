@@ -1,10 +1,15 @@
 import { defineStore } from "pinia";
 import enums from "@/helper/enum";
+import MISAResource from "@/resource/resource";
+import { useGlobalStore } from "./global-store";
 
 export const useEmployeeStore = defineStore("employee", {
   state: () => ({
     // Xác định hành động của form nhập create/update
     mode: enums.form.mode.CREATE,
+
+    // Hiển thị tiêu đề của form
+    title: "",
 
     // Trạng thái của form nhập liệu
     isOpenForm: false,
@@ -28,7 +33,12 @@ export const useEmployeeStore = defineStore("employee", {
      * Author: txphuc (28/06/2023)
      */
     openFormForCreate() {
+      const globalStore = useGlobalStore();
+
       this.mode = enums.form.mode.CREATE;
+
+      this.title = MISAResource[globalStore.lang]?.Page?.Employee?.Form?.CreateTitle;
+
       this.isOpenForm = true;
     },
 
@@ -38,8 +48,15 @@ export const useEmployeeStore = defineStore("employee", {
      * Author: txphuc (28/06/2023)
      */
     openFormForUpdate(employee) {
+      const globalStore = useGlobalStore();
+
+      // Lấy data nhân viên
       this.currentEmployee = employee;
+
       this.mode = enums.form.mode.UPDATE;
+
+      this.title = MISAResource[globalStore.lang]?.Page?.Employee?.Form?.UpdateTitle;
+
       this.isOpenForm = true;
     },
 
@@ -49,8 +66,15 @@ export const useEmployeeStore = defineStore("employee", {
      * Author: txphuc (10/07/2023)
      */
     openFormForDuplicate(employee) {
+      const globalStore = useGlobalStore();
+
+      // Lấy data nhân viên
       this.currentEmployee = employee;
+
       this.mode = enums.form.mode.DUPLICATE;
+
+      this.title = MISAResource[globalStore.lang]?.Page?.Employee?.Form?.DuplicateTitle;
+
       this.isOpenForm = true;
     },
 

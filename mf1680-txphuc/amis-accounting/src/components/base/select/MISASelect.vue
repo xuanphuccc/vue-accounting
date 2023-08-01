@@ -1,11 +1,11 @@
 <template>
   <div
     @focusin="openDropdown"
-    @click="openDropdown"
-    @keydown.stop="preSelectOnPressArrow"
+    @keydown="preSelectOnPressArrow"
     ref="comboboxRef"
     tabindex="-1"
     :class="['ms-select', { '--show-search': props.search }]"
+    :style="{ width: props.width ? props.width + 'px' : 'auto' }"
   >
     <input
       @mousedown.stop=""
@@ -22,7 +22,13 @@
       <MISAIcon size="16" icon="angle-down" />
     </div>
 
-    <div @focusin.stop="" @click.stop="clearSelectedValue" tabindex="-1" class="ms-select__clear">
+    <div
+      v-if="props.clearIcon"
+      @focusin.stop=""
+      @click.stop="clearSelectedValue"
+      tabindex="-1"
+      class="ms-select__clear"
+    >
       <MISAIcon size="16" icon="times" />
     </div>
 
@@ -32,10 +38,10 @@
       @focusin.stop=""
       tabindex="-1"
       v-show="isOpen"
-      class="ms-select__list-container"
+      :class="['ms-select__list-container', `--position-${props.dropdownPos}`]"
     >
       <ul class="ms-select__select-list">
-        <li :class="['ms-select__item', { '--selected': !selectedValue }]">
+        <li v-if="props.placeholder" :class="['ms-select__item', { '--selected': !selectedValue }]">
           -- {{ props.placeholder }} --
           <div class="ms-select__item-icon">
             <MISAIcon icon="check" />
@@ -71,7 +77,7 @@ import { ref } from "vue";
 const emit = defineEmits(["update:modelValue", "close"]);
 
 const props = defineProps({
-  // Danh sách các lựa chọn
+  // Danh sách các lựa chọn: [{label: String, value: any}]
   options: {
     type: Array,
     default() {
@@ -81,18 +87,23 @@ const props = defineProps({
 
   // Giá trị được chọn
   modelValue: {
-    type: String,
+    type: [String, Number, Object],
     default: "",
   },
 
   // Placeholder khi không được chọn
   placeholder: {
     type: String,
-    default: "Chọn giá trị",
   },
 
   // Search giá trị (combobox)
   search: {
+    type: Boolean,
+    default: false,
+  },
+
+  // Ẩn/hiện nút bỏ chọn giá trị
+  clearIcon: {
     type: Boolean,
     default: false,
   },
@@ -106,6 +117,17 @@ const props = defineProps({
   tabindex: {
     type: String,
     default: "-1",
+  },
+
+  // Vị trí hiển thị dropdown: top | bottom
+  dropdownPos: {
+    type: String,
+    default: "bottom",
+  },
+
+  // Độ rộng
+  width: {
+    type: [String, Number],
   },
 });
 
@@ -153,7 +175,7 @@ const optionWithSearch = computed(() => {
   try {
     if (props.search) {
       return props.options.filter((option) =>
-        option?.label?.toLowerCase()?.includes(searchValue.value?.toLowerCase().trim() || "")
+        option?.label?.toLowerCase()?.includes(searchValue.value?.toLowerCase()?.trim() || "")
       );
     } else {
       return props.options;
@@ -185,7 +207,10 @@ const selectedOption = computed(() => {
 watch(
   () => selectedOption.value,
   () => {
-    searchValue.value = selectedOption.value.label;
+    searchValue.value = selectedOption.value?.label;
+  },
+  {
+    immediate: true,
   }
 );
 
@@ -198,12 +223,13 @@ const selectOption = (option, index) => {
   emit("update:modelValue", option.value);
 
   // Set vị trí cuộn cho phẩn tử được chọn
+  // (kiểm tra undefined vì index là tham số tuỳ chọn)
   if (index !== undefined) {
     preSelectIndex.value = index;
   }
 
   // Đóng dropdown khi chọn xong giá trị
-  isOpen.value = false;
+  closeDropdown();
 };
 
 /**
@@ -261,6 +287,9 @@ const clearSelectedValue = () => {
     emit("update:modelValue", null);
     selectedValue.value = null;
 
+    // Phát sự kiện close để gọi validate
+    emit("close");
+
     // Xoá search value
     searchValue.value = "";
 
@@ -300,21 +329,24 @@ const openDropdown = () => {
 
   //Set lại giá trị cho preSelectValue khi mở dropdown
   preSelectValue.value = selectedOption.value;
+  const selectedIndex = optionWithSearch.value.findIndex(
+    (option) => option.value === selectedValue.value
+  );
+  preSelectIndex.value = selectedIndex === -1 ? 0 : selectedIndex;
 
   // Cuộn đến phần tử được chọn khi mở dropdown
   handleScrollToView(preSelectIndex.value);
 };
 
 /**
- * Description: Sự kiện đóng Dropdown
+ * Description: Sự kiện đóng dropdown
  * Author: txphuc (20/07/2023)
  */
 const closeDropdown = () => {
   if (isOpen.value) {
     emit("close");
+    isOpen.value = false;
   }
-
-  isOpen.value = false;
 };
 
 /**

@@ -14,6 +14,7 @@ const props = defineProps({
     type: Number,
     default: 5,
   },
+
   columns: {
     type: Number,
     default: 2,

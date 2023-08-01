@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="iconRef"
     :class="[
       `ms-icon--${props.size}`,
       `ms-icon--${props.icon}-${props.size}`,
@@ -9,6 +10,8 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
+
 const props = defineProps({
   // Kích thước của icon bao gồm: 24, 20, 16
   size: {
@@ -28,6 +31,31 @@ const props = defineProps({
     default: false,
   },
 });
+
+const iconRef = ref(null);
+
+/**
+ * Description: Sự kiện click vào icon
+ * Author: txphuc (31/07/2023)
+ */
+const click = () => {
+  if (iconRef.value) {
+    iconRef.value.click();
+  }
+};
+
+/**
+ * Description: Sự kiện focus vào icon
+ * Author: txphuc (31/07/2023)
+ */
+const focus = () => {
+  if (iconRef.value) {
+    iconRef.value.focus();
+  }
+};
+
+// Làm cho phương thức click có thể truy cập được từ component cha
+defineExpose({ click, focus });
 </script>
 
 <style scoped>

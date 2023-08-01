@@ -2,14 +2,11 @@
   <Teleport to="#app">
     <MISAPopup
       v-focustrap
-      @close="employeeStore.closeForm"
-      @submit="handleSubmitForm()"
+      @close="handleCloseForm"
+      @submit="handleSubmitForm(false)"
+      @submit-and-continue="handleSubmitForm()"
       :width="880"
-      :title="
-        employeeStore.mode === enums.form.mode.CREATE
-          ? MISAResource[globalStore.lang]?.Page?.Employee?.Form?.CreateTitle
-          : MISAResource[globalStore.lang]?.Page?.Employee?.Form?.UpdateTitle
-      "
+      :title="employeeStore.title"
     >
       <template #header-controls>
         <MISACheckboxVue
@@ -78,10 +75,11 @@
                   <MISASelect
                     tabindex="3"
                     v-model="formData.departmentId"
-                    @focusout="validateDepartment"
+                    @close="validateDepartment"
                     :options="departmentOptions"
                     id="input-department"
                     :placeholder="MISAResource[globalStore.lang]?.PlaceHolder?.SelectAValue"
+                    clear-icon
                   />
                 </MISAFormGroup>
               </MISACol>
@@ -150,9 +148,7 @@
               </MISACol>
               <MISACol span="7">
                 <MISAFormGroup
-                  v-tooltip.top="
-                    MISAResource[globalStore.lang]?.Page?.Employee?.IdentityNumber?.Desc
-                  "
+                  :tooltip="MISAResource[globalStore.lang]?.Page?.Employee?.IdentityNumber?.Desc"
                   :label="MISAResource[globalStore.lang]?.Page?.Employee?.IdentityNumber?.Title"
                   for="input-identity-number"
                   space-bottom
@@ -210,7 +206,7 @@
         <MISARow :gutter="{ x: 8 }">
           <MISACol span="3">
             <MISAFormGroup
-              v-tooltip.top="MISAResource[globalStore.lang]?.Page?.Employee?.MobilePhone?.Desc"
+              :tooltip="MISAResource[globalStore.lang]?.Page?.Employee?.MobilePhone?.Desc"
               :error-msg="errorMessages.mobilePhoneNumber"
               :label="MISAResource[globalStore.lang]?.Page?.Employee?.MobilePhone?.Title"
               for="input-mobile-phone"
@@ -227,7 +223,7 @@
           </MISACol>
           <MISACol span="3">
             <MISAFormGroup
-              v-tooltip.top="MISAResource[globalStore.lang]?.Page?.Employee?.LandlinePhone?.Desc"
+              :tooltip="MISAResource[globalStore.lang]?.Page?.Employee?.LandlinePhone?.Desc"
               :label="MISAResource[globalStore.lang]?.Page?.Employee?.LandlinePhone?.Title"
               for="input-landline-phone"
               space-bottom
@@ -286,13 +282,18 @@
       </template>
 
       <template #controls-left>
-        <MISAButton tabindex="21" @click="employeeStore.closeForm" type="secondary">{{
-          MISAResource[globalStore.lang]?.Button?.Cancel
-        }}</MISAButton>
+        <MISAButton
+          v-tippy="{ content: 'ESC' }"
+          tabindex="21"
+          @click="handleCloseForm"
+          type="secondary"
+          >{{ MISAResource[globalStore.lang]?.Button?.Cancel }}</MISAButton
+        >
       </template>
       <template #controls-right>
         <MISAButton
           tabindex="20"
+          v-tippy="{ content: 'Ctrl + S' }"
           @click="handleSubmitForm(false)"
           :loading="loading.submit"
           type="secondary"
@@ -301,6 +302,7 @@
         </MISAButton>
         <MISAButton
           tabindex="19"
+          v-tippy="{ content: 'Ctrl + Shift + S' }"
           @click="handleSubmitForm()"
           :loading="loading.submitAndContinue"
           type="primary"
@@ -310,20 +312,45 @@
       </template>
     </MISAPopup>
 
-    <!-- notification dialog -->
+    <!-- dialog thông báo lỗi -->
     <Teleport to="#app">
       <MISADialog
-        v-if="dialogState.active"
-        v-bind="dialogState"
+        v-if="errorDialogState.active"
+        v-bind="errorDialogState"
         @cancel="closeDialog"
         @ok="closeDialog"
         :ok-text="MISAResource[globalStore.lang]?.Button?.OK"
       />
     </Teleport>
+
+    <!-- dialog cảnh bảo đóng form -->
+    <Teleport to="#app">
+      <MISADialog
+        v-if="closeFormDialogState.active"
+        @cancel="closeDialog"
+        v-bind="closeFormDialogState"
+      >
+        <template #left-controls>
+          <MISAButton tabindex="3" @click="closeDialog" type="secondary">{{
+            MISAResource[globalStore.lang]?.Button?.Cancel
+          }}</MISAButton>
+        </template>
+        <template #right-controls>
+          <MISAButton @click="employeeStore.closeForm()" tabindex="2" type="secondary">{{
+            MISAResource[globalStore.lang]?.Button?.No
+          }}</MISAButton>
+          <MISAButton @click="confirmChangeOnCloseForm" tabindex="1" auto-focus type="primary">{{
+            MISAResource[globalStore.lang]?.Button?.Yes
+          }}</MISAButton>
+        </template>
+      </MISADialog>
+    </Teleport>
   </Teleport>
 </template>
 
 <script setup>
+import { ref, watch } from "vue";
+
 import MISAPopup from "@/components/base/popup/MISAPopup.vue";
 import MISADialog from "@/components/base/dialog/MISADialog.vue";
 import MISAButton from "@/components/base/button/MISAButton.vue";
@@ -336,7 +363,6 @@ import MISASelect from "@/components/base/select/MISASelect.vue";
 import MISARow from "@/components/base/grid/MISARow.vue";
 import MISACol from "@/components/base/grid/MISACol.vue";
 
-import { ref } from "vue";
 import employeeApi from "@/api/employee-api";
 import departmentApi from "@/api/department-api";
 import positionApi from "@/api/position-api";
@@ -356,12 +382,21 @@ const toastStore = useToastStore();
 
 const departmentOptions = ref([]);
 const positionOptions = ref([]);
-const dialogState = ref({
+
+const errorDialogState = ref({
   active: false,
   type: "warning",
   title: "",
   description: "",
 });
+
+const closeFormDialogState = ref({
+  active: false,
+  type: "warning",
+  title: MISAResource[globalStore.lang]?.Dialog?.WarningTitle,
+  description: MISAResource[globalStore.lang]?.Dialog?.CloseFormWarning,
+});
+
 const loading = ref({
   submit: false,
   submitAndContinue: false,
@@ -399,6 +434,9 @@ const errorMessages = ref({
   email: null,
 });
 
+const modifiedInput = ref(false);
+const isLoadData = ref(false);
+
 /**
  * Description: Hàm xử lý gọi api lấy mã nhân viên mới nhất
  * Author: txphuc (28/06/2023)
@@ -412,6 +450,9 @@ const getNewEmployeeCode = async () => {
       const response = await employeeApi.getNewCode();
 
       formData.value.employeeCode = response.data;
+
+      // Tránh thay đổi trạng thái của form
+      isLoadData.value = true;
     }
   } catch (error) {
     console.warn(error);
@@ -457,11 +498,57 @@ getDepartmentData();
 getPositionData();
 
 /**
+ * Description: Bắt sự thay đổi của các ô input
+ * để cảnh báo khi người dùng thoát form mà không cất
+ * Author: txphuc (01/08/2023)
+ */
+watch(
+  () => formData.value,
+  () => {
+    if (isLoadData.value) {
+      isLoadData.value = false;
+
+      // Reset trạng thái thay đổi form
+      modifiedInput.value = false;
+    } else {
+      modifiedInput.value = true;
+    }
+  },
+  { deep: true }
+);
+
+/**
+ * Description: Xử lý đóng form
+ * Author: txphuc (01/08/2023)
+ */
+const handleCloseForm = () => {
+  if (modifiedInput.value) {
+    // Hiện cảnh báo khi form đã thay đổi mà chưa được lưu
+    closeFormDialogState.value.active = true;
+  } else {
+    employeeStore.closeForm();
+  }
+};
+
+/**
  * Description: Hàm đóng dialog
  * Author: txphuc (29/06/2023)
  */
 const closeDialog = () => {
-  dialogState.value.active = false;
+  errorDialogState.value.active = false;
+  closeFormDialogState.value.active = false;
+};
+
+/**
+ * Description: Xử lý khi người dùng xác nhận lưu thay đổi khi đóng form
+ * Author: txphuc (01/08/2023)
+ */
+const confirmChangeOnCloseForm = () => {
+  // Đóng dialog
+  closeDialog();
+
+  // Submit dữ liệu
+  handleSubmitForm(false);
 };
 
 /**
@@ -617,11 +704,13 @@ const resetInputs = async () => {
       employeeStore.mode === enums.form.mode.DUPLICATE
     ) {
       if (employeeStore.mode === enums.form.mode.CREATE) {
+        // Reset dữ liệu form về mặc định
         formData.value = {
           ...initialFormData,
         };
       }
 
+      // Lấy mã mới
       await getNewEmployeeCode();
     }
   } catch (error) {
@@ -649,6 +738,9 @@ const handleSubmitForm = async (isContinue = true) => {
         result = await handleCreateEmployee();
       } else if (employeeStore.mode === enums.form.mode.UPDATE) {
         result = await handleUpdateEmployee();
+
+        // Reset lại trạng thái form
+        modifiedInput.value = false;
       } else if (employeeStore.mode === enums.form.mode.DUPLICATE) {
         result = await handleDuplicateEmployee();
       }
@@ -714,7 +806,7 @@ const handleCreateEmployee = async () => {
     console.warn(error);
 
     // Hiện dialog báo lỗi
-    dialogState.value = {
+    errorDialogState.value = {
       active: true,
       type: "error",
       title: MISAResource[globalStore.lang]?.Dialog?.ErrorTitle,
@@ -763,6 +855,9 @@ const handleLoadDataForUpdate = async () => {
         bankBranch: employeeData.BankBranch,
       };
 
+      // Tránh thay đổi trạng thái của form
+      isLoadData.value = true;
+
       // Lấy mã nhân viên mới để nhân bản
       if (employeeStore.mode === enums.form.mode.DUPLICATE) {
         await getNewEmployeeCode();
@@ -798,7 +893,7 @@ const handleUpdateEmployee = async () => {
     console.warn(error);
 
     // Hiện dialog báo lỗi
-    dialogState.value = {
+    errorDialogState.value = {
       active: true,
       type: "error",
       title: MISAResource[globalStore.lang]?.Dialog?.ErrorTitle,
@@ -816,10 +911,7 @@ const handleUpdateEmployee = async () => {
 const handleDuplicateEmployee = async () => {
   try {
     if (employeeStore.mode === enums.form.mode.DUPLICATE) {
-      const data = {
-        ...formData.value,
-        gender: Number(formData.value.gender),
-      };
+      const data = generateData();
 
       await employeeApi.create(data);
 
@@ -834,7 +926,7 @@ const handleDuplicateEmployee = async () => {
     console.warn(error);
 
     // Hiện dialog báo lỗi
-    dialogState.value = {
+    errorDialogState.value = {
       active: true,
       type: "error",
       title: MISAResource[globalStore.lang]?.Dialog?.ErrorTitle,
