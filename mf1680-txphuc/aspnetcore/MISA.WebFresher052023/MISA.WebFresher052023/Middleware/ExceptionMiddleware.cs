@@ -76,6 +76,21 @@ namespace MISA.WebFresher052023
                             }.ToString() ?? "");
                     break;
 
+                // Xung đột phụ thuộc
+                case ConstraintException:
+                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
+
+                    await context.Response.WriteAsync(
+                            new BaseException()
+                            {
+                                ErrorCode = ErrorCode.ConstraintError,
+                                UserMessage = ErrorMessage.ConstraintError,
+                                DevMessage = exception.Message,
+                                TraceId = context.TraceIdentifier,
+                                MoreInfo = exception.HelpLink
+                            }.ToString() ?? "");
+                    break;
+
                 // Lỗi hệ thống
                 default:
                     context.Response.StatusCode = StatusCodes.Status500InternalServerError;

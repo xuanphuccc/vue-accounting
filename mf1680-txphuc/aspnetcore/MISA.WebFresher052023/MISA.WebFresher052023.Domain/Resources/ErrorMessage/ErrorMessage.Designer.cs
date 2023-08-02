@@ -79,6 +79,15 @@ namespace MISA.WebFresher052023.Domain.Resources.ErrorMessage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Constraint error.
+        /// </summary>
+        public static string ConstraintError {
+            get {
+                return ResourceManager.GetString("ConstraintError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resource not found.
         /// </summary>
         public static string NotFound {

@@ -71,12 +71,8 @@ namespace MISA.WebFresher052023.Application
 
             var employee = _mapper.Map<Employee>(employeeCreateDto);
 
-            // Set Id, ngày tạo và ngày sửa đổi bản ghi
+            // Set Id cho bản ghi
             employee.EmployeeId = Guid.NewGuid();
-            employee.CreatedDate = DateTime.Now;
-            employee.CreatedBy = "txphuc";
-            employee.ModifiedDate = DateTime.Now;
-            employee.ModifiedBy = "txphuc";
 
             return employee;
         }
@@ -93,10 +89,6 @@ namespace MISA.WebFresher052023.Application
             await _employeeManager.CheckExistEmployeeCode(employeeUpdateDto.EmployeeCode, oldEmployee.EmployeeCode);
 
             var newEmployee = _mapper.Map(employeeUpdateDto, oldEmployee);
-
-            // Set lại ngày sửa đổi bản ghi
-            newEmployee.ModifiedDate = DateTime.Now;
-            newEmployee.ModifiedBy = "txphuc";
 
             return newEmployee;
         }

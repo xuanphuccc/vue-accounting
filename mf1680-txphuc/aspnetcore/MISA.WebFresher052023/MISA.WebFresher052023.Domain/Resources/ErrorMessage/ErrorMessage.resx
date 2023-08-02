@@ -123,6 +123,9 @@
   <data name="ConflictCode" xml:space="preserve">
     <value>The code already exists</value>
   </data>
+  <data name="ConstraintError" xml:space="preserve">
+    <value>Constraint error</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>Resource not found</value>
   </data>

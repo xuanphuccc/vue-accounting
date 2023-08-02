@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace MISA.WebFresher052023.Domain
 {
-    public class ConflictException : Exception
+    public class ConstraintException : Exception
     {
         public ErrorCode ErrorCode { get; set; }
 
-        public ConflictException() { }
+        public ConstraintException() { }
 
-        public ConflictException(string message) : base(message) { }
+        public ConstraintException(string message) : base(message) { }
 
-        public ConflictException(string messsage, ErrorCode errorCode) : base(messsage)
+        public ConstraintException(string message, ErrorCode errorCode) : base(message)
         {
             ErrorCode = errorCode;
         }

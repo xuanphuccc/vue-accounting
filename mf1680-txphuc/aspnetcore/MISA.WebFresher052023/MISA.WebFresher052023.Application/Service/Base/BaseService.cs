@@ -44,6 +44,8 @@ namespace MISA.WebFresher052023.Application
             {
                 baseAuditEntity.CreatedDate = DateTime.Now;
                 baseAuditEntity.CreatedBy = "txphuc";
+                baseAuditEntity.ModifiedDate = DateTime.Now;
+                baseAuditEntity.ModifiedBy = "txphuc";
             }
 
             var result = await _baseRepository.InsertAsync(entity);
@@ -57,9 +59,15 @@ namespace MISA.WebFresher052023.Application
         /// <param name="entityId">Id đối tượng</param>
         /// <param name="entityUpdateDto">Thông tin đối tượng</param>
         /// CreatedBy: txphuc (18/07/2023)
-        public async Task<int> UpdateAsync(Guid entityId, TEntityUpdateDto entityUpdateDto)
+        public virtual async Task<int> UpdateAsync(Guid entityId, TEntityUpdateDto entityUpdateDto)
         {
             var entity = await MapUpdateDtoToEntityAsync(entityId, entityUpdateDto);
+
+            if (entity is BaseAuditEntity baseAuditEntity)
+            {
+                baseAuditEntity.ModifiedDate = DateTime.Now;
+                baseAuditEntity.ModifiedBy = "txphuc";
+            }
 
             var result = await _baseRepository.UpdateAsync(entity);
 
@@ -71,7 +79,7 @@ namespace MISA.WebFresher052023.Application
         /// </summary>
         /// <param name="entityId">Id của đối tượng</param>
         /// CreatedBy: txphuc (18/07/2023)
-        public async Task<int> DeleteByIdAsync(Guid entityId)
+        public virtual async Task<int> DeleteByIdAsync(Guid entityId)
         {
             // Check đối tượng có tồn tại hay không
             var existEntity = await _baseRepository.GetByIdAsync(entityId);
@@ -87,7 +95,7 @@ namespace MISA.WebFresher052023.Application
         /// <param name="entityIds">Danh sách Id của các đối tượng cần xoá</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        public async Task<int> DeleteAsync(List<Guid> entityIds)
+        public virtual async Task<int> DeleteAsync(List<Guid> entityIds)
         {
             try
             {

@@ -30,6 +30,12 @@ namespace MISA.WebFresher052023.Domain
         /// Lỗi hệ thống
         /// </summary>
         /// CreatedBy: txphuc (17/07/2023)
-        ServerError = 1003
+        ServerError = 1003,
+
+        /// <summary>
+        /// Lỗi phụ thuộc
+        /// </summary>
+        /// CreatedBy: txphuc (01/08/2023)
+        ConstraintError = 1004
     }
 }

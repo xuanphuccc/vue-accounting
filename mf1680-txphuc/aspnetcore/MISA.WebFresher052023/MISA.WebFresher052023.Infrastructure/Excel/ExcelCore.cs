@@ -132,7 +132,7 @@ namespace MISA.WebFresher052023.Infrastructure
         }
 
         /// <summary>
-        /// Hàm định dạng dữ liệu khi xuất Excel
+        /// Định dạng dữ liệu khi xuất Excel
         /// </summary>
         /// <param name="worksheet">Trang tính</param>
         /// <param name="row">Vị trí hàng của ô</param>

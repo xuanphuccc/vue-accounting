@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MISA.WebFresher052023.Domain;
+using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,6 +64,77 @@ namespace MISA.WebFresher052023.Application
             newDepartment.ModifiedBy = "txphuc";
 
             return newDepartment;
+        }
+
+        /// <summary>
+        /// Xoá bản ghi theo Id
+        /// </summary>
+        /// <param name="departmentId">Id của bản ghi</param>
+        /// CreatedBy: txphuc (01/08/2023)
+        public override async Task<int> DeleteByIdAsync(Guid departmentId)
+        {
+            // Check bản ghi có tồn tại hay không
+            var existDepartment = await _departmentRepository.GetByIdAsync(departmentId);
+
+            // Check bản ghi có phụ thuộc hay không
+            var constraintCount = await _departmentRepository.CheckConstraintByIdAsync(existDepartment);
+            if (constraintCount > 0)
+            {
+                throw new ConstraintException(ErrorMessage.ConstraintError, ErrorCode.ConstraintError);
+            }
+
+            var result = await _departmentRepository.DeleteByIdAsync(existDepartment);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Xoá nhiều đối tượng
+        /// </summary>
+        /// <param name="departmentIds">Danh sách Id của các đối tượng cần xoá</param>
+        /// <returns>Số bản ghi bị ảnh hưởng</returns>
+        /// CreatedBy: txphuc (18/07/2023)
+        public override async Task<int> DeleteAsync(List<Guid> departmentIds)
+        {
+            try
+            {
+                await _unitOfWork.BeginTransactionAsync();
+
+                var departments = await _departmentRepository.GetListByIdsAsync(departmentIds);
+
+                var departmentHaveConstraints = await _departmentRepository.CheckListConstraintAsync(departments);
+
+                // Trường hợp list rỗng
+                if (departmentIds.Count == 0)
+                {
+                    throw new NotFoundException(ErrorMessage.NotFound, ErrorCode.NotFound);
+                }
+
+                // Trường hợp có bản ghi không tồn tại
+                if (departments.ToList().Count < departmentIds.Count)
+                {
+                    throw new NotFoundException(ErrorMessage.NotFound, ErrorCode.NotFound);
+                }
+
+                // Trường hợp có bản ghi có phụ thuộc
+                if (departmentHaveConstraints.ToList().Count > 0)
+                {
+                    var errorMessage = String.Join(", ", departmentHaveConstraints.ToList());
+
+                    throw new ConstraintException(errorMessage, ErrorCode.ConstraintError);
+                }
+
+                var result = await _departmentRepository.DeleteAsync(departments);
+
+                await _unitOfWork.CommitAsync();
+
+                return result;
+            }
+            catch (NotFoundException)
+            {
+                await _unitOfWork.RollBackAsync();
+                throw;
+            }
         }
         #endregion
     }

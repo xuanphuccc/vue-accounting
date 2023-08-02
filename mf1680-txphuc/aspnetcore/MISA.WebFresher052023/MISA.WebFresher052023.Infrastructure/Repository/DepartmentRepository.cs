@@ -7,6 +7,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Dapper.SqlMapper;
 
 namespace MISA.WebFresher052023.Infrastructure
 {
@@ -14,6 +15,42 @@ namespace MISA.WebFresher052023.Infrastructure
     {
         public DepartmentRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
+        }
+
+        /// <summary>
+        /// Lấy số bản ghi phụ thuộc vào bản ghi hiện tại
+        /// </summary>
+        /// <param name="department">đơn vị</param>
+        /// <returns>Số bản ghi phụ thuộc</returns>
+        public async Task<int> CheckConstraintByIdAsync(Department department)
+        {
+            var param = new DynamicParameters();
+            param.Add($"@{TableId}", department.DepartmentId);
+
+            var sql = $"Proc_{TableName}_CheckConstraintById";
+
+            var entity = await _unitOfWork.Connection.QueryFirstOrDefaultAsync<int>(sql, param, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
+
+            return entity;
+        }
+
+        /// <summary>
+        /// Lấy các bản ghi có phụ thuộc
+        /// </summary>
+        /// <param name="departments">Danh sách đơn vị</param>
+        /// <returns>Mã của các đơn vị có phụ thuộc</returns>
+        public async Task<IEnumerable<string>> CheckListConstraintAsync(IEnumerable<Department> departments)
+        {
+            var departmentIdsString = string.Join(", ", departments.Select(department => $"'{department.DepartmentId}'"));
+
+            var param = new DynamicParameters();
+            param.Add($"@{TableId}s", departmentIdsString);
+
+            var sql = $"Proc_{TableName}_CheckListConstraint";
+
+            var departmentCodes = await _unitOfWork.Connection.QueryAsync<string>(sql, param, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
+
+            return departmentCodes;
         }
     }
 }
