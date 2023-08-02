@@ -17,6 +17,7 @@ const resourceEn = {
   Sidebar: {
     Dashboard: "Dashboard",
     Employee: "Employee",
+    Department: "Department",
     Cash: "Cash",
     Purchase: "Purchase",
     Sell: "Sell",
@@ -253,6 +254,44 @@ const resourceEn = {
         Title: "Bank branch",
         SubTitle: "Bank branch",
         Desc: "Bank branch",
+      },
+    },
+
+    Department: {
+      Title: "Department",
+      AddButton: "Add new department",
+      SearchPlaceholder: "Search by code or name",
+      Form: {
+        CreateTitle: "Add department",
+        UpdateTitle: "Edit department",
+        DuplicateTitle: "Duplicate department",
+      },
+      Toast: {
+        CreateSuccess: "Successfully added department",
+        UpdateSuccess: "Successfully updated department",
+        DeleteSuccess: "Successfully deleted department",
+        DuplicateSuccess: "Successfully duplicated department",
+      },
+      Dialog: {
+        DeleteConfirmTitle: "Delete department",
+        DeleteConfirmDesc: "Are you sure you want to delete department @code?",
+        MultipleDeleteConfirmDesc: "Are you sure you want to delete the selected department?",
+      },
+
+      DepartmentCode: {
+        Title: "Department code",
+        SubTitle: "Department code",
+        Desc: "Department code",
+      },
+      DepartmentName: {
+        Title: "Department name",
+        SubTitle: "Department name",
+        Desc: "Department name",
+      },
+      Description: {
+        Title: "Description",
+        SubTitle: "Description",
+        Desc: "Description",
       },
     },
   },

@@ -11,12 +11,13 @@ const resourceVn = {
     1001: "Không tìm thấy tài nguyên",
     1002: "Mã <@code> đã tồn tại trong hệ thống, vui lòng kiểm tra lại",
     1003: "Lỗi hệ thống, vui lòng thử lại sau",
-    1004: "Có bản ghi phụ thuộc",
+    1004: "Có bản ghi phụ thuộc, vui lòng xoá bản ghi phụ thuộc trước khi xoá bản ghi",
   },
 
   Sidebar: {
     Dashboard: "Tổng quan",
     Employee: "Nhân viên",
+    Department: "Đơn vị",
     Cash: "Tiền mặt",
     Purchase: "Mua hàng",
     Sell: "Bán hàng",
@@ -163,10 +164,8 @@ const resourceVn = {
       },
       Dialog: {
         DeleteConfirmTitle: "Xoá nhân viên",
-        DeleteConfirmDesc: (name) =>
-          `Xoá nhân viên "${name}". Nhân viên sau khi xoá sẽ không thể khôi phục lại được`,
-        MultipleDeleteConfirmDesc: (count) =>
-          `Xoá ${count} nhân viên. Nhân viên sau khi xoá sẽ không thể khôi phục lại được`,
+        DeleteConfirmDesc: "Bạn có chắc chắn muốn xoá nhân viên @code không?",
+        MultipleDeleteConfirmDesc: "Bạn có chắc chắn muốn xoá những nhân viên đã chọn không?",
       },
       Validate: {
         EmployeeCode: "Mã không được để trống",
@@ -253,6 +252,44 @@ const resourceVn = {
         Title: "Chi nhánh",
         SubTitle: "Chi nhánh TK ngân hàng",
         Desc: "Chi nhánh tài khoản ngân hàng",
+      },
+    },
+
+    Department: {
+      Title: "Đơn vị",
+      AddButton: "Thêm mới đơn vị",
+      SearchPlaceholder: "Tìm theo mã, tên đơn vị",
+      Form: {
+        CreateTitle: "Thêm đơn vị",
+        UpdateTitle: "Sửa đơn vị",
+        DuplicateTitle: "Nhân bản đơn vị",
+      },
+      Toast: {
+        CreateSuccess: "Thêm đơn vị thành công",
+        UpdateSuccess: "Cập nhật đơn vị thành công",
+        DeleteSuccess: "Xoá đơn vị thành công",
+        DuplicateSuccess: "Nhân bản đơn vị thành công",
+      },
+      Dialog: {
+        DeleteConfirmTitle: "Xoá đơn vị",
+        DeleteConfirmDesc: "Bạn có chắc chắn muốn xoá đơn vị @code không?",
+        MultipleDeleteConfirmDesc: "Bạn có chắc chắn muốn xoá những đơn vị đã chọn không?",
+      },
+
+      DepartmentCode: {
+        Title: "Mã đơn vị",
+        SubTitle: "Mã đơn vị",
+        Desc: "Mã đơn vị",
+      },
+      DepartmentName: {
+        Title: "Tên đơn vị",
+        SubTitle: "Tên đơn vị",
+        Desc: "Tên đơn vị",
+      },
+      Description: {
+        Title: "Mô tả",
+        SubTitle: "Mô tả",
+        Desc: "Mô tả",
       },
     },
   },

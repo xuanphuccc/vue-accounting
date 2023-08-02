@@ -18,6 +18,14 @@
         </router-link>
       </li>
       <li class="sidebar__menu-item">
+        <router-link :to="{ name: 'department' }" @mouseenter="showTippy" class="sidebar__link">
+          <MISAIcon icon="user" />
+          <span class="sidebar__link-text">{{
+            MISAResource[globalStore.lang]?.Sidebar?.Department
+          }}</span>
+        </router-link>
+      </li>
+      <li class="sidebar__menu-item">
         <router-link to="/notfound" @mouseenter="showTippy" class="sidebar__link">
           <MISAIcon icon="money" />
           <span class="sidebar__link-text">{{
