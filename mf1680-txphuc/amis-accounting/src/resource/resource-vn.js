@@ -11,6 +11,7 @@ const resourceVn = {
     1001: "Không tìm thấy tài nguyên",
     1002: "Mã <@code> đã tồn tại trong hệ thống, vui lòng kiểm tra lại",
     1003: "Lỗi hệ thống, vui lòng thử lại sau",
+    1004: "Có bản ghi phụ thuộc",
   },
 
   Sidebar: {

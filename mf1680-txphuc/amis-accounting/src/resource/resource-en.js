@@ -11,6 +11,7 @@ const resourceEn = {
     1001: "Resource not found",
     1002: "The code <@code> already exists in the system, please check again.",
     1003: "System error, please try again later",
+    1004: "Constraint error",
   },
 
   Sidebar: {

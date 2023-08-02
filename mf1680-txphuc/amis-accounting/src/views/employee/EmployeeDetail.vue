@@ -450,13 +450,16 @@ import {
 
 const emit = defineEmits(["submit"]);
 
+// ---- Store ----
 const globalStore = useGlobalStore();
 const employeeStore = useEmployeeStore();
 const toastStore = useToastStore();
 
+// ---- Data for combobox ----
 const departmentOptions = ref([]);
 const positionOptions = ref([]);
 
+// ---- Dialog ----
 const errorDialogState = ref({
   active: false,
   type: "warning",
@@ -471,12 +474,14 @@ const closeFormDialogState = ref({
   description: MISAResource[globalStore.lang]?.Dialog?.CloseFormWarning,
 });
 
+// ---- Loading ----
 const loading = ref({
   submit: false,
   submitAndContinue: false,
   form: false,
 });
 
+// ---- Form data ----
 const initialFormData = {
   employeeCode: "",
   fullName: "",

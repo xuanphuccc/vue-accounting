@@ -159,7 +159,7 @@
         </template>
       </MISATable>
 
-      <!-- Modal -->
+      <!-- Dialog xác nhận xoá -->
       <Teleport to="#app">
         <MISADialog v-if="dialogState.active" v-bind="dialogState" @cancel="hideConfirmDialog">
           <template #right-controls>
@@ -171,6 +171,17 @@
             }}</MISAButton>
           </template>
         </MISADialog>
+      </Teleport>
+
+      <!-- dialog thông báo lỗi -->
+      <Teleport to="#app">
+        <MISADialog
+          v-if="errorDialogState.active"
+          v-bind="errorDialogState"
+          @cancel="closeDialog"
+          @ok="closeDialog"
+          :ok-text="MISAResource[globalStore.lang]?.Button?.OK"
+        />
       </Teleport>
 
       <!-- Employee detail -->
@@ -217,6 +228,7 @@ const globalStore = useGlobalStore();
 const employeeStore = useEmployeeStore();
 const toastStore = useToastStore();
 
+// ---- Data & Paging & Filter ----
 const employeeData = ref([]);
 const searchFieldState = ref("");
 const filterParamsState = ref({
@@ -228,14 +240,26 @@ const pagingInfoState = ref({
   totalPage: 0,
   totalRecords: 0,
 });
+
+// ---- Selected records ----
 const selectedRowsState = ref([]);
 const activeRowState = ref(null);
+
+// ---- Dialog ----
 const dialogState = ref({
   active: false,
   type: "warning",
   title: "",
   description: "",
 });
+const errorDialogState = ref({
+  active: false,
+  type: "warning",
+  title: "",
+  description: "",
+});
+
+// ---- Other ----
 const loading = ref({
   table: false,
   excel: false,
@@ -368,6 +392,7 @@ const getEmployeeData = async () => {
     loading.value.table = false;
   } catch (error) {
     console.warn(error);
+    showErrorDialog(error);
   }
 };
 
@@ -395,6 +420,7 @@ const downloadExcel = async (columns = [], employeeIds = []) => {
   } catch (error) {
     console.warn(error);
     loading.value.excel = false;
+    showErrorDialog(error);
   }
 };
 
@@ -455,16 +481,12 @@ watch(
  * Author: txphuc (11/07/2023)
  */
 const handleDeleteEmployee = async () => {
-  try {
-    if (activeRowState.value) {
-      // Nếu có hàng đang được active thì xoá hàng đó trước
-      await deleteActiveEmployee();
-    } else {
-      // Xoá các hàng đang checked
-      await deleteSelectedEmployee();
-    }
-  } catch (error) {
-    console.warn(error);
+  if (activeRowState.value) {
+    // Nếu có hàng đang được active thì xoá hàng đó trước
+    await deleteActiveEmployee();
+  } else {
+    // Xoá các hàng đang checked
+    await deleteSelectedEmployee();
   }
 };
 
@@ -488,6 +510,7 @@ const deleteSelectedEmployee = async () => {
     });
   } catch (error) {
     console.warn(error);
+    showErrorDialog(error);
   }
 };
 
@@ -509,6 +532,7 @@ const deleteActiveEmployee = async () => {
     });
   } catch (error) {
     console.warn(error);
+    showErrorDialog(error);
   }
 };
 
@@ -615,6 +639,29 @@ const handleResetFilter = () => {
  */
 const applyTableCustomize = (newColums) => {
   columns.value = newColums;
+};
+
+/**
+ * Description: Xử lý hiện thông báo lỗi
+ * Author: txphuc (01/08/2023)
+ */
+const showErrorDialog = (error) => {
+  const dialogData = {
+    active: true,
+    type: "error",
+    title: MISAResource[globalStore.lang]?.Dialog?.ErrorTitle,
+    description: MISAResource[globalStore.lang]?.ErrorMessage[error?.response?.data?.ErrorCode],
+  };
+
+  errorDialogState.value = dialogData;
+};
+
+/**
+ * Description: Hàm đóng dialog
+ * Author: txphuc (01/08/2023)
+ */
+const closeDialog = () => {
+  errorDialogState.value.active = false;
 };
 
 /**
