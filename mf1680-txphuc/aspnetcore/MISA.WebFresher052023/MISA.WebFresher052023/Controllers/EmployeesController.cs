@@ -36,15 +36,13 @@ namespace MISA.WebFresher052023.Controllers
         /// <summary>
         /// Tìm kiếm, filter và phân trang nhân viên
         /// </summary>
-        /// <param name="search">Tìm theo tên hoặc mã nhân viên</param>
-        /// <param name="page">Trang hiện tại</param>
-        /// <param name="pageSize">Số phần tử trên trang</param>
+        /// <param name="employeeFilterDto">Các param cho filter và phân trang</param>
         /// <returns>Danh sách nhân viên được lọc và phân trang</returns>
         /// CreatedBy: txphuc (15/07/2023)
-        [HttpGet("Filter")]
-        public async Task<IActionResult> FilterAsync([FromQuery] string? search, [FromQuery] int? page, [FromQuery] int? pageSize)
+        [HttpPost("Filter")]
+        public async Task<IActionResult> FilterAsync([FromBody] EmployeeFilterDto employeeFilterDto)
         {
-            var pagedEmployees = await _employeeService.FilterAsync(search, page, pageSize);
+            var pagedEmployees = await _employeeService.FilterAsync(employeeFilterDto);
 
             return Ok(pagedEmployees);
         }
@@ -74,6 +72,12 @@ namespace MISA.WebFresher052023.Controllers
             return File(allRecordsBytes, contentType, fileName);
         }
 
+        /// <summary>
+        /// Tải lên file Excel cần đọc
+        /// </summary>
+        /// <param name="file">File Excel</param>
+        /// <returns>Tên file đã được tải lên thành công</returns>
+        /// CreatedBy: txphuc (30/07/2023)
         [HttpPost("Excel/Upload")]
         public async Task<IActionResult> UploadFile(IFormFile file)
         {
@@ -87,6 +91,13 @@ namespace MISA.WebFresher052023.Controllers
             return Ok(fileName);
         }
 
+        /// <summary>
+        /// Lấy tên các cột và vị trí trong file Excel
+        /// Lấy tên các thuộc tính của đối tượng cần lấy dữ liệu
+        /// </summary>
+        /// <param name="excelGetMapDto">Thông tin của file Excel</param>
+        /// <returns>Danh sách các cột Excel và danh sách các thuộc tính của đối tượng</returns>
+        /// CreatedBy: txphuc (30/07/2023)
         [HttpPost("Excel/GetMap")]
         public IActionResult GetMap([FromBody] ExcelGetMapDto excelGetMapDto)
         {
@@ -95,6 +106,15 @@ namespace MISA.WebFresher052023.Controllers
             return Ok(excelMapResponseDto);
         }
 
+        /// <summary>
+        /// - Đọc file Excel theo map đã được gửi lên
+        /// và chuyển dữ liệu trong file Excel thành đối tượng
+        /// - Validate dữ liệu
+        /// - Gửi danh sách các đối tượng đã validate cho FE
+        /// </summary>
+        /// <param name="mapRequestDto">Danh sách map</param>
+        /// <returns>Danh sách các đối tượng đã được validate</returns>
+        /// CreatedBy: txphuc (30/07/2023)
         [HttpPost("Excel/Validate")]
         public IActionResult ValidateData([FromBody] ExcelMapRequestDto mapRequestDto)
         {

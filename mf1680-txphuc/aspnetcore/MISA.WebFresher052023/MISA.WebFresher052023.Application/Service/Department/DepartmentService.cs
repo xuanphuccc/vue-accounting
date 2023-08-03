@@ -32,6 +32,12 @@ namespace MISA.WebFresher052023.Application
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Validate nghiệp vụ cho Insert
+        /// </summary>
+        /// <param name="departmentCreateDto">CreateDto</param>
+        /// <returns>Entity</returns>
+        /// CreatedBy: txphuc (18/07/2023)
         protected override async Task<Department> MapCreateDtoToEntityAsync(DepartmentCreateDto departmentCreateDto)
         {
             // Check trùng mã đơn vị
@@ -39,16 +45,19 @@ namespace MISA.WebFresher052023.Application
 
             var department = _mapper.Map<Department>(departmentCreateDto);
 
-            // Set thông tin cho bản ghi
+            // Set Id cho bản ghi
             department.DepartmentId = Guid.NewGuid();
-            department.CreatedDate = DateTime.Now;
-            department.CreatedBy = "txphuc";
-            department.ModifiedDate = DateTime.Now;
-            department.ModifiedBy = "txphuc";
 
             return department;
         }
 
+        /// <summary>
+        /// Validate nghiệp vụ cho Update
+        /// </summary>
+        /// <param name="departmentId">Id của bản ghi</param>
+        /// <param name="departmentUpdateDto">UpdateDto</param>
+        /// <returns>Entity</returns>
+        /// CreatedBy: txphuc (18/07/2023)
         protected override async Task<Department> MapUpdateDtoToEntityAsync(Guid departmentId, DepartmentUpdateDto departmentUpdateDto)
         {
             // Check đơn vị có tồn tại hay không
@@ -59,81 +68,39 @@ namespace MISA.WebFresher052023.Application
 
             var newDepartment = _mapper.Map(departmentUpdateDto, oldDepartment);
 
-            // Set lại ngày sửa đổi bản ghi
-            newDepartment.ModifiedDate = DateTime.Now;
-            newDepartment.ModifiedBy = "txphuc";
-
             return newDepartment;
         }
 
         /// <summary>
-        /// Xoá bản ghi theo Id
+        /// Kiểm tra có bản ghi phụ thuộc hay không (cho trường hợp xoá một bản ghi)
         /// </summary>
         /// <param name="departmentId">Id của bản ghi</param>
-        /// CreatedBy: txphuc (01/08/2023)
-        public override async Task<int> DeleteByIdAsync(Guid departmentId)
+        /// <returns></returns>
+        protected override async Task CheckConstraintForDeleteAsync(Guid departmentId)
         {
-            // Check bản ghi có tồn tại hay không
-            var existDepartment = await _departmentRepository.GetByIdAsync(departmentId);
-
             // Check bản ghi có phụ thuộc hay không
-            var constraintCount = await _departmentRepository.CheckConstraintByIdAsync(existDepartment);
+            var constraintCount = await _departmentRepository.CheckConstraintByIdAsync(departmentId);
             if (constraintCount > 0)
             {
                 throw new ConstraintException(ErrorMessage.ConstraintError, ErrorCode.ConstraintError);
             }
-
-            var result = await _departmentRepository.DeleteByIdAsync(existDepartment);
-
-            return result;
         }
 
         /// <summary>
-        /// Xoá nhiều đối tượng
+        /// Kiểm tra có bản ghi phụ thuộc hay không (cho trường hợp xoá nhiều)
         /// </summary>
-        /// <param name="departmentIds">Danh sách Id của các đối tượng cần xoá</param>
-        /// <returns>Số bản ghi bị ảnh hưởng</returns>
-        /// CreatedBy: txphuc (18/07/2023)
-        public override async Task<int> DeleteAsync(List<Guid> departmentIds)
+        /// <param name="departmentIds">Danh sách Id của bản ghi</param>
+        /// <returns></returns>
+        protected override async Task CheckConstraintForDeleteManyAsync(List<Guid> departmentIds)
         {
-            try
+            var departmentHaveConstraints = await _departmentRepository.CheckListConstraintAsync(departmentIds);
+
+            // Trường hợp có bản ghi có phụ thuộc
+            if (departmentHaveConstraints.ToList().Count > 0)
             {
-                await _unitOfWork.BeginTransactionAsync();
+                var errorMessage = String.Join(", ", departmentHaveConstraints.ToList());
 
-                var departments = await _departmentRepository.GetListByIdsAsync(departmentIds);
-
-                var departmentHaveConstraints = await _departmentRepository.CheckListConstraintAsync(departments);
-
-                // Trường hợp list rỗng
-                if (departmentIds.Count == 0)
-                {
-                    throw new NotFoundException(ErrorMessage.NotFound, ErrorCode.NotFound);
-                }
-
-                // Trường hợp có bản ghi không tồn tại
-                if (departments.ToList().Count < departmentIds.Count)
-                {
-                    throw new NotFoundException(ErrorMessage.NotFound, ErrorCode.NotFound);
-                }
-
-                // Trường hợp có bản ghi có phụ thuộc
-                if (departmentHaveConstraints.ToList().Count > 0)
-                {
-                    var errorMessage = String.Join(", ", departmentHaveConstraints.ToList());
-
-                    throw new ConstraintException(errorMessage, ErrorCode.ConstraintError);
-                }
-
-                var result = await _departmentRepository.DeleteAsync(departments);
-
-                await _unitOfWork.CommitAsync();
-
-                return result;
-            }
-            catch (NotFoundException)
-            {
-                await _unitOfWork.RollBackAsync();
-                throw;
+                throw new ConstraintException(errorMessage, ErrorCode.ConstraintError);
             }
         }
         #endregion

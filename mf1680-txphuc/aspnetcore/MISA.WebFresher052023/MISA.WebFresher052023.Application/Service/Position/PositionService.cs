@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MISA.WebFresher052023.Domain;
+using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,12 +43,8 @@ namespace MISA.WebFresher052023.Application
 
             var position = _mapper.Map<Position>(positionCreateDto);
 
-            // Set thông tin cho bản ghi
+            // Set Id cho bản ghi
             position.PositionId = Guid.NewGuid();
-            position.CreatedDate = DateTime.Now;
-            position.CreatedBy = "txphuc";
-            position.ModifiedDate = DateTime.Now;
-            position.ModifiedBy = "txphuc";
 
             return position;
         }
@@ -69,11 +66,40 @@ namespace MISA.WebFresher052023.Application
 
             var newPosition = _mapper.Map(positionUpdateDto, oldPosition);
 
-            // Set lại ngày chỉnh sửa cho bản ghi
-            newPosition.ModifiedDate = DateTime.Now;
-            newPosition.ModifiedBy = "txphuc";
-
             return newPosition;
+        }
+
+        /// <summary>
+        /// Kiểm tra có bản ghi phụ thuộc hay không (cho trường hợp xoá một bản ghi)
+        /// </summary>
+        /// <param name="positionId">Id của bản ghi</param>
+        /// <returns></returns>
+        protected override async Task CheckConstraintForDeleteAsync(Guid positionId)
+        {
+            // Check bản ghi có phụ thuộc hay không
+            var constraintCount = await _positionRepository.CheckConstraintByIdAsync(positionId);
+            if (constraintCount > 0)
+            {
+                throw new ConstraintException(ErrorMessage.ConstraintError, ErrorCode.ConstraintError);
+            }
+        }
+
+        /// <summary>
+        /// Kiểm tra có bản ghi phụ thuộc hay không (cho trường hợp xoá nhiều)
+        /// </summary>
+        /// <param name="positionIds">Danh sách Id của bản ghi</param>
+        /// <returns></returns>
+        protected override async Task CheckConstraintForDeleteManyAsync(List<Guid> positionIds)
+        {
+            var positionHaveConstraints = await _positionRepository.CheckListConstraintAsync(positionIds);
+
+            // Trường hợp có bản ghi có phụ thuộc
+            if (positionHaveConstraints.ToList().Count > 0)
+            {
+                var errorMessage = String.Join(", ", positionHaveConstraints.ToList());
+
+                throw new ConstraintException(errorMessage, ErrorCode.ConstraintError);
+            }
         }
         #endregion
     }

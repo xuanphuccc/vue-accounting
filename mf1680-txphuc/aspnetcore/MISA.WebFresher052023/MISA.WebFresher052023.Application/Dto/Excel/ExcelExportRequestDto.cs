@@ -22,6 +22,6 @@ namespace MISA.WebFresher052023.Application
         /// </summary>
         /// CreatedBy: txphuc (26/07/2023)
         [Required(ErrorMessageResourceName = nameof(InputValidation.IsRequired), ErrorMessageResourceType = typeof(InputValidation))]
-        public List<ExcelColumnDto> Columns { get; set; } = new List<ExcelColumnDto>();
+        public List<ExcelExportRequestColumnDto> Columns { get; set; } = new List<ExcelExportRequestColumnDto>();
     }
 }

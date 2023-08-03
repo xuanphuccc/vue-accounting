@@ -84,6 +84,9 @@ namespace MISA.WebFresher052023.Application
             // Check đối tượng có tồn tại hay không
             var existEntity = await _baseRepository.GetByIdAsync(entityId);
 
+            // Check các bản ghi phụ thuộc
+            await CheckConstraintForDeleteAsync(entityId);
+
             var result = await _baseRepository.DeleteByIdAsync(existEntity);
 
             return result;
@@ -101,18 +104,10 @@ namespace MISA.WebFresher052023.Application
             {
                 await _unitOfWork.BeginTransactionAsync();
 
-                var entities = await _baseRepository.GetListByIdsAsync(entityIds);
+                // Check các bản ghi phụ thuộc
+                await CheckConstraintForDeleteManyAsync(entityIds);
 
-                if (entityIds.Count == 0)
-                {
-                    throw new NotFoundException(ErrorMessage.NotFound, ErrorCode.NotFound);
-                }
-                else if (entities.ToList().Count < entityIds.Count)
-                {
-                    throw new NotFoundException(ErrorMessage.NotFound, ErrorCode.NotFound);
-                }
-
-                var result = await _baseRepository.DeleteAsync(entities);
+                var result = await _baseRepository.DeleteAsync(entityIds);
 
                 await _unitOfWork.CommitAsync();
 
@@ -136,10 +131,31 @@ namespace MISA.WebFresher052023.Application
         /// <summary>
         /// Validate nghiệp vụ cho Update
         /// </summary>
+        /// <param name="entityId">Id của bản ghi</param>
         /// <param name="entityUpdateDto">UpdateDto</param>
         /// <returns>Entity</returns>
         /// CreatedBy: txphuc (18/07/2023)
         protected abstract Task<TEntity> MapUpdateDtoToEntityAsync(Guid entityId, TEntityUpdateDto entityUpdateDto);
+
+        /// <summary>
+        /// Kiểm tra có bản ghi phụ thuộc hay không (cho trường hợp xoá nhiều)
+        /// </summary>
+        /// <param name="entityIds">Danh sách Id của bản ghi</param>
+        /// <returns></returns>
+        protected virtual Task CheckConstraintForDeleteManyAsync(List<Guid> entityIds)
+        {
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Kiểm tra có bản ghi phụ thuộc hay không (cho trường hợp xoá một bản ghi)
+        /// </summary>
+        /// <param name="entityId">Id của bản ghi</param>
+        /// <returns></returns>
+        protected virtual Task CheckConstraintForDeleteAsync(Guid entityId)
+        {
+            return Task.CompletedTask;
+        }
         #endregion
     }
 }

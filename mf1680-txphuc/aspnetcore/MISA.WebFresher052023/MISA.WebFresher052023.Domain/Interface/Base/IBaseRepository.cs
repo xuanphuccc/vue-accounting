@@ -35,9 +35,9 @@ namespace MISA.WebFresher052023.Domain
         /// <summary>
         /// Xoá nhiều đối tượng
         /// </summary>
-        /// <param name="entities">Danh sách đối tượng cần xoá</param>
+        /// <param name="entities">Danh sách Id của đối tượng cần xoá</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (24/07/2023)
-        Task<int> DeleteAsync(IEnumerable<TEntity> entities);
+        Task<int> DeleteAsync(IEnumerable<Guid> entityId);
     }
 }

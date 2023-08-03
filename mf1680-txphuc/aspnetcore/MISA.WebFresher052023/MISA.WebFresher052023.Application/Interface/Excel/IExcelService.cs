@@ -14,7 +14,7 @@ namespace MISA.WebFresher052023.Application.Interface
         /// <param name="columns">Danh sách các cột muốn hiển thị</param>
         /// <returns>Mảng bytes của file Excel</returns>
         /// CreatedBy: txphuc (26/07/2023)
-        Task<byte[]> ExportAll(IEnumerable<ExcelColumnDto> columns);
+        Task<byte[]> ExportAll(IEnumerable<ExcelExportRequestColumnDto> columns);
 
         /// <summary>
         /// Xuất danh sách các bản ghi, và theo cột được chỉ định
@@ -23,6 +23,6 @@ namespace MISA.WebFresher052023.Application.Interface
         /// <param name="columns">Danh sách các cột muốn hiển thị</param>
         /// <returns>Mảng bytes của file Excel</returns>
         /// CreatedBy: txphuc (26/07/2023)
-        Task<byte[]> ExportList(IEnumerable<Guid> entityIds, IEnumerable<ExcelColumnDto> columns);
+        Task<byte[]> ExportList(IEnumerable<Guid> entityIds, IEnumerable<ExcelExportRequestColumnDto> columns);
     }
 }

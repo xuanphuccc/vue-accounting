@@ -11,15 +11,15 @@ namespace MISA.WebFresher052023.Domain
         /// <summary>
         /// Lấy số bản ghi phụ thuộc vào bản ghi hiện tại
         /// </summary>
-        /// <param name="department">đơn vị</param>
+        /// <param name="departmentId">đơn vị</param>
         /// <returns>Số bản ghi phụ thuộc</returns>
-        Task<int> CheckConstraintByIdAsync(Department department);
+        Task<int> CheckConstraintByIdAsync(Guid departmentId);
 
         /// <summary>
         /// Lấy các bản ghi có phụ thuộc
         /// </summary>
-        /// <param name="departments">Danh sách đơn vị</param>
+        /// <param name="departmentIds">Danh sách Id của đơn vị</param>
         /// <returns>Mã của các đơn vị có phụ thuộc</returns>
-        Task<IEnumerable<string>> CheckListConstraintAsync(IEnumerable<Department> departments);
+        Task<IEnumerable<string>> CheckListConstraintAsync(IEnumerable<Guid> departmentIds);
     }
 }

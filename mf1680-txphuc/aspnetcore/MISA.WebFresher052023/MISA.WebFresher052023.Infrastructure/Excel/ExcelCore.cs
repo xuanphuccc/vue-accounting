@@ -29,7 +29,7 @@ namespace MISA.WebFresher052023.Infrastructure
         /// </summary>
         /// <returns>Mảng bytes của file Excel</returns>
         /// CreatedBy: txphuc (23/07/2023)
-        public byte[] ExportToExcel(IEnumerable<TEntityDto> entityDtos, IEnumerable<ExcelColumnDto> columns)
+        public byte[] ExportToExcel(IEnumerable<TEntityDto> entityDtos, IEnumerable<ExcelExportRequestColumnDto> columns)
         {
             // Tạo luồng download file
             var stream = new MemoryStream();
@@ -74,12 +74,16 @@ namespace MISA.WebFresher052023.Infrastructure
             foreach (var property in properties)
             {
                 // Tìm thông tin cột tương ứng với tên thuộc tính
-                var column = columns.FirstOrDefault(col => col.ColumnName.ToLower() == property.Name.ToLower());
+                var column = columns.FirstOrDefault(col => col.DataIndex.ToLower() == property.Name.ToLower());
 
                 // Ghi tên cột ra file Excel
                 if (column != null)
                 {
-                    worksheet.Cells[headerRowIndex, column.Index + orderColIndex].Value = AttributeGetter.GetDisplayAttribute(property);
+                    worksheet.Cells[headerRowIndex, column.Index + orderColIndex].Value = column.Title;
+
+                    // Chuyển đổi từ px sang đơn vị Excel
+                    var collumnWidth = column.Width / 7.5;
+                    worksheet.Columns[column.Index + orderColIndex].Width = collumnWidth;
                 }
             }
 
@@ -99,7 +103,6 @@ namespace MISA.WebFresher052023.Infrastructure
             {
                 // Tạo kiểu cho các ô và các hàng
                 worksheet.Cells[currentRow, 1, currentRow, totalColumns].StyleName = cellStyle.Name;
-                worksheet.Cells.AutoFitColumns();
                 worksheet.Rows[currentRow].Height = 28;
 
                 // Số thứ tự
@@ -108,7 +111,7 @@ namespace MISA.WebFresher052023.Infrastructure
                 foreach (var property in properties)
                 {
                     // Tìm thông tin cột tương ứng với tên thuộc tính
-                    var column = columns.FirstOrDefault(col => col.ColumnName.ToLower() == property.Name.ToLower());
+                    var column = columns.FirstOrDefault(col => col.DataIndex.ToLower() == property.Name.ToLower());
 
                     if (column != null)
                     {

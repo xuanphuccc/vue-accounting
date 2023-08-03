@@ -12,11 +12,9 @@ namespace MISA.WebFresher052023.Application
         /// <summary>
         /// Tìm kiếm, filter và phân trang
         /// </summary>
-        /// <param name="search">Search theo tên hoặc mã nhân viên</param>
-        /// <param name="currentPage">trang hiện tại</param>
-        /// <param name="pageSize">Số phần tử trên trang</param>
+        /// <param name="employeeFilterDto">Các param cho filter và phân trang</param>
         /// <returns>Danh sách nhân viên đã được filter và phân trang</returns>
         /// CreatedBy: txphuc (15/07/2023)
-        Task<Pagination> FilterAsync(string? search, int? currentPage, int? pageSize);
+        Task<Pagination> FilterAsync(EmployeeFilterDto employeeFilterDto);
     }
 }

@@ -22,10 +22,10 @@ namespace MISA.WebFresher052023.Infrastructure
         /// </summary>
         /// <param name="department">đơn vị</param>
         /// <returns>Số bản ghi phụ thuộc</returns>
-        public async Task<int> CheckConstraintByIdAsync(Department department)
+        public async Task<int> CheckConstraintByIdAsync(Guid departmentId)
         {
             var param = new DynamicParameters();
-            param.Add($"@{TableId}", department.DepartmentId);
+            param.Add($"@{TableId}", departmentId);
 
             var sql = $"Proc_{TableName}_CheckConstraintById";
 
@@ -39,9 +39,9 @@ namespace MISA.WebFresher052023.Infrastructure
         /// </summary>
         /// <param name="departments">Danh sách đơn vị</param>
         /// <returns>Mã của các đơn vị có phụ thuộc</returns>
-        public async Task<IEnumerable<string>> CheckListConstraintAsync(IEnumerable<Department> departments)
+        public async Task<IEnumerable<string>> CheckListConstraintAsync(IEnumerable<Guid> departmentIds)
         {
-            var departmentIdsString = string.Join(", ", departments.Select(department => $"'{department.DepartmentId}'"));
+            var departmentIdsString = string.Join(", ", departmentIds.Select(departmentId => $"'{departmentId}'"));
 
             var param = new DynamicParameters();
             param.Add($"@{TableId}s", departmentIdsString);

@@ -16,6 +16,31 @@ namespace MISA.WebFresher052023.Domain
         /// <param name="pageSize">Số phần tử trên trang</param>
         /// <returns>Danh sách nhân viên đã được filter và phân trang</returns>
         /// CreatedBy: txphuc (15/07/2023)
-        Task<Pagination> FilterAsync(string search, int currentPage, int pageSize);
+        Task<Pagination> FilterAsync(
+            int currentPage,
+            int pageSize,
+            string? search,
+            string? sortColumn,
+            string? sortOrder,
+            string? employeeCode,
+            string? employeeCodeFilterBy,
+            string? fullName,
+            string? fullNameFilterBy,
+            Gender? gender,
+            string? genderFilterBy,
+            DateTime? dateOfBirth,
+            string? dateOfBirthFilterBy,
+            string? identityNumber,
+            string? identityNumberFilterBy,
+            string? positionName,
+            string? positionNameFilterBy,
+            string? departmentName,
+            string? departmentNameFiterBy,
+            string? bankAccount,
+            string? bankAccountFilterBy,
+            string? bankName,
+            string? bankNameFilterBy,
+            string? bankBranch,
+            string? bankBranchFilterBy);
     }
 }

@@ -38,29 +38,46 @@ namespace MISA.WebFresher052023.Application
         /// <param name="pageSize">Số phần tử trên trang</param>
         /// <returns>Danh sách nhân viên đã được filter và phân trang</returns>
         /// CreatedBy: txphuc (15/07/2023)
-        public async Task<Pagination> FilterAsync(string? search, int? currentPage, int? pageSize)
+        public async Task<Pagination> FilterAsync(EmployeeFilterDto employeeFilterDto)
         {
-            if (string.IsNullOrEmpty(search))
-            {
-                search = "";
-            }
-            if (!currentPage.HasValue)
-            {
-                currentPage = 1;
-            }
-            if (!pageSize.HasValue)
-            {
-                pageSize = 10;
-            }
-
-            var pagedEmployees = await _employeeRepository.FilterAsync(search, currentPage.Value, pageSize.Value);
+            var pagedEmployees = await _employeeRepository.FilterAsync(
+                employeeFilterDto.Page,
+                employeeFilterDto.PageSize,
+                employeeFilterDto.Search,
+                employeeFilterDto.SortColumn,
+                employeeFilterDto.SortOrder,
+                employeeFilterDto.EmployeeCode,
+                employeeFilterDto.EmployeeCodeFilterBy,
+                employeeFilterDto.FullName,
+                employeeFilterDto.FullNameFilterBy,
+                employeeFilterDto.Gender,
+                employeeFilterDto.GenderFilterBy,
+                employeeFilterDto.DateOfBirth,
+                employeeFilterDto.DateOfBirthFilterBy,
+                employeeFilterDto.IdentityNumber,
+                employeeFilterDto.IdentityNumberFilterBy,
+                employeeFilterDto.PositionName,
+                employeeFilterDto.PositionNameFilterBy,
+                employeeFilterDto.DepartmentName,
+                employeeFilterDto.DepartmentNameFilterBy,
+                employeeFilterDto.BankAccount,
+                employeeFilterDto.BankAccountFilterBy,
+                employeeFilterDto.BankName,
+                employeeFilterDto.BankNameFilterBy,
+                employeeFilterDto.BankBranch,
+                employeeFilterDto.BankBranchFilterBy);
 
             pagedEmployees.Data = _mapper.Map<IEnumerable<EmployeeDto>>(pagedEmployees.Data);
 
             return pagedEmployees;
         }
 
-
+        /// <summary>
+        /// Validate nghiệp vụ cho Insert
+        /// </summary>
+        /// <param name="employeeCreateDto">CreateDto</param>
+        /// <returns>Entity</returns>
+        /// CreatedBy: txphuc (18/07/2023)
         protected override async Task<Employee> MapCreateDtoToEntityAsync(EmployeeCreateDto employeeCreateDto)
         {
             // Check trùng mã nhân viên
@@ -77,6 +94,13 @@ namespace MISA.WebFresher052023.Application
             return employee;
         }
 
+        /// <summary>
+        /// Validate nghiệp vụ cho Update
+        /// </summary>
+        /// <param name="employeeId">Id của bản ghi</param>
+        /// <param name="employeeUpdateDto">UpdateDto</param>
+        /// <returns>Entity</returns>
+        /// CreatedBy: txphuc (18/07/2023)
         protected override async Task<Employee> MapUpdateDtoToEntityAsync(Guid employeeId, EmployeeUpdateDto employeeUpdateDto)
         {
             // Check nhân viên có tồn tại hay không

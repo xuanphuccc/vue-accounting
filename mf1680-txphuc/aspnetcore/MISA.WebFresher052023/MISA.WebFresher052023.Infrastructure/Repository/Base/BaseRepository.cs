@@ -79,12 +79,12 @@ namespace MISA.WebFresher052023.Infrastructure
         /// <summary>
         /// Xoá nhiều đối tượng
         /// </summary>
-        /// <param name="entities">Danh sách đối tượng cần xoá</param>
+        /// <param name="entityIds">Danh sách Id của đối tượng cần xoá</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        public async Task<int> DeleteAsync(IEnumerable<TEntity> entities)
+        public async Task<int> DeleteAsync(IEnumerable<Guid> entityIds)
         {
-            var entityIdsString = string.Join(", ", entities.Select(entity => $"'{entity.GetKey()}'"));
+            var entityIdsString = string.Join(", ", entityIds.Select(entity => $"'{entity}'"));
 
             var param = new DynamicParameters();
             param.Add($"@{TableId}s", entityIdsString);
