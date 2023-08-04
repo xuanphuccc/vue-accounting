@@ -107,10 +107,15 @@
 }
 
 .ms-table__table-text-wrap {
+  display: flex;
   width: 100%;
   white-space: nowrap;
   overflow: hidden; /* Ẩn nội dung dư thừa */
   text-overflow: ellipsis; /* Hiển thị dấu ba chấm */
+}
+
+.ms-table__sort-icon {
+  cursor: pointer;
 }
 
 .ms-table__col-resize {

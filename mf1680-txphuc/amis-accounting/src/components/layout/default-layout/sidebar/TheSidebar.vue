@@ -19,7 +19,7 @@
       </li>
       <li class="sidebar__menu-item">
         <router-link :to="{ name: 'department' }" @mouseenter="showTippy" class="sidebar__link">
-          <MISAIcon icon="user" />
+          <MISAIcon icon="users" />
           <span class="sidebar__link-text">{{
             MISAResource[globalStore.lang]?.Sidebar?.Department
           }}</span>

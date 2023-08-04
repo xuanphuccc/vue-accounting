@@ -255,7 +255,7 @@ const defaultColumns = [
     title: MISAResource[globalStore.lang]?.Page?.Employee?.EmployeeCode?.SubTitle,
     dataIndex: "EmployeeCode",
     originName: "EmployeeCode",
-    width: 130,
+    width: 180,
     sticky: "left",
   },
   {
@@ -279,7 +279,7 @@ const defaultColumns = [
     dataIndex: "DateOfBirthFormated",
     originName: "DateOfBirth",
     align: "center",
-    width: 140,
+    width: 200,
   },
   {
     key: 5,
@@ -287,8 +287,8 @@ const defaultColumns = [
     dataIndex: "IdentityNumber",
     originName: "IdentityNumber",
     desc: MISAResource[globalStore.lang]?.Page?.Employee?.IdentityNumber?.Desc,
-    align: "right",
-    width: 140,
+    align: "left",
+    width: 180,
   },
   {
     key: 6,
@@ -309,7 +309,7 @@ const defaultColumns = [
     title: MISAResource[globalStore.lang]?.Page?.Employee?.BankAccount?.SubTitle,
     dataIndex: "BankAccount",
     originName: "BankAccount",
-    align: "right",
+    align: "left",
     width: 180,
   },
   {
@@ -317,7 +317,7 @@ const defaultColumns = [
     title: MISAResource[globalStore.lang]?.Page?.Employee?.BankName?.Title,
     dataIndex: "BankName",
     originName: "BankName",
-    width: 340,
+    width: 360,
   },
   {
     key: 10,
@@ -325,7 +325,7 @@ const defaultColumns = [
     dataIndex: "BankBranch",
     originName: "BankBranch",
     desc: MISAResource[globalStore.lang]?.Page?.Employee?.BankBranch?.Desc,
-    width: 240,
+    width: 260,
   },
 ];
 const columns = ref([]);

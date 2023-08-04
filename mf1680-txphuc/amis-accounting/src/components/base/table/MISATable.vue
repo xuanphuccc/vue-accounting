@@ -29,6 +29,10 @@
               >
                 <div class="ms-table__table-text-wrap">
                   {{ column.title }}
+
+                  <div class="ms-table__sort-icon">
+                    <MISAIcon size="20" icon="arrow-down" />
+                  </div>
                 </div>
 
                 <!-- resize column -->

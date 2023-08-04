@@ -15,6 +15,14 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
+.ms-icon--users-24 {
+  -webkit-mask-image: url("../../../assets/img/Sprites.64af8f61.svg");
+  mask-image: url("../../../assets/img/Sprites.64af8f61.svg");
+  -webkit-mask-position: -984px -200px;
+  mask-position: -984px -200px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
 .ms-icon--money-24 {
   -webkit-mask-image: url("../../../assets/img/Sprites.64af8f61.svg");
   mask-image: url("../../../assets/img/Sprites.64af8f61.svg");
@@ -422,6 +430,14 @@
 .ms-icon--download-24 {
   -webkit-mask-image: url("../../../assets/img/download.svg");
   mask-image: url("../../../assets/img/download.svg");
+  -webkit-mask-position: contain;
+  mask-position: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ms-icon--arrow-down-20 {
+  -webkit-mask-image: url("../../../assets/img/arrow-down.svg");
+  mask-image: url("../../../assets/img/arrow-down.svg");
   -webkit-mask-position: contain;
   mask-position: contain;
   -webkit-mask-repeat: no-repeat;
