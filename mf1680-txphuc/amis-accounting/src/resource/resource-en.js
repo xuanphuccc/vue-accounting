@@ -93,6 +93,7 @@ const resourceEn = {
   Dialog: {
     ErrorTitle: "Error",
     WarningTitle: "Warning",
+    InfoTitle: "Information",
     CloseFormWarning: "The data has been modified. Do you want to save?",
   },
 
@@ -151,6 +152,7 @@ const resourceEn = {
       Title: "Employee",
       AddButton: "Add new employee",
       SearchPlaceholder: "Search by code or name",
+      ExcelExportFileName: "Employee_list.xlsx",
       Form: {
         CreateTitle: "Add employee",
         UpdateTitle: "Edit employee",

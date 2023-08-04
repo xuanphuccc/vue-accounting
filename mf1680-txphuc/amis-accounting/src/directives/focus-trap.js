@@ -48,7 +48,7 @@ const focusTrapDirective = (el) => {
     };
 
     // Set lại index hiện tại sang index của input được click
-    input.onmousedown = () => {
+    input.onfocus = () => {
       currentIndex = input.getAttribute("tabindex") - 1;
     };
   });

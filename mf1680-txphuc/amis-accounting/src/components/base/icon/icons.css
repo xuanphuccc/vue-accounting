@@ -403,6 +403,22 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
+.ms-icon--pin-fill-20 {
+  -webkit-mask-image: url("../../../assets/img/pin-icon-fill.svg");
+  mask-image: url("../../../assets/img/pin-icon-fill.svg");
+  -webkit-mask-position: contain;
+  mask-position: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ms-icon--pin-outline-20 {
+  -webkit-mask-image: url("../../../assets/img/pin-icon-outline.svg");
+  mask-image: url("../../../assets/img/pin-icon-outline.svg");
+  -webkit-mask-position: contain;
+  mask-position: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
 .ms-icon--download-24 {
   -webkit-mask-image: url("../../../assets/img/download.svg");
   mask-image: url("../../../assets/img/download.svg");
@@ -428,6 +444,10 @@
 
 .ms-icon--excel-gray-24 {
   background: url("../../../assets/img/Sprites.64af8f61.svg") no-repeat -705px -256px;
+}
+
+.ms-icon--suggest-48 {
+  background: url("../../../assets/img/Sprites.64af8f61.svg") no-repeat -906px -456px;
 }
 
 .ms-icon--vi-VN-24 {

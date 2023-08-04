@@ -133,17 +133,6 @@
         </MISADialog>
       </Teleport>
 
-      <!-- dialog thông báo lỗi -->
-      <Teleport to="#app">
-        <MISADialog
-          v-if="errorDialogState.active"
-          v-bind="errorDialogState"
-          @cancel="closeDialog"
-          @ok="closeDialog"
-          :ok-text="MISAResource[globalStore.lang]?.Button?.OK"
-        />
-      </Teleport>
-
       <!-- Table customize -->
       <MISATableCusomize
         :columns="columns"
@@ -201,12 +190,6 @@ const activeRowState = ref(null);
 
 // ---- Dialog ----
 const dialogState = ref({
-  active: false,
-  type: "warning",
-  title: "",
-  description: "",
-});
-const errorDialogState = ref({
   active: false,
   type: "warning",
   title: "",
@@ -287,7 +270,6 @@ const getDepartmentData = async () => {
     loading.value.table = false;
   } catch (error) {
     console.warn(error);
-    showErrorDialog(error);
   }
 };
 
@@ -338,7 +320,7 @@ const deleteSelectedDepartment = async () => {
     });
   } catch (error) {
     console.warn(error);
-    showErrorDialog(error);
+    hideConfirmDialog();
   }
 };
 
@@ -360,7 +342,7 @@ const deleteActiveDepartment = async () => {
     });
   } catch (error) {
     console.warn(error);
-    showErrorDialog(error);
+    hideConfirmDialog();
   }
 };
 
@@ -467,36 +449,6 @@ const handleResetFilter = () => {
  */
 const applyTableCustomize = (newColums) => {
   columns.value = newColums;
-};
-
-/**
- * Description: Xử lý hiện thông báo lỗi
- * Author: txphuc (01/08/2023)
- */
-const showErrorDialog = (error) => {
-  const dialogData = {
-    active: true,
-    type: "error",
-    title: MISAResource[globalStore.lang]?.Dialog?.ErrorTitle,
-    description: MISAResource[globalStore.lang]?.ErrorMessage[error?.response?.data?.ErrorCode],
-  };
-
-  if (error?.response?.data?.DevMessage?.includes("PB-")) {
-    dialogData.description = dialogData.description + `: ${error?.response?.data?.DevMessage}`;
-  }
-
-  errorDialogState.value = dialogData;
-
-  // Tắt dialog xác nhận xoá
-  dialogState.value.active = false;
-};
-
-/**
- * Description: Hàm đóng dialog
- * Author: txphuc (01/08/2023)
- */
-const closeDialog = () => {
-  errorDialogState.value.active = false;
 };
 
 /**

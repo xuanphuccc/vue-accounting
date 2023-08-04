@@ -1,5 +1,6 @@
 import axios from "axios";
 import enums from "@/helper/enum";
+import { useDialogStore } from "@/stores/dialog-store";
 
 // Create new instance
 const axiosClient = axios.create({
@@ -32,6 +33,13 @@ axiosClient.interceptors.response.use(
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+
+    const dialogStore = useDialogStore();
+
+    // Hiện thông báo lỗi
+    const errorMessage = error?.response?.data?.UserMessage;
+    dialogStore.showError(errorMessage);
+
     return Promise.reject(error);
   }
 );

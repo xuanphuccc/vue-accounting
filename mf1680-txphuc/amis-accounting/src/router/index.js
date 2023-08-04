@@ -1,8 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-// import TheDefaultLayout from "../components/layout/default-layout/TheDefaultLayout.vue";
-// import TheEmptyLayout from "../components/layout/empty-layout/TheEmptyLayout.vue";
-
 import DashboardPage from "../views/dashboard/DashboardPage.vue";
 import EmployeeList from "../views/employee/EmployeeList.vue";
 import DepartmentList from "../views/department/DepartmentList.vue";

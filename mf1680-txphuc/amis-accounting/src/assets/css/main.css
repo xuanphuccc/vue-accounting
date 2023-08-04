@@ -35,6 +35,10 @@ html {
   font-size: 14px;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 .main {
   overflow-x: hidden;
 }

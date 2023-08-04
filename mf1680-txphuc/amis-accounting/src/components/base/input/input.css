@@ -1,11 +1,23 @@
 /* label */
 .ms-label {
-  display: inline-block;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 14px;
   line-height: 14px;
   color: var(--primary-text-color);
   font-weight: 500;
   margin-bottom: 8px;
+}
+
+.ms-label.--flex {
+  display: flex;
+}
+
+.ms-label__right {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--secondary-text-color);
 }
 
 .ms-label--requried {

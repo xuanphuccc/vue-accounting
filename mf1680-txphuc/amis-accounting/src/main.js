@@ -17,7 +17,7 @@ app.use(router);
 app.use(VueTippy, {
   directive: "tippy", // => v-tippy
   defaultProps: {
-    delay: [400, 100],
+    delay: [400, 0],
     // placement: "auto-top",
   }, // => Global default options * see all props
 });

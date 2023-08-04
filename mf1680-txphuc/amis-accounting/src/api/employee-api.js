@@ -28,9 +28,7 @@ const employeeApi = {
    */
   filter(params = {}) {
     const url = `${rootUrl}/filter`;
-    return axiosClient.get(url, {
-      params: params,
-    });
+    return axiosClient.post(url, params);
   },
 
   /**

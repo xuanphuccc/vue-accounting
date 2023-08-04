@@ -23,7 +23,6 @@
             <template #dropdown>
               <MISAContextMenu width="204" small>
                 <MISAContextItem>
-                  <input type="file" name="" id="" hidden />
                   <template #icon><MISAIcon icon="import" /></template>
                   {{ MISAResource[globalStore.lang]?.ContextMenu?.ImportFromExcel }}
                 </MISAContextItem>
@@ -174,17 +173,6 @@
         </MISADialog>
       </Teleport>
 
-      <!-- dialog thông báo lỗi -->
-      <Teleport to="#app">
-        <MISADialog
-          v-if="errorDialogState.active"
-          v-bind="errorDialogState"
-          @cancel="closeDialog"
-          @ok="closeDialog"
-          :ok-text="MISAResource[globalStore.lang]?.Button?.OK"
-        />
-      </Teleport>
-
       <!-- Employee detail -->
       <EmployeeDetail v-if="employeeStore.isOpenForm" @submit="getEmployeeData"></EmployeeDetail>
 
@@ -253,12 +241,6 @@ const dialogState = ref({
   title: "",
   description: "",
 });
-const errorDialogState = ref({
-  active: false,
-  type: "warning",
-  title: "",
-  description: "",
-});
 
 // ---- Other ----
 const loading = ref({
@@ -289,6 +271,7 @@ const defaultColumns = [
     title: MISAResource[globalStore.lang]?.Page?.Employee?.Gender?.Title,
     dataIndex: "GenderFormated",
     originName: "Gender",
+    width: 140,
   },
   {
     key: 4,
@@ -296,6 +279,7 @@ const defaultColumns = [
     dataIndex: "DateOfBirthFormated",
     originName: "DateOfBirth",
     align: "center",
+    width: 140,
   },
   {
     key: 5,
@@ -304,6 +288,7 @@ const defaultColumns = [
     originName: "IdentityNumber",
     desc: MISAResource[globalStore.lang]?.Page?.Employee?.IdentityNumber?.Desc,
     align: "right",
+    width: 140,
   },
   {
     key: 6,
@@ -332,7 +317,7 @@ const defaultColumns = [
     title: MISAResource[globalStore.lang]?.Page?.Employee?.BankName?.Title,
     dataIndex: "BankName",
     originName: "BankName",
-    width: 180,
+    width: 340,
   },
   {
     key: 10,
@@ -393,7 +378,6 @@ const getEmployeeData = async () => {
     loading.value.table = false;
   } catch (error) {
     console.warn(error);
-    showErrorDialog(error);
   }
 };
 
@@ -401,10 +385,22 @@ const getEmployeeData = async () => {
  * Description: Download excel danh sách nhân viên
  * Author: txphuc (21/07/2023)
  */
-const downloadExcel = async (columns = [], employeeIds = []) => {
+const downloadExcel = async (employeeIds = []) => {
   try {
     loading.value.excel = true;
-    const response = await employeeApi.downloadExcel(columns, employeeIds);
+
+    // Lấy danh sách các cột không bị ẩn
+    const requestColumns = columns.value
+      .filter((col) => !col.hide)
+      .map((col, index) => ({
+        dataIndex: col.originName,
+        title: col.title,
+        index: index + 1,
+        width: col.width,
+        align: col.align,
+      }));
+
+    const response = await employeeApi.downloadExcel(requestColumns, employeeIds);
 
     const blob = new Blob([response.data], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -414,14 +410,14 @@ const downloadExcel = async (columns = [], employeeIds = []) => {
 
     const linkElement = document.createElement("a");
     linkElement.href = url;
-    linkElement.download = "employee.xlsx";
+    linkElement.download =
+      MISAResource[globalStore.lang]?.Page?.Employee?.ExcelExportFileName ?? "export.xlsx";
     linkElement.click();
 
     loading.value.excel = false;
   } catch (error) {
     console.warn(error);
     loading.value.excel = false;
-    showErrorDialog(error);
   }
 };
 
@@ -430,16 +426,7 @@ const downloadExcel = async (columns = [], employeeIds = []) => {
  * Author: txphuc(26/07/2023)
  */
 const downloadAllRecords = async () => {
-  try {
-    // Lấy danh sách các cột không bị ẩn
-    const requestColumns = columns.value
-      .filter((col) => !col.hide)
-      .map((col, index) => ({ columnName: col.originName, index: index + 1, align: col.align }));
-
-    await downloadExcel(requestColumns);
-  } catch (error) {
-    console.warn(error);
-  }
+  await downloadExcel();
 };
 
 /**
@@ -447,20 +434,11 @@ const downloadAllRecords = async () => {
  * Author: txphuc(26/07/2023)
  */
 const downloadSelectedRecords = async () => {
-  try {
-    // Lấy danh sách các cột không bị ẩn
-    const requestColumns = columns.value
-      .filter((col) => !col.hide)
-      .map((col, index) => ({ columnName: col.originName, index: index + 1, align: col.align }));
+  // Danh sách Id của các bản ghi cần xuất
+  const employeeIds = selectedRowsState.value.map((employee) => employee.EmployeeId);
 
-    // Danh sách Id của các bản ghi cần xuất
-    const employeeIds = selectedRowsState.value.map((employee) => employee.EmployeeId);
-
-    if (employeeIds.length > 0) {
-      await downloadExcel(requestColumns, employeeIds);
-    }
-  } catch (error) {
-    console.warn(error);
+  if (employeeIds.length > 0) {
+    await downloadExcel(employeeIds);
   }
 };
 
@@ -511,7 +489,7 @@ const deleteSelectedEmployee = async () => {
     });
   } catch (error) {
     console.warn(error);
-    showErrorDialog(error);
+    hideConfirmDialog();
   }
 };
 
@@ -533,7 +511,7 @@ const deleteActiveEmployee = async () => {
     });
   } catch (error) {
     console.warn(error);
-    showErrorDialog(error);
+    hideConfirmDialog();
   }
 };
 
@@ -640,29 +618,6 @@ const handleResetFilter = () => {
  */
 const applyTableCustomize = (newColums) => {
   columns.value = newColums;
-};
-
-/**
- * Description: Xử lý hiện thông báo lỗi
- * Author: txphuc (01/08/2023)
- */
-const showErrorDialog = (error) => {
-  const dialogData = {
-    active: true,
-    type: "error",
-    title: MISAResource[globalStore.lang]?.Dialog?.ErrorTitle,
-    description: MISAResource[globalStore.lang]?.ErrorMessage[error?.response?.data?.ErrorCode],
-  };
-
-  errorDialogState.value = dialogData;
-};
-
-/**
- * Description: Hàm đóng dialog
- * Author: txphuc (01/08/2023)
- */
-const closeDialog = () => {
-  errorDialogState.value.active = false;
 };
 
 /**

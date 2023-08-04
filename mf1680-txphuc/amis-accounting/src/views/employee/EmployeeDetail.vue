@@ -372,17 +372,6 @@
       </template>
     </MISAPopup>
 
-    <!-- dialog thông báo lỗi -->
-    <Teleport to="#app">
-      <MISADialog
-        v-if="errorDialogState.active"
-        v-bind="errorDialogState"
-        @cancel="closeDialog"
-        @ok="closeDialog"
-        :ok-text="MISAResource[globalStore.lang]?.Button?.OK"
-      />
-    </Teleport>
-
     <!-- dialog cảnh bảo đóng form -->
     <Teleport to="#app">
       <MISADialog
@@ -460,13 +449,6 @@ const departmentOptions = ref([]);
 const positionOptions = ref([]);
 
 // ---- Dialog ----
-const errorDialogState = ref({
-  active: false,
-  type: "warning",
-  title: "",
-  description: "",
-});
-
 const closeFormDialogState = ref({
   active: false,
   type: "warning",
@@ -635,7 +617,6 @@ const handleCloseForm = () => {
  * Author: txphuc (29/06/2023)
  */
 const closeDialog = () => {
-  errorDialogState.value.active = false;
   closeFormDialogState.value.active = false;
 };
 
@@ -885,9 +866,6 @@ const handleCreateEmployee = async () => {
   } catch (error) {
     console.warn(error);
 
-    // Hiện dialog báo lỗi
-    showErrorDialog(error);
-
     return false;
   }
 };
@@ -967,9 +945,6 @@ const handleUpdateEmployee = async () => {
   } catch (error) {
     console.warn(error);
 
-    // Hiện dialog báo lỗi
-    showErrorDialog(error);
-
     return false;
   }
 };
@@ -995,29 +970,8 @@ const handleDuplicateEmployee = async () => {
   } catch (error) {
     console.warn(error);
 
-    // Hiện dialog báo lỗi
-    showErrorDialog(error);
-
     return false;
   }
-};
-
-/**
- * Description: Xử lý hiện thông báo lỗi
- * Author: txphuc (01/08/2023)
- */
-const showErrorDialog = (error) => {
-  const dialogData = {
-    active: true,
-    type: "error",
-    title: MISAResource[globalStore.lang]?.Dialog?.ErrorTitle,
-    description: MISAResource[globalStore.lang]?.ErrorMessage[error?.response?.data?.ErrorCode],
-  };
-
-  // Thay mã tương ứng vào thông báo
-  dialogData.description = dialogData.description.replace("@code", formData.value.employeeCode);
-
-  errorDialogState.value = dialogData;
 };
 </script>
 

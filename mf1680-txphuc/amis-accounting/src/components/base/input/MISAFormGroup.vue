@@ -6,9 +6,15 @@
       { '--space-bottom': props.spaceBottom },
     ]"
   >
-    <label v-tippy="{ content: props.tooltip || '' }" :for="props.for" class="ms-label"
-      >{{ props.label }}
-      <span v-if="requiredMark" class="ms-label--requried">*</span>
+    <label
+      v-tippy="{ content: props.tooltip || '' }"
+      :for="props.for"
+      :class="['ms-label', { '--flex': props.labelDesc }]"
+    >
+      <span class="ms-label__left">
+        {{ props.label }} <span v-if="requiredMark" class="ms-label--requried">*</span>
+      </span>
+      <span class="ms-label__right">{{ props.labelDesc }}</span>
     </label>
 
     <slot></slot>
@@ -23,6 +29,11 @@ const props = defineProps({
   label: {
     type: String,
     default: "Label",
+  },
+
+  // Mô tả cho label
+  labelDesc: {
+    type: String,
   },
 
   // Hiện đánh dấu bắt buộc

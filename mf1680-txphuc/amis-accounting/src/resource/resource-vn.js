@@ -93,6 +93,7 @@ const resourceVn = {
   Dialog: {
     ErrorTitle: "Đã có lỗi",
     WarningTitle: "Cảnh báo",
+    InfoTitle: "Thông tin",
     CloseFormWarning: "Dữ liệu đã bị thay đổi. Bạn có muốn cất không?",
   },
 
@@ -151,6 +152,7 @@ const resourceVn = {
       Title: "Nhân viên",
       AddButton: "Thêm mới nhân viên",
       SearchPlaceholder: "Tìm theo mã, tên nhân viên",
+      ExcelExportFileName: "Danh_sach_nhan_vien.xlsx",
       Form: {
         CreateTitle: "Thêm nhân viên",
         UpdateTitle: "Sửa nhân viên",

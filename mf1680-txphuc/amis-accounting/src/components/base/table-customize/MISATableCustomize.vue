@@ -41,7 +41,7 @@
             </div>
             <div class="ms-table-customize__menu-item-actions">
               <div class="ms-table-customize__item-action --pin-icon">
-                <MISAIcon @click="pinColumn(element?.key)" size="20" icon="paper-clip" />
+                <MISAIcon @click="pinColumn(element?.key)" size="20" icon="pin-fill" />
               </div>
               <div class="ms-table-customize__item-action">
                 <MISAIcon size="20" icon="draggable-dots" class="handle" />
