@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MISA.WebFresher052023.Domain;
+using MISA.WebFresher052023.Domain.Resources.Common;
 using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
 using System;
 using System.Collections.Generic;
@@ -79,10 +80,11 @@ namespace MISA.WebFresher052023.Application
         protected override async Task CheckConstraintForDeleteAsync(Guid departmentId)
         {
             // Check bản ghi có phụ thuộc hay không
-            var constraintCount = await _departmentRepository.CheckConstraintByIdAsync(departmentId);
-            if (constraintCount > 0)
+            var department = await _departmentRepository.CheckConstraintByIdAsync(departmentId);
+            if (department != null)
             {
-                throw new ConstraintException(ErrorMessage.ConstraintError, ErrorCode.ConstraintError);
+                var errorMessage = String.Format(ErrorMessage.ConstraintError, CommonResource.Department, department.DepartmentCode);
+                throw new ConstraintException(errorMessage, ErrorCode.ConstraintError);
             }
         }
 
@@ -98,8 +100,8 @@ namespace MISA.WebFresher052023.Application
             // Trường hợp có bản ghi có phụ thuộc
             if (departmentHaveConstraints.ToList().Count > 0)
             {
-                var errorMessage = String.Join(", ", departmentHaveConstraints.ToList());
-
+                var errorDepartmentCodes = String.Join(", ", departmentHaveConstraints.ToList());
+                var errorMessage = String.Format(ErrorMessage.ConstraintError, CommonResource.Department, errorDepartmentCodes);
                 throw new ConstraintException(errorMessage, ErrorCode.ConstraintError);
             }
         }

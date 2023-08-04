@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MISA.WebFresher052023.Domain;
+using MISA.WebFresher052023.Domain.Resources.Common;
 using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
 using System;
 using System.Collections.Generic;
@@ -77,10 +78,11 @@ namespace MISA.WebFresher052023.Application
         protected override async Task CheckConstraintForDeleteAsync(Guid positionId)
         {
             // Check bản ghi có phụ thuộc hay không
-            var constraintCount = await _positionRepository.CheckConstraintByIdAsync(positionId);
-            if (constraintCount > 0)
+            var postion = await _positionRepository.CheckConstraintByIdAsync(positionId);
+            if (postion != null)
             {
-                throw new ConstraintException(ErrorMessage.ConstraintError, ErrorCode.ConstraintError);
+                var errorMessage = String.Format(ErrorMessage.ConstraintError, CommonResource.Position, postion.PositionCode);
+                throw new ConstraintException(errorMessage, ErrorCode.ConstraintError);
             }
         }
 
@@ -96,7 +98,8 @@ namespace MISA.WebFresher052023.Application
             // Trường hợp có bản ghi có phụ thuộc
             if (positionHaveConstraints.ToList().Count > 0)
             {
-                var errorMessage = String.Join(", ", positionHaveConstraints.ToList());
+                var errorPositionCodes = String.Join(", ", positionHaveConstraints.ToList());
+                var errorMessage = String.Format(ErrorMessage.ConstraintError, CommonResource.Department, errorPositionCodes);
 
                 throw new ConstraintException(errorMessage, ErrorCode.ConstraintError);
             }

@@ -1,4 +1,5 @@
-﻿using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
+﻿using MISA.WebFresher052023.Domain.Resources.Common;
+using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,8 @@ namespace MISA.WebFresher052023.Domain
 
             if (existPosition != null && existPosition.PositionCode != oldPositionCode)
             {
-                throw new ConflictException($"{ErrorMessage.ConflictCode}: '{positionCode}'", ErrorCode.ConflictCode);
+                var errorMessage = String.Format(ErrorMessage.ConflictCode, CommonResource.Position, positionCode);
+                throw new ConflictException(errorMessage, ErrorCode.ConflictCode);
             }
         }
         #endregion

@@ -142,7 +142,7 @@ namespace MISA.WebFresher052023.Domain.Resources.Employee {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Employee.
+        ///   Looks up a localized string similar to LIST OF EMPLOYEES.
         /// </summary>
         public static string ExcelSheetName {
             get {

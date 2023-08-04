@@ -12,8 +12,8 @@ namespace MISA.WebFresher052023.Domain
         /// Lấy số bản ghi phụ thuộc vào bản ghi hiện tại
         /// </summary>
         /// <param name="departmentId">đơn vị</param>
-        /// <returns>Số bản ghi phụ thuộc</returns>
-        Task<int> CheckConstraintByIdAsync(Guid departmentId);
+        /// <returns>đơn vị nếu có bản ghi phụ thộc</returns>
+        Task<Department?> CheckConstraintByIdAsync(Guid departmentId);
 
         /// <summary>
         /// Lấy các bản ghi có phụ thuộc

@@ -1,4 +1,5 @@
-﻿using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
+﻿using MISA.WebFresher052023.Domain.Resources.Common;
+using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,8 @@ namespace MISA.WebFresher052023.Domain
 
             if (existDeparment != null && existDeparment.DepartmentCode != oldDepartmentCode)
             {
-                throw new ConflictException($"{ErrorMessage.ConflictCode}: '{departmentCode}'", ErrorCode.ConflictCode);
+                var errorMessage = String.Format(ErrorMessage.ConflictCode, CommonResource.Department, departmentCode);
+                throw new ConflictException(errorMessage, ErrorCode.ConflictCode);
             }
         }
         #endregion

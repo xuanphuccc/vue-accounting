@@ -54,7 +54,7 @@ namespace MISA.WebFresher052023
                             new BaseException()
                             {
                                 ErrorCode = ErrorCode.NotFound,
-                                UserMessage = ErrorMessage.NotFound,
+                                UserMessage = exception.Message,
                                 DevMessage = exception.Message,
                                 TraceId = context.TraceIdentifier,
                                 MoreInfo = exception.HelpLink
@@ -69,7 +69,7 @@ namespace MISA.WebFresher052023
                             new BaseException()
                             {
                                 ErrorCode = ErrorCode.ConflictCode,
-                                UserMessage = ErrorMessage.ConflictCode,
+                                UserMessage = exception.Message,
                                 DevMessage = exception.Message,
                                 TraceId = context.TraceIdentifier,
                                 MoreInfo = exception.HelpLink
@@ -84,7 +84,7 @@ namespace MISA.WebFresher052023
                             new BaseException()
                             {
                                 ErrorCode = ErrorCode.ConstraintError,
-                                UserMessage = ErrorMessage.ConstraintError,
+                                UserMessage = exception.Message,
                                 DevMessage = exception.Message,
                                 TraceId = context.TraceIdentifier,
                                 MoreInfo = exception.HelpLink

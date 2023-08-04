@@ -13,7 +13,7 @@ namespace MISA.WebFresher052023.Domain
         /// </summary>
         /// <param name="positionId">Id của vị trí</param>
         /// <returns>Số bản ghi phụ thuộc</returns>
-        Task<int> CheckConstraintByIdAsync(Guid positionId);
+        Task<Position> CheckConstraintByIdAsync(Guid positionId);
 
         /// <summary>
         /// Lấy các bản ghi có phụ thuộc

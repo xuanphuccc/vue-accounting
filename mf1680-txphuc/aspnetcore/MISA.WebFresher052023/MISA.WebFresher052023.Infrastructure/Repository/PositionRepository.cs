@@ -24,14 +24,14 @@ namespace MISA.WebFresher052023.Infrastructure
         /// </summary>
         /// <param name="positionId">Id của đơn vị</param>
         /// <returns>Số bản ghi phụ thuộc</returns>
-        public async Task<int> CheckConstraintByIdAsync(Guid positionId)
+        public async Task<Position?> CheckConstraintByIdAsync(Guid positionId)
         {
             var param = new DynamicParameters();
             param.Add($"@{TableId}", positionId);
 
             var sql = $"Proc_{TableName}_CheckConstraintById";
 
-            var entity = await _unitOfWork.Connection.QueryFirstOrDefaultAsync<int>(sql, param, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
+            var entity = await _unitOfWork.Connection.QueryFirstOrDefaultAsync<Position>(sql, param, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
 
             return entity;
         }

@@ -1,4 +1,5 @@
-﻿using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
+﻿using MISA.WebFresher052023.Domain.Resources.Common;
+using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +41,8 @@ namespace MISA.WebFresher052023.Domain
 
             if (existEmployee != null && existEmployee.EmployeeCode != oldEmployeeCode)
             {
-                throw new ConflictException($"{ErrorMessage.ConflictCode}: '{employeeCode}'", ErrorCode.ConflictCode);
+                var errorMessage = String.Format(ErrorMessage.ConflictCode, CommonResource.Employee, employeeCode);
+                throw new ConflictException(errorMessage, ErrorCode.ConflictCode);
             }
         }
 

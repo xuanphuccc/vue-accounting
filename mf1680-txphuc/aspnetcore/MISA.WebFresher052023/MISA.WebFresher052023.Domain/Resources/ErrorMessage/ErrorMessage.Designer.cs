@@ -70,7 +70,7 @@ namespace MISA.WebFresher052023.Domain.Resources.ErrorMessage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The code already exists.
+        ///   Looks up a localized string similar to The code &lt;{0}&gt; already exists in the system, please check again.
         /// </summary>
         public static string ConflictCode {
             get {
@@ -79,7 +79,7 @@ namespace MISA.WebFresher052023.Domain.Resources.ErrorMessage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Constraint error.
+        ///   Looks up a localized string similar to Cannot delete {0} {1} due to dependent records.
         /// </summary>
         public static string ConstraintError {
             get {
