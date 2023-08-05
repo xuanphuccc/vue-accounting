@@ -18,6 +18,7 @@
             <template v-for="column in columsWithPos" :key="column.key">
               <th
                 v-if="!column.hide"
+                @click="handleSelectSortColumn(column.originName)"
                 :style="{
                   width: column.width ? column.width + 'px' : '',
                   maxWidth: column.width ? column.width + 'px' : '',
@@ -25,22 +26,45 @@
                 }"
                 :class="[`--align-${column.align || ''}`, `--sticky-${column.sticky}`]"
                 v-tippy="{ content: column.desc || column.title, placement: 'bottom' }"
-                ref="columsRef"
               >
-                <div class="ms-table__table-text-wrap">
-                  {{ column.title }}
-
-                  <div class="ms-table__sort-icon">
-                    <MISAIcon size="20" icon="arrow-down" />
+                <div class="ms-table__sort-wrap">
+                  <div class="ms-table__table-text-wrap">
+                    {{ column.title }}
+                  </div>
+                  <div
+                    v-show="props.sort?.sortColumn === column?.originName"
+                    :class="['ms-table__sort-icon', `--${props.sort?.sortOrder}`]"
+                  >
+                    <MISAIcon size="16" icon="arrow-down" />
                   </div>
                 </div>
 
                 <!-- resize column -->
-                <span @mousedown="activeResize($event, column)" class="ms-table__col-resize"></span>
+                <span
+                  @mousedown="activeResize($event, column)"
+                  @click.stop=""
+                  class="ms-table__col-resize"
+                ></span>
 
                 <!-- fake borders -->
                 <span class="ms-table__border-bottom"></span>
                 <span class="ms-table__border-right"></span>
+
+                <!-- filter -->
+                <div
+                  :class="[
+                    'ms-table__filter',
+                    { '--active': filterMenu.isShow && filterMenu.column === column.originName },
+                    { '--filtering': props.filters.find((ft) => ft.column === column.originName) },
+                  ]"
+                >
+                  <div
+                    @click.stop="handleOpenFilterMenu($event, column)"
+                    class="ms-table__filter-icon"
+                  >
+                    <MISAIcon size="20" icon="filter" />
+                  </div>
+                </div>
               </th>
             </template>
 
@@ -125,6 +149,26 @@
       >
         <slot name="context-menu"></slot>
       </div>
+
+      <!-- table filter -->
+      <Teleport to="#app">
+        <div
+          v-if="filterMenu.isShow"
+          :style="{ top: filterMenu.top + 'px', left: filterMenu.left + 'px' }"
+          class="ms-table__filter-dropdown"
+        >
+          <MISATableFilter
+            @submit="handleOnSubmitFilter"
+            @clear="handleOnRemoveFilter"
+            @close="filterMenu.isShow = false"
+            :column="filterMenu.column"
+            :displayName="filterMenu.displayName"
+            :value="filterMenu.value"
+            :type="filterMenu.type"
+            :filter-by="filterMenu.filterBy"
+          ></MISATableFilter>
+        </div>
+      </Teleport>
     </div>
 
     <!-- table footer -->
@@ -135,11 +179,13 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 
+import MISATableFilter from "./MISATableFilter.vue";
 import MISASkeletonRow from "../skeleton-loader/MISASkeletonRow.vue";
 import MISACheckbox from "../checkbox/MISACheckbox.vue";
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import MISAResource from "@/resource/resource";
 import { useGlobalStore } from "@/stores/global-store";
+import enums from "@/helper/enum";
 
 const emit = defineEmits([
   "double-click",
@@ -148,11 +194,24 @@ const emit = defineEmits([
   "next-page",
   "prev-page",
   "select-page-size",
+  "sort-column-change",
+  "filter-change",
 ]);
 
 const props = defineProps({
-  // Định nghĩa các cột - các trường
-  // một trường bao gồm: key, title, dataIndex, width, align, desc, sticky
+  /**
+   * Định nghĩa các cột - các trường
+   * Một đối tượng bao gồm:
+   * - key: Mã cột
+   * - title: Tiêu đề cột
+   * - dataIndex: Tên trường để lấy dữ liệu trong dataSource (đã format)
+   * - originName: Tên trường gốc tương ứng với trường API
+   * - type: Kiểu của trường dữ liệu (mặc định: text)
+   * - width: Độ rộng cột (mặc định: 140)
+   * - align: Căn lề dữ liệu trong cột (mặc định: left)
+   * - desc: Mô tả cột (hiển thị tippy)
+   * - sticky: Ghim cột (left) (mặc định: không ghim)
+   */
   columns: {
     type: Array,
     default() {
@@ -161,8 +220,12 @@ const props = defineProps({
     required: true,
   },
 
-  // Định nghĩa dữ liệu - các bản ghi
-  // một bản ghi bao gồm: key, tên trường (dataIndex)
+  /**
+   * Định nghĩa dữ liệu - các bản ghi
+   * Một bản ghi bao gồm:
+   * - key
+   * - tên các trường tương ứng tên dataIndex
+   */
   dataSource: {
     type: Array,
     default() {
@@ -179,9 +242,31 @@ const props = defineProps({
     },
   },
 
-  // Hàng đang được active
+  // Hàng đang được active (chờ xoá, nhân bản)
   activeRow: {
     type: Object,
+  },
+
+  // Thông tin của cột đang được sắp xếp
+  // - sortColumn (tên cột được sắp xếp)
+  // - sortOrder (kiểu sắp xếp: DESC | ASC | NONE)
+  sort: {
+    type: Object,
+  },
+
+  /**
+   * Danh sách filter
+   * - column: Tên cột tương ứng với originName của columns
+   * - displayName: Tên hiển thị của cột
+   * - value: Giá trị lọc
+   * - type: Kiểu giá trị
+   * - filterBy: Kiểu lọc (EQUAL | NOTEQUAL | CONTAIN | NOTCONTAIN)
+   */
+  filters: {
+    type: Array,
+    default() {
+      return [];
+    },
   },
 
   // Trạng thái loading dữ liệu
@@ -192,12 +277,28 @@ const props = defineProps({
 });
 
 // ----- State -----
+// Tham chiếu bảng (dùng để tính toán vị trí của context menu)
 const tableContainerRef = ref(null);
-const columsRef = ref(null);
+
+// Cột với vị trí ghim cột
 const columsWithPos = ref(props.columns);
+
+// Trạng thái của context menu
 const actionContextMenu = ref({
   isShow: false,
   top: 0,
+});
+
+// Trạng thái của menu filter
+const filterMenu = ref({
+  isShow: false,
+  top: 0,
+  left: 0,
+  column: null, // Tên cột tương ứng trường API
+  displayName: null, // Tên hiển thị của cột
+  value: null, // Giá trị lọc
+  type: null, // Kiểu giá trị
+  filterBy: enums.filter.CONTAIN, // Loại lọc
 });
 
 const globalStore = useGlobalStore();
@@ -298,6 +399,71 @@ const setActiveRow = (row) => {
 const returnRow = (row) => {
   emit("double-click", row);
 };
+
+/**
+ * Description: Xử lý chọn cột sắp xếp dữ liệu
+ * Author: txphuc (04/08/2023)
+ */
+const handleSelectSortColumn = (sortColumn) => {
+  try {
+    if (props.sort?.sortColumn === sortColumn && props.sort?.sortOrder === enums.sort.DESC) {
+      // Chuyển từ sắp xếp GIẢM DẦN sang TĂNG DẦN
+      emit("sort-column-change", { sortColumn, sortOrder: enums.sort.ASC });
+    } else if (props.sort?.sortColumn === sortColumn && props.sort?.sortOrder === enums.sort.ASC) {
+      // Chuyển từ sắp xếp TĂNG DẦN sang KHÔNG SẮP XẾP
+      emit("sort-column-change", { sortColumn: null, sortOrder: null });
+    } else {
+      // Chuyển từ KHÔNG SẮP XẾP sang sắp xếp TĂNG DẦN
+      emit("sort-column-change", { sortColumn, sortOrder: enums.sort.DESC });
+    }
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+/**
+ * Description: Xử lý thêm filter
+ * Author: txphuc (05/08/2023)
+ */
+const handleOnSubmitFilter = (filter) => {
+  try {
+    let localFilters = JSON.parse(JSON.stringify(props.filters)) ?? [];
+
+    const existFilter = localFilters.find((ft) => ft.column === filter.column);
+    if (existFilter) {
+      // Nếu filter đã tồn tại thì cập nhật giá trị và kiểu lọc
+      existFilter.filterBy = filter.filterBy;
+      existFilter.value = filter.value;
+    } else {
+      // Nếu filter chưa tồn tại thì thêm vào
+      localFilters = [...localFilters, filter];
+    }
+
+    emit("filter-change", localFilters);
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+/**
+ * Description: Xử lý xoá filter
+ * Author: txphuc (05/08/2023)
+ */
+const handleOnRemoveFilter = (columnName) => {
+  try {
+    let localFilters = JSON.parse(JSON.stringify(props.filters)) ?? [];
+
+    localFilters = localFilters.filter((filter) => filter.column !== columnName);
+
+    emit("filter-change", localFilters);
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+/**
+ * Description: Tìm giá trị của filter đang được mở
+ */
 
 /**
  * Description: Xử lý tính toán vị trí của các cột khi ghim cột
@@ -402,6 +568,43 @@ const setActionContextPos = (e, row) => {
     }
   } catch (error) {
     console.log(error);
+  }
+};
+
+/**
+ * Description: Xử lý tính toán vị trí và set giá trị cho filter menu
+ * Author: txphuc (04/08/2023)
+ */
+const handleOpenFilterMenu = (e, column) => {
+  try {
+    if (e.target) {
+      const filterBtn = e.target;
+      const filterBtnRect = filterBtn.getBoundingClientRect();
+      const filterMenuWidth = 302;
+      const space = 14;
+
+      const filterMenuPosX = filterBtnRect.left - filterMenuWidth / 2 + filterBtnRect.width / 2;
+      const filterMenuPosY = filterBtnRect.top + filterBtnRect.height + space;
+
+      // Set vị trí
+      filterMenu.value = {
+        isShow: filterMenu.value.isShow && filterMenu.value.left === filterMenuPosX ? false : true,
+        top: filterMenuPosY,
+        left: filterMenuPosX,
+        column: column.originName,
+        displayName: column.title,
+        type: column.type,
+      };
+
+      // Tìm giá trị filter của cột hiện tại (nếu có)
+      const existFilter = props.filters.find((ft) => ft.column === column.originName);
+      if (existFilter) {
+        filterMenu.value.filterBy = existFilter.filterBy;
+        filterMenu.value.value = existFilter.value;
+      }
+    }
+  } catch (error) {
+    console.warn(error);
   }
 };
 

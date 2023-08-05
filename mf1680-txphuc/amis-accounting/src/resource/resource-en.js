@@ -6,14 +6,6 @@ const resourceEn = {
   Company: "MISA Joint Stock Company",
   UserName: "Tran Xuan Phuc",
 
-  ErrorMessage: {
-    1000: "Invalid data input",
-    1001: "Resource not found",
-    1002: "The code <@code> already exists in the system, please check again.",
-    1003: "System error, please try again later",
-    1004: "Constraint error",
-  },
-
   Sidebar: {
     Dashboard: "Dashboard",
     Employee: "Employee",
@@ -80,6 +72,7 @@ const resourceEn = {
   PlaceHolder: {
     SelectAValue: "Select a value",
     Search: "Search",
+    EnterValue: "Enter value",
   },
 
   Paging: {
@@ -88,6 +81,17 @@ const resourceEn = {
     Records: "Records",
     NextPage: "Next page",
     PrevPage: "Previous page",
+  },
+
+  Filter: {
+    FilterConditionTitle: "Filteration condition",
+    Apply: "Apply",
+    Cancel: "Cancel",
+    RemoveAll: "Remove all",
+    equal: "Equal",
+    notequal: "Different",
+    contain: "Contain",
+    notcontain: "Not contain",
   },
 
   Dialog: {
@@ -166,10 +170,8 @@ const resourceEn = {
       },
       Dialog: {
         DeleteConfirmTitle: "Delete employee",
-        DeleteConfirmDesc: (name) =>
-          `Delete employee "${name}". The employee cannot be recovered after deletion`,
-        MultipleDeleteConfirmDesc: (count) =>
-          `Delete ${count} employees. Employees cannot be recovered after deletion`,
+        DeleteConfirmDesc: "Are you sure you want to delete employee @code?",
+        MultipleDeleteConfirmDesc: "Are you sure you want to delete the selected employees?",
       },
       Validate: {
         EmployeeCode: "Code is required",
@@ -277,7 +279,7 @@ const resourceEn = {
       Dialog: {
         DeleteConfirmTitle: "Delete department",
         DeleteConfirmDesc: "Are you sure you want to delete department @code?",
-        MultipleDeleteConfirmDesc: "Are you sure you want to delete the selected department?",
+        MultipleDeleteConfirmDesc: "Are you sure you want to delete the selected departments?",
       },
 
       DepartmentCode: {

@@ -38,77 +38,83 @@
     </div>
 
     <div class="page__content">
-      <div class="filter-container">
-        <div class="filter__left">
-          <div :class="['filter__select-infor', { '--active': selectedRowsState.length > 0 }]">
-            <div>
-              {{ MISAResource[globalStore.lang]?.Text?.Selected }}
-              <span id="selected-count" class="text-bold">{{ selectedRowsState.length }}</span>
+      <div class="filter-wrapper">
+        <div class="filter-container">
+          <div class="filter__left">
+            <div :class="['filter__select-infor', { '--active': selectedRowsState.length > 0 }]">
+              <div>
+                {{ MISAResource[globalStore.lang]?.Text?.Selected }}
+                <span id="selected-count" class="text-bold">{{ selectedRowsState.length }}</span>
+              </div>
+              <MISAButton @click="uncheckedAllRows()" type="link" class="ms-16">{{
+                MISAResource[globalStore.lang]?.Button?.UnChecked
+              }}</MISAButton>
+              <MISAButton
+                v-tippy="{ content: 'Ctrl + D' }"
+                @click="
+                  showDeleteConfirmDialog(
+                    MISAResource[globalStore.lang]?.Page?.Employee?.Dialog
+                      ?.MultipleDeleteConfirmDesc
+                  )
+                "
+                type="danger"
+                class="ms-24"
+                >{{ MISAResource[globalStore.lang]?.Button?.Delete }}</MISAButton
+              >
             </div>
-            <MISAButton @click="uncheckedAllRows()" type="link" class="ms-16">{{
-              MISAResource[globalStore.lang]?.Button?.UnChecked
-            }}</MISAButton>
+          </div>
+          <div class="filter__right">
+            <MISAInputGroup for="search-input">
+              <MISAInput
+                @keydown.enter="handleSearchEmployee"
+                v-model="searchFieldState"
+                :placeholder="MISAResource[globalStore.lang]?.Page?.Employee?.SearchPlaceholder"
+                id="search-input"
+              />
+              <MISAInputAction @click="handleSearchEmployee">
+                <MISAIcon size="20" icon="search" />
+              </MISAInputAction>
+            </MISAInputGroup>
+
             <MISAButton
-              v-tippy="{ content: 'Ctrl + D' }"
-              @click="
-                showDeleteConfirmDialog(
-                  MISAResource[globalStore.lang]?.Page?.Employee?.Dialog?.MultipleDeleteConfirmDesc
-                )
-              "
-              type="danger"
-              class="ms-24"
-              >{{ MISAResource[globalStore.lang]?.Button?.Delete }}</MISAButton
+              @click="handleResetFilter"
+              v-tippy="{ content: MISAResource[globalStore.lang]?.Tooltip?.Reload }"
+              type="secondary"
             >
+              <template #icon><MISAIcon size="20" icon="reload" /></template>
+            </MISAButton>
+
+            <MISAButton
+              v-tippy="{ content: MISAResource[globalStore.lang]?.Tooltip?.ExportExcel }"
+              :loading="loading.excel"
+              type="secondary"
+            >
+              <template #icon><MISAIcon icon="excel-gray" no-color /></template>
+
+              <template #dropdown>
+                <MISAContextMenu width="215" small>
+                  <MISAContextItem @click="downloadAllRecords">
+                    {{ MISAResource[globalStore.lang]?.ContextMenu?.ExportAllToExcel }}
+                  </MISAContextItem>
+                  <MISAContextItem @click="downloadSelectedRecords">
+                    {{ MISAResource[globalStore.lang]?.ContextMenu?.ExportListToExcel }}
+                  </MISAContextItem>
+                </MISAContextMenu>
+              </template>
+            </MISAButton>
+
+            <MISAButton
+              v-tippy="{ content: MISAResource[globalStore.lang]?.Tooltip?.Setting }"
+              @click.stop="isCustomizeTable = true"
+              type="secondary"
+            >
+              <template #icon><MISAIcon icon="setting" /></template>
+            </MISAButton>
           </div>
         </div>
-        <div class="filter__right">
-          <MISAInputGroup for="search-input">
-            <MISAInput
-              @keydown.enter="handleSearchEmployee"
-              v-model="searchFieldState"
-              :placeholder="MISAResource[globalStore.lang]?.Page?.Employee?.SearchPlaceholder"
-              id="search-input"
-            />
-            <MISAInputAction @click="handleSearchEmployee">
-              <MISAIcon size="20" icon="search" />
-            </MISAInputAction>
-          </MISAInputGroup>
 
-          <MISAButton
-            @click="handleResetFilter"
-            v-tippy="{ content: MISAResource[globalStore.lang]?.Tooltip?.Reload }"
-            type="secondary"
-          >
-            <template #icon><MISAIcon size="20" icon="reload" /></template>
-          </MISAButton>
-
-          <MISAButton
-            v-tippy="{ content: MISAResource[globalStore.lang]?.Tooltip?.ExportExcel }"
-            :loading="loading.excel"
-            type="secondary"
-          >
-            <template #icon><MISAIcon icon="excel-gray" no-color /></template>
-
-            <template #dropdown>
-              <MISAContextMenu width="215" small>
-                <MISAContextItem @click="downloadAllRecords">
-                  {{ MISAResource[globalStore.lang]?.ContextMenu?.ExportAllToExcel }}
-                </MISAContextItem>
-                <MISAContextItem @click="downloadSelectedRecords">
-                  {{ MISAResource[globalStore.lang]?.ContextMenu?.ExportListToExcel }}
-                </MISAContextItem>
-              </MISAContextMenu>
-            </template>
-          </MISAButton>
-
-          <MISAButton
-            v-tippy="{ content: MISAResource[globalStore.lang]?.Tooltip?.Setting }"
-            @click.stop="isCustomizeTable = true"
-            type="secondary"
-          >
-            <template #icon><MISAIcon icon="setting" /></template>
-          </MISAButton>
-        </div>
+        <!-- filter view -->
+        <MISAFilterView @filter-change="filterParamsChange" :filters="filterParams" />
       </div>
 
       <!-- table -->
@@ -121,6 +127,15 @@
         :selected-rows="selectedRowsState"
         :active-row="activeRowState"
         :loading="loading.table"
+        :sort="filterRequestState"
+        :filters="filterParams"
+        @filter-change="filterParamsChange"
+        @sort-column-change="
+          (object) => {
+            filterRequestState.sortColumn = object.sortColumn;
+            filterRequestState.sortOrder = object.sortOrder;
+          }
+        "
       >
         <template #context-menu>
           <MISAContextMenu width="180" small>
@@ -153,8 +168,8 @@
             @select-page-size="handleChangePageSize"
             :total-page="pagingInfoState.totalPage"
             :total-records="pagingInfoState.totalRecords"
-            :current-page="filterParamsState.page"
-            :page-size="filterParamsState.pageSize"
+            :current-page="filterRequestState.page"
+            :page-size="filterRequestState.pageSize"
           />
         </template>
       </MISATable>
@@ -200,6 +215,7 @@ import MISAInputAction from "@/components/base/input/MISAInputAction.vue";
 import MISATable from "@/components/base/table/MISATable.vue";
 import MISATableFooter from "@/components/base/table/MISATableFooter.vue";
 import MISATableCusomize from "@/components/base/table-customize/MISATableCustomize.vue";
+import MISAFilterView from "@/components/base/filter-view/MISAFilterView.vue";
 import MISAContextMenu from "@/components/base/context-menu/MISAContextMenu.vue";
 import MISAContextItem from "@/components/base/context-menu/MISAContextItem.vue";
 import MISADialog from "@/components/base/dialog/MISADialog.vue";
@@ -220,11 +236,14 @@ const toastStore = useToastStore();
 // ---- Data & Paging & Filter ----
 const employeeData = ref([]);
 const searchFieldState = ref("");
-const filterParamsState = ref({
+const filterRequestState = ref({
   page: 1,
   pageSize: 10,
   search: "",
+  sortColumn: null,
+  sortOrder: null,
 });
+const filterParams = ref([]);
 const pagingInfoState = ref({
   totalPage: 0,
   totalRecords: 0,
@@ -278,6 +297,7 @@ const defaultColumns = [
     title: MISAResource[globalStore.lang]?.Page?.Employee?.DateOfBirth?.Title,
     dataIndex: "DateOfBirthFormated",
     originName: "DateOfBirth",
+    type: Date,
     align: "center",
     width: 200,
   },
@@ -352,7 +372,7 @@ const getEmployeeData = async () => {
   try {
     loading.value.table = true;
 
-    const response = await employeeApi.filter(filterParamsState.value);
+    const response = await employeeApi.filter(filterRequestState.value);
 
     // Format dữ liệu hiển thị ra bảng
     employeeData.value = response.data?.Data?.map((employee) => {
@@ -370,7 +390,7 @@ const getEmployeeData = async () => {
 
     // Lấy dữ liệu phân trang
     const totalRecords = response.data.TotalRecords;
-    const pageSize = filterParamsState.value.pageSize;
+    const pageSize = filterRequestState.value.pageSize;
 
     pagingInfoState.value.totalRecords = totalRecords;
     pagingInfoState.value.totalPage = Math.ceil(totalRecords / pageSize);
@@ -448,12 +468,46 @@ const downloadSelectedRecords = async () => {
  * Author: txphuc (30/06/2023)
  */
 watch(
-  () => filterParamsState.value,
+  () => filterRequestState.value,
   () => {
     getEmployeeData();
   },
   { immediate: true, deep: true }
 );
+
+/**
+ * Description: Xử lý theo dõi sự thay đổi của mảng filterParams
+ * để chuyển thành filterRequest sau đó có thể gọi API
+ * Author: txphuc (05/08/2023)
+ */
+watch(
+  () => filterParams.value,
+  () => {
+    const formatedFilters = {};
+    filterParams.value.forEach((ft) => {
+      formatedFilters[ft.column] = ft.value;
+      formatedFilters[ft.column + "FilterBy"] = ft.filterBy;
+    });
+
+    filterRequestState.value = {
+      page: 1,
+      pageSize: filterRequestState.value.pageSize,
+      search: filterRequestState.value.search,
+      sortColumn: filterRequestState.value.sortColumn,
+      sortOrder: filterRequestState.value.sortOrder,
+      ...formatedFilters,
+    };
+  },
+  { deep: true }
+);
+
+/**
+ * Description: Lấy danh sách filter từ bảng
+ * Author: txphuc (05/08/2023)
+ */
+const filterParamsChange = (filters) => {
+  filterParams.value = filters;
+};
 
 /**
  * Description: Hàm xoá nhân viên active hoặc đang được chọn
@@ -566,7 +620,7 @@ const hideConfirmDialog = () => {
  * Author: txphuc (30/06/2023)
  */
 const handleNextPage = (nextPage) => {
-  filterParamsState.value.page = nextPage;
+  filterRequestState.value.page = nextPage;
 };
 
 /**
@@ -574,7 +628,7 @@ const handleNextPage = (nextPage) => {
  * Author: txphuc (30/06/2023)
  */
 const handlePrevPage = (prevPage) => {
-  filterParamsState.value.page = prevPage;
+  filterRequestState.value.page = prevPage;
 };
 
 /**
@@ -582,8 +636,8 @@ const handlePrevPage = (prevPage) => {
  * Author: txphuc (30/06/2023)
  */
 const handleSearchEmployee = () => {
-  filterParamsState.value.page = 1;
-  filterParamsState.value.search = searchFieldState.value;
+  filterRequestState.value.page = 1;
+  filterRequestState.value.search = searchFieldState.value;
 };
 
 /**
@@ -591,10 +645,10 @@ const handleSearchEmployee = () => {
  * Author: txphuc (30/06/2023)
  */
 const handleChangePageSize = (newPageSize) => {
-  filterParamsState.value.pageSize = newPageSize;
+  filterRequestState.value.pageSize = newPageSize;
 
   // Reset lại số trang hiện tại
-  filterParamsState.value.page = 1;
+  filterRequestState.value.page = 1;
 };
 
 /**
@@ -602,8 +656,8 @@ const handleChangePageSize = (newPageSize) => {
  * Author: txphuc (30/06/2023)
  */
 const handleResetFilter = () => {
-  filterParamsState.value = {
-    ...filterParamsState.value,
+  filterRequestState.value = {
+    ...filterRequestState.value,
     page: 1,
     pageSize: 10,
     search: "",

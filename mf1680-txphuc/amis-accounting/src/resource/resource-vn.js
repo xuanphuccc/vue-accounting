@@ -6,14 +6,6 @@ const resourceVn = {
   Company: "Công ty Cổ phần MISA",
   UserName: "Trần Xuân Phúc",
 
-  ErrorMessage: {
-    1000: "Thông tin nhập liệu không hợp lệ",
-    1001: "Không tìm thấy tài nguyên",
-    1002: "Mã <@code> đã tồn tại trong hệ thống, vui lòng kiểm tra lại",
-    1003: "Lỗi hệ thống, vui lòng thử lại sau",
-    1004: "Có bản ghi phụ thuộc, vui lòng xoá bản ghi phụ thuộc trước khi xoá bản ghi",
-  },
-
   Sidebar: {
     Dashboard: "Tổng quan",
     Employee: "Nhân viên",
@@ -80,6 +72,7 @@ const resourceVn = {
   PlaceHolder: {
     SelectAValue: "Chọn giá trị",
     Search: "Tìm kiếm",
+    EnterValue: "Nhập giá trị",
   },
 
   Paging: {
@@ -88,6 +81,17 @@ const resourceVn = {
     Records: "Bản ghi",
     NextPage: "Trang Sau",
     PrevPage: "Trang Trước",
+  },
+
+  Filter: {
+    FilterConditionTitle: "Điều kiện lọc",
+    Apply: "Áp dụng",
+    Cancel: "Bỏ lọc",
+    RemoveAll: "Xoá tất cả",
+    equal: "Bằng",
+    notequal: "Khác",
+    contain: "Chứa",
+    notcontain: "Không chứa",
   },
 
   Dialog: {

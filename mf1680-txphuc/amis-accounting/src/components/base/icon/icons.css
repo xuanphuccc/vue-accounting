@@ -435,9 +435,17 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
-.ms-icon--arrow-down-20 {
+.ms-icon--arrow-down-16 {
   -webkit-mask-image: url("../../../assets/img/arrow-down.svg");
   mask-image: url("../../../assets/img/arrow-down.svg");
+  -webkit-mask-position: contain;
+  mask-position: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ms-icon--filter-20 {
+  -webkit-mask-image: url("../../../assets/img/filter.svg");
+  mask-image: url("../../../assets/img/filter.svg");
   -webkit-mask-position: contain;
   mask-position: contain;
   -webkit-mask-repeat: no-repeat;

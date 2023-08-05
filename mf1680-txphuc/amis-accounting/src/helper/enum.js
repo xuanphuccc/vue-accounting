@@ -13,6 +13,16 @@ const enums = {
       ERROR: "error",
     },
   },
+  sort: {
+    DESC: "desc",
+    ASC: "asc",
+  },
+  filter: {
+    EQUAL: "equal",
+    NOTEQUAL: "notequal",
+    CONTAIN: "contain",
+    NOTCONTAIN: "notcontain",
+  },
   gender: {
     MALE: 0,
     FEMALE: 1,

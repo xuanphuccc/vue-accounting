@@ -1,0 +1,49 @@
+.ms-filter-view {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 8px;
+  column-gap: 8px;
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+.ms-filter-view__item {
+  display: flex;
+  align-items: center;
+  background-color: var(--gray-200);
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+
+.ms-filter-view__text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--primary-text-color);
+}
+
+.ms-filter-view__sub-text {
+  font-size: 14;
+  font-weight: 400;
+  color: var(--secondary-text-color);
+}
+
+.ms-filter-view__text + .ms-filter-view__sub-text,
+.ms-filter-view__sub-text + .ms-filter-view__text {
+  margin-left: 4px;
+}
+
+.ms-filter-view__clear-icon {
+  cursor: pointer;
+  color: var(--secondary-text-color);
+  margin-left: 8px;
+}
+
+.ms-filter-view__clear {
+  font-size: 14;
+  font-weight: 500;
+  color: var(--red-500);
+  padding: 4px 0;
+  margin-left: 16px;
+  cursor: pointer;
+}
