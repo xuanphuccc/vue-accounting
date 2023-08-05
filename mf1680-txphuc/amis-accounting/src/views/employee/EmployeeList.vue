@@ -9,31 +9,12 @@
       </div>
 
       <div class="page__header-controls">
-        <MISAButtonGroup>
-          <MISAButton
-            v-tippy="{ content: 'Ctrl + 1' }"
-            @click="employeeStore.openFormForCreate"
-            type="primary"
-            >{{ MISAResource[globalStore.lang]?.Page?.Employee?.AddButton }}</MISAButton
-          >
-          <MISAButton type="primary">
-            <template #icon>
-              <MISAIcon size="16" icon="angle-down" />
-            </template>
-            <template #dropdown>
-              <MISAContextMenu width="204" small>
-                <MISAContextItem>
-                  <template #icon><MISAIcon icon="import" /></template>
-                  {{ MISAResource[globalStore.lang]?.ContextMenu?.ImportFromExcel }}
-                </MISAContextItem>
-                <MISAContextItem>
-                  <template #icon><MISAIcon icon="download" /></template>
-                  {{ MISAResource[globalStore.lang]?.ContextMenu?.DownloadSampleFile }}
-                </MISAContextItem>
-              </MISAContextMenu>
-            </template>
-          </MISAButton>
-        </MISAButtonGroup>
+        <MISAButton
+          v-tippy="{ content: 'Ctrl + 1' }"
+          @click="employeeStore.openFormForCreate"
+          type="primary"
+          >{{ MISAResource[globalStore.lang]?.Page?.Employee?.AddButton }}</MISAButton
+        >
       </div>
     </div>
 
@@ -208,7 +189,6 @@ import { onMounted, onUnmounted, ref, watch } from "vue";
 
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import MISAButton from "@/components/base/button/MISAButton.vue";
-import MISAButtonGroup from "@/components/base/button/MISAButtonGroup.vue";
 import MISAInput from "@/components/base/input/MISAInput.vue";
 import MISAInputGroup from "@/components/base/input/MISAInputGroup.vue";
 import MISAInputAction from "@/components/base/input/MISAInputAction.vue";

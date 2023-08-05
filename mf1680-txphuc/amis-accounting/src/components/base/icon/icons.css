@@ -435,7 +435,7 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
-.ms-icon--arrow-down-16 {
+.ms-icon--arrow-down-20 {
   -webkit-mask-image: url("../../../assets/img/arrow-down.svg");
   mask-image: url("../../../assets/img/arrow-down.svg");
   -webkit-mask-position: contain;

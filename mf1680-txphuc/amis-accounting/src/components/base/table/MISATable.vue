@@ -35,7 +35,7 @@
                     v-show="props.sort?.sortColumn === column?.originName"
                     :class="['ms-table__sort-icon', `--${props.sort?.sortOrder}`]"
                   >
-                    <MISAIcon size="16" icon="arrow-down" />
+                    <MISAIcon size="20" icon="arrow-down" />
                   </div>
                 </div>
 
@@ -50,7 +50,7 @@
                 <span class="ms-table__border-bottom"></span>
                 <span class="ms-table__border-right"></span>
 
-                <!-- filter -->
+                <!-- filter button -->
                 <div
                   :class="[
                     'ms-table__filter',
@@ -406,15 +406,15 @@ const returnRow = (row) => {
  */
 const handleSelectSortColumn = (sortColumn) => {
   try {
-    if (props.sort?.sortColumn === sortColumn && props.sort?.sortOrder === enums.sort.DESC) {
-      // Chuyển từ sắp xếp GIẢM DẦN sang TĂNG DẦN
-      emit("sort-column-change", { sortColumn, sortOrder: enums.sort.ASC });
-    } else if (props.sort?.sortColumn === sortColumn && props.sort?.sortOrder === enums.sort.ASC) {
-      // Chuyển từ sắp xếp TĂNG DẦN sang KHÔNG SẮP XẾP
+    if (props.sort?.sortColumn === sortColumn && props.sort?.sortOrder === enums.sort.ASC) {
+      // Chuyển từ sắp xếp TĂNG DẦN sang GIẢM DẦN
+      emit("sort-column-change", { sortColumn, sortOrder: enums.sort.DESC });
+    } else if (props.sort?.sortColumn === sortColumn && props.sort?.sortOrder === enums.sort.DESC) {
+      // Chuyển từ sắp xếp GIẢM DẦN sang KHÔNG SẮP XẾP
       emit("sort-column-change", { sortColumn: null, sortOrder: null });
     } else {
       // Chuyển từ KHÔNG SẮP XẾP sang sắp xếp TĂNG DẦN
-      emit("sort-column-change", { sortColumn, sortOrder: enums.sort.DESC });
+      emit("sort-column-change", { sortColumn, sortOrder: enums.sort.ASC });
     }
   } catch (error) {
     console.warn(error);
