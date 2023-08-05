@@ -18,6 +18,7 @@
       />
       <MISAInput
         v-model="activeFilter.value"
+        auto-focus
         :placeholder="MISAResource[globalStore.lang]?.PlaceHolder?.EnterValue"
       />
     </div>

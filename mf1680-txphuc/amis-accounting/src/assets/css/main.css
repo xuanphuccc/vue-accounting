@@ -80,6 +80,9 @@ body {
   margin-top: 16px;
 }
 
+.ms-12 {
+  margin-left: 12px;
+}
 .ms-16 {
   margin-left: 16px;
 }
@@ -184,6 +187,15 @@ body {
   align-items: center;
   padding: 0 16px;
   background-color: var(--white);
+  transition: all 0.2s ease;
+}
+
+.filter__left {
+  flex-shrink: 0;
+}
+
+.filter__right {
+  padding-left: 24px;
 }
 
 .filter__select-infor {

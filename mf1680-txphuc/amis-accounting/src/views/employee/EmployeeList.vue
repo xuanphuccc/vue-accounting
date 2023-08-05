@@ -27,9 +27,11 @@
                 {{ MISAResource[globalStore.lang]?.Text?.Selected }}
                 <span id="selected-count" class="text-bold">{{ selectedRowsState.length }}</span>
               </div>
+
               <MISAButton @click="uncheckedAllRows()" type="link" class="ms-16">{{
                 MISAResource[globalStore.lang]?.Button?.UnChecked
               }}</MISAButton>
+
               <MISAButton
                 v-tippy="{ content: 'Ctrl + D' }"
                 @click="
@@ -40,10 +42,20 @@
                 "
                 type="danger"
                 class="ms-24"
-                >{{ MISAResource[globalStore.lang]?.Button?.Delete }}</MISAButton
-              >
+                >{{ MISAResource[globalStore.lang]?.Button?.Delete }}
+              </MISAButton>
+
+              <MISAButton
+                @click="downloadSelectedRecords"
+                :loading="loading.excel"
+                type="secondary"
+                class="ms-12"
+                >{{ MISAResource[globalStore.lang]?.Button?.ExportExcel }}
+                <template #icon><MISAIcon icon="excel-gray" no-color /></template>
+              </MISAButton>
             </div>
           </div>
+
           <div class="filter__right">
             <MISAInputGroup for="search-input">
               <MISAInput
@@ -66,22 +78,13 @@
             </MISAButton>
 
             <MISAButton
+              @click="downloadAllRecords"
+              v-if="selectedRowsState.length === 0"
               v-tippy="{ content: MISAResource[globalStore.lang]?.Tooltip?.ExportExcel }"
               :loading="loading.excel"
               type="secondary"
             >
               <template #icon><MISAIcon icon="excel-gray" no-color /></template>
-
-              <template #dropdown>
-                <MISAContextMenu width="215" small>
-                  <MISAContextItem @click="downloadAllRecords">
-                    {{ MISAResource[globalStore.lang]?.ContextMenu?.ExportAllToExcel }}
-                  </MISAContextItem>
-                  <MISAContextItem @click="downloadSelectedRecords">
-                    {{ MISAResource[globalStore.lang]?.ContextMenu?.ExportListToExcel }}
-                  </MISAContextItem>
-                </MISAContextMenu>
-              </template>
             </MISAButton>
 
             <MISAButton

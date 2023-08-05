@@ -48,6 +48,7 @@ const resourceEn = {
     Delete: "Delete",
     Update: "Edit",
     RestoreDefault: "Restore default",
+    ExportExcel: "Export Excel",
   },
 
   Table: {

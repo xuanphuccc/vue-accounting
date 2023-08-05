@@ -48,6 +48,7 @@ const resourceVn = {
     Delete: "Xoá",
     Update: "Sửa",
     RestoreDefault: "Lấy lại mặc định",
+    ExportExcel: "Xuất Excel",
   },
 
   Table: {
