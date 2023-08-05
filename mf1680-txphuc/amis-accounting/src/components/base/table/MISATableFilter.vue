@@ -16,7 +16,19 @@
           },
         ]"
       />
+
+      <MISADatePicker v-if="activeFilter.type === 'Date'" v-model="activeFilter.value" />
+      <MISASelect
+        v-else-if="activeFilter.type === 'Gender'"
+        v-model="activeFilter.value"
+        :options="[
+          { label: MISAResource[globalStore.lang].Gender.Male, value: enums.gender.MALE },
+          { label: MISAResource[globalStore.lang].Gender.Female, value: enums.gender.FEMALE },
+          { label: MISAResource[globalStore.lang].Gender.Other, value: enums.gender.OTHER },
+        ]"
+      />
       <MISAInput
+        v-else
         v-model="activeFilter.value"
         auto-focus
         :placeholder="MISAResource[globalStore.lang]?.PlaceHolder?.EnterValue"
@@ -38,6 +50,7 @@ import enums from "@/helper/enum";
 import MISAButton from "../button/MISAButton.vue";
 import MISAInput from "../input/MISAInput.vue";
 import MISASelect from "../select/MISASelect.vue";
+import MISADatePicker from "../date-picker/MISADatePicker.vue";
 import MISAResource from "@/resource/resource";
 import { useGlobalStore } from "@/stores/global-store";
 import { ref, onMounted, onUnmounted, watch } from "vue";
@@ -108,7 +121,12 @@ watch(
  * Author: txphuc (05/08/2023)
  */
 const submitFilter = () => {
-  if (activeFilter.value.column && activeFilter.value.filterBy && activeFilter.value.value) {
+  if (
+    activeFilter.value.column &&
+    activeFilter.value.filterBy &&
+    activeFilter.value.value !== null &&
+    activeFilter.value.value !== undefined
+  ) {
     emit("submit", activeFilter.value);
 
     closeMenu();

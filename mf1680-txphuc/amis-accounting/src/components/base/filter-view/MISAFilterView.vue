@@ -1,6 +1,6 @@
 <template>
   <div v-if="props.filters.length > 0" class="ms-filter-view">
-    <div v-for="filter in props.filters" :key="filter.column" class="ms-filter-view__item">
+    <div v-for="filter in filterFormated" :key="filter.column" class="ms-filter-view__item">
       <span class="ms-filter-view__text">{{ filter.displayName }}</span>
       <span class="ms-filter-view__sub-text">{{
         MISAResource[globalStore.lang]?.Filter[filter.filterBy]?.toLowerCase()
@@ -22,6 +22,9 @@
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import MISAResource from "@/resource/resource";
 import { useGlobalStore } from "@/stores/global-store";
+import { computed } from "vue";
+import enums from "@/helper/enum";
+import formatDate from "@/helper/format-date";
 
 const emit = defineEmits(["filter-change"]);
 
@@ -35,6 +38,39 @@ const props = defineProps({
 });
 
 const globalStore = useGlobalStore();
+
+/**
+ * Description: Tính toán giá trị hiển thị của giá trị filter
+ * Author: txphuc (05/08/2023)
+ */
+const filterFormated = computed(() => {
+  return props.filters.map((ft) => {
+    if (ft.type === "Gender") {
+      // Định dạng giới tính
+      const genderName =
+        ft.value === enums.gender.MALE
+          ? MISAResource[globalStore.lang]?.Gender?.Male
+          : ft.value === enums.gender.FEMALE
+          ? MISAResource[globalStore.lang]?.Gender?.Female
+          : MISAResource[globalStore.lang]?.Gender?.Other;
+
+      return {
+        ...ft,
+        value: genderName,
+      };
+    } else if (ft.type === "Date") {
+      // Định dạng ngày tháng
+      const dateString = formatDate(ft.value, "DD/MM/YYYY");
+
+      return {
+        ...ft,
+        value: dateString,
+      };
+    }
+
+    return ft;
+  });
+});
 
 /**
  * Description: Xử lý xoá filter

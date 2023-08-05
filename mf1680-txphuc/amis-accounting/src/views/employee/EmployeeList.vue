@@ -273,6 +273,7 @@ const defaultColumns = [
     title: MISAResource[globalStore.lang]?.Page?.Employee?.Gender?.Title,
     dataIndex: "GenderFormated",
     originName: "Gender",
+    type: "Gender",
     width: 140,
   },
   {
@@ -280,7 +281,7 @@ const defaultColumns = [
     title: MISAResource[globalStore.lang]?.Page?.Employee?.DateOfBirth?.Title,
     dataIndex: "DateOfBirthFormated",
     originName: "DateOfBirth",
-    type: Date,
+    type: "Date",
     align: "center",
     width: 200,
   },
@@ -468,7 +469,14 @@ watch(
   () => {
     const formatedFilters = {};
     filterParams.value.forEach((ft) => {
-      formatedFilters[ft.column] = ft.value;
+      let formatedValue = ft.value;
+
+      // Chuyển định dạng ngày tháng
+      if (ft.type === "Date") {
+        formatedValue = formatDate(ft.value, "YYYY-MM-DD");
+      }
+
+      formatedFilters[ft.column] = formatedValue;
       formatedFilters[ft.column + "FilterBy"] = ft.filterBy;
     });
 
