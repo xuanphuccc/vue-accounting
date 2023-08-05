@@ -30,6 +30,9 @@ namespace MISA.WebFresher052023.Application
 
             // Trường hợp cập nhật
             CreateMap<EmployeeUpdateDto, Employee>();
+
+            // Map dữ liệu filter
+            CreateMap<EmployeeFilterDto, EmployeeFilterModel>();
         }
     }
 }

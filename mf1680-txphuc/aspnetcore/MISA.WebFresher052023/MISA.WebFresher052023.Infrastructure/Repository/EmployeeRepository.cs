@@ -22,65 +22,25 @@ namespace MISA.WebFresher052023.Infrastructure
         /// <summary>
         /// Tìm kiếm, filter và phân trang
         /// </summary>
-        /// <param name="search">Search theo tên hoặc mã nhân viên</param>
-        /// <param name="currentPage">trang hiện tại</param>
-        /// <param name="pageSize">Số phần tử trên trang</param>
+        /// <param name="employeeFilterModel">Tham số filter</param>
         /// <returns>Danh sách nhân viên đã được filter và phân trang</returns>
         /// CreatedBy: txphuc (15/07/2023)
-        public async Task<Pagination> FilterAsync(
-            int currentPage,
-            int pageSize,
-            string? search,
-            string? sortColumn,
-            string? sortOrder,
-            string? employeeCode,
-            string? employeeCodeFilterBy,
-            string? fullName,
-            string? fullNameFilterBy,
-            Gender? gender,
-            string? genderFilterBy,
-            DateTime? dateOfBirth,
-            string? dateOfBirthFilterBy,
-            string? identityNumber,
-            string? identityNumberFilterBy,
-            string? positionName,
-            string? positionNameFilterBy,
-            string? departmentName,
-            string? departmentNameFiterBy,
-            string? bankAccount,
-            string? bankAccountFilterBy,
-            string? bankName,
-            string? bankNameFilterBy,
-            string? bankBranch,
-            string? bankBranchFilterBy)
+        public async Task<Pagination> FilterAsync(EmployeeFilterModel employeeFilterModel)
         {
             var parameters = new DynamicParameters();
-            parameters.Add("@Page", currentPage);
-            parameters.Add("@PageSize", pageSize);
+
+            // Map thuộc tính sang params
+            var properties = typeof(EmployeeFilterModel).GetProperties();
+
+            foreach (var property in properties)
+            {
+                if(property.Name != "TotalRecords")
+                {
+                    var value = property.GetValue(employeeFilterModel);
+                    parameters.Add($"@{property.Name}", value);
+                }
+            }
             parameters.Add("@TotalRecords", dbType: DbType.Int32, direction: ParameterDirection.Output);
-            parameters.Add("@Search", search);
-            parameters.Add("@SortColumn", sortColumn);
-            parameters.Add("@SortOrder", sortOrder);
-            parameters.Add("@EmployeeCode", employeeCode);
-            parameters.Add("@EmployeeCodeFilterBy", employeeCodeFilterBy);
-            parameters.Add("@FullName", fullName);
-            parameters.Add("@FullNameFilterBy", fullNameFilterBy);
-            parameters.Add("@Gender", gender);
-            parameters.Add("@GenderFilterBy", genderFilterBy);
-            parameters.Add("@DateOfBirth", dateOfBirth);
-            parameters.Add("@DateOfBirthFilterBy", dateOfBirthFilterBy);
-            parameters.Add("@IdentityNumber", identityNumber);
-            parameters.Add("@IdentityNumberFilterBy", identityNumberFilterBy);
-            parameters.Add("@PositionName", positionName);
-            parameters.Add("@PositionNameFilterBy", positionNameFilterBy);
-            parameters.Add("@DepartmentName", departmentName);
-            parameters.Add("@DepartmentNameFilterBy", departmentNameFiterBy);
-            parameters.Add("@BankAccount", bankAccount);
-            parameters.Add("@BankAccountFilterBy", bankAccountFilterBy);
-            parameters.Add("@BankName", bankName);
-            parameters.Add("@BankNameFilterBy", bankNameFilterBy);
-            parameters.Add("@BankBranch", bankBranch);
-            parameters.Add("@BankBranchFilterBy", bankBranchFilterBy);
 
             var sql = "Proc_Employee_FilterTest";
 

@@ -105,17 +105,17 @@ namespace MISA.WebFresher052023.Infrastructure
         /// CreatedBy: txphuc (18/07/2023)
         private DynamicParameters MapEntityToParams(TEntity entity)
         {
-            var param = new DynamicParameters();
+            var parameters = new DynamicParameters();
 
             var properties = typeof(TEntity).GetProperties();
 
             foreach (var property in properties)
             {
                 var value = property.GetValue(entity);
-                param.Add($"@{property.Name}", value);
+                parameters.Add($"@{property.Name}", value);
             }
 
-            return param;
+            return parameters;
         }
         #endregion
     }

@@ -40,32 +40,9 @@ namespace MISA.WebFresher052023.Application
         /// CreatedBy: txphuc (15/07/2023)
         public async Task<Pagination> FilterAsync(EmployeeFilterDto employeeFilterDto)
         {
-            var pagedEmployees = await _employeeRepository.FilterAsync(
-                employeeFilterDto.Page,
-                employeeFilterDto.PageSize,
-                employeeFilterDto.Search,
-                employeeFilterDto.SortColumn,
-                employeeFilterDto.SortOrder,
-                employeeFilterDto.EmployeeCode,
-                employeeFilterDto.EmployeeCodeFilterBy,
-                employeeFilterDto.FullName,
-                employeeFilterDto.FullNameFilterBy,
-                employeeFilterDto.Gender,
-                employeeFilterDto.GenderFilterBy,
-                employeeFilterDto.DateOfBirth,
-                employeeFilterDto.DateOfBirthFilterBy,
-                employeeFilterDto.IdentityNumber,
-                employeeFilterDto.IdentityNumberFilterBy,
-                employeeFilterDto.PositionName,
-                employeeFilterDto.PositionNameFilterBy,
-                employeeFilterDto.DepartmentName,
-                employeeFilterDto.DepartmentNameFilterBy,
-                employeeFilterDto.BankAccount,
-                employeeFilterDto.BankAccountFilterBy,
-                employeeFilterDto.BankName,
-                employeeFilterDto.BankNameFilterBy,
-                employeeFilterDto.BankBranch,
-                employeeFilterDto.BankBranchFilterBy);
+            var employeeFilterModel = _mapper.Map<EmployeeFilterModel>(employeeFilterDto);
+
+            var pagedEmployees = await _employeeRepository.FilterAsync(employeeFilterModel);
 
             pagedEmployees.Data = _mapper.Map<IEnumerable<EmployeeDto>>(pagedEmployees.Data);
 
