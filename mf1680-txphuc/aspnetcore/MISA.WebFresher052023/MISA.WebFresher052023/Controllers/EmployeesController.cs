@@ -73,6 +73,7 @@ namespace MISA.WebFresher052023.Controllers
         }
 
         /// <summary>
+        /// (TEST)
         /// Tải lên file Excel cần đọc
         /// </summary>
         /// <param name="file">File Excel</param>
@@ -92,6 +93,7 @@ namespace MISA.WebFresher052023.Controllers
         }
 
         /// <summary>
+        /// (TEST)
         /// Lấy tên các cột và vị trí trong file Excel
         /// Lấy tên các thuộc tính của đối tượng cần lấy dữ liệu
         /// </summary>
@@ -107,6 +109,7 @@ namespace MISA.WebFresher052023.Controllers
         }
 
         /// <summary>
+        /// (TEST)
         /// - Đọc file Excel theo map đã được gửi lên
         /// và chuyển dữ liệu trong file Excel thành đối tượng
         /// - Validate dữ liệu

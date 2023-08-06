@@ -42,7 +42,7 @@ namespace MISA.WebFresher052023.Infrastructure
             }
             parameters.Add("@TotalRecords", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
-            var sql = "Proc_Employee_FilterTest";
+            var sql = "Proc_Employee_FilterAndPaging";
 
             // Lấy data nhân viên
             var employeeModels = await _unitOfWork.Connection.QueryAsync<EmployeeModel>(sql, parameters, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
