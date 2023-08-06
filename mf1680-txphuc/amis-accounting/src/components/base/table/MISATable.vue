@@ -166,6 +166,7 @@
             :value="filterMenu.value"
             :type="filterMenu.type"
             :filter-by="filterMenu.filterBy"
+            :options="filterMenu.options"
           ></MISATableFilter>
         </div>
       </Teleport>
@@ -298,7 +299,8 @@ const filterMenu = ref({
   displayName: null, // Tên hiển thị của cột
   value: null, // Giá trị lọc
   type: null, // Kiểu giá trị
-  filterBy: enums.filter.CONTAIN, // Loại lọc
+  filterBy: null, // Loại lọc
+  options: null, // Options tuỳ chỉnh cho loại filter
 });
 
 const globalStore = useGlobalStore();
@@ -591,9 +593,11 @@ const handleOpenFilterMenu = (e, column) => {
         isShow: filterMenu.value.isShow && filterMenu.value.left === filterMenuPosX ? false : true,
         top: filterMenuPosY,
         left: filterMenuPosX,
+
         column: column.originName,
         displayName: column.title,
         type: column.type,
+        options: column.filterOptions,
       };
 
       // Tìm giá trị filter của cột hiện tại (nếu có)
@@ -601,6 +605,9 @@ const handleOpenFilterMenu = (e, column) => {
       if (existFilter) {
         filterMenu.value.filterBy = existFilter.filterBy;
         filterMenu.value.value = existFilter.value;
+      } else {
+        filterMenu.value.filterBy = null;
+        filterMenu.value.value = null;
       }
     }
   } catch (error) {

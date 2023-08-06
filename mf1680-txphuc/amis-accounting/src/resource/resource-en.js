@@ -93,6 +93,8 @@ const resourceEn = {
     notequal: "Different",
     contain: "Contain",
     notcontain: "Not contain",
+    smaller: "Smaller",
+    greater: "Greater",
   },
 
   Dialog: {

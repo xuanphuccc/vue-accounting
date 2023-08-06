@@ -93,6 +93,8 @@ const resourceVn = {
     notequal: "Khác",
     contain: "Chứa",
     notcontain: "Không chứa",
+    smaller: "Nhỏ hơn",
+    greater: "Lớn hơn",
   },
 
   Dialog: {

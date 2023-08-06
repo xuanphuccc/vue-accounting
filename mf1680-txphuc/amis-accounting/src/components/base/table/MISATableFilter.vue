@@ -4,20 +4,12 @@
       {{ MISAResource[globalStore.lang]?.Filter?.FilterConditionTitle }}
     </div>
     <div class="ms-table-filter__content">
-      <MISASelect
-        v-model="activeFilter.filterBy"
-        :options="[
-          { label: MISAResource[globalStore.lang]?.Filter?.equal, value: enums.filter.EQUAL },
-          { label: MISAResource[globalStore.lang]?.Filter?.notequal, value: enums.filter.NOTEQUAL },
-          { label: MISAResource[globalStore.lang]?.Filter?.contain, value: enums.filter.CONTAIN },
-          {
-            label: MISAResource[globalStore.lang]?.Filter?.notcontain,
-            value: enums.filter.NOTCONTAIN,
-          },
-        ]"
-      />
+      <MISASelect v-model="activeFilter.filterBy" :options="filterOptions" />
 
+      <!-- Lọc ngày tháng -->
       <MISADatePicker v-if="activeFilter.type === 'Date'" v-model="activeFilter.value" />
+
+      <!-- Lọc giới tính -->
       <MISASelect
         v-else-if="activeFilter.type === 'Gender'"
         v-model="activeFilter.value"
@@ -26,7 +18,10 @@
           { label: MISAResource[globalStore.lang].Gender.Female, value: enums.gender.FEMALE },
           { label: MISAResource[globalStore.lang].Gender.Other, value: enums.gender.OTHER },
         ]"
+        :placeholder="MISAResource[globalStore.lang]?.Combobox?.PlaceHolder"
       />
+
+      <!-- Lọc các trường hợp còn lại -->
       <MISAInput
         v-else
         v-model="activeFilter.value"
@@ -53,7 +48,7 @@ import MISASelect from "../select/MISASelect.vue";
 import MISADatePicker from "../date-picker/MISADatePicker.vue";
 import MISAResource from "@/resource/resource";
 import { useGlobalStore } from "@/stores/global-store";
-import { ref, onMounted, onUnmounted, watch } from "vue";
+import { ref, onMounted, onUnmounted, watch, computed } from "vue";
 
 const emit = defineEmits(["close", "submit", "clear"]);
 
@@ -83,7 +78,16 @@ const props = defineProps({
   // Loại filter
   filterBy: {
     type: String,
-    default: enums.filter.CONTAIN,
+  },
+
+  /**
+   * Options tuỳ chỉnh cho loại filter
+   * Là một mảng gồm:
+   * - label: Tên hiển thị của option
+   * - value: Giá trị
+   */
+  options: {
+    type: Array,
   },
 });
 
@@ -97,6 +101,16 @@ const activeFilter = ref({
 });
 
 const globalStore = useGlobalStore();
+
+const defaultOptions = ref([
+  { label: MISAResource[globalStore.lang]?.Filter?.equal, value: enums.filter.EQUAL },
+  { label: MISAResource[globalStore.lang]?.Filter?.notequal, value: enums.filter.NOTEQUAL },
+  { label: MISAResource[globalStore.lang]?.Filter?.contain, value: enums.filter.CONTAIN },
+  {
+    label: MISAResource[globalStore.lang]?.Filter?.notcontain,
+    value: enums.filter.NOTCONTAIN,
+  },
+]);
 
 /**
  * Description: Chuyển giá trị từ props sang state
@@ -112,9 +126,31 @@ watch(
       type: props.type,
       filterBy: props.filterBy,
     };
+
+    if (!props.filterBy) {
+      if (props.options && Array.isArray(props.options) && props.options?.length > 0) {
+        // Nếu có options tuỳ chỉnh thì set giá trị select mặc định là option đầu tiên
+        activeFilter.value.filterBy = props.options[0]?.value;
+      } else {
+        // Các trường hợp khác mặc định là contain
+        activeFilter.value.filterBy = enums.filter.CONTAIN;
+      }
+    }
   },
   { immediate: true, deep: true }
 );
+
+/**
+ * Description: Sử dụng filter options tuỳ chỉnh hoặc options mặc định
+ * Author: txphuc (06/08/2023)
+ */
+const filterOptions = computed(() => {
+  if (props.options && Array.isArray(props.options) && props.options?.length > 0) {
+    return props.options;
+  } else {
+    return defaultOptions.value;
+  }
+});
 
 /**
  * Description: Submit giá trị filter

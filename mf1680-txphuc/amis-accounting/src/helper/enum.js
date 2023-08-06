@@ -22,6 +22,8 @@ const enums = {
     NOTEQUAL: "notequal",
     CONTAIN: "contain",
     NOTCONTAIN: "notcontain",
+    SMALLER: "smaller",
+    GREATER: "greater",
   },
   gender: {
     MALE: 0,

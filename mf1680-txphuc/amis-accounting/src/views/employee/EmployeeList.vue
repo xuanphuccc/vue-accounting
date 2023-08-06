@@ -274,6 +274,10 @@ const defaultColumns = [
     dataIndex: "GenderFormated",
     originName: "Gender",
     type: "Gender",
+    filterOptions: [
+      { label: MISAResource[globalStore.lang]?.Filter?.equal, value: enums.filter.EQUAL },
+      { label: MISAResource[globalStore.lang]?.Filter?.notequal, value: enums.filter.NOTEQUAL },
+    ],
     width: 140,
   },
   {
@@ -282,6 +286,12 @@ const defaultColumns = [
     dataIndex: "DateOfBirthFormated",
     originName: "DateOfBirth",
     type: "Date",
+    filterOptions: [
+      { label: MISAResource[globalStore.lang]?.Filter?.equal, value: enums.filter.EQUAL },
+      { label: MISAResource[globalStore.lang]?.Filter?.notequal, value: enums.filter.NOTEQUAL },
+      { label: MISAResource[globalStore.lang]?.Filter?.smaller, value: enums.filter.SMALLER },
+      { label: MISAResource[globalStore.lang]?.Filter?.greater, value: enums.filter.GREATER },
+    ],
     align: "center",
     width: 200,
   },
