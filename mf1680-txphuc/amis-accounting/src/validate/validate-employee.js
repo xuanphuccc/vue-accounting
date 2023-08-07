@@ -230,7 +230,7 @@ export const validateLandlineNumber = (value) => {
       rules: [
         {
           checker: mobilePhoneFormat,
-          errorMsg: MISAResource[globalStore.lang]?.Page?.Employee?.Validate?.MobilePhoneFormat,
+          errorMsg: MISAResource[globalStore.lang]?.Page?.Employee?.Validate?.LandlineNumberFormat,
         },
         {
           checker: maxLength,

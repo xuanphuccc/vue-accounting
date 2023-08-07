@@ -1,13 +1,17 @@
 <template>
-  <div @keydown.enter="submitFilter" @click.stop="" class="ms-table-filter">
+  <div v-focustrap @keydown.enter="submitFilter" @click.stop="" class="ms-table-filter">
     <div class="ms-table-filter__header">
       {{ MISAResource[globalStore.lang]?.Filter?.FilterConditionTitle }}
     </div>
     <div class="ms-table-filter__content">
-      <MISASelect v-model="activeFilter.filterBy" :options="filterOptions" />
+      <MISASelect v-model="activeFilter.filterBy" :options="filterOptions" tabindex="1" />
 
       <!-- Lọc ngày tháng -->
-      <MISADatePicker v-if="activeFilter.type === 'Date'" v-model="activeFilter.value" />
+      <MISADatePicker
+        v-if="activeFilter.type === 'Date'"
+        v-model="activeFilter.value"
+        tabindex="2"
+      />
 
       <!-- Lọc giới tính -->
       <MISASelect
@@ -19,6 +23,7 @@
           { label: MISAResource[globalStore.lang].Gender.Other, value: enums.gender.OTHER },
         ]"
         :placeholder="MISAResource[globalStore.lang]?.Combobox?.PlaceHolder"
+        tabindex="2"
       />
 
       <!-- Lọc các trường hợp còn lại -->
@@ -27,13 +32,14 @@
         v-model="activeFilter.value"
         auto-focus
         :placeholder="MISAResource[globalStore.lang]?.PlaceHolder?.EnterValue"
+        tabindex="2"
       />
     </div>
     <div class="ms-table-filter__footer">
-      <MISAButton @click="clearFilter" type="secondary">{{
+      <MISAButton @click="clearFilter" type="secondary" tabindex="4">{{
         MISAResource[globalStore.lang]?.Filter?.Cancel
       }}</MISAButton>
-      <MISAButton @click="submitFilter" type="primary">{{
+      <MISAButton @click="submitFilter" type="primary" tabindex="3">{{
         MISAResource[globalStore.lang]?.Filter?.Apply
       }}</MISAButton>
     </div>

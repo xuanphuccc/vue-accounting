@@ -110,7 +110,6 @@ const props = defineProps({
   // Ngày tối đa có thể chọn
   maxDate: {
     type: Date,
-    default: new Date(),
   },
 });
 

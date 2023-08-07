@@ -115,6 +115,7 @@
                   <MISADatePicker
                     tabindex="5"
                     v-model="formData.dateOfBirth"
+                    :max-date="new Date()"
                     position="left"
                     id="input-date-of-birth"
                   />
@@ -178,6 +179,7 @@
                   <MISADatePicker
                     tabindex="10"
                     v-model="formData.identityDate"
+                    :max-date="new Date()"
                     position="right"
                     id="input-identity-date"
                   />

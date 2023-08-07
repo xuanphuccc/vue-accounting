@@ -183,6 +183,7 @@ const resourceVn = {
         CodeFormat: "Mã phải có dạng NV-1000 +",
         EmailFormat: "Email không đúng định dạng",
         MobilePhoneFormat: "ĐT di động không đúng định dạng",
+        LandlineNumberFormat: "ĐT cố định không đúng định dạng",
         MaxLength: "Không nhập quá @char ký tự",
       },
 

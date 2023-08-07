@@ -183,6 +183,7 @@ const resourceEn = {
         CodeFormat: "Code format is NV-1000 +",
         EmailFormat: "Email invalidate",
         MobilePhoneFormat: "Mobile phone invalidate",
+        LandlineNumberFormat: "Landline number invalidate",
         MaxLength: "Max @char characters",
       },
 

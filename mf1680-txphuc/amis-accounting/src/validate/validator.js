@@ -93,7 +93,7 @@ export const maxLength = (value, max, message) => {
  */
 export const codeFormat = (value, message) => {
   try {
-    var regex = /^[a-zA-Z]{1,}-[0-9]{4,}$/;
+    var regex = /^[a-zA-Z]{2}-[0-9]{4,}$/;
 
     if (!value) {
       return null;
