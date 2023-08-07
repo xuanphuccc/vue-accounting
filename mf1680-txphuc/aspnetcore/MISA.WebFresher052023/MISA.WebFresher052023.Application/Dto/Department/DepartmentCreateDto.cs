@@ -19,7 +19,7 @@ namespace MISA.WebFresher052023.Application
         /// CreatedBy: txphuc (14/07/2023)
         [Required(ErrorMessageResourceName = nameof(InputValidation.IsRequired), ErrorMessageResourceType = typeof(InputValidation))]
         [StringLength(20, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
-        [RegularExpression(@"[a-zA-Z]{1,}-[0-9]{4,}", ErrorMessageResourceName = nameof(InputValidation.CodeFormat), ErrorMessageResourceType = typeof(InputValidation))]
+        [RegularExpression(@"[a-zA-Z]{2}-[0-9]{4,}", ErrorMessageResourceName = nameof(InputValidation.CodeFormat), ErrorMessageResourceType = typeof(InputValidation))]
         public string DepartmentCode { get; set; } = string.Empty;
 
         /// <summary>
