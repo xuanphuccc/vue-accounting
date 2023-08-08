@@ -8,14 +8,14 @@
 
       <!-- Lọc ngày tháng -->
       <MISADatePicker
-        v-if="activeFilter.type === 'Date'"
+        v-if="activeFilter.type === enums.type.DATE"
         v-model="activeFilter.value"
         tabindex="2"
       />
 
       <!-- Lọc giới tính -->
       <MISASelect
-        v-else-if="activeFilter.type === 'Gender'"
+        v-else-if="activeFilter.type === enums.type.GENDER"
         v-model="activeFilter.value"
         :options="[
           { label: MISAResource[globalStore.lang].Gender.Male, value: enums.gender.MALE },
@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-import enums from "@/helper/enum";
+import enums from "@/enum/enum";
 import MISAButton from "../button/MISAButton.vue";
 import MISAInput from "../input/MISAInput.vue";
 import MISASelect from "../select/MISASelect.vue";

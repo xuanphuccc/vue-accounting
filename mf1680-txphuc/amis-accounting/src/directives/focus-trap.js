@@ -1,4 +1,4 @@
-import enums from "@/helper/enum";
+import enums from "@/enum/enum";
 
 /**
  * Description: Bẫy focus trong một form

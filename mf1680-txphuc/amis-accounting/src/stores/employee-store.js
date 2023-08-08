@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import enums from "@/helper/enum";
+import enums from "@/enum/enum";
 import MISAResource from "@/resource/resource";
 import { useGlobalStore } from "./global-store";
 

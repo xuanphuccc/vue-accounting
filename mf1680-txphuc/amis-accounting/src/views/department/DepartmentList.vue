@@ -160,7 +160,7 @@ import MISAContextMenu from "@/components/base/context-menu/MISAContextMenu.vue"
 import MISAContextItem from "@/components/base/context-menu/MISAContextItem.vue";
 import MISADialog from "@/components/base/dialog/MISADialog.vue";
 import departmentApi from "@/api/department-api";
-import enums from "@/helper/enum";
+import enums from "@/enum/enum";
 import MISAResource from "@/resource/resource";
 import { useGlobalStore } from "@/stores/global-store";
 import { useEmployeeStore } from "@/stores/employee-store";

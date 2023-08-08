@@ -1,5 +1,5 @@
 import axios from "axios";
-import enums from "@/helper/enum";
+import enums from "@/enum/enum";
 import { useDialogStore } from "@/stores/dialog-store";
 
 // Create new instance

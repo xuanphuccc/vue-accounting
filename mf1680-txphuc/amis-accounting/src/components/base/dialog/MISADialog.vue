@@ -50,7 +50,7 @@
 </template>
 
 <script setup>
-import enums from "@/helper/enum";
+import enums from "@/enum/enum";
 import MISAButton from "../button/MISAButton.vue";
 import MISAIcon from "../icon/MISAIcon.vue";
 import MISAResource from "@/resource/resource";

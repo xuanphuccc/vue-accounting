@@ -25,6 +25,10 @@ const enums = {
     SMALLER: "smaller",
     GREATER: "greater",
   },
+  type: {
+    GENDER: "Gender",
+    DATE: "Date",
+  },
   gender: {
     MALE: 0,
     FEMALE: 1,

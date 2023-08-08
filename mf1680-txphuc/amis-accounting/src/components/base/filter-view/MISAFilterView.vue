@@ -23,7 +23,7 @@ import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import MISAResource from "@/resource/resource";
 import { useGlobalStore } from "@/stores/global-store";
 import { computed } from "vue";
-import enums from "@/helper/enum";
+import enums from "@/enum/enum";
 import formatDate from "@/helper/format-date";
 
 const emit = defineEmits(["filter-change"]);
@@ -45,7 +45,7 @@ const globalStore = useGlobalStore();
  */
 const filterFormated = computed(() => {
   return props.filters.map((ft) => {
-    if (ft.type === "Gender") {
+    if (ft.type === enums.type.GENDER) {
       // Định dạng giới tính
       const genderName =
         ft.value === enums.gender.MALE
@@ -58,7 +58,7 @@ const filterFormated = computed(() => {
         ...ft,
         value: genderName,
       };
-    } else if (ft.type === "Date") {
+    } else if (ft.type === enums.type.DATE) {
       // Định dạng ngày tháng
       const dateString = formatDate(ft.value, "DD/MM/YYYY");
 

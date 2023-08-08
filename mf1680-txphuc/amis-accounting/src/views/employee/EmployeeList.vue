@@ -205,7 +205,7 @@ import MISADialog from "@/components/base/dialog/MISADialog.vue";
 import EmployeeDetail from "./EmployeeDetail.vue";
 import employeeApi from "@/api/employee-api";
 import formatDate from "@/helper/format-date";
-import enums from "@/helper/enum";
+import enums from "@/enum/enum";
 import MISAResource from "@/resource/resource";
 import { useGlobalStore } from "@/stores/global-store";
 import { useEmployeeStore } from "@/stores/employee-store";
@@ -273,7 +273,7 @@ const defaultColumns = [
     title: MISAResource[globalStore.lang]?.Page?.Employee?.Gender?.Title,
     dataIndex: "GenderFormated",
     originName: "Gender",
-    type: "Gender",
+    type: enums.type.GENDER,
     filterOptions: [
       { label: MISAResource[globalStore.lang]?.Filter?.equal, value: enums.filter.EQUAL },
       { label: MISAResource[globalStore.lang]?.Filter?.notequal, value: enums.filter.NOTEQUAL },
@@ -285,7 +285,7 @@ const defaultColumns = [
     title: MISAResource[globalStore.lang]?.Page?.Employee?.DateOfBirth?.Title,
     dataIndex: "DateOfBirthFormated",
     originName: "DateOfBirth",
-    type: "Date",
+    type: enums.type.DATE,
     filterOptions: [
       { label: MISAResource[globalStore.lang]?.Filter?.equal, value: enums.filter.EQUAL },
       { label: MISAResource[globalStore.lang]?.Filter?.notequal, value: enums.filter.NOTEQUAL },

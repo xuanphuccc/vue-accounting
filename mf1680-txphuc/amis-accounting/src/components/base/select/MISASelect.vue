@@ -71,7 +71,7 @@
 </template>
 
 <script setup>
-import enums from "@/helper/enum";
+import enums from "@/enum/enum";
 import MISAIcon from "../icon/MISAIcon.vue";
 import { computed, onMounted, onUnmounted, watch } from "vue";
 import { ref } from "vue";

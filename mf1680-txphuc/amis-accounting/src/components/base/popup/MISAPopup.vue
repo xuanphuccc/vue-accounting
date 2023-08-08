@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import enums from "@/helper/enum";
+import enums from "@/enum/enum";
 import MISAIcon from "../icon/MISAIcon.vue";
 import MISAResource from "@/resource/resource";
 import { useGlobalStore } from "@/stores/global-store";

@@ -186,7 +186,7 @@ import MISACheckbox from "../checkbox/MISACheckbox.vue";
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import MISAResource from "@/resource/resource";
 import { useGlobalStore } from "@/stores/global-store";
-import enums from "@/helper/enum";
+import enums from "@/enum/enum";
 
 const emit = defineEmits([
   "double-click",
