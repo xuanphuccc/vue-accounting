@@ -15,6 +15,7 @@ namespace MISA.WebFresher052023.Application
         /// Search theo mã, tên và số điện thoại
         /// </summary>
         /// CreatedBy: txphuc (03/08/2023)
+        [StringLength(100, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? Search { get; set; }
 
         /// <summary>
@@ -50,6 +51,7 @@ namespace MISA.WebFresher052023.Application
         /// Mã nhân viên
         /// </summary>
         /// CreatedBy: txphuc (03/08/2023)
+        [StringLength(20, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? EmployeeCode { get; set; }
 
         /// <summary>
@@ -66,6 +68,7 @@ namespace MISA.WebFresher052023.Application
         /// Tên nhân viên
         /// </summary>
         /// CreatedBy: txphuc (03/08/2023)
+        [StringLength(100, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? FullName { get; set; }
 
         /// <summary>
@@ -114,6 +117,7 @@ namespace MISA.WebFresher052023.Application
         /// Số chứng minh nhân dân
         /// </summary>
         /// CreatedBy: txphuc (03/08/2023)
+        [StringLength(25, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? IdentityNumber { get; set; }
 
         /// <summary>
@@ -130,6 +134,7 @@ namespace MISA.WebFresher052023.Application
         /// Tên vị trí
         /// </summary>
         /// CreatedBy: txphuc (03/08/2023)
+        [StringLength(255, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? PositionName { get; set; }
 
         /// <summary>
@@ -146,6 +151,7 @@ namespace MISA.WebFresher052023.Application
         /// Tên đơn vị
         /// </summary>
         /// CreatedBy: txphuc (03/08/2023)
+        [StringLength(255, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? DepartmentName { get; set; }
 
         /// <summary>
@@ -162,6 +168,7 @@ namespace MISA.WebFresher052023.Application
         /// Số tài khoản ngân hàng
         /// </summary>
         /// CreatedBy: txphuc (03/08/2023)
+        [StringLength(25, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? BankAccount { get; set; }
 
         /// <summary>
@@ -178,6 +185,7 @@ namespace MISA.WebFresher052023.Application
         /// Tên ngân hàng
         /// </summary>
         /// CreatedBy: txphuc (03/08/2023)
+        [StringLength(255, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? BankName { get; set; }
 
         /// <summary>
@@ -194,6 +202,7 @@ namespace MISA.WebFresher052023.Application
         /// Chi nhánh ngân hàng
         /// </summary>
         /// CreatedBy: txphuc (03/08/2023)
+        [StringLength(255, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? BankBranch { get; set; }
 
         /// <summary>
