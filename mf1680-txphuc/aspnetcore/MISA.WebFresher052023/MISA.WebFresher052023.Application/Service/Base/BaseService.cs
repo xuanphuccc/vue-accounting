@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MISA.WebFresher052023.Domain;
+using MISA.WebFresher052023.Domain.Resources.Common;
 using MISA.WebFresher052023.Domain.Resources.ErrorMessage;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace MISA.WebFresher052023.Application
 {
     public abstract class BaseService<TEntity, TModel, TEntityDto, TEntityCreateDto, TEntityUpdateDto> :
         BaseReadOnlyService<TEntity, TModel, TEntityDto>,
-        IBaseService<TEntityDto, TEntityCreateDto, TEntityUpdateDto>
+        IBaseService<TEntityDto, TEntityCreateDto, TEntityUpdateDto> where TEntity : IHasKey
     {
         #region Fields
         protected readonly IBaseRepository<TEntity, TModel> _baseRepository;
@@ -102,20 +103,55 @@ namespace MISA.WebFresher052023.Application
         {
             try
             {
-                await _unitOfWork.BeginTransactionAsync();
+                //await _unitOfWork.BeginTransactionAsync();
 
-                // Check các bản ghi phụ thuộc
-                await CheckConstraintForDeleteManyAsync(entityIds);
+                // Lấy các bản ghi có phụ thuộc
+                var invalidEntities = await CheckConstraintForDeleteManyAsync(entityIds);
 
-                var result = await _baseRepository.DeleteAsync(entityIds);
+                // Lấy các id không hợp lệ
+                var invalidIds = invalidEntities.Select(entity => entity.GetKey());
 
-                await _unitOfWork.CommitAsync();
+                // Lấy các Id hợp lệ có thể xoá
+                var validIds = entityIds;
+
+                if(invalidEntities != null && invalidEntities.ToList().Count > 0)
+                {
+                    // Loại bỏ các id không hợp lệ nếu có
+                    validIds = entityIds.Where(entityId => !invalidIds.Contains(entityId)).ToList();
+                }
+
+                // Xoá các bản ghi hợp lệ
+                var result = await _baseRepository.DeleteAsync(validIds);
+
+                // Trả về lỗi các mã không hợp lệ nếu có
+                if (invalidEntities != null && invalidEntities.ToList().Count > 0)
+                {
+                    var invalidCodes = invalidEntities.Select(entity =>
+                    {
+                        if (entity is IHasCode entityHasCode)
+                        {
+                            return entityHasCode.GetCode();
+                        }
+                        else
+                        {
+                            return "";
+                        }
+                    });
+
+                    var errorEntityCodes = String.Join(", ", invalidCodes.ToList());
+
+                    var errorMessage = String.Format(ErrorMessage.ConstraintError, errorEntityCodes);
+
+                    throw new ConstraintException(errorMessage, ErrorCode.ConstraintError);
+                }
+
+                //await _unitOfWork.CommitAsync();
 
                 return result;
             }
-            catch (NotFoundException)
+            catch (ConstraintException)
             {
-                await _unitOfWork.RollBackAsync();
+                //await _unitOfWork.RollBackAsync();
                 throw;
             }
         }
@@ -142,9 +178,10 @@ namespace MISA.WebFresher052023.Application
         /// </summary>
         /// <param name="entityIds">Danh sách Id của bản ghi</param>
         /// <returns></returns>
-        protected virtual Task CheckConstraintForDeleteManyAsync(List<Guid> entityIds)
+        /// CreatedBy: txphuc (18/07/2023)
+        protected virtual Task<IEnumerable<TEntity>> CheckConstraintForDeleteManyAsync(List<Guid> entityIds)
         {
-            return Task.CompletedTask;
+            return Task.FromResult(Enumerable.Empty<TEntity>());
         }
 
         /// <summary>
@@ -152,6 +189,7 @@ namespace MISA.WebFresher052023.Application
         /// </summary>
         /// <param name="entityId">Id của bản ghi</param>
         /// <returns></returns>
+        /// CreatedBy: txphuc (18/07/2023)
         protected virtual Task CheckConstraintForDeleteAsync(Guid entityId)
         {
             return Task.CompletedTask;

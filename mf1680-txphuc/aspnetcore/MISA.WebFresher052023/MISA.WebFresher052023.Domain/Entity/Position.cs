@@ -2,7 +2,7 @@
 
 namespace MISA.WebFresher052023.Domain
 {
-    public class Position : BaseAuditEntity, IHasKey
+    public class Position : BaseAuditEntity, IHasKey, IHasCode
     {
         /// <summary>
         /// Khoá chính
@@ -42,6 +42,16 @@ namespace MISA.WebFresher052023.Domain
         public Guid GetKey()
         {
             return PositionId;
+        }
+
+        /// <summary>
+        /// Lấy mã của vị trí
+        /// </summary>
+        /// <returns>Mã của vị trí</returns>
+        /// CreatedBy: txphuc (18/07/2023)
+        public string GetCode()
+        {
+            return PositionCode;
         }
     }
 }

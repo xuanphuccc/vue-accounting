@@ -10,7 +10,7 @@ namespace MISA.WebFresher052023.Application
 {
     public abstract class BaseCodeService<TEntity, TModel, TEntityDto, TEntityCreateDto, TEntityUpdateDto> :
         BaseService<TEntity, TModel, TEntityDto, TEntityCreateDto, TEntityUpdateDto>,
-        IBaseCodeService<TEntityDto, TEntityCreateDto, TEntityUpdateDto>
+        IBaseCodeService<TEntityDto, TEntityCreateDto, TEntityUpdateDto> where TEntity: IHasKey
     {
         #region Fields
         protected readonly IBaseCodeRepository<TEntity, TModel> _baseCodeRepository;

@@ -91,18 +91,11 @@ namespace MISA.WebFresher052023.Application
         /// </summary>
         /// <param name="positionIds">Danh sách Id của bản ghi</param>
         /// <returns></returns>
-        protected override async Task CheckConstraintForDeleteManyAsync(List<Guid> positionIds)
+        protected override async Task<IEnumerable<Position>> CheckConstraintForDeleteManyAsync(List<Guid> positionIds)
         {
             var positionHaveConstraints = await _positionRepository.CheckListConstraintAsync(positionIds);
 
-            // Trường hợp có bản ghi có phụ thuộc
-            if (positionHaveConstraints.ToList().Count > 0)
-            {
-                var errorPositionCodes = String.Join(", ", positionHaveConstraints.ToList());
-                var errorMessage = String.Format(ErrorMessage.ConstraintError, CommonResource.Department, errorPositionCodes);
-
-                throw new ConstraintException(errorMessage, ErrorCode.ConstraintError);
-            }
+            return positionHaveConstraints;
         }
         #endregion
     }

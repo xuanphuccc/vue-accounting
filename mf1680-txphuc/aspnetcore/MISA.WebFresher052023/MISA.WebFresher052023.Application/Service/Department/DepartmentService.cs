@@ -84,6 +84,7 @@ namespace MISA.WebFresher052023.Application
             if (department != null)
             {
                 var errorMessage = String.Format(ErrorMessage.ConstraintError, CommonResource.Department, department.DepartmentCode);
+
                 throw new ConstraintException(errorMessage, ErrorCode.ConstraintError);
             }
         }
@@ -93,17 +94,11 @@ namespace MISA.WebFresher052023.Application
         /// </summary>
         /// <param name="departmentIds">Danh sách Id của bản ghi</param>
         /// <returns></returns>
-        protected override async Task CheckConstraintForDeleteManyAsync(List<Guid> departmentIds)
+        protected override async Task<IEnumerable<Department>> CheckConstraintForDeleteManyAsync(List<Guid> departmentIds)
         {
             var departmentHaveConstraints = await _departmentRepository.CheckListConstraintAsync(departmentIds);
 
-            // Trường hợp có bản ghi có phụ thuộc
-            if (departmentHaveConstraints.ToList().Count > 0)
-            {
-                var errorDepartmentCodes = String.Join(", ", departmentHaveConstraints.ToList());
-                var errorMessage = String.Format(ErrorMessage.ConstraintError, CommonResource.Department, errorDepartmentCodes);
-                throw new ConstraintException(errorMessage, ErrorCode.ConstraintError);
-            }
+            return departmentHaveConstraints;
         }
         #endregion
     }

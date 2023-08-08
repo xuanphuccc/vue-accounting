@@ -39,9 +39,9 @@ namespace MISA.WebFresher052023.Infrastructure
         /// <summary>
         /// Lấy các bản ghi có phụ thuộc
         /// </summary>
-        /// <param name="positionIds">Danh sách Id của đơn vị</param>
-        /// <returns>Mã của các đơn vị có phụ thuộc</returns>
-        public async Task<IEnumerable<string>> CheckListConstraintAsync(IEnumerable<Guid> positionIds)
+        /// <param name="positionIds">Danh sách Id của vị trí</param>
+        /// <returns>Các vị trí có phụ thuộc</returns>
+        public async Task<IEnumerable<Position>> CheckListConstraintAsync(IEnumerable<Guid> positionIds)
         {
             var postionIdsString = string.Join(", ", positionIds.Select(positionId => $"'{positionId}'"));
 
@@ -50,7 +50,7 @@ namespace MISA.WebFresher052023.Infrastructure
 
             var sql = $"Proc_{TableName}_CheckListConstraint";
 
-            var positionCodes = await _unitOfWork.Connection.QueryAsync<string>(sql, param, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
+            var positionCodes = await _unitOfWork.Connection.QueryAsync<Position>(sql, param, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
 
             return positionCodes;
         }

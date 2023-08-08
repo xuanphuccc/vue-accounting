@@ -124,7 +124,7 @@
     <value>Mã {0} &lt;{1}&gt; đã tồn tại trong hệ thống, vui lòng kiểm tra lại</value>
   </data>
   <data name="ConstraintError" xml:space="preserve">
-    <value>Không thể xoá {0} {1} do có bản ghi phụ thuộc</value>
+    <value>Không thể xoá mã {0} do có bản ghi phụ thuộc</value>
   </data>
   <data name="NotFound" xml:space="preserve">
     <value>Không tìm thấy tài nguyên</value>

@@ -19,7 +19,7 @@ namespace MISA.WebFresher052023.Domain
         /// Lấy các bản ghi có phụ thuộc
         /// </summary>
         /// <param name="departmentIds">Danh sách Id của đơn vị</param>
-        /// <returns>Mã của các đơn vị có phụ thuộc</returns>
-        Task<IEnumerable<string>> CheckListConstraintAsync(IEnumerable<Guid> departmentIds);
+        /// <returns>Các đơn vị có phụ thuộc</returns>
+        Task<IEnumerable<Department>> CheckListConstraintAsync(IEnumerable<Guid> departmentIds);
     }
 }

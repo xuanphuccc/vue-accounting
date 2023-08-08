@@ -79,7 +79,7 @@ namespace MISA.WebFresher052023.Domain.Resources.ErrorMessage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot delete {0} {1} due to dependent records.
+        ///   Looks up a localized string similar to Cannot delete {0} due to dependent records.
         /// </summary>
         public static string ConstraintError {
             get {

@@ -2,7 +2,7 @@
 
 namespace MISA.WebFresher052023.Domain
 {
-    public class Department : BaseAuditEntity, IHasKey
+    public class Department : BaseAuditEntity, IHasKey, IHasCode
     {
         /// <summary>
         /// Khoá chính
@@ -42,6 +42,16 @@ namespace MISA.WebFresher052023.Domain
         public Guid GetKey()
         {
             return DepartmentId;
+        }
+
+        /// <summary>
+        /// Lấy mã của đơn vị
+        /// </summary>
+        /// <returns>Mã của đơn vị</returns>
+        /// CreatedBy: txphuc (18/07/2023)
+        public string GetCode()
+        {
+            return DepartmentCode;
         }
     }
 }

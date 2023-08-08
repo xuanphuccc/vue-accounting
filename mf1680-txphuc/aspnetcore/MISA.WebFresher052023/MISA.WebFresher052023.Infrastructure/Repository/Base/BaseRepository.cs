@@ -86,6 +86,12 @@ namespace MISA.WebFresher052023.Infrastructure
         {
             var entityIdsString = string.Join(", ", entityIds.Select(entity => $"'{entity}'"));
 
+            if(String.IsNullOrEmpty(entityIdsString))
+            {
+                // Trường hợp không có Id nào
+                entityIdsString = "''";
+            }
+
             var param = new DynamicParameters();
             param.Add($"@{TableId}s", entityIdsString);
 
