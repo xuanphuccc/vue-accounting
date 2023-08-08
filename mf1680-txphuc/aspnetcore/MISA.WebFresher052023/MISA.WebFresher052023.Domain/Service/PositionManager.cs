@@ -40,6 +40,36 @@ namespace MISA.WebFresher052023.Domain
                 throw new ConflictException(errorMessage, ErrorCode.ConflictCode);
             }
         }
+
+        /// <summary>
+        /// Check mã vị trí tối đa có thể nhập
+        /// </summary>
+        /// <param name="positionCode">Mã vị trí cần check</param>
+        /// CreatedBy: txphuc (08/08/2023)
+        public async Task CheckMaxPositionCode(string positionCode)
+        {
+            // Lấy mã mới trong hệ thống
+            var newPositionCode = await _positionRepository.FindNewCodeAsync();
+
+            if (newPositionCode != null)
+            {
+                // Chuyển mã được cấp sang số nguyên
+                var newCodeNumber = Convert.ToInt32(newPositionCode.Substring(newPositionCode.IndexOf("-") + 1));
+
+                // Mã tối đa cho phép nhập
+                var maxCodeNumber = newCodeNumber + 10;
+
+                // Chuyển mã đã nhập sang số nguyên
+                var inputCodeNumber = Convert.ToInt32(positionCode.Substring(positionCode.IndexOf("-") + 1));
+
+                if (inputCodeNumber > maxCodeNumber)
+                {
+                    var errorMessage = string.Format(ErrorMessage.MaxCodeError, newPositionCode);
+
+                    throw new MaxCodeException(errorMessage, ErrorCode.MaxCodeError);
+                }
+            }
+        }
         #endregion
     }
 }

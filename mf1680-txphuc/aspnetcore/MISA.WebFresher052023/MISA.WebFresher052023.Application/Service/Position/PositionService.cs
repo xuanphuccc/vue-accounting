@@ -39,6 +39,9 @@ namespace MISA.WebFresher052023.Application
         /// CreatedBy: txphuc (19/07/2023)
         protected override async Task<Position> MapCreateDtoToEntityAsync(PositionCreateDto positionCreateDto)
         {
+            // Check mã vị trí tối đa có thể nhập
+            await _positionManager.CheckMaxPositionCode(positionCreateDto.PositionCode);
+
             // Check trùng mã vị trí
             await _positionManager.CheckExistPositionCode(positionCreateDto.PositionCode);
 
@@ -61,6 +64,9 @@ namespace MISA.WebFresher052023.Application
         {
             // Check vị trí có tồn tại hay không
             var oldPosition = await _positionRepository.GetByIdAsync(positionId);
+
+            // Check mã vị trí tối đa có thể nhập
+            await _positionManager.CheckMaxPositionCode(positionUpdateDto.PositionCode);
 
             // Check trùng mã vị trí
             await _positionManager.CheckExistPositionCode(positionUpdateDto.PositionCode, oldPosition.PositionCode);

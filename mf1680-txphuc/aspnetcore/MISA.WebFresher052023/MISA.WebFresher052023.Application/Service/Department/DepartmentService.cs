@@ -41,6 +41,9 @@ namespace MISA.WebFresher052023.Application
         /// CreatedBy: txphuc (18/07/2023)
         protected override async Task<Department> MapCreateDtoToEntityAsync(DepartmentCreateDto departmentCreateDto)
         {
+            // Check mã đơn vị tối đa có thể nhập
+            await _departmentManager.CheckMaxDepartmentCode(departmentCreateDto.DepartmentCode);
+
             // Check trùng mã đơn vị
             await _departmentManager.CheckExistDepartmentCode(departmentCreateDto.DepartmentCode);
 
@@ -63,6 +66,9 @@ namespace MISA.WebFresher052023.Application
         {
             // Check đơn vị có tồn tại hay không
             var oldDepartment = await _departmentRepository.GetByIdAsync(departmentId);
+
+            // Check mã đơn vị tối đa có thể nhập
+            await _departmentManager.CheckMaxDepartmentCode(departmentUpdateDto.DepartmentCode);
 
             // Check trùng mã đơn vị
             await _departmentManager.CheckExistDepartmentCode(departmentUpdateDto.DepartmentCode, oldDepartment.DepartmentCode);

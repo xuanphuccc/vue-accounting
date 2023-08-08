@@ -38,6 +38,36 @@ namespace MISA.WebFresher052023.Domain
                 throw new ConflictException(errorMessage, ErrorCode.ConflictCode);
             }
         }
+
+        /// <summary>
+        /// Check mã đơn vị tối đa có thể nhập
+        /// </summary>
+        /// <param name="departmentCode">Mã đơn vị cần check</param>
+        /// CreatedBy: txphuc (08/08/2023)
+        public async Task CheckMaxDepartmentCode(string departmentCode)
+        {
+            // Lấy mã mới trong hệ thống
+            var newDepartmentCode = await _departmentRepository.FindNewCodeAsync();
+
+            if (newDepartmentCode != null)
+            {
+                // Chuyển mã được cấp sang số nguyên
+                var newCodeNumber = Convert.ToInt32(newDepartmentCode.Substring(newDepartmentCode.IndexOf("-") + 1));
+
+                // Mã tối đa cho phép nhập
+                var maxCodeNumber = newCodeNumber + 10;
+
+                // Chuyển mã đã nhập sang số nguyên
+                var inputCodeNumber = Convert.ToInt32(departmentCode.Substring(departmentCode.IndexOf("-") + 1));
+
+                if (inputCodeNumber > maxCodeNumber)
+                {
+                    var errorMessage = string.Format(ErrorMessage.MaxCodeError, newDepartmentCode);
+
+                    throw new MaxCodeException(errorMessage, ErrorCode.MaxCodeError);
+                }
+            }
+        }
         #endregion
     }
 }
