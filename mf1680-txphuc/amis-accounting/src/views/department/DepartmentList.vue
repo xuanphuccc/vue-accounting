@@ -113,8 +113,8 @@
             @select-page-size="handleChangePageSize"
             :total-page="pagingInfoState.totalPage"
             :total-records="pagingInfoState.totalRecords"
-            :current-page="filterParamsState.page"
-            :page-size="filterParamsState.pageSize"
+            :current-page="filterRequestState.page"
+            :page-size="filterRequestState.pageSize"
           />
         </template>
       </MISATable>
@@ -174,7 +174,7 @@ const toastStore = useToastStore();
 // ---- Data & Paging & Filter ----
 const departmentData = ref([]);
 const searchFieldState = ref("");
-const filterParamsState = ref({
+const filterRequestState = ref({
   page: 1,
   pageSize: 25,
   search: "",
@@ -247,7 +247,7 @@ watch(
  * Description: Hàm load dữ liệu danh sách nhân viên từ api
  * Author: txphuc (27/06/2023)
  */
-const getDepartmentData = async () => {
+const getDepartmentsData = async () => {
   try {
     loading.value.table = true;
 
@@ -263,11 +263,18 @@ const getDepartmentData = async () => {
     // Lấy dữ liệu phân trang
     const totalRecords = response.data.length;
     const pageSize = 25;
+    const totalPages = Math.ceil(totalRecords / pageSize);
 
     pagingInfoState.value.totalRecords = totalRecords;
-    pagingInfoState.value.totalPage = Math.ceil(totalRecords / pageSize);
+    pagingInfoState.value.totalPage = totalPages;
 
     loading.value.table = false;
+
+    // Nếu trang hiện tại không có data thì về trang cuối
+    // (dùng cho trường hợp xoá hết bản ghi trang cuối)
+    if (response.data?.Data?.length === 0) {
+      filterRequestState.value.page = totalPages;
+    }
   } catch (error) {
     console.warn(error);
   }
@@ -279,9 +286,9 @@ const getDepartmentData = async () => {
  * Author: txphuc (30/06/2023)
  */
 watch(
-  () => filterParamsState.value,
+  () => filterRequestState.value,
   () => {
-    getDepartmentData();
+    getDepartmentsData();
   },
   { immediate: true, deep: true }
 );
@@ -311,7 +318,7 @@ const deleteSelectedDepartment = async () => {
     await departmentApi.delete(deleteIds);
 
     dialogState.value.active = false;
-    await getDepartmentData();
+    await getDepartmentsData();
     uncheckedAllRows();
 
     // Hiện toast message xoá thành công
@@ -320,7 +327,12 @@ const deleteSelectedDepartment = async () => {
     });
   } catch (error) {
     console.warn(error);
+
+    // Ẩn dialog xác nhận xoá
     hideConfirmDialog();
+
+    // Load lại data
+    await getDepartmentsData();
   }
 };
 
@@ -333,7 +345,7 @@ const deleteActiveDepartment = async () => {
     await departmentApi.deleteById(activeRowState.value?.DepartmentId);
 
     dialogState.value.active = false;
-    await getDepartmentData();
+    await getDepartmentsData();
     setActiveRow(null);
 
     // Hiện toast message xoá thành công
@@ -342,7 +354,12 @@ const deleteActiveDepartment = async () => {
     });
   } catch (error) {
     console.warn(error);
+
+    // Ẩn dialog xác nhận xoá
     hideConfirmDialog();
+
+    // Load lại data
+    await getDepartmentsData();
   }
 };
 
@@ -397,7 +414,7 @@ const hideConfirmDialog = () => {
  * Author: txphuc (30/06/2023)
  */
 const handleNextPage = (nextPage) => {
-  filterParamsState.value.page = nextPage;
+  filterRequestState.value.page = nextPage;
 };
 
 /**
@@ -405,7 +422,7 @@ const handleNextPage = (nextPage) => {
  * Author: txphuc (30/06/2023)
  */
 const handlePrevPage = (prevPage) => {
-  filterParamsState.value.page = prevPage;
+  filterRequestState.value.page = prevPage;
 };
 
 /**
@@ -413,8 +430,8 @@ const handlePrevPage = (prevPage) => {
  * Author: txphuc (30/06/2023)
  */
 const handleSearchEmployee = () => {
-  filterParamsState.value.page = 1;
-  filterParamsState.value.search = searchFieldState.value;
+  filterRequestState.value.page = 1;
+  filterRequestState.value.search = searchFieldState.value;
 };
 
 /**
@@ -422,10 +439,10 @@ const handleSearchEmployee = () => {
  * Author: txphuc (30/06/2023)
  */
 const handleChangePageSize = (newPageSize) => {
-  filterParamsState.value.pageSize = newPageSize;
+  filterRequestState.value.pageSize = newPageSize;
 
   // Reset lại số trang hiện tại
-  filterParamsState.value.page = 1;
+  filterRequestState.value.page = 1;
 };
 
 /**
@@ -433,8 +450,8 @@ const handleChangePageSize = (newPageSize) => {
  * Author: txphuc (30/06/2023)
  */
 const handleResetFilter = () => {
-  filterParamsState.value = {
-    ...filterParamsState.value,
+  filterRequestState.value = {
+    ...filterRequestState.value,
     page: 1,
     pageSize: 25,
     search: "",

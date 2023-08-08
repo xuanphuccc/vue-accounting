@@ -588,7 +588,7 @@ const handleOpenFilterMenu = (e, column) => {
       const filterMenuPosX = filterBtnRect.left - filterMenuWidth / 2 + filterBtnRect.width / 2;
       const filterMenuPosY = filterBtnRect.top + filterBtnRect.height + space;
 
-      // Set vị trí
+      // Set vị trí và thông tin của filter đang mở
       filterMenu.value = {
         isShow: filterMenu.value.isShow && filterMenu.value.left === filterMenuPosX ? false : true,
         top: filterMenuPosY,

@@ -46,4 +46,13 @@
   padding: 4px 0;
   margin-left: 16px;
   cursor: pointer;
+  user-select: none;
+}
+
+.ms-filter-view__clear:hover {
+  color: var(--red-400);
+}
+
+.ms-filter-view__clear:active {
+  color: var(--red-600);
 }

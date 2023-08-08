@@ -173,7 +173,7 @@
       </Teleport>
 
       <!-- Employee detail -->
-      <EmployeeDetail v-if="employeeStore.isOpenForm" @submit="getEmployeeData"></EmployeeDetail>
+      <EmployeeDetail v-if="employeeStore.isOpenForm" @submit="getEmployeesData"></EmployeeDetail>
 
       <!-- Table customize -->
       <MISATableCusomize
@@ -362,7 +362,7 @@ watch(
  * Description: Hàm load dữ liệu danh sách nhân viên từ api
  * Author: txphuc (27/06/2023)
  */
-const getEmployeeData = async () => {
+const getEmployeesData = async () => {
   try {
     loading.value.table = true;
 
@@ -371,7 +371,9 @@ const getEmployeeData = async () => {
     // Format dữ liệu hiển thị ra bảng
     employeeData.value = response.data?.Data?.map((employee) => {
       employee.key = employee.EmployeeId;
+
       employee.DateOfBirthFormated = formatDate(employee.DateOfBirth);
+
       employee.GenderFormated =
         employee.Gender === enums.gender.MALE
           ? MISAResource[globalStore.lang]?.Gender?.Male
@@ -385,11 +387,18 @@ const getEmployeeData = async () => {
     // Lấy dữ liệu phân trang
     const totalRecords = response.data.TotalRecords;
     const pageSize = filterRequestState.value.pageSize;
+    const totalPages = Math.ceil(totalRecords / pageSize);
 
     pagingInfoState.value.totalRecords = totalRecords;
-    pagingInfoState.value.totalPage = Math.ceil(totalRecords / pageSize);
+    pagingInfoState.value.totalPage = totalPages;
 
     loading.value.table = false;
+
+    // Nếu trang hiện tại không có data thì về trang cuối
+    // (dùng cho trường hợp xoá hết bản ghi trang cuối)
+    if (response.data?.Data?.length === 0) {
+      filterRequestState.value.page = totalPages;
+    }
   } catch (error) {
     console.warn(error);
   }
@@ -464,7 +473,7 @@ const downloadSelectedRecords = async () => {
 watch(
   () => filterRequestState.value,
   () => {
-    getEmployeeData();
+    getEmployeesData();
   },
   { immediate: true, deep: true }
 );
@@ -535,7 +544,11 @@ const deleteSelectedEmployee = async () => {
     await employeeApi.delete(deleteIds);
 
     dialogState.value.active = false;
-    await getEmployeeData();
+
+    // Load lại data
+    await getEmployeesData();
+
+    // Bỏ chọn các bản ghi đã xoá
     uncheckedAllRows();
 
     // Hiện toast message xoá thành công
@@ -544,7 +557,12 @@ const deleteSelectedEmployee = async () => {
     });
   } catch (error) {
     console.warn(error);
+
+    // Ẩn dialog xác nhận xoá
     hideConfirmDialog();
+
+    // Load lại data
+    await getEmployeesData();
   }
 };
 
@@ -557,7 +575,7 @@ const deleteActiveEmployee = async () => {
     await employeeApi.deleteById(activeRowState.value?.EmployeeId);
 
     dialogState.value.active = false;
-    await getEmployeeData();
+    await getEmployeesData();
     setActiveRow(null);
 
     // Hiện toast message xoá thành công
@@ -566,7 +584,12 @@ const deleteActiveEmployee = async () => {
     });
   } catch (error) {
     console.warn(error);
+
+    // Ẩn dialog xác nhận xoá
     hideConfirmDialog();
+
+    // Load lại data
+    await getEmployeesData();
   }
 };
 
