@@ -1,7 +1,9 @@
 <template>
   <div
     @focusin="openDropdown"
+    @focusout="handleOnFocusOut"
     @keydown="preSelectOnPressArrow"
+    @click="toggleDropdown"
     ref="comboboxRef"
     tabindex="-1"
     :class="['ms-select', { '--show-search': props.search }]"
@@ -18,7 +20,7 @@
       v-model="searchValue"
     />
 
-    <div @mousedown.stop="" class="ms-select__toggle" title="Combobox">
+    <div @mousedown.stop="" class="ms-select__toggle">
       <MISAIcon size="16" icon="angle-down" />
     </div>
 
@@ -132,6 +134,7 @@ const props = defineProps({
 });
 
 const isOpen = ref(false);
+const focusCount = ref(0);
 const comboboxRef = ref(null);
 const menuItemRef = ref([]);
 const selectedValue = ref(null);
@@ -329,9 +332,11 @@ const openDropdown = () => {
 
   //Set lại giá trị cho preSelectValue khi mở dropdown
   preSelectValue.value = selectedOption.value;
+
   const selectedIndex = optionWithSearch.value.findIndex(
     (option) => option.value === selectedValue.value
   );
+
   preSelectIndex.value = selectedIndex === -1 ? 0 : selectedIndex;
 
   // Cuộn đến phần tử được chọn khi mở dropdown
@@ -345,7 +350,33 @@ const openDropdown = () => {
 const closeDropdown = () => {
   if (isOpen.value) {
     emit("close");
+
     isOpen.value = false;
+  }
+};
+
+/**
+ * Description: Xử lý dropdown khi focusout
+ * Author: txphuc (08/08/2023)
+ */
+const handleOnFocusOut = () => {
+  focusCount.value = 0;
+};
+
+/**
+ * Description: Xử lý đóng/mở dropdown khi click chuột
+ * Author: txphuc (08/08/2023)
+ */
+const toggleDropdown = () => {
+  focusCount.value++;
+
+  // Click đóng/mở chỉ có tác dụng sau khi dropdown được sự kiện focus mở dropdown lần đầu
+  if (focusCount.value > 1) {
+    if (isOpen.value) {
+      closeDropdown();
+    } else {
+      openDropdown();
+    }
   }
 };
 
