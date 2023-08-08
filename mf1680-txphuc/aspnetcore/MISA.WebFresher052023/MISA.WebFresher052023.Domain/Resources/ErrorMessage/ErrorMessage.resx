@@ -126,6 +126,9 @@
   <data name="ConstraintError" xml:space="preserve">
     <value>Cannot delete {0} due to dependent records</value>
   </data>
+  <data name="MaxCodeError" xml:space="preserve">
+    <value>Cannot enter a code larger than 10 units compared to the largest code, the current largest code is {0}</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>Resource not found</value>
   </data>

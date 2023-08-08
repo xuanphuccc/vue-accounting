@@ -41,8 +41,39 @@ namespace MISA.WebFresher052023.Domain
 
             if (existEmployee != null && existEmployee.EmployeeCode != oldEmployeeCode)
             {
-                var errorMessage = String.Format(ErrorMessage.ConflictCode, CommonResource.Employee, employeeCode);
+                var errorMessage = string.Format(ErrorMessage.ConflictCode, CommonResource.Employee, employeeCode);
+
                 throw new ConflictException(errorMessage, ErrorCode.ConflictCode);
+            }
+        }
+
+        /// <summary>
+        /// Check mã nhân viên tối đa có thể nhập
+        /// </summary>
+        /// <param name="employeeCode">Mã nhân viên cần check</param>
+        /// CreatedBy: txphuc (08/08/2023)
+        public async Task CheckMaxEmployeeCode(string employeeCode)
+        {
+            // Lấy mã mới trong hệ thống
+            var newEmployeeCode = await _employeeRepository.FindNewCodeAsync();
+
+            if(newEmployeeCode != null)
+            {
+                // Chuyển mã được cấp sang số nguyên
+                var newCodeNumber = Convert.ToInt32(newEmployeeCode.Substring(newEmployeeCode.IndexOf("-") + 1));
+
+                // Mã tối đa cho phép nhập
+                var maxCodeNumber = newCodeNumber + 10;
+
+                // Chuyển mã đã nhập sang số nguyên
+                var inputCodeNumber = Convert.ToInt32(employeeCode.Substring(employeeCode.IndexOf("-") + 1));
+
+                if(inputCodeNumber > maxCodeNumber)
+                {
+                    var errorMessage = string.Format(ErrorMessage.MaxCodeError, newEmployeeCode);
+
+                    throw new MaxCodeException(errorMessage, ErrorCode.MaxCodeError);
+                }
             }
         }
 

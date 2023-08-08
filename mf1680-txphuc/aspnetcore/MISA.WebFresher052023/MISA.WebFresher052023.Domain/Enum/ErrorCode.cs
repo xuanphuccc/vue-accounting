@@ -36,6 +36,12 @@ namespace MISA.WebFresher052023.Domain
         /// Lỗi phụ thuộc
         /// </summary>
         /// CreatedBy: txphuc (01/08/2023)
-        ConstraintError = 1004
+        ConstraintError = 1004,
+
+        /// <summary>
+        /// Lỗi nhập mã quá lớn
+        /// </summary>
+        /// CreatedBy: txphuc (08/08/2023)
+        MaxCodeError = 1005
     }
 }

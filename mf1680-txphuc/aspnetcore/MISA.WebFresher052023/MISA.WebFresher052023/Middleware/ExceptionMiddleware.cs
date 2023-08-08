@@ -91,6 +91,21 @@ namespace MISA.WebFresher052023
                             }.ToString() ?? "");
                     break;
 
+                // Xung đột phụ thuộc
+                case MaxCodeException:
+                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
+
+                    await context.Response.WriteAsync(
+                            new BaseException()
+                            {
+                                ErrorCode = ErrorCode.MaxCodeError,
+                                UserMessage = exception.Message,
+                                DevMessage = exception.Message,
+                                TraceId = context.TraceIdentifier,
+                                MoreInfo = exception.HelpLink
+                            }.ToString() ?? "");
+                    break;
+
                 // Lỗi hệ thống
                 default:
                     context.Response.StatusCode = StatusCodes.Status500InternalServerError;

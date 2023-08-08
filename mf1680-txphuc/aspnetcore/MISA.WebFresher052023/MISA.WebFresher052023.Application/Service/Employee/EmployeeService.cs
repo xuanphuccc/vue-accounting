@@ -57,6 +57,9 @@ namespace MISA.WebFresher052023.Application
         /// CreatedBy: txphuc (18/07/2023)
         protected override async Task<Employee> MapCreateDtoToEntityAsync(EmployeeCreateDto employeeCreateDto)
         {
+            // Check mã nhân viên tối đa có thể nhập
+            await _employeeManager.CheckMaxEmployeeCode(employeeCreateDto.EmployeeCode);
+
             // Check trùng mã nhân viên
             await _employeeManager.CheckExistEmployeeCode(employeeCreateDto.EmployeeCode);
 
@@ -83,11 +86,14 @@ namespace MISA.WebFresher052023.Application
             // Check nhân viên có tồn tại hay không
             var oldEmployee = await _employeeRepository.GetByIdAsync(employeeId);
 
-            // Check departmentId và positionId có tồn tại hay không
-            await _employeeManager.CheckValidConstraint(employeeUpdateDto.DepartmentId, employeeUpdateDto.PositionId);
+            // Check mã nhân viên tối đa có thể nhập
+            await _employeeManager.CheckMaxEmployeeCode(employeeUpdateDto.EmployeeCode);
 
             // Check trùng mã nhân viên
             await _employeeManager.CheckExistEmployeeCode(employeeUpdateDto.EmployeeCode, oldEmployee.EmployeeCode);
+
+            // Check departmentId và positionId có tồn tại hay không
+            await _employeeManager.CheckValidConstraint(employeeUpdateDto.DepartmentId, employeeUpdateDto.PositionId);
 
             var newEmployee = _mapper.Map(employeeUpdateDto, oldEmployee);
 

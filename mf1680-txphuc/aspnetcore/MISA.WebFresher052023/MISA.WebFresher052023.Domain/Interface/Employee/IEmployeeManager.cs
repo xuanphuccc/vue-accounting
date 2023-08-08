@@ -17,6 +17,13 @@ namespace MISA.WebFresher052023.Domain
         Task CheckExistEmployeeCode(string employeeCode, string? oldEmployeeCode = null);
 
         /// <summary>
+        /// Check mã nhân viên tối đa có thể nhập
+        /// </summary>
+        /// <param name="employeeCode">Mã nhân viên cần check</param>
+        /// CreatedBy: txphuc (08/08/2023)
+        Task CheckMaxEmployeeCode(string employeeCode);
+
+        /// <summary>
         /// Check các khoá ngoại có tồn tại hay không
         /// </summary>
         /// <param name="departmentId">Id của đơn vị</param>

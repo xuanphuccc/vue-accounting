@@ -88,6 +88,15 @@ namespace MISA.WebFresher052023.Domain.Resources.ErrorMessage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot enter a code larger than 10 units compared to the largest code, the current largest code is {0}.
+        /// </summary>
+        public static string MaxCodeError {
+            get {
+                return ResourceManager.GetString("MaxCodeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resource not found.
         /// </summary>
         public static string NotFound {
