@@ -20,7 +20,7 @@
       :position="props.position"
       space-confirm
       offset="4"
-      placeholder="dd/MM/yyyy"
+      placeholder="DD/MM/YYYY"
       input-class-name="ms-date-picker__input"
       :menu-class-name="`ms-date-picker__menu ${props.position === 'right' && '--right'}`"
       calendar-class-name="ms-date-picker__calendar"

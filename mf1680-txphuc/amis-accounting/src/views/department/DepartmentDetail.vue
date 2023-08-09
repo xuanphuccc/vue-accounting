@@ -160,7 +160,7 @@ const toastStore = useToastStore();
 // ---- Dialog ----
 const closeFormDialogState = ref({
   active: false,
-  type: "warning",
+  type: enums.dialog.type.WARNING,
   title: MISAResource[globalStore.lang]?.Dialog?.WarningTitle,
   description: MISAResource[globalStore.lang]?.Dialog?.CloseFormWarning,
 });

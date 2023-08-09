@@ -239,7 +239,7 @@ const activeRowState = ref(null);
 // ---- Dialog ----
 const dialogState = ref({
   active: false,
-  type: "warning",
+  type: enums.dialog.type.WARNING,
   title: "",
   description: "",
 });
@@ -486,27 +486,31 @@ watch(
 watch(
   () => filterParams.value,
   () => {
-    const formatedFilters = {};
-    filterParams.value.forEach((ft) => {
-      let formatedValue = ft.value;
+    try {
+      const formatedFilters = {};
+      filterParams.value.forEach((ft) => {
+        let formatedValue = ft.value;
 
-      // Chuyển định dạng ngày tháng
-      if (ft.type === "Date") {
-        formatedValue = formatDate(ft.value, "YYYY-MM-DD");
-      }
+        // Chuyển định dạng ngày tháng
+        if (ft.type === "Date") {
+          formatedValue = formatDate(ft.value, "YYYY-MM-DD");
+        }
 
-      formatedFilters[ft.column] = formatedValue;
-      formatedFilters[ft.column + "FilterBy"] = ft.filterBy;
-    });
+        formatedFilters[ft.column] = formatedValue;
+        formatedFilters[ft.column + "FilterBy"] = ft.filterBy;
+      });
 
-    filterRequestState.value = {
-      page: 1,
-      pageSize: filterRequestState.value.pageSize,
-      search: filterRequestState.value.search,
-      sortColumn: filterRequestState.value.sortColumn,
-      sortOrder: filterRequestState.value.sortOrder,
-      ...formatedFilters,
-    };
+      filterRequestState.value = {
+        page: 1,
+        pageSize: filterRequestState.value.pageSize,
+        search: filterRequestState.value.search,
+        sortColumn: filterRequestState.value.sortColumn,
+        sortOrder: filterRequestState.value.sortOrder,
+        ...formatedFilters,
+      };
+    } catch (error) {
+      console.warn(error);
+    }
   },
   { deep: true }
 );
@@ -625,7 +629,7 @@ const showDeleteConfirmDialog = (description) => {
   dialogState.value = {
     active: true,
     title: MISAResource[globalStore.lang]?.Page?.Employee?.Dialog?.DeleteConfirmTitle,
-    type: "warning",
+    type: enums.dialog.type.WARNING,
     description: description,
   };
 };

@@ -201,7 +201,7 @@ const activeRowState = ref(null);
 // ---- Dialog ----
 const dialogState = ref({
   active: false,
-  type: "warning",
+  type: enums.dialog.type.WARNING,
   title: "",
   description: "",
 });
@@ -405,7 +405,7 @@ const showDeleteConfirmDialog = (description) => {
   dialogState.value = {
     active: true,
     title: MISAResource[globalStore.lang]?.Page?.Department?.Dialog?.DeleteConfirmTitle,
-    type: "warning",
+    type: enums.dialog.type.WARNING,
     description: description,
   };
 };
