@@ -89,7 +89,7 @@ namespace MISA.WebFresher052023.Application
             var department = await _departmentRepository.CheckConstraintByIdAsync(departmentId);
             if (department != null)
             {
-                var errorMessage = String.Format(ErrorMessage.ConstraintError, CommonResource.Department, department.DepartmentCode);
+                var errorMessage = String.Format(ErrorMessage.ConstraintErrorArgs, CommonResource.Department, department.DepartmentCode);
 
                 throw new ConstraintException(errorMessage, ErrorCode.ConstraintError);
             }

@@ -87,7 +87,7 @@ namespace MISA.WebFresher052023.Application
             var postion = await _positionRepository.CheckConstraintByIdAsync(positionId);
             if (postion != null)
             {
-                var errorMessage = String.Format(ErrorMessage.ConstraintError, CommonResource.Position, postion.PositionCode);
+                var errorMessage = String.Format(ErrorMessage.ConstraintErrorArgs, CommonResource.Position, postion.PositionCode);
                 throw new ConstraintException(errorMessage, ErrorCode.ConstraintError);
             }
         }
