@@ -337,23 +337,19 @@ const handleValidateInputs = () => {
  * Author: txphuc (01/07/2023)
  */
 const resetInputs = async () => {
-  try {
-    if (
-      departmentStore.mode === enums.form.mode.CREATE ||
-      departmentStore.mode === enums.form.mode.DUPLICATE
-    ) {
-      if (departmentStore.mode === enums.form.mode.CREATE) {
-        // Reset dữ liệu form về mặc định
-        formData.value = {
-          ...initialFormData,
-        };
-      }
-
-      // Lấy mã mới
-      await getNewDepartmentCode();
+  if (
+    departmentStore.mode === enums.form.mode.CREATE ||
+    departmentStore.mode === enums.form.mode.DUPLICATE
+  ) {
+    if (departmentStore.mode === enums.form.mode.CREATE) {
+      // Reset dữ liệu form về mặc định
+      formData.value = {
+        ...initialFormData,
+      };
     }
-  } catch (error) {
-    console.warn(error);
+
+    // Lấy mã mới
+    await getNewDepartmentCode();
   }
 };
 
@@ -415,15 +411,11 @@ const handleSubmitForm = async (isContinue = true) => {
  * Author: txphuc (17/07/2023)
  */
 const generateData = () => {
-  try {
-    const data = {
-      ...formData.value,
-    };
+  const data = {
+    ...formData.value,
+  };
 
-    return data;
-  } catch (error) {
-    console.warn(error);
-  }
+  return data;
 };
 
 /**

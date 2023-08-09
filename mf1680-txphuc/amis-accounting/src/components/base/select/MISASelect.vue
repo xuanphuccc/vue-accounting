@@ -199,12 +199,7 @@ const optionWithSearch = computed(() => {
  * Author: txphuc (27/06/2023)
  */
 const selectedOption = computed(() => {
-  try {
-    return props.options.find((option) => option.value === selectedValue.value) ?? {};
-  } catch (error) {
-    console.warn(error);
-    return {};
-  }
+  return props.options.find((option) => option.value === selectedValue.value) ?? {};
 });
 
 /**
@@ -289,22 +284,18 @@ const preSelectOnPressArrow = (e) => {
  * Author: txphuc (04/07/2023)
  */
 const clearSelectedValue = () => {
-  try {
-    // Cập nhật binding hai chiều
-    emit("update:modelValue", null);
-    selectedValue.value = null;
+  // Cập nhật binding hai chiều
+  emit("update:modelValue", null);
+  selectedValue.value = null;
 
-    // Phát sự kiện close để gọi validate
-    emit("close");
+  // Phát sự kiện close để gọi validate
+  emit("close");
 
-    // Xoá search value
-    searchValue.value = "";
+  // Xoá search value
+  searchValue.value = "";
 
-    // Cuộn về phần tử đầu tiên
-    preSelectIndex.value = 0;
-  } catch (error) {
-    console.warn(error);
-  }
+  // Cuộn về phần tử đầu tiên
+  preSelectIndex.value = 0;
 };
 
 /**

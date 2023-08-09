@@ -116,27 +116,19 @@ const globalStore = useGlobalStore();
  * Author: txphuc (30/06/2023)
  */
 const recordsRange = computed(() => {
-  try {
-    if (props.currentPage && props.pageSize) {
-      let maxRange = props.currentPage * props.pageSize;
-      let minRange = maxRange - props.pageSize + 1;
+  if (props.currentPage && props.pageSize) {
+    let maxRange = props.currentPage * props.pageSize;
+    let minRange = maxRange - props.pageSize + 1;
 
-      if (props.currentPage === props.totalPage) {
-        maxRange = props.totalRecords;
-      }
-
-      return {
-        min: minRange,
-        max: maxRange,
-      };
-    } else {
-      return {
-        min: 0,
-        max: 0,
-      };
+    if (props.currentPage === props.totalPage) {
+      maxRange = props.totalRecords;
     }
-  } catch (error) {
-    console.warn(error);
+
+    return {
+      min: minRange,
+      max: maxRange,
+    };
+  } else {
     return {
       min: 0,
       max: 0,
@@ -149,13 +141,9 @@ const recordsRange = computed(() => {
  * Author: txphuc (30/06/2023)
  */
 const handleNextPage = () => {
-  try {
-    if (props.currentPage && props.totalPage && props.currentPage < props.totalPage) {
-      const nextPage = props.currentPage + 1;
-      emit("next-page", nextPage);
-    }
-  } catch (error) {
-    console.warn(error);
+  if (props.currentPage && props.totalPage && props.currentPage < props.totalPage) {
+    const nextPage = props.currentPage + 1;
+    emit("next-page", nextPage);
   }
 };
 
@@ -164,13 +152,9 @@ const handleNextPage = () => {
  * Author: txphuc (30/06/2023)
  */
 const handlePrevPage = () => {
-  try {
-    if (props.currentPage && props.currentPage > 1) {
-      const prevPage = props.currentPage - 1;
-      emit("prev-page", prevPage);
-    }
-  } catch (error) {
-    console.warn(error);
+  if (props.currentPage && props.currentPage > 1) {
+    const prevPage = props.currentPage - 1;
+    emit("prev-page", prevPage);
   }
 };
 

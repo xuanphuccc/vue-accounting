@@ -134,17 +134,13 @@ const setDate = (value) => {
  * Author: txphuc (17/07/2023)
  */
 const getToday = () => {
-  try {
-    const today = new Date();
+  const today = new Date();
 
-    emit("update:modelValue", today);
+  emit("update:modelValue", today);
 
-    // Đóng menu chọn ngày
-    if (datePickerRef.value) {
-      closeMenu();
-    }
-  } catch (error) {
-    console.warn(error);
+  // Đóng menu chọn ngày
+  if (datePickerRef.value) {
+    closeMenu();
   }
 };
 
@@ -153,14 +149,10 @@ const getToday = () => {
  * Author: txphuc (17/07/2023)
  */
 const formatInput = (date) => {
-  try {
-    if (typeof date === "object") {
-      return formatDate(date.toJSON(), "DD/MM/YYYY");
-    } else {
-      return null;
-    }
-  } catch (error) {
-    console.warn(error);
+  if (typeof date === "object") {
+    return formatDate(date.toJSON(), "DD/MM/YYYY");
+  } else {
+    return null;
   }
 };
 

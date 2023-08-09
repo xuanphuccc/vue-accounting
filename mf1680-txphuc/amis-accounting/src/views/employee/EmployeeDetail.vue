@@ -717,8 +717,10 @@ const handleValidateInputs = () => {
 
     // Chứa tất cả thông báo lỗi
     const errorMessagesObj = {};
+
     // Kết quả validate toàn bộ input
     let result = true;
+
     // Đánh dấu chỉ một input lỗi được focus
     let focusFlag = 0;
 
@@ -754,23 +756,19 @@ const handleValidateInputs = () => {
  * Author: txphuc (01/07/2023)
  */
 const resetInputs = async () => {
-  try {
-    if (
-      employeeStore.mode === enums.form.mode.CREATE ||
-      employeeStore.mode === enums.form.mode.DUPLICATE
-    ) {
-      if (employeeStore.mode === enums.form.mode.CREATE) {
-        // Reset dữ liệu form về mặc định
-        formData.value = {
-          ...initialFormData,
-        };
-      }
-
-      // Lấy mã mới
-      await getNewEmployeeCode();
+  if (
+    employeeStore.mode === enums.form.mode.CREATE ||
+    employeeStore.mode === enums.form.mode.DUPLICATE
+  ) {
+    if (employeeStore.mode === enums.form.mode.CREATE) {
+      // Reset dữ liệu form về mặc định
+      formData.value = {
+        ...initialFormData,
+      };
     }
-  } catch (error) {
-    console.warn(error);
+
+    // Lấy mã mới
+    await getNewEmployeeCode();
   }
 };
 
@@ -832,19 +830,15 @@ const handleSubmitForm = async (isContinue = true) => {
  * Author: txphuc (17/07/2023)
  */
 const generateData = () => {
-  try {
-    const data = {
-      ...formData.value,
-      employeeCode: formData.value.employeeCode.trim(),
-      dateOfBirth: formatDate(formData.value.dateOfBirth, "YYYY-MM-DD"),
-      identityDate: formatDate(formData.value.identityDate, "YYYY-MM-DD"),
-      gender: Number(formData.value.gender),
-    };
+  const data = {
+    ...formData.value,
+    employeeCode: formData.value.employeeCode.trim(),
+    dateOfBirth: formatDate(formData.value.dateOfBirth, "YYYY-MM-DD"),
+    identityDate: formatDate(formData.value.identityDate, "YYYY-MM-DD"),
+    gender: Number(formData.value.gender),
+  };
 
-    return data;
-  } catch (error) {
-    console.warn(error);
-  }
+  return data;
 };
 
 /**

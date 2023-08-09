@@ -14,21 +14,17 @@ export const useToastStore = defineStore("toast-message", {
      * Author: txphuc (29/06/2023)
      */
     pushSuccessMessage(message = { message: "Nội dung thông báo", undo: null }) {
-      try {
-        const globalStore = useGlobalStore();
+      const globalStore = useGlobalStore();
 
-        message.key = uuidv4();
-        message.type = "success";
-        message.title = MISAResource[globalStore.lang]?.Toast?.Success;
+      message.key = uuidv4();
+      message.type = "success";
+      message.title = MISAResource[globalStore.lang]?.Toast?.Success;
 
-        this.toastArr.push(message);
+      this.toastArr.push(message);
 
-        setTimeout(() => {
-          this.removeMessage(message.key);
-        }, 5000);
-      } catch (error) {
-        console.warn(error);
-      }
+      setTimeout(() => {
+        this.removeMessage(message.key);
+      }, 5000);
     },
 
     /**

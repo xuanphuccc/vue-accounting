@@ -410,19 +410,15 @@ const returnRow = (row) => {
  * Author: txphuc (04/08/2023)
  */
 const handleSelectSortColumn = (sortColumn) => {
-  try {
-    if (props.sort?.sortColumn === sortColumn && props.sort?.sortOrder === enums.sort.ASC) {
-      // Chuyển từ sắp xếp TĂNG DẦN sang GIẢM DẦN
-      emit("sort-column-change", { sortColumn, sortOrder: enums.sort.DESC });
-    } else if (props.sort?.sortColumn === sortColumn && props.sort?.sortOrder === enums.sort.DESC) {
-      // Chuyển từ sắp xếp GIẢM DẦN sang KHÔNG SẮP XẾP
-      emit("sort-column-change", { sortColumn: null, sortOrder: null });
-    } else {
-      // Chuyển từ KHÔNG SẮP XẾP sang sắp xếp TĂNG DẦN
-      emit("sort-column-change", { sortColumn, sortOrder: enums.sort.ASC });
-    }
-  } catch (error) {
-    console.warn(error);
+  if (props.sort?.sortColumn === sortColumn && props.sort?.sortOrder === enums.sort.ASC) {
+    // Chuyển từ sắp xếp TĂNG DẦN sang GIẢM DẦN
+    emit("sort-column-change", { sortColumn, sortOrder: enums.sort.DESC });
+  } else if (props.sort?.sortColumn === sortColumn && props.sort?.sortOrder === enums.sort.DESC) {
+    // Chuyển từ sắp xếp GIẢM DẦN sang KHÔNG SẮP XẾP
+    emit("sort-column-change", { sortColumn: null, sortOrder: null });
+  } else {
+    // Chuyển từ KHÔNG SẮP XẾP sang sắp xếp TĂNG DẦN
+    emit("sort-column-change", { sortColumn, sortOrder: enums.sort.ASC });
   }
 };
 
