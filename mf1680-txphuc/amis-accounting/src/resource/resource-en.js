@@ -285,6 +285,12 @@ const resourceEn = {
         DeleteConfirmDesc: "Are you sure you want to delete department @code?",
         MultipleDeleteConfirmDesc: "Are you sure you want to delete the selected departments?",
       },
+      Validate: {
+        DepartmentCode: "Department code is required",
+        DepartmentName: "Department name is required",
+        CodeFormat: "Department code format is NV-1000 +",
+        MaxLength: "Max @char characters",
+      },
 
       DepartmentCode: {
         Title: "Department code",

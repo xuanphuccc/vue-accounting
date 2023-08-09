@@ -683,7 +683,6 @@ const handleResetFilter = () => {
   filterRequestState.value = {
     ...filterRequestState.value,
     page: 1,
-    pageSize: 10,
     search: "",
   };
 

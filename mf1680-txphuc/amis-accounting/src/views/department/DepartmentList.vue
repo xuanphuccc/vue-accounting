@@ -9,9 +9,12 @@
       </div>
 
       <div class="page__header-controls">
-        <MISAButton v-tippy="{ content: 'Ctrl + 1' }" type="primary">{{
-          MISAResource[globalStore.lang]?.Page?.Department?.AddButton
-        }}</MISAButton>
+        <MISAButton
+          @click="departmentStore.openFormForCreate"
+          v-tippy="{ content: 'Ctrl + 1' }"
+          type="primary"
+          >{{ MISAResource[globalStore.lang]?.Page?.Department?.AddButton }}</MISAButton
+        >
       </div>
     </div>
 
@@ -43,12 +46,12 @@
         <div class="filter__right">
           <MISAInputGroup for="search-input">
             <MISAInput
-              @keydown.enter="handleSearchEmployee"
+              @keydown.enter="handleSearchDepartment"
               v-model="searchFieldState"
               :placeholder="MISAResource[globalStore.lang]?.Page?.Department?.SearchPlaceholder"
               id="search-input"
             />
-            <MISAInputAction @click="handleSearchEmployee">
+            <MISAInputAction @click="handleSearchDepartment">
               <MISAIcon size="20" icon="search" />
             </MISAInputAction>
           </MISAInputGroup>
@@ -75,7 +78,7 @@
       <MISATable
         @select-row="selectTableRows"
         @active-row="setActiveRow"
-        @double-click="employeeStore.openFormForUpdate"
+        @double-click="departmentStore.openFormForUpdate"
         :columns="columns"
         :data-source="departmentData"
         :selected-rows="selectedRowsState"
@@ -84,7 +87,7 @@
       >
         <template #context-menu>
           <MISAContextMenu width="180" small>
-            <MISAContextItem @click="employeeStore.openFormForDuplicate(activeRowState)">{{
+            <MISAContextItem @click="departmentStore.openFormForDuplicate(activeRowState)">{{
               MISAResource[globalStore.lang]?.ContextMenu?.Duplicate
             }}</MISAContextItem>
             <MISAContextItem
@@ -133,6 +136,12 @@
         </MISADialog>
       </Teleport>
 
+      <!-- Department detail -->
+      <DepartmentDetail
+        v-if="departmentStore.isOpenForm"
+        @submit="getDepartmentsData"
+      ></DepartmentDetail>
+
       <!-- Table customize -->
       <MISATableCusomize
         :columns="columns"
@@ -148,6 +157,7 @@
 <script setup>
 import { onMounted, onUnmounted, ref, watch } from "vue";
 
+import DepartmentDetail from "./DepartmentDetail.vue";
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import MISAButton from "@/components/base/button/MISAButton.vue";
 import MISAInput from "@/components/base/input/MISAInput.vue";
@@ -163,12 +173,12 @@ import departmentApi from "@/api/department-api";
 import enums from "@/enum/enum";
 import MISAResource from "@/resource/resource";
 import { useGlobalStore } from "@/stores/global-store";
-import { useEmployeeStore } from "@/stores/employee-store";
+import { useDepartmentStore } from "@/stores/department-store";
 import { useToastStore } from "@/stores/toast-store";
 
 // ---- Store ----
 const globalStore = useGlobalStore();
-const employeeStore = useEmployeeStore();
+const departmentStore = useDepartmentStore();
 const toastStore = useToastStore();
 
 // ---- Data & Paging & Filter ----
@@ -244,7 +254,7 @@ watch(
 );
 
 /**
- * Description: Hàm load dữ liệu danh sách nhân viên từ api
+ * Description: Hàm load dữ liệu danh sách đơn vị từ api
  * Author: txphuc (27/06/2023)
  */
 const getDepartmentsData = async () => {
@@ -294,7 +304,7 @@ watch(
 );
 
 /**
- * Description: Hàm xoá nhân viên active hoặc đang được chọn
+ * Description: Hàm xoá đơn vị đang active hoặc đang được chọn
  * Author: txphuc (11/07/2023)
  */
 const handleDeleteDepartment = async () => {
@@ -429,7 +439,7 @@ const handlePrevPage = (prevPage) => {
  * Description: Xử lý thay đổi filter để bắt đầu tìm kiếm
  * Author: txphuc (30/06/2023)
  */
-const handleSearchEmployee = () => {
+const handleSearchDepartment = () => {
   filterRequestState.value.page = 1;
   filterRequestState.value.search = searchFieldState.value;
 };
@@ -453,7 +463,6 @@ const handleResetFilter = () => {
   filterRequestState.value = {
     ...filterRequestState.value,
     page: 1,
-    pageSize: 25,
     search: "",
   };
 
@@ -481,7 +490,7 @@ const handleKeyboardEvent = (e) => {
     switch (keyCode) {
       case enums.key.NUM_1:
         if (ctrlKey) {
-          employeeStore.openFormForCreate();
+          departmentStore.openFormForCreate();
         }
         break;
       case enums.key.D:

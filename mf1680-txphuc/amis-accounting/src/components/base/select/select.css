@@ -137,5 +137,5 @@
   display: none;
 }
 .ms-select.--show-search .ms-select__list-container {
-  max-height: 380px;
+  max-height: 308px;
 }

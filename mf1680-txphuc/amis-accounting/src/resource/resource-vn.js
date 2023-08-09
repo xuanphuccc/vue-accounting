@@ -285,6 +285,12 @@ const resourceVn = {
         DeleteConfirmDesc: "Bạn có chắc chắn muốn xoá đơn vị @code không?",
         MultipleDeleteConfirmDesc: "Bạn có chắc chắn muốn xoá những đơn vị đã chọn không?",
       },
+      Validate: {
+        DepartmentCode: "Mã đơn vị không được để trống",
+        DepartmentName: "Tên đơn vị không được để trống",
+        CodeFormat: "Mã đơn vị phải có dạng PB-1000 +",
+        MaxLength: "Không nhập quá @char ký tự",
+      },
 
       DepartmentCode: {
         Title: "Mã đơn vị",
