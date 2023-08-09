@@ -91,7 +91,7 @@ namespace MISA.WebFresher052023
                             }.ToString() ?? "");
                     break;
 
-                // Xung đột phụ thuộc
+                // Lỗi nhập mã quá lớn
                 case MaxCodeException:
                     context.Response.StatusCode = StatusCodes.Status400BadRequest;
 
