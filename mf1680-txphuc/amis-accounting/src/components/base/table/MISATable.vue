@@ -15,7 +15,7 @@
               <span class="ms-table__border-bottom"></span>
             </th>
 
-            <template v-for="column in columsWithPos" :key="column.key">
+            <template v-for="(column, index) in columsWithPos" :key="column.key">
               <th
                 v-if="!column.hide"
                 @click="handleSelectSortColumn(column.originName)"
@@ -48,7 +48,7 @@
 
                 <!-- fake borders -->
                 <span class="ms-table__border-bottom"></span>
-                <span class="ms-table__border-right"></span>
+                <span v-if="index < columsWithPos.length - 1" class="ms-table__border-right"></span>
 
                 <!-- filter button -->
                 <div
@@ -92,7 +92,7 @@
                 <span class="ms-table__border-bottom"></span>
               </td>
 
-              <template v-for="column in columsWithPos" :key="column.key">
+              <template v-for="(column, index) in columsWithPos" :key="column.key">
                 <td
                   v-if="!column.hide"
                   :style="{
@@ -111,7 +111,10 @@
 
                   <!-- fake borders -->
                   <span class="ms-table__border-bottom"></span>
-                  <span class="ms-table__border-right"></span>
+                  <span
+                    v-if="index < columsWithPos.length - 1"
+                    class="ms-table__border-right"
+                  ></span>
                 </td>
               </template>
 

@@ -58,6 +58,7 @@
             { '--selected': option.value === selectedValue },
             { '--pre-select': option.value === preSelectValue?.value },
           ]"
+          :data-index="index"
           ref="menuItemRef"
         >
           {{ option.label }}
@@ -164,8 +165,11 @@ watch(
   () => searchValue.value,
   () => {
     if (props.search && searchValue.value === "") {
-      selectedValue.value = null;
-      emit("update:modelValue", null);
+      // Xoá giá trị đã chọn
+      clearSelectedValue();
+
+      // Mở lại dropdown để chọn giá trị
+      openDropdown();
     }
   }
 );
@@ -311,7 +315,13 @@ const handleScrollToView = (index) => {
   try {
     setTimeout(() => {
       if (menuItemRef.value.length > 0) {
-        menuItemRef.value[index]?.scrollIntoView({
+        // Sắp xếp các phần tử đúng thứ tự index tăng dần
+        // Do ref của Vue không đảm bảo thứ tự các phần tử trong DOM
+        const elements = menuItemRef.value.sort(
+          (prev, next) => prev.dataset.index - next.dataset.index
+        );
+
+        elements[index]?.scrollIntoView({
           behavior: "smooth",
           block: "nearest",
           inline: "nearest",

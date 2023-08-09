@@ -309,14 +309,14 @@ const defaultColumns = [
     title: MISAResource[globalStore.lang]?.Page?.Employee?.Position?.Title,
     dataIndex: "PositionName",
     originName: "PositionName",
-    width: 180,
+    width: 280,
   },
   {
     key: 7,
     title: MISAResource[globalStore.lang]?.Page?.Employee?.Department?.Title,
     dataIndex: "DepartmentName",
     originName: "DepartmentName",
-    width: 240,
+    width: 260,
   },
   {
     key: 8,
@@ -331,7 +331,7 @@ const defaultColumns = [
     title: MISAResource[globalStore.lang]?.Page?.Employee?.BankName?.Title,
     dataIndex: "BankName",
     originName: "BankName",
-    width: 360,
+    width: 200,
   },
   {
     key: 10,
