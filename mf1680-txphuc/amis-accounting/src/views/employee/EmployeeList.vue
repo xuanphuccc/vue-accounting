@@ -579,7 +579,11 @@ const deleteActiveEmployee = async () => {
     await employeeApi.deleteById(activeRowState.value?.EmployeeId);
 
     dialogState.value.active = false;
+
+    // Load lại data
     await getEmployeesData();
+
+    // Bỏ chọn dòng được active
     setActiveRow(null);
 
     // Hiện toast message xoá thành công
