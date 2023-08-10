@@ -487,24 +487,25 @@ const handleKeyboardEvent = (e) => {
     // const shiftKey = e.shiftKey;
     const ctrlKey = e.ctrlKey;
 
-    switch (keyCode) {
-      case enums.key.NUM_1:
-        if (ctrlKey) {
+    if (ctrlKey) {
+      switch (keyCode) {
+        case enums.key.NUM_1:
           departmentStore.openFormForCreate();
-        }
-        break;
-      case enums.key.D:
-        e.preventDefault();
-        if (ctrlKey) {
+          break;
+
+        case enums.key.D:
+          e.preventDefault();
+
           if (selectedRowsState.value.length > 0) {
             showDeleteConfirmDialog(
               MISAResource[globalStore.lang]?.Page?.Department?.Dialog?.MultipleDeleteConfirmDesc
             );
           }
-        }
-        break;
-      default:
-        break;
+          break;
+
+        default:
+          break;
+      }
     }
   } catch (error) {
     console.warn(error);

@@ -3,7 +3,6 @@
     :value="props.modelValue"
     @input="onInputChange"
     @blur="$emit('blur')"
-    @keydown.stop=""
     :type="props.type"
     :class="['ms-input']"
     :id="props.id"
