@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="SVGID" width="24" height="24" rx="4" transform="translate(0.857)" fill="none" stroke="#8f98ab" stroke-width="2"/>
+    </clipPath>
+  </defs>
+  <g id="quyetoan_24px" data-name="quyetoan 24px" transform="translate(-0.857)" clip-path="url(#clip-path)">
+    <g id="Group_52114" data-name="Group 52114" transform="translate(1 1)">
+      <path id="Path_63285" data-name="Path 63285" d="M5.962,5l-3.1,6.2v5.4a1.8,1.8,0,0,0,1.8,1.8h14.4a1.8,1.8,0,0,0,1.8-1.8V11.2L17.752,5a1.8,1.8,0,0,0-1.611-1H7.573A1.8,1.8,0,0,0,5.962,5Z" fill="none" stroke="#8f98ab" stroke-width="2"/>
+    </g>
+    <path id="Path_63286" data-name="Path 63286" d="M10,14h2" transform="translate(-1.142 -3)" fill="none" stroke="#8f98ab" stroke-width="2"/>
+    <path id="Path_63287" data-name="Path 63287" d="M10,14h5" transform="translate(3.858 1)" fill="none" stroke="#8f98ab" stroke-width="2"/>
+  </g>
+</svg>
