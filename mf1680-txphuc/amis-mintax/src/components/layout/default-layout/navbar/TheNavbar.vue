@@ -83,6 +83,6 @@ export default {
 };
 </script>
 
-<style scoped>
-@import url("./navbar.css");
+<style lang="scss" scoped>
+@import url("./navbar.scss");
 </style>

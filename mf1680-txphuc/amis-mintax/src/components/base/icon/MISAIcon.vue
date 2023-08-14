@@ -60,7 +60,7 @@ export default {
 };
 </script>
 
-<style scoped>
-@import url("./icon-base.css");
-@import url("./icons.css");
+<style lang="scss" scoped>
+@import url("./icon-base.scss");
+@import url("./icons.scss");
 </style>

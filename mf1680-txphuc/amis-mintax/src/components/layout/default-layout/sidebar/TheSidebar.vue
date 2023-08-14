@@ -142,6 +142,6 @@ export default {
 // const globalStore = useGlobalStore();
 </script>
 
-<style scoped>
-@import url("./sidebar.css");
+<style lang="scss" scoped>
+@import url("./sidebar.scss");
 </style>
