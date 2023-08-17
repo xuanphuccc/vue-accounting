@@ -26,6 +26,8 @@
 }
 
 .page__title {
+  display: flex;
+  align-items: center;
   font-size: 20px;
   line-height: 20px;
 }
@@ -42,6 +44,118 @@
 .page__header-controls {
   display: flex;
   column-gap: 8px;
+}
+
+.page__back-btn {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  margin-right: 8px;
+  height: 36px;
+  color: var(--secondary-text-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.page__back-btn:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.page__back-btn:active {
+  background-color: var(--gray-300);
+}
+
+/* ----- counter block ----- */
+.counter-block {
+  display: flex;
+  align-items: center;
+  column-gap: 18px;
+  margin-top: 14px;
+}
+.counter-block__item {
+  flex: 1;
+  height: 135px;
+  background-color: var(--white);
+  border-radius: 4px;
+  border-left: 6px solid var(--gray-400);
+  padding: 16px;
+  cursor: pointer;
+}
+.counter-block__number {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 36px;
+}
+.counter-block__title {
+  font-weight: 500;
+  line-height: 18px;
+  margin-bottom: 2px;
+}
+.counter-block__text {
+  color: var(--secondary-text-color);
+  line-height: 1.5;
+  font-size: 12px;
+}
+
+/* modifier */
+.counter-block__item.--blue {
+  border-color: var(--blue-500);
+
+  .counter-block__number {
+    color: var(--blue-500);
+  }
+}
+.counter-block__item.--green {
+  border-color: var(--light-green-500);
+
+  .counter-block__number {
+    color: var(--light-green-500);
+  }
+}
+.counter-block__item.--red {
+  border-color: var(--red-300);
+
+  .counter-block__number {
+    color: var(--red-300);
+  }
+}
+
+.counter-block-collapse {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  height: 44px;
+
+  &.--collapse .counter-block-collapse__thumb > div {
+    transform: rotate(180deg);
+  }
+}
+
+.counter-block-collapse + .page__content {
+  margin-top: 0;
+}
+.counter-block-collapse__line {
+  width: 100%;
+  height: 0;
+  border-top: 2px solid var(--gray-300);
+}
+.counter-block-collapse__thumb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 20px;
+  background-color: var(--white);
+  border-radius: 4px;
+  color: var(--secondary-text-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 /* ----- page content ----- */

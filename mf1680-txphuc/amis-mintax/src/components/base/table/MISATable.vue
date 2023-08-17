@@ -16,7 +16,7 @@
       @cell-click="onSortChange"
       ref="dataGridRef"
     >
-      <!-- Cột chọn dòng -->
+      <!-- Cột chọn bản ghi -->
       <DxColumn type="selection" :width="44" :allow-resizing="false" />
       <DxSelection mode="multiple" show-check-boxes-mode="always" />
 
@@ -39,9 +39,10 @@
             <MISAIcon size="20" icon="arrow-down" />
           </span>
           <div
+            @click.stop="onFixedColumChange(data.columnIndex)"
             :class="['ms-table__pin-icon', { '--active': data.columnIndex === fixedColumnIndex }]"
           >
-            <MISAIcon @click="onFixedColumChange(data.columnIndex)" size="20" icon="pin" />
+            <MISAIcon size="20" icon="pin" />
           </div>
         </div>
       </template>
@@ -56,13 +57,13 @@
             </template>
           </MISAButton>
 
-          <MISAButton type="rounded" color="secondary">
+          <MISAButton @click="$emit('edit-row')" type="rounded" color="secondary">
             <template slot="icon">
               <MISAIcon size="20" icon="pen" />
             </template>
           </MISAButton>
 
-          <MISAButton type="rounded" color="secondary">
+          <MISAButton @click="$emit('delete-row')" type="rounded" color="secondary">
             <template slot="icon">
               <MISAIcon color="#eb3333" size="20" icon="trash" />
             </template>
@@ -88,7 +89,14 @@ export default {
     MISAButton,
     MISAIcon,
   },
-  emits: ["selection-changed", "row-dbl-click", "sort-change", "fixed-column-change"],
+  emits: [
+    "selection-changed",
+    "row-dbl-click",
+    "sort-change",
+    "fixed-column-change",
+    "edit-row",
+    "delete-row",
+  ],
   props: {
     // Các cột của bảng
     columns: {
@@ -124,6 +132,10 @@ export default {
     return {};
   },
   computed: {
+    /**
+     * Description: Lấy vị trí cột được ghim
+     * Author: txphuc (17/08/2023)
+     */
     fixedColumnIndex() {
       const fixedColumns = this.columns.filter((column) => column.fixed === true);
 
@@ -193,10 +205,6 @@ export default {
       }
 
       this.$emit("fixed-column-change", localColumns);
-    },
-
-    test(e) {
-      console.log(e);
     },
   },
 };

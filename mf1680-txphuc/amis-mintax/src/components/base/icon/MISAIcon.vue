@@ -1,6 +1,6 @@
 <template>
   <div
-    @click.stop="$emit('click')"
+    @click="$emit('click')"
     ref="iconRef"
     :class="[
       `ms-icon--${this.size}`,

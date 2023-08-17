@@ -2,29 +2,58 @@
   <div class="page-container">
     <div class="page__header">
       <div class="page__title-wrapper">
-        <h1 class="page__title">Hồ sơ người nộp thuế</h1>
+        <h1 class="page__title">
+          <div
+            @click="
+              () => {
+                this.$router.push({ name: 'employee' });
+              }
+            "
+            class="page__back-btn"
+          >
+            <MISAIcon size="24" icon="arrow-left" />
+          </div>
+          Quản lý lao động sử dụng dịch vụ
+        </h1>
       </div>
 
       <div class="page__header-controls">
-        <MISAButton color="secondary"
-          >Đồng bộ AMIS Hệ thống
+        <MISAButton color="primary"
+          >Thiết lập quy tắc tự động
           <template slot="icon">
-            <MISAIcon icon="amis-system" />
+            <MISAIcon icon="mintax-setting" />
           </template>
         </MISAButton>
+      </div>
+    </div>
 
-        <MISAButton
-          @click="
-            () => {
-              this.$router.push({ name: 'manage-license' });
-            }
-          "
-          color="secondary"
-          >Quản lý lao động sử dụng dịch vụ
-          <template slot="icon">
-            <MISAIcon color="#007aff" icon="manage-license" no-color />
-          </template>
-        </MISAButton>
+    <div v-if="isOpenCounter" class="counter-block">
+      <div class="counter-block__item --blue">
+        <div class="counter-block__number">1078</div>
+        <div class="counter-block__title">Tổng số lao động</div>
+        <div class="counter-block__text">
+          Tất cả người nộp thuế có loại đối tượng là Nhân viên Vãng lai trên AMIS Thuế TNCN
+        </div>
+      </div>
+      <div class="counter-block__item --green">
+        <div class="counter-block__number">1078</div>
+        <div class="counter-block__title">Tổng số lao động</div>
+        <div class="counter-block__text">
+          Tất cả người nộp thuế có loại đối tượng là Nhân viên Vãng lai trên AMIS Thuế TNCN
+        </div>
+      </div>
+      <div class="counter-block__item --red">
+        <div class="counter-block__number">1078</div>
+        <div class="counter-block__title">Tổng số lao động</div>
+        <div class="counter-block__text">
+          Tất cả người nộp thuế có loại đối tượng là Nhân viên Vãng lai trên AMIS Thuế TNCN
+        </div>
+      </div>
+    </div>
+    <div :class="['counter-block-collapse', { '--collapse': !isOpenCounter }]">
+      <div class="counter-block-collapse__line"></div>
+      <div @click="toggleCounter" class="counter-block-collapse__thumb">
+        <MISAIcon size="16" icon="angle-down" />
       </div>
     </div>
 
@@ -78,25 +107,6 @@
           <div class="filter__left"></div>
 
           <div class="filter__right">
-            <MISAButtonGroup>
-              <MISAButton>
-                Thêm mới
-                <template slot="icon">
-                  <MISAIcon size="20" icon="plus" />
-                </template>
-              </MISAButton>
-              <MISAButton>
-                <template slot="icon">
-                  <MISAIcon :size="20" icon="angle-down" />
-                </template>
-              </MISAButton>
-            </MISAButtonGroup>
-
-            <MISAButton color="secondary">
-              <template slot="icon">
-                <MISAIcon size="20" icon="mintax-filter" />
-              </template>
-            </MISAButton>
             <MISAButton color="secondary">
               <template slot="icon">
                 <MISAIcon size="20" icon="setting-gear" />
@@ -126,17 +136,16 @@
 <script>
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import MISAButton from "@/components/base/button/MISAButton.vue";
-import MISAButtonGroup from "@/components/base/button/MISAButtonGroup.vue";
 import MISATable from "@/components/base/table/MISATable.vue";
 import MISATableFooter from "@/components/base/table-footer/MISATableFooter.vue";
-import mockEmployee from "./mock-employee";
+import mockEmployee from "@/views/employee/mock-employee";
 
 export default {
   name: "EmployeeList",
   components: {
     MISAIcon,
     MISAButton,
-    MISAButtonGroup,
+
     MISATable,
     MISATableFooter,
   },
@@ -212,6 +221,7 @@ export default {
           width: 150,
         },
       ],
+      isOpenCounter: true,
       selectedRowsData: [],
       filterRequest: {
         sortColumn: null,
@@ -260,6 +270,14 @@ export default {
      */
     onFixedColumnChange(columns) {
       this.tableColumns = columns;
+    },
+
+    /**
+     * Description: Đóng/mở counter (đếm nhân viên)
+     * Author: txphuc (17/08/2023)
+     */
+    toggleCounter() {
+      this.isOpenCounter = !this.isOpenCounter;
     },
   },
 };
