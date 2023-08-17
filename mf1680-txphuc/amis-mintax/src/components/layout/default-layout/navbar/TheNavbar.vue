@@ -3,7 +3,7 @@
     <div class="navbar__left">
       <div class="navbar__menu-icon" title="Menu"></div>
       <div class="navbar__logo-container">
-        <div class="navbar__logo" title="AMIS Kế toán"></div>
+        <div class="navbar__logo" title="Thuế TNCN"></div>
         <div class="navbar__logo-text">Thuế TNCN</div>
       </div>
     </div>

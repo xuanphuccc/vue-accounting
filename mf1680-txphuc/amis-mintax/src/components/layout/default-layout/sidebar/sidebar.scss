@@ -30,11 +30,6 @@
   padding: 0 12px;
 }
 
-.router-link-active.sidebar__link {
-  background: var(--sidebar-hover-background);
-  color: var(--white);
-}
-
 .sidebar__link {
   display: flex;
   align-items: center;
@@ -51,6 +46,11 @@
 
 .sidebar__link:hover {
   background: var(--sidebar-hover-background);
+  color: var(--white);
+}
+
+.router-link-exact-active.sidebar__link {
+  background: var(--sidebar-active-background);
   color: var(--white);
 }
 
@@ -130,7 +130,7 @@
 
 .sidebar__tippy::before {
   position: absolute;
-  left: -12px;
+  left: -11px;
   top: 50%;
   transform: translateY(-50%);
   content: "";

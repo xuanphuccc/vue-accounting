@@ -272,14 +272,6 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
-.ms-icon--pen-24 {
-  -webkit-mask-image: url("../../../assets/img/Sprites.64af8f61.svg");
-  mask-image: url("../../../assets/img/Sprites.64af8f61.svg");
-  -webkit-mask-position: -1069px -511px;
-  mask-position: -1069px -511px;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-}
 .ms-icon--ellipsis-24 {
   -webkit-mask-image: url("../../../assets/img/Sprites.64af8f61.svg");
   mask-image: url("../../../assets/img/Sprites.64af8f61.svg");
@@ -341,8 +333,48 @@
 .ms-icon--trash-24 {
   -webkit-mask-image: url("../../../assets/img/mintax-icons.svg");
   mask-image: url("../../../assets/img/mintax-icons.svg");
-  -webkit-mask-position: -99px -143px;
-  mask-position: -99px -143px;
+  -webkit-mask-position: -96px -140px;
+  mask-position: -96px -140px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ms-icon--trash-20 {
+  -webkit-mask-image: url("../../../assets/img/mintax-icons.svg");
+  mask-image: url("../../../assets/img/mintax-icons.svg");
+  -webkit-mask-position: -60px -20px;
+  mask-position: -60px -20px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ms-icon--manage-license-24 {
+  -webkit-mask-image: url("../../../assets/img/mintax-icons-1.svg");
+  mask-image: url("../../../assets/img/mintax-icons-1.svg");
+  -webkit-mask-position: -264px -60px;
+  mask-position: -264px -60px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ms-icon--pen-20 {
+  -webkit-mask-image: url("../../../assets/img/mintax-icons.svg");
+  mask-image: url("../../../assets/img/mintax-icons.svg");
+  -webkit-mask-position: -194px -190px;
+  mask-position: -194px -190px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ms-icon--new-window-20 {
+  -webkit-mask-image: url("../../../assets/img/mintax-icons.svg");
+  mask-image: url("../../../assets/img/mintax-icons.svg");
+  -webkit-mask-position: -180px 0px;
+  mask-position: -180px 0px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ms-icon--export-20 {
+  -webkit-mask-image: url("../../../assets/img/mintax-icons.svg");
+  mask-image: url("../../../assets/img/mintax-icons.svg");
+  -webkit-mask-position: -40px -0px;
+  mask-position: -40px -0px;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
@@ -477,6 +509,14 @@
   mask-repeat: no-repeat;
 }
 
+.ms-icon--mintax-filter-20 {
+  -webkit-mask-image: url("../../../assets/img/filter-gray.svg");
+  mask-image: url("../../../assets/img/filter-gray.svg");
+  -webkit-mask-position: contain;
+  mask-position: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
 .ms-icon--tax-report-24 {
   -webkit-mask-image: url("../../../assets/img/gray-tax-report.svg");
   mask-image: url("../../../assets/img/gray-tax-report.svg");
@@ -557,6 +597,30 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
+.ms-icon--setting-gear-20 {
+  -webkit-mask-image: url("../../../assets/img/settings-gear.svg");
+  mask-image: url("../../../assets/img/settings-gear.svg");
+  -webkit-mask-position: contain;
+  mask-position: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ms-icon--plus-20 {
+  -webkit-mask-image: url("../../../assets/img/white-plus.svg");
+  mask-image: url("../../../assets/img/white-plus.svg");
+  -webkit-mask-position: contain;
+  mask-position: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ms-icon--pin-20 {
+  -webkit-mask-image: url("../../../assets/img/icon-pin.svg");
+  mask-image: url("../../../assets/img/icon-pin.svg");
+  -webkit-mask-position: contain;
+  mask-position: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
 
 /* background */
 .ms-icon--success-24 {
@@ -578,6 +642,10 @@
 
 .ms-icon--suggest-48 {
   background: url("../../../assets/img/Sprites.64af8f61.svg") no-repeat -906px -456px;
+}
+
+.ms-icon--amis-system-24 {
+  background: url("../../../assets/img/mintax-icons-1.svg") no-repeat -336px -60px;
 }
 
 .ms-icon--vi-VN-24 {

@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import EmployeeList from "@/views/employee/EmployeeList.vue";
 
 Vue.use(VueRouter);
 
@@ -13,10 +14,10 @@ const routes = [
   {
     path: "/employee",
     name: "employee",
-    component: null,
+    component: EmployeeList,
     meta: { layout: "default" },
   },
-  { path: "/:pathMatch(.*)*", component: null, meta: { layout: "empty" } },
+  { path: "*", component: null, meta: { layout: "empty" } },
 ];
 
 const router = new VueRouter({

@@ -1,0 +1,63 @@
+/* ----- table footer ----- */
+.ms-table__footer {
+  background: var(--gray-100);
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  font-size: 14px;
+}
+
+.ms-table__page-infor {
+  display: flex;
+  align-items: center;
+}
+
+.ms-table__page-size {
+  display: flex;
+  align-items: center;
+}
+
+.ms-table__page-size-text {
+  margin-right: 8px;
+}
+
+.ms-table__records-range {
+  margin-left: 16px;
+}
+
+.ms-table__page-controls {
+  display: flex;
+  align-items: center;
+  margin-left: 16px;
+}
+
+.ms-table__prev-btn,
+.ms-table__next-btn {
+  display: inline-block;
+  color: var(--secondary-text-color);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.1s ease;
+}
+
+.ms-table__prev-btn:hover,
+.ms-table__next-btn:hover {
+  color: var(--primary-text-color);
+}
+
+.ms-table__prev-btn:active,
+.ms-table__next-btn:active {
+  color: var(--secondary-text-color);
+}
+
+.ms-table__prev-btn.--disable,
+.ms-table__next-btn.--disable {
+  color: var(--disable-color);
+  cursor: not-allowed;
+}
+
+.ms-table__next-btn {
+  margin-left: 16px;
+}

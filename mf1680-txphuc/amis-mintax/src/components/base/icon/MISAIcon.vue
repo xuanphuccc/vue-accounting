@@ -6,6 +6,7 @@
       `ms-icon--${this.icon}-${this.size}`,
       { 'ms-icon--no-color': this.noColor },
     ]"
+    :style="{ backgroundColor: this.color }"
   ></div>
 </template>
 
@@ -25,7 +26,12 @@ export default {
       default: "bag",
     },
 
-    // Dành cho icon không cần set màu sắc
+    // Set màu cho icon
+    color: {
+      type: String,
+    },
+
+    // Dành cho icon không cần set màu sắc (background)
     noColor: {
       type: Boolean,
       default: false,

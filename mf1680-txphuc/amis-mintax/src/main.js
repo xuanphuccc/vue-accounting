@@ -1,3 +1,4 @@
+import "devextreme/dist/css/dx.light.css";
 import "@/assets/css/main.scss";
 
 import Vue from "vue";

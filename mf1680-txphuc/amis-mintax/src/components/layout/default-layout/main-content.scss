@@ -1,9 +1,10 @@
+/* ----- main content ----- */
 .main-content {
   flex-grow: 1;
   height: calc(100vh - 56px);
-  background-color: var(--background-color);
+  background-color: var(--background-medium-color);
   overflow-y: auto;
-  padding: 24px;
+  padding: 16px 24px 24px;
 }
 
 .page-container {
@@ -12,7 +13,7 @@
   flex-direction: column;
 }
 
-/* page header */
+/* ----- page header ----- */
 .page__header {
   display: flex;
   align-items: center;
@@ -25,7 +26,8 @@
 }
 
 .page__title {
-  font-size: 24px;
+  font-size: 20px;
+  line-height: 20px;
 }
 
 .page__title-icon {
@@ -39,40 +41,91 @@
 
 .page__header-controls {
   display: flex;
+  column-gap: 8px;
 }
 
-.page__header-btn + .page__header-btn {
-  margin-left: 12px !important;
-}
-
-/* page content */
+/* ----- page content ----- */
 .page__content {
+  position: relative;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 
   background-color: var(--white);
   border-radius: 4px;
-  margin-top: 20px;
+  margin-top: 12px;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 4px;
 }
 
-.filter-container {
+.controls-wrapper {
   height: 60px;
+  flex-shrink: 0;
+}
+
+/* selection container */
+.selection-container {
+  height: 100%;
+  display: flex;
+  padding: 0 16px;
+  align-items: center;
+}
+
+.selection-info {
+  display: flex;
+  align-items: center;
+}
+
+.selection-info__number {
+  margin-left: 4px;
+}
+
+.v-separate {
+  margin: 0 10px;
+  width: 1px;
+  height: 16px;
+  background-color: var(--gray-500);
+}
+
+.selection-controls {
+  display: flex;
+}
+
+.selection-controls__group {
+  padding-left: 16px;
+  display: flex;
+  column-gap: 8px;
+}
+
+/* filter container */
+.filter-container {
+  height: 100%;
   flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 16px;
   background-color: var(--white);
+  transition: all 0.2s ease;
+}
+
+.filter__left {
+  flex-shrink: 0;
+}
+
+.filter__right {
+  padding-left: 24px;
 }
 
 .filter__select-infor {
   display: flex;
   align-items: center;
-  column-gap: 12px;
   display: none;
+}
+
+.filter__select-infor.--active {
+  display: flex;
 }
 
 .filter__right {

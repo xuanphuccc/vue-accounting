@@ -1,0 +1,228 @@
+.ms-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 80px;
+  height: 36px;
+  line-height: 36px;
+  border-radius: 4px;
+  padding: 0 16px;
+  font-family: var(--primary-font);
+  font-weight: 500;
+  font-size: 14px;
+  white-space: nowrap;
+  text-decoration: none;
+  border: 1px solid transparent;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.ms-btn:disabled {
+  opacity: 56%;
+  cursor: default;
+}
+
+.ms-btn.--outline {
+  outline: 3px solid var(--primary-color-200);
+}
+
+.ms-btn__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* primary color */
+.ms-btn__color--primary {
+  background: var(--primary-color-500);
+  border-color: var(--primary-color-500);
+  color: var(--white);
+}
+
+.ms-btn__color--primary:hover {
+  background: var(--primary-color-400);
+  border-color: var(--primary-color-400);
+}
+
+.ms-btn__color--primary:active {
+  background: var(--primary-color-700);
+  border-color: var(--primary-color-700);
+}
+
+/* secondary color */
+.ms-btn__color--secondary {
+  background: var(--white);
+  border-color: var(--border-color);
+  color: var(--primary-text-color);
+}
+
+.ms-btn__color--secondary .ms-btn__icon {
+  color: var(--secondary-text-color);
+}
+
+.ms-btn__color--secondary:hover {
+  background: var(--gray-100);
+  border-color: var(--primary-color-500);
+
+  & .ms-btn__text {
+    color: var(--primary-color-500);
+  }
+}
+
+.ms-btn__color--secondary:active {
+  background: var(--gray-200);
+}
+
+/* inverse color */
+.ms-btn__color--inverse {
+  background: var(--primary-color-50);
+  border-color: var(--primary-color-500);
+  color: var(--primary-color-500);
+}
+
+.ms-btn__color--inverse:hover {
+  color: var(--primary-color-400);
+}
+
+.ms-btn__color--inverse:active {
+  color: var(--white);
+  background: var(--primary-color-700);
+  border-color: var(--primary-color-700);
+}
+
+/* danger color */
+.ms-btn__color--danger {
+  background: var(--red-500);
+  border-color: var(--red-500);
+  color: var(--white);
+}
+
+.ms-btn__color--danger:hover {
+  background: var(--red-400);
+  border-color: var(--red-400);
+}
+
+.ms-btn__color--danger:active {
+  background: var(--red-700);
+  border-color: var(--red-700);
+}
+
+/* button icon */
+.ms-btn--icon {
+  min-width: 10px;
+  padding: 0px 8px;
+}
+
+.ms-btn__icon {
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.ms-btn--icon .ms-btn__icon {
+  margin-right: 0;
+}
+
+.ms-btn--with-icon {
+  padding-left: 12px;
+}
+
+/* button rounded */
+.ms-btn__type--rounded {
+  border-radius: 500px;
+}
+
+/* button link */
+.ms-btn__type--link {
+  min-width: auto;
+  background: transparent !important;
+  border: none;
+  height: 20px;
+  line-height: 20px;
+  padding: 0;
+  font-weight: 700;
+}
+
+.ms-btn__type--link.ms-btn__color--primary {
+  color: var(--primary-color-500);
+}
+.ms-btn__type--link.ms-btn__color--primary:hover {
+  color: var(--primary-color-400);
+}
+.ms-btn__type--link.ms-btn__color--primary:focus {
+  outline: none;
+  color: var(--primary-color-400);
+}
+.ms-btn__type--link.ms-btn__color--primary:active {
+  color: var(--primary-color-700);
+}
+
+.ms-btn__type--link.ms-btn__color--danger {
+  color: var(--red-500);
+}
+.ms-btn__type--link.ms-btn__color--danger:hover {
+  color: var(--red-400);
+}
+.ms-btn__type--link.ms-btn__color--danger:focus {
+  outline: none;
+  color: var(--red-400);
+}
+.ms-btn__type--link.ms-btn__color--danger:active {
+  color: var(--red-700);
+}
+
+/* button dropdown container */
+.ms-btn__dropdown {
+  position: absolute;
+  display: none;
+  z-index: 6;
+}
+
+.ms-btn__dropdown.--active {
+  display: block;
+}
+
+.ms-btn__dropdown.--pos-bottom-right {
+  top: calc(100% + 4px);
+  right: 0;
+}
+
+.ms-btn__dropdown.--pos-bottom-left {
+  top: calc(100% + 1px);
+  right: 0;
+}
+
+.ms-btn.ms-btn--has-dropdown.ms-btn__color--primary:active,
+.ms-btn.ms-btn--has-dropdown.ms-btn__color--primary:hover,
+.ms-btn.ms-btn--has-dropdown.ms-btn__color--primary:focus {
+  background: var(--primary-color-500);
+  border-color: var(--primary-color-500);
+}
+
+/* button group */
+.ms-btn-group {
+  display: flex;
+}
+
+.ms-btn-group .ms-btn {
+  margin-left: 0;
+  border-radius: 0;
+}
+
+.ms-btn-group > :not(.ms-btn:first-child) {
+  border-left-color: var(--white) !important;
+}
+
+.ms-btn-group .ms-btn:first-child {
+  border-radius: 4px 0 0 4px;
+}
+.ms-btn-group .ms-btn:last-child {
+  border-radius: 0 4px 4px 0;
+}
+
+.ms-btn-group .ms-btn--icon {
+  padding: 0 12px !important;
+}
