@@ -13,6 +13,8 @@
       :hover-state-enabled="true"
       @selection-changed="$emit('selection-changed', $event)"
       @row-dbl-click="$emit('row-dbl-click', $event)"
+      @cell-click="onSortChange"
+      ref="dataGridRef"
     >
       <!-- Cột chọn dòng -->
       <DxColumn type="selection" :width="44" :allow-resizing="false" />
@@ -29,12 +31,17 @@
       <template #headerCellTemplate="{ data }">
         <div class="ms-table__header-cell">
           {{ data.column.caption }}
-          <span class="ms-table__sort-icon">
+
+          <span
+            v-if="data.column.dataField === sort.sortColumn"
+            :class="['ms-table__sort-icon', `--order-${sort.sortOrder}`]"
+          >
             <MISAIcon size="20" icon="arrow-down" />
           </span>
-
-          <div class="ms-table__pin-icon">
-            <MISAIcon size="20" icon="pin" />
+          <div
+            :class="['ms-table__pin-icon', { '--active': data.columnIndex === fixedColumnIndex }]"
+          >
+            <MISAIcon @click="onFixedColumChange(data.columnIndex)" size="20" icon="pin" />
           </div>
         </div>
       </template>
@@ -70,6 +77,7 @@
 import { DxDataGrid, DxColumn, DxSelection } from "devextreme-vue/data-grid";
 import MISAButton from "../button/MISAButton.vue";
 import MISAIcon from "../icon/MISAIcon.vue";
+import enums from "@/enum/enum";
 
 export default {
   name: "MISATable",
@@ -80,7 +88,7 @@ export default {
     MISAButton,
     MISAIcon,
   },
-  emits: ["selection-changed", "row-dbl-click"],
+  emits: ["selection-changed", "row-dbl-click", "sort-change", "fixed-column-change"],
   props: {
     // Các cột của bảng
     columns: {
@@ -103,16 +111,91 @@ export default {
       type: String,
       default: "",
     },
+
+    // Sắp xếp dữ liệu trong bảng
+    // Gồm các thuộc tính:
+    // - sortColumn: String (Cột cần sắp xếp)
+    // - sortOrder: String (Loại sắp xếp: asc | desc)
+    sort: {
+      type: Object,
+    },
   },
   data: function () {
     return {};
   },
-  methods: {
-    selectEmployee(test) {
-      console.log(test);
+  computed: {
+    fixedColumnIndex() {
+      const fixedColumns = this.columns.filter((column) => column.fixed === true);
+
+      let pinIndex = fixedColumns.length || null;
+
+      return pinIndex;
     },
-    cloneIconClick(e) {
-      console.log("click");
+  },
+  methods: {
+    /**
+     * Description: Xử lý chọn cột sắp xếp dữ liệu
+     * Author: txphuc (17/08/2023)
+     */
+    onSortChange(sortColumn) {
+      if (sortColumn.rowType === "header") {
+        const dataField = sortColumn.column?.dataField;
+
+        if (this.sort?.sortColumn === dataField && this.sort?.sortOrder === enums.sort.ASC) {
+          // Chuyển từ sắp xếp TĂNG DẦN sang GIẢM DẦN
+          this.$emit("sort-change", { dataField, sortOrder: enums.sort.DESC });
+        } else if (
+          this.sort?.sortColumn === dataField &&
+          this.sort?.sortOrder === enums.sort.DESC
+        ) {
+          // Chuyển từ sắp xếp GIẢM DẦN sang KHÔNG SẮP XẾP
+          this.$emit("sort-change", { sortColumn: null, sortOrder: null });
+        } else {
+          // Chuyển từ KHÔNG SẮP XẾP sang sắp xếp TĂNG DẦN
+          this.$emit("sort-change", { dataField, sortOrder: enums.sort.ASC });
+        }
+      }
+    },
+
+    /**
+     * Description: Bỏ chọn tất cả các dòng
+     * Author: txphuc (17/08/2023)
+     */
+    clearAllSelection() {
+      this.$refs["dataGridRef"].instance.clearSelection();
+    },
+
+    /**
+     * Description: Xử lý ghim cột
+     * Author: txphuc (17/08/2023)
+     */
+    onFixedColumChange(columnIndex) {
+      let localColumns = this.columns;
+
+      if (this.fixedColumnIndex === columnIndex) {
+        // Bỏ ghim nếu bấm ghim hai lần vào một cột
+        localColumns = this.columns.map((column) => {
+          column.fixed = false;
+
+          return column;
+        });
+      } else {
+        // Ghim cột hiện tại và cột trước nó
+        localColumns = this.columns.map((column, index) => {
+          column.fixed = false;
+
+          if (index < columnIndex) {
+            column.fixed = true;
+          }
+
+          return column;
+        });
+      }
+
+      this.$emit("fixed-column-change", localColumns);
+    },
+
+    test(e) {
       console.log(e);
     },
   },

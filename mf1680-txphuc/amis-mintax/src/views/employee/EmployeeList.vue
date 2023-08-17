@@ -27,11 +27,11 @@
         <div v-if="selectedRowsData.length > 0" class="selection-container">
           <div class="selection-info">
             <span>Đã chọn</span>
-            <span class="text-bold selection-info__number">1</span>
+            <span class="text-bold selection-info__number">{{ selectedRowsData.length }}</span>
 
             <div class="v-separate"></div>
 
-            <MISAButton type="link" color="danger">Bỏ chọn</MISAButton>
+            <MISAButton @click="clearAllSelection" type="link" color="danger">Bỏ chọn</MISAButton>
           </div>
           <div class="selection-controls">
             <div class="selection-controls__group">
@@ -104,9 +104,13 @@
       <MISATable
         @selection-changed="onSelectionChanged"
         @row-dbl-click="onRowDoubleClick"
+        @sort-change="onSortChange"
+        @fixed-column-change="onFixedColumnChange"
+        :sort="filterRequest"
         :columns="tableColumns"
         :dataSource="dataSource"
         keyExpr="EmployeeID"
+        ref="tableRef"
       ></MISATable>
       <MISATableFooter />
     </div>
@@ -119,7 +123,6 @@ import MISAButton from "@/components/base/button/MISAButton.vue";
 import MISAButtonGroup from "@/components/base/button/MISAButtonGroup.vue";
 import MISATable from "@/components/base/table/MISATable.vue";
 import MISATableFooter from "@/components/base/table-footer/MISATableFooter.vue";
-
 import mockEmployee from "./mock-employee";
 
 export default {
@@ -204,6 +207,10 @@ export default {
         },
       ],
       selectedRowsData: [],
+      filterRequest: {
+        sortColumn: null,
+        sortOrder: null,
+      },
     };
   },
   methods: {
@@ -221,6 +228,32 @@ export default {
      */
     onRowDoubleClick(data) {
       console.log(data);
+    },
+
+    /**
+     * Description: Bỏ chọn tất cả dòng
+     * Author: txphuc (17/08/2023)
+     */
+    clearAllSelection() {
+      console.log(this.$refs);
+      this.$refs.tableRef.clearAllSelection();
+    },
+
+    /**
+     * Description: Lấy thông tin sắp xếp
+     * Author: txphuc (17/08/2023)
+     */
+    onSortChange(column) {
+      this.filterRequest.sortColumn = column.dataField;
+      this.filterRequest.sortOrder = column.sortOrder;
+    },
+
+    /**
+     * Description: Lấy thông tin ghim cột
+     * Author: txphuc (17/08/2023)
+     */
+    onFixedColumnChange(columns) {
+      this.tableColumns = columns;
     },
   },
 };

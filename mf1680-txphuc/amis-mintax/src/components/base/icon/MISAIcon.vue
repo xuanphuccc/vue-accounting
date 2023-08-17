@@ -1,5 +1,6 @@
 <template>
   <div
+    @click.stop="$emit('click')"
     ref="iconRef"
     :class="[
       `ms-icon--${this.size}`,
@@ -13,6 +14,7 @@
 <script>
 export default {
   name: "MISAIcon",
+  emits: ["click"],
   props: {
     // Kích thước của icon bao gồm: 24, 20, 16
     size: {
@@ -47,9 +49,9 @@ export default {
      * Description: Sự kiện click vào icon
      * Author: txphuc (31/07/2023)
      */
-    click: function () {
+    click() {
       if (this.$refs.iconRef) {
-        this.$refs.iconRef.click();
+        this.$refs["iconRef"].instance.click();
       }
     },
 
@@ -57,9 +59,9 @@ export default {
      * Description: Sự kiện focus vào icon
      * Author: txphuc (31/07/2023)
      */
-    focus: function () {
+    focus() {
       if (this.$refs.iconRef) {
-        this.$refs.iconRef.focus();
+        this.$refs["iconRef"].instance.focus();
       }
     },
   },
