@@ -47,44 +47,6 @@
   color: var(--primary-text-color);
 }
 
-/* checkbox */
-.dx-checkbox-icon {
-  position: relative;
-  display: inline-flex;
-  width: 20px !important;
-  height: 20px !important;
-  background: url("../../../assets/img/uncheck-checkbox.svg");
-  background-size: contain;
-  background-repeat: no-repeat;
-  border: none !important;
-}
-
-.dx-checkbox-icon::before {
-  content: "";
-  position: absolute;
-  top: 0 !important;
-  left: 0 !important;
-  display: none;
-  width: 20px !important;
-  height: 20px !important;
-  background: url("../../../assets/img/check-checkbox.svg");
-  background-size: contain;
-  margin: 0 !important;
-  border-radius: 4px !important;
-}
-
-.dx-checkbox-checked .dx-checkbox-icon::before {
-  display: inline-block;
-}
-
-.dx-checkbox-indeterminate .dx-checkbox-icon::before {
-  background: url("../../../assets/img/iderminate-checkbox.svg");
-}
-
-.dx-state-hover .dx-checkbox-icon {
-  border: none !important;
-}
-
 /* action column */
 .ms-table .ms-table__action-column {
   padding: 0 !important;
@@ -148,4 +110,22 @@
 
 .ms-table .dx-header-row td:hover .ms-table__pin-icon {
   display: block;
+}
+
+/* scroll bar*/
+.dx-scrollbar-hoverable .dx-scrollable-scroll.dx-state-invisible .dx-scrollable-scroll-content {
+  background-color: var(--gray-500);
+}
+
+.dx-scrollable-scroll-content {
+  background-color: var(--gray-500);
+  border-radius: 50px;
+}
+
+.dx-scrollbar-horizontal .dx-scrollable-scroll {
+  height: 10px;
+}
+
+.dx-scrollbar-vertical .dx-scrollable-scroll {
+  width: 10px;
 }

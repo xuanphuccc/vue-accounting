@@ -11,18 +11,21 @@
       <div class="ms-table__page-size">
         <div class="ms-table__page-size-text">Số bản ghi/trang</div>
 
-        <!-- <MISASelect
-          :model-value="this.pageSize"
-          @update:model-value="handleSelectPageSize"
-          :options="[
-            { label: 10, value: 10 },
-            { label: 25, value: 25 },
-            { label: 50, value: 50 },
-            { label: 100, value: 100 },
-          ]"
-          width="84"
-          dropdown-pos="top"
-        /> -->
+        <div class="ms-table__page-size-select-wrap">
+          <MISASelectBox
+            :value="pageSize"
+            @input="handleSelectPageSize"
+            displayExpr="label"
+            valueExpr="value"
+            :dataSource="[
+              { label: 15, value: 15 },
+              { label: 25, value: 25 },
+              { label: 50, value: 50 },
+              { label: 100, value: 100 },
+            ]"
+            placeholder=""
+          />
+        </div>
       </div>
 
       <!-- records range -->
@@ -54,12 +57,14 @@
 
 <script>
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
+import MISASelectBox from "../select-box/MISASelectBox.vue";
 
 export default {
   name: "MISATableFooter",
   emits: ["next-page", "prev-page", "select-page-size"],
   components: {
     MISAIcon,
+    MISASelectBox,
   },
   props: {
     // Trang hiện tại

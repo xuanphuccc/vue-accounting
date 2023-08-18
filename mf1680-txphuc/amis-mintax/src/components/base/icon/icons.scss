@@ -386,6 +386,22 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
+.ms-icon--search-20 {
+  -webkit-mask-image: url("../../../assets/img/mintax-icons.svg");
+  mask-image: url("../../../assets/img/mintax-icons.svg");
+  -webkit-mask-position: -80px 0px;
+  mask-position: -80px 0px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ms-icon--get-info-20 {
+  -webkit-mask-image: url("../../../assets/img/mintax-icons-1.svg");
+  mask-image: url("../../../assets/img/mintax-icons-1.svg");
+  -webkit-mask-position: -160px -40px;
+  mask-position: -160px -40px;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
 
 /* auto sizing */
 .ms-icon--gift-24 {
@@ -624,6 +640,14 @@
 .ms-icon--pin-20 {
   -webkit-mask-image: url("../../../assets/img/icon-pin.svg");
   mask-image: url("../../../assets/img/icon-pin.svg");
+  -webkit-mask-position: contain;
+  mask-position: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.ms-icon--calendar-20 {
+  -webkit-mask-image: url("../../../assets/img/calendar.svg");
+  mask-image: url("../../../assets/img/calendar.svg");
   -webkit-mask-position: contain;
   mask-position: contain;
   -webkit-mask-repeat: no-repeat;

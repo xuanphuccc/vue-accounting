@@ -1,5 +1,6 @@
 import "devextreme/dist/css/dx.light.css";
 import "@/assets/css/main.scss";
+import "@/validation/validation";
 
 import Vue from "vue";
 import App from "./App.vue";

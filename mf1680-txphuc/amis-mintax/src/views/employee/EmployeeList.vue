@@ -30,17 +30,17 @@
 
     <div class="page__content">
       <div class="controls-wrapper">
-        <div v-if="selectedRowsData.length > 0" class="selection-container">
+        <div v-if="selectedRowsData?.length > 0" class="selection-container">
           <div class="selection-info">
             <span>Đã chọn</span>
-            <span class="text-bold selection-info__number">{{ selectedRowsData.length }}</span>
+            <span class="text-bold selection-info__number">{{ selectedRowsData?.length }}</span>
 
             <div class="v-separate"></div>
 
             <MISAButton @click="clearAllSelection" type="link" color="danger">Bỏ chọn</MISAButton>
           </div>
           <div class="selection-controls">
-            <div class="selection-controls__group">
+            <div class="controls__group">
               <MISAButton color="secondary">
                 Lập tờ khai
                 <template slot="icon">
@@ -56,7 +56,7 @@
               </MISAButton>
             </div>
 
-            <div class="selection-controls__group">
+            <div class="controls__group">
               <MISAButton color="secondary">
                 Xuất khẩu
                 <template slot="icon">
@@ -74,12 +74,37 @@
           </div>
         </div>
 
-        <div v-if="selectedRowsData.length === 0" class="filter-container">
-          <div class="filter__left"></div>
+        <div v-if="selectedRowsData?.length === 0" class="filter-container">
+          <div class="filter__left">
+            <div class="controls__group">
+              <DxTextBox placeholder="Tìm theo Mã/Tên nhân viên">
+                <div class="input-action">
+                  <MISAIcon size="20" icon="search" />
+                </div>
+              </DxTextBox>
+
+              <MISASelectBox placeholder="Bộ phận/phòng ban" />
+            </div>
+
+            <div class="controls__group">
+              <MISAButton color="secondary">
+                Xuất khẩu
+                <template slot="icon">
+                  <MISAIcon :size="20" icon="export" />
+                </template>
+              </MISAButton>
+            </div>
+          </div>
 
           <div class="filter__right">
             <MISAButtonGroup>
-              <MISAButton>
+              <MISAButton
+                @click="
+                  () => {
+                    this.$router.push({ name: 'employee-detail' });
+                  }
+                "
+              >
                 Thêm mới
                 <template slot="icon">
                   <MISAIcon size="20" icon="plus" />
@@ -118,7 +143,10 @@
         keyExpr="EmployeeID"
         ref="tableRef"
       ></MISATable>
-      <MISATableFooter />
+      <MISATableFooter :pageSize="15" :totalRecords="100" />
+
+      <!-- Table customize -->
+      <MISATableCustomize v-if="false" :columns="tableColumns" :defaultColumns="defaultColumns" />
     </div>
   </div>
 </template>
@@ -129,7 +157,80 @@ import MISAButton from "@/components/base/button/MISAButton.vue";
 import MISAButtonGroup from "@/components/base/button/MISAButtonGroup.vue";
 import MISATable from "@/components/base/table/MISATable.vue";
 import MISATableFooter from "@/components/base/table-footer/MISATableFooter.vue";
+import MISATableCustomize from "@/components/base/table-customize/MISATableCustomize.vue";
+import DxTextBox from "devextreme-vue/text-box";
+import MISASelectBox from "@/components/base/select-box/MISASelectBox.vue";
 import mockEmployee from "./mock-employee";
+
+const defaultColumns = [
+  {
+    dataField: "EmployeeID",
+    caption: "Mã nhân viên",
+    dataType: "number",
+    alignment: "left",
+    customizeText: (e) => "NV" + e.value,
+    fixed: true,
+    width: 150,
+  },
+  {
+    dataField: "FullName",
+    caption: "Tên nhân viên",
+    dataType: "string",
+    alignment: "left",
+    width: 150,
+    fixed: true,
+    allowSorting: false,
+  },
+  {
+    dataField: "Position",
+    caption: "Chức danh",
+    dataType: "string",
+    alignment: "left",
+    width: 180,
+  },
+  {
+    dataField: "BirthDate",
+    caption: "Ngày sinh",
+    dataType: "date",
+    alignment: "center",
+    width: 180,
+  },
+  {
+    dataField: "Address",
+    caption: "Địa chỉ",
+    dataType: "string",
+    alignment: "left",
+    width: 240,
+  },
+  {
+    dataField: "City",
+    caption: "Thành phố",
+    dataType: "string",
+    alignment: "left",
+    width: 150,
+  },
+  {
+    dataField: "Region",
+    caption: "Khu vực",
+    dataType: "string",
+    alignment: "left",
+    width: 150,
+  },
+  {
+    dataField: "PostalCode",
+    caption: "Mã bưu chính",
+    dataType: "string",
+    alignment: "left",
+    width: 150,
+  },
+  {
+    dataField: "Country",
+    caption: "Quốc gia",
+    dataType: "string",
+    alignment: "left",
+    width: 150,
+  },
+];
 
 export default {
   name: "EmployeeList",
@@ -139,79 +240,15 @@ export default {
     MISAButtonGroup,
     MISATable,
     MISATableFooter,
+    MISATableCustomize,
+    DxTextBox,
+    MISASelectBox,
   },
   data: function () {
     return {
-      dataSource: mockEmployee.getEmployees(),
-      tableColumns: [
-        {
-          dataField: "EmployeeID",
-          caption: "Mã nhân viên",
-          dataType: "number",
-          alignment: "left",
-          customizeText: (e) => "NV" + e.value,
-          fixed: true,
-          width: 150,
-        },
-        {
-          dataField: "FullName",
-          caption: "Tên nhân viên",
-          dataType: "string",
-          alignment: "left",
-          width: 150,
-          fixed: true,
-          allowSorting: false,
-        },
-        {
-          dataField: "Position",
-          caption: "Chức danh",
-          dataType: "string",
-          alignment: "left",
-          width: 180,
-        },
-        {
-          dataField: "BirthDate",
-          caption: "Ngày sinh",
-          dataType: "date",
-          alignment: "center",
-          width: 180,
-        },
-        {
-          dataField: "Address",
-          caption: "Địa chỉ",
-          dataType: "string",
-          alignment: "left",
-          width: 240,
-        },
-        {
-          dataField: "City",
-          caption: "Thành phố",
-          dataType: "string",
-          alignment: "left",
-          width: 150,
-        },
-        {
-          dataField: "Region",
-          caption: "Khu vực",
-          dataType: "string",
-          alignment: "left",
-          width: 150,
-        },
-        {
-          dataField: "PostalCode",
-          caption: "Mã bưu chính",
-          dataType: "string",
-          alignment: "left",
-          width: 150,
-        },
-        {
-          dataField: "Country",
-          caption: "Quốc gia",
-          dataType: "string",
-          alignment: "left",
-          width: 150,
-        },
-      ],
+      dataSource: mockEmployee.getEmployees() || [],
+      defaultColumns: [...defaultColumns],
+      tableColumns: [...defaultColumns],
       selectedRowsData: [],
       filterRequest: {
         sortColumn: null,
@@ -260,6 +297,10 @@ export default {
      */
     onFixedColumnChange(columns) {
       this.tableColumns = columns;
+    },
+
+    test(e) {
+      console.log(e);
     },
   },
 };

@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import EmployeeList from "@/views/employee/EmployeeList.vue";
 import EmployeeManagerList from "@/views/employee-manager/EmployeeManagerList.vue";
+import EmployeeDetail from "@/views/employee/EmployeeDetail.vue";
 
 Vue.use(VueRouter);
 
@@ -16,6 +17,12 @@ const routes = [
     path: "/employee",
     name: "employee",
     component: EmployeeList,
+    meta: { layout: "default" },
+  },
+  {
+    path: "/employee-detail-action",
+    name: "employee-detail",
+    component: EmployeeDetail,
     meta: { layout: "default" },
   },
   {

@@ -1,0 +1,100 @@
+/* ----- Select box ----- */
+.select-dropdown-icon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  color: var(--secondary-text-color);
+}
+
+.dx-dropdowneditor-button {
+  width: auto;
+}
+
+.dx-dropdowneditor-button .select-dropdown-icon {
+  padding: 0 12px;
+}
+
+.dx-dropdowneditor-button .select-dropdown-icon.--search-mode {
+  border-left: 1px solid var(--border-color);
+}
+
+.ms-select__item {
+  height: 36px;
+  width: 100%;
+  padding: 0;
+}
+
+.ms-select__item-wrap {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 8px;
+  padding: 0 8px;
+  border-radius: 4px;
+}
+
+.ms-select__check-icon {
+  display: none;
+}
+
+.dx-dropdownlist-popup-wrapper
+  .dx-list:not(.dx-list-select-decorator-enabled)
+  .dx-list-item-content {
+  padding: 0;
+}
+
+/* background khi hover */
+.dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item.dx-state-hover {
+  background-color: unset;
+}
+.dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item.dx-state-hover .ms-select__item-wrap {
+  background-color: var(--gray-100);
+}
+.dx-list:not(.dx-list-select-decorator-enabled)
+  .dx-list-item.dx-list-item-selected.dx-state-hover:not(.dx-state-focused) {
+  background-color: unset;
+}
+
+/* background khi focus bằng bàn phím */
+.dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item.dx-state-focused {
+  background-color: unset;
+  color: #333;
+}
+.dx-list:not(.dx-list-select-decorator-enabled)
+  .dx-list-item.dx-state-focused
+  .ms-select__item-wrap {
+  background-color: var(--gray-100);
+  color: #333;
+}
+.dx-list:not(.dx-list-select-decorator-enabled)
+  .dx-list-item.dx-state-focused.dx-list-item-selected {
+  background-color: unset;
+}
+
+/* background khi selected */
+.dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item.dx-list-item-selected {
+  background-color: var(--white);
+  color: #333;
+}
+.dx-list:not(.dx-list-select-decorator-enabled)
+  .dx-list-item.dx-list-item-selected
+  .ms-select__item-wrap {
+  background-color: var(--primary-color-50);
+  color: var(--primary-color-500);
+
+  & .ms-select__check-icon {
+    display: block;
+  }
+}
+
+/* background khi click chuột */
+.dx-list:not(.dx-list-select-decorator-enabled) .dx-list-item.dx-state-active {
+  background-color: unset;
+  color: #333;
+}
+
+.dx-dropdownlist-popup-wrapper .dx-list:not(.dx-list-select-decorator-enabled) {
+  padding: 8px 0;
+}

@@ -2,59 +2,57 @@
   <div @click.stop="" class="ms-table-customize">
     <div class="ms-table-customize__header">
       <div class="ms-table-customize__header-title">Tuỳ chỉnh cột</div>
-      <div @click="emit('close')" class="ms-table-customize__close">
+      <div @click="$emit('close')" class="ms-table-customize__close">
         <MISAIcon icon="times" />
       </div>
     </div>
 
     <div class="ms-table-customize__search">
-      <MISAInputGroup for="table-customize-search">
+      <!-- <MISAInputGroup for="table-customize-search">
         <MISAInputAction>
           <MISAIcon size="20" icon="search" />
         </MISAInputAction>
         <MISAInput v-model="search" placeholder="Tìm kiếm" id="table-customize-search" />
-      </MISAInputGroup>
+      </MISAInputGroup> -->
     </div>
 
     <div class="ms-table-customize__content">
-      <draggable
-        v-model="localColumns"
-        item-key="key"
-        handle=".handle"
-        tag="ul"
-        class="ms-table-customize__menu"
-      >
-        <template #item="{ element }">
+      <!-- <MISACheckbox @click="toggleColumn(element?.key)" :checked="!element?.hide" /> -->
+      <draggable v-model="localColumns">
+        <transition-group>
           <li
-            :class="['ms-table-customize__menu-item', { '--sticky': element?.sticky }]"
-            v-show="element?.title?.toLowerCase()?.includes(search.toLowerCase())"
+            v-for="element in localColumns"
+            :key="element.dataField"
+            :class="['ms-table-customize__menu-item', { '--sticky': element?.fixed }]"
+            v-show="element?.caption?.toLowerCase()?.includes(search.toLowerCase())"
           >
             <div class="ms-table-customize__menu-table-name-wrap">
-              <MISACheckbox @click="toggleColumn(element?.key)" :checked="!element?.hide" />
-              <div class="ms-table-customize__menu-table-name">{{ element?.title }}</div>
+              <DxCheckBox />
+              <div class="ms-table-customize__menu-table-name">{{ element?.caption }}</div>
             </div>
             <div class="ms-table-customize__menu-item-actions">
               <div class="ms-table-customize__item-action --pin-icon">
-                <MISAIcon @click="pinColumn(element?.key)" size="20" icon="pin-fill" />
+                <MISAIcon @click="pinColumn(element?.key)" size="20" icon="pin" />
               </div>
               <div class="ms-table-customize__item-action">
                 <MISAIcon size="20" icon="draggable-dots" class="handle" />
               </div>
             </div>
           </li>
-        </template>
+        </transition-group>
       </draggable>
     </div>
 
     <div class="ms-table-customize__footer">
-      <MISAButton @click="resetDefault" type="secondary"> Lấy lại mặc định </MISAButton>
+      <MISAButton @click="resetDefault" color="secondary"> Mặc định </MISAButton>
       <MISAButton @click="saveChange" type="primary"> Lưu </MISAButton>
     </div>
     <!-- {{ console.log(localColumns) }} -->
   </div>
 </template>
 
-<script setup>
+<script>
+import DxCheckBox from "devextreme-vue/check-box";
 import MISAButton from "../button/MISAButton.vue";
 // import MISACheckbox from "../checkbox/MISACheckbox.vue";
 import MISAIcon from "../icon/MISAIcon.vue";
@@ -69,6 +67,8 @@ export default {
   components: {
     MISAButton,
     MISAIcon,
+    DxCheckBox,
+    draggable,
   },
   props: {
     // Mảng các cột của bảng
@@ -90,6 +90,7 @@ export default {
   data: function () {
     return {
       // Deep clone prop sang state để thực hiện thay đổi
+      // (tránh việc chưa bấm lưu nhưng đã thay đổi)
       localColumns: JSON.parse(JSON.stringify(this.columns) ?? []),
 
       // Tìm kiếm cột
@@ -122,7 +123,7 @@ export default {
         let normalColumns = [];
 
         this.localColumns?.forEach((column) => {
-          if (column.sticky) {
+          if (column.fixed) {
             stickyColumns = [...stickyColumns, column];
           } else {
             normalColumns = [...normalColumns, column];
@@ -145,14 +146,14 @@ export default {
      * Description: Xử lý ghim/bỏ ghim cột được chọn
      * Author: txphuc (22/07/2023)
      */
-    pinColumn(key) {
+    pinColumn(dataField) {
       try {
-        let column = this.localColumns.find((column) => column.key === key);
+        let column = this.localColumns.find((column) => column.dataField === dataField);
 
-        if (column && column.sticky) {
-          column.sticky = "";
+        if (column && column.fixed) {
+          column.fixed = false;
         } else if (column) {
-          column.sticky = "left";
+          column.fixed = true;
         }
       } catch (error) {
         console.warn(error);
@@ -163,14 +164,14 @@ export default {
      * Description: Xử lý ẩn/hiện cột được chọn
      * Author: txphuc (22/07/2023)
      */
-    toggleColumn(key) {
+    toggleColumn(dataField) {
       try {
-        let column = this.localColumns.find((column) => column.key === key);
+        let column = this.localColumns.find((column) => column.dataField === dataField);
 
-        if (column && column.hide) {
-          column.hide = false;
+        if (column && column.visible) {
+          column.visible = false;
         } else if (column) {
-          column.hide = true;
+          column.visible = true;
         }
       } catch (error) {
         console.warn(error);
