@@ -160,7 +160,7 @@ body {
   color: var(--red-400);
 }
 
-/* ----- Input ----- */
+/* ----- Empty data ----- */
 .ms-empty-data {
   display: flex;
   align-items: center;
@@ -214,6 +214,26 @@ body {
 
 .dx-state-disabled.dx-widget {
   background-color: var(--gray-300);
+}
+
+/* Radio box */
+.dx-radiobutton-icon {
+  border: 2.5px solid var(--secondary-text-color);
+  width: 20px;
+  height: 20px;
+}
+
+.dx-radiobutton.dx-state-hover .dx-radiobutton-icon {
+  border-color: var(--secondary-text-color);
+}
+
+.dx-radiobutton-icon.dx-radiobutton-icon-checked {
+  border-color: var(--primary-color-500) !important;
+}
+
+.dx-radiobutton-icon-checked .dx-radiobutton-icon-dot {
+  background-color: var(--primary-color-500);
+  border-width: 3.5px;
 }
 
 /* ----- scroll bar ----- */

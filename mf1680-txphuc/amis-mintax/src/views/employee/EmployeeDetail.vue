@@ -38,11 +38,10 @@
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
-                        v-model="selectBoxValue"
                         :dataSource="simpleProducts"
                         displayExpr="label"
                         valueExpr="value"
-                        placeholder="Chọn giá trị"
+                        placeholder="Chọn loại đối tượng"
                       />
                     </MISACol>
                   </MISARow>
@@ -56,7 +55,7 @@
                       </div>
                     </MISACol>
                     <MISACol :span="8">
-                      <DxTextBox v-model="value" placeholder="Nhập mã người nộp thuế"></DxTextBox>
+                      <DxTextBox placeholder="Nhập mã người nộp thuế"></DxTextBox>
                     </MISACol>
                   </MISARow>
                 </div>
@@ -69,7 +68,7 @@
                       </div>
                     </MISACol>
                     <MISACol :span="8">
-                      <DxTextBox v-model="value" placeholder="Nhập họ tên"></DxTextBox>
+                      <DxTextBox placeholder="Nhập họ tên"></DxTextBox>
                     </MISACol>
                   </MISARow>
                 </div>
@@ -80,7 +79,7 @@
                       <div class="height-100 d-flex align-center">Ngày sinh</div>
                     </MISACol>
                     <MISACol :span="8">
-                      <MISADatePickerVue v-model="date" />
+                      <MISADatePicker />
                     </MISACol>
                   </MISARow>
                 </div>
@@ -91,7 +90,15 @@
                       <div class="height-100 d-flex align-center">Giới tính</div>
                     </MISACol>
                     <MISACol :span="8">
-                      <DxTextBox v-model="value" placeholder="Nhập họ tên"></DxTextBox>
+                      <div class="height-36 d-flex align-center">
+                        <DxRadioGroup
+                          :items="[
+                            { id: 0, text: 'Nam' },
+                            { id: 1, text: 'Nữ' },
+                          ]"
+                          layout="horizontal"
+                        />
+                      </div>
                     </MISACol>
                   </MISARow>
                 </div>
@@ -102,7 +109,7 @@
                       <div class="height-100 d-flex align-center">Số điện thoại</div>
                     </MISACol>
                     <MISACol :span="8">
-                      <DxTextBox v-model="value" placeholder="Nhập số điện thoại"></DxTextBox>
+                      <DxTextBox placeholder="Nhập số điện thoại"></DxTextBox>
                     </MISACol>
                   </MISARow>
                 </div>
@@ -113,7 +120,7 @@
                       <div class="height-100 d-flex align-center">Email</div>
                     </MISACol>
                     <MISACol :span="8">
-                      <DxTextBox v-model="value" placeholder="Nhập email"></DxTextBox>
+                      <DxTextBox placeholder="Nhập email"></DxTextBox>
                     </MISACol>
                   </MISARow>
                 </div>
@@ -127,11 +134,7 @@
                     <MISACol :span="8">
                       <MISARow>
                         <div class="d-flex width-100 col-gap-8">
-                          <DxTextBox
-                            v-model="value"
-                            width="100%"
-                            placeholder="Nhập mã số thuế"
-                          ></DxTextBox>
+                          <DxTextBox width="100%" placeholder="Nhập mã số thuế"></DxTextBox>
                           <MISAButton color="secondary"
                             >Lấy thông tin
                             <template #icon>
@@ -151,11 +154,10 @@
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
-                        v-model="selectBoxValue"
                         :dataSource="simpleProducts"
                         displayExpr="label"
                         valueExpr="value"
-                        placeholder="Chọn giá trị"
+                        placeholder="Chọn loại giấy tờ"
                       />
                     </MISACol>
                   </MISARow>
@@ -171,11 +173,7 @@
                     <MISACol :span="8">
                       <MISARow>
                         <div class="d-flex width-100 col-gap-8">
-                          <DxTextBox
-                            v-model="value"
-                            width="100%"
-                            placeholder="Nhập số CMND"
-                          ></DxTextBox>
+                          <DxTextBox width="100%" placeholder="Nhập số CMND"></DxTextBox>
                           <MISAButton color="secondary"
                             >Lấy thông tin
                             <template #icon>
@@ -196,7 +194,7 @@
                       </div>
                     </MISACol>
                     <MISACol :span="8">
-                      <MISADatePickerVue v-model="date" />
+                      <MISADatePicker />
                     </MISACol>
                   </MISARow>
                 </div>
@@ -210,12 +208,11 @@
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
-                        v-model="selectBoxValue"
                         :dataSource="simpleProducts"
                         displayExpr="label"
                         valueExpr="value"
                         :searchEnabled="true"
-                        placeholder="Chọn giá trị"
+                        placeholder="Chọn/nhập nơi cấp"
                       />
                     </MISACol>
                   </MISARow>
@@ -228,12 +225,11 @@
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
-                        v-model="selectBoxValue"
                         :dataSource="simpleProducts"
                         displayExpr="label"
                         valueExpr="value"
                         :searchEnabled="true"
-                        placeholder="Chọn giá trị"
+                        placeholder="Chọn/nhập quốc tịch"
                       />
                     </MISACol>
                   </MISARow>
@@ -248,12 +244,11 @@
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
-                        v-model="selectBoxValue"
                         :dataSource="simpleProducts"
                         displayExpr="label"
                         valueExpr="value"
                         :searchEnabled="false"
-                        placeholder="Chọn giá trị"
+                        placeholder="Chọn loại hợp đồng"
                       />
                     </MISACol>
                   </MISARow>
@@ -274,12 +269,11 @@
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
-                        v-model="selectBoxValue"
                         :dataSource="simpleProducts"
                         displayExpr="label"
                         valueExpr="value"
                         :searchEnabled="true"
-                        placeholder="Chọn giá trị"
+                        placeholder="Chọn/nhập quốc gia"
                       />
                     </MISACol>
                   </MISARow>
@@ -292,12 +286,11 @@
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
-                        v-model="selectBoxValue"
                         :dataSource="simpleProducts"
                         displayExpr="label"
                         valueExpr="value"
                         :searchEnabled="true"
-                        placeholder="Chọn giá trị"
+                        placeholder="Chọn/nhập tỉnh/thành phố"
                       />
                     </MISACol>
                   </MISARow>
@@ -310,12 +303,11 @@
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
-                        v-model="selectBoxValue"
                         :dataSource="simpleProducts"
                         displayExpr="label"
                         valueExpr="value"
                         :searchEnabled="true"
-                        placeholder="Chọn giá trị"
+                        placeholder="Chọn/nhập quận/huyện"
                       />
                     </MISACol>
                   </MISARow>
@@ -329,12 +321,11 @@
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
-                        v-model="selectBoxValue"
                         :dataSource="simpleProducts"
                         displayExpr="label"
                         valueExpr="value"
                         :searchEnabled="true"
-                        placeholder="Chọn giá trị"
+                        placeholder="Chọn/nhập xã/phường"
                       />
                     </MISACol>
                   </MISARow>
@@ -346,10 +337,7 @@
                       <div class="height-100 d-flex align-center">Số nhà, đường/phố, thôn/xóm</div>
                     </MISACol>
                     <MISACol :span="8">
-                      <DxTextBox
-                        v-model="value"
-                        placeholder="Nhập số nhà, đường/phố, thôn/xóm"
-                      ></DxTextBox>
+                      <DxTextBox placeholder="Nhập số nhà, đường/phố, thôn/xóm"></DxTextBox>
                     </MISACol>
                   </MISARow>
                 </div>
@@ -360,7 +348,7 @@
                       <div class="height-100 d-flex align-center">Địa chỉ</div>
                     </MISACol>
                     <MISACol :span="8">
-                      <DxTextBox v-model="value" :disabled="true"></DxTextBox>
+                      <DxTextBox :disabled="true"></DxTextBox>
                     </MISACol>
                   </MISARow>
                 </div>
@@ -394,12 +382,11 @@
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
-                        v-model="selectBoxValue"
                         :dataSource="simpleProducts"
                         displayExpr="label"
                         valueExpr="value"
                         :searchEnabled="true"
-                        placeholder="Chọn giá trị"
+                        placeholder="Chọn/nhập quốc gia"
                       />
                     </MISACol>
                   </MISARow>
@@ -412,12 +399,11 @@
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
-                        v-model="selectBoxValue"
                         :dataSource="simpleProducts"
                         displayExpr="label"
                         valueExpr="value"
                         :searchEnabled="true"
-                        placeholder="Chọn giá trị"
+                        placeholder="Chọn/nhập tỉnh/thành phố"
                       />
                     </MISACol>
                   </MISARow>
@@ -430,12 +416,11 @@
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
-                        v-model="selectBoxValue"
                         :dataSource="simpleProducts"
                         displayExpr="label"
                         valueExpr="value"
                         :searchEnabled="true"
-                        placeholder="Chọn giá trị"
+                        placeholder="Chọn/nhập quận/huyện"
                       />
                     </MISACol>
                   </MISARow>
@@ -455,12 +440,11 @@
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
-                        v-model="selectBoxValue"
                         :dataSource="simpleProducts"
                         displayExpr="label"
                         valueExpr="value"
                         :searchEnabled="true"
-                        placeholder="Chọn giá trị"
+                        placeholder="Chọn/nhập xã/phường"
                       />
                     </MISACol>
                   </MISARow>
@@ -472,10 +456,7 @@
                       <div class="height-100 d-flex align-center">Số nhà, đường/phố, thôn/xóm</div>
                     </MISACol>
                     <MISACol :span="8">
-                      <DxTextBox
-                        v-model="value"
-                        placeholder="Nhập số nhà, đường/phố, thôn/xóm"
-                      ></DxTextBox>
+                      <DxTextBox placeholder="Nhập số nhà, đường/phố, thôn/xóm"></DxTextBox>
                     </MISACol>
                   </MISARow>
                 </div>
@@ -486,7 +467,7 @@
                       <div class="height-100 d-flex align-center">Địa chỉ</div>
                     </MISACol>
                     <MISACol :span="8">
-                      <DxTextBox v-model="value" :disabled="true"></DxTextBox>
+                      <DxTextBox :disabled="true"></DxTextBox>
                     </MISACol>
                   </MISARow>
                 </div>
@@ -508,14 +489,7 @@
                       </div>
                     </MISACol>
                     <MISACol :span="8">
-                      <MISASelectBox
-                        v-model="selectBoxValue"
-                        :dataSource="simpleProducts"
-                        displayExpr="label"
-                        valueExpr="value"
-                        :searchEnabled="false"
-                        placeholder="Chọn giá trị"
-                      />
+                      <MISATreeView />
                     </MISACol>
                   </MISARow>
                 </div>
@@ -529,12 +503,11 @@
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
-                        v-model="selectBoxValue"
                         :dataSource="simpleProducts"
                         displayExpr="label"
                         valueExpr="value"
                         :searchEnabled="true"
-                        placeholder="Chọn giá trị"
+                        placeholder="Chọn/ nhập vị trí công việc"
                       />
                     </MISACol>
                   </MISARow>
@@ -546,7 +519,7 @@
                       <div class="height-100 d-flex align-center">Chức danh</div>
                     </MISACol>
                     <MISACol :span="8">
-                      <DxTextBox v-model="value" :disabled="true"></DxTextBox>
+                      <DxTextBox :disabled="true"></DxTextBox>
                     </MISACol>
                   </MISARow>
                 </div>
@@ -558,12 +531,11 @@
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
-                        v-model="selectBoxValue"
                         :dataSource="simpleProducts"
                         displayExpr="label"
                         valueExpr="value"
                         :searchEnabled="false"
-                        placeholder="Chọn giá trị"
+                        placeholder="Chọn trạng thái làm việc"
                       />
                     </MISACol>
                   </MISARow>
@@ -577,7 +549,7 @@
                       <div class="height-100 d-flex align-center">Ngày học việc</div>
                     </MISACol>
                     <MISACol :span="8">
-                      <MISADatePickerVue v-model="date" />
+                      <MISADatePicker />
                     </MISACol>
                   </MISARow>
                 </div>
@@ -588,7 +560,7 @@
                       <div class="height-100 d-flex align-center">Ngày thử việc</div>
                     </MISACol>
                     <MISACol :span="8">
-                      <MISADatePickerVue v-model="date" />
+                      <MISADatePicker />
                     </MISACol>
                   </MISARow>
                 </div>
@@ -599,7 +571,7 @@
                       <div class="height-100 d-flex align-center">Ngày chính thức</div>
                     </MISACol>
                     <MISACol :span="8">
-                      <MISADatePickerVue v-model="date" />
+                      <MISADatePicker />
                     </MISACol>
                   </MISARow>
                 </div>
@@ -610,7 +582,7 @@
                       <div class="height-100 d-flex align-center">Ngày nghỉ việc</div>
                     </MISACol>
                     <MISACol :span="8">
-                      <MISADatePickerVue v-model="date" />
+                      <MISADatePicker />
                     </MISACol>
                   </MISARow>
                 </div>
@@ -621,13 +593,18 @@
           <!-- ----- THÔNG TIN GIA ĐÌNH ----- -->
           <div class="d-flex align-center justify-content-between mt-44 pb-24">
             <div class="form-content__header">Thông tin gia đình</div>
-            <MISAButton type="outline" color="primary"
+            <MISAButton @click="isOpenEmployeeFamilyDetail = true" type="outline" color="primary"
               >Thêm
               <template #icon>
                 <MISAIcon :size="20" icon="plus" />
               </template>
             </MISAButton>
           </div>
+
+          <EmployeeFamilyDetail
+            v-if="isOpenEmployeeFamilyDetail"
+            @close="isOpenEmployeeFamilyDetail = false"
+          />
 
           <div class="ms-empty-data">Chưa có thông tin gia đình</div>
 
@@ -645,7 +622,7 @@
           <div class="ms-empty-data">Chưa có lịch sử trả thu nhập</div>
 
           <!-- <ValidationProvider name="name" rules="even" v-slot="{ errors }">
-            <DxTextBox v-model="value">
+            <DxTextBox >
               <div class="input-action">
                 <MISAIcon size="20" icon="search" />
               </div>
@@ -664,10 +641,13 @@ import MISAButton from "@/components/base/button/MISAButton.vue";
 import DxTextBox from "devextreme-vue/text-box";
 // import { ValidationProvider } from "vee-validate";
 import MISASelectBox from "@/components/base/select-box/MISASelectBox.vue";
-import MISADatePickerVue from "@/components/base/date-picker/MISADatePicker.vue";
+import MISADatePicker from "@/components/base/date-picker/MISADatePicker.vue";
 import MISARow from "@/components/base/grid/MISARow.vue";
 import MISACol from "@/components/base/grid/MISACol.vue";
 import DxCheckBox from "devextreme-vue/check-box";
+import DxRadioGroup from "devextreme-vue/radio-group";
+import EmployeeFamilyDetail from "./EmployeeFamilyDetail.vue";
+import MISATreeView from "@/components/base/tree-view/MISATreeView.vue";
 
 const simpleProducts = [
   { label: "HD Video Player", value: 1 },
@@ -690,18 +670,19 @@ export default {
     DxTextBox,
     MISAIcon,
     // ValidationProvider,
-    MISADatePickerVue,
+    MISADatePicker,
     MISASelectBox,
     MISARow,
     MISACol,
     DxCheckBox,
+    DxRadioGroup,
+    EmployeeFamilyDetail,
+    MISATreeView,
   },
   data: function () {
     return {
-      value: "",
-      date: null,
       simpleProducts,
-      selectBoxValue: null,
+      isOpenEmployeeFamilyDetail: false,
     };
   },
   methods: {

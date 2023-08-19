@@ -83,7 +83,7 @@
                 </div>
               </DxTextBox>
 
-              <MISASelectBox placeholder="Bộ phận/phòng ban" />
+              <MISATreeView placeholder="Bộ phận/phòng ban" />
             </div>
 
             <div class="controls__group">
@@ -122,7 +122,7 @@
                 <MISAIcon size="20" icon="mintax-filter" />
               </template>
             </MISAButton>
-            <MISAButton color="secondary">
+            <MISAButton @click="isOpenTableCustomize = true" color="secondary">
               <template slot="icon">
                 <MISAIcon size="20" icon="setting-gear" />
               </template>
@@ -146,7 +146,15 @@
       <MISATableFooter :pageSize="15" :totalRecords="100" />
 
       <!-- Table customize -->
-      <MISATableCustomize v-if="false" :columns="tableColumns" :defaultColumns="defaultColumns" />
+      <MISATableCustomize
+        @close="isOpenTableCustomize = false"
+        @change="applyTableCustomize"
+        v-if="isOpenTableCustomize"
+        :columns="tableColumns"
+        :defaultColumns="defaultColumns"
+      />
+
+      {{ test(tableColumns) }}
     </div>
   </div>
 </template>
@@ -159,7 +167,7 @@ import MISATable from "@/components/base/table/MISATable.vue";
 import MISATableFooter from "@/components/base/table-footer/MISATableFooter.vue";
 import MISATableCustomize from "@/components/base/table-customize/MISATableCustomize.vue";
 import DxTextBox from "devextreme-vue/text-box";
-import MISASelectBox from "@/components/base/select-box/MISASelectBox.vue";
+import MISATreeView from "@/components/base/tree-view/MISATreeView.vue";
 import mockEmployee from "./mock-employee";
 
 const defaultColumns = [
@@ -179,7 +187,6 @@ const defaultColumns = [
     alignment: "left",
     width: 150,
     fixed: true,
-    allowSorting: false,
   },
   {
     dataField: "Position",
@@ -242,7 +249,7 @@ export default {
     MISATableFooter,
     MISATableCustomize,
     DxTextBox,
-    MISASelectBox,
+    MISATreeView,
   },
   data: function () {
     return {
@@ -254,6 +261,7 @@ export default {
         sortColumn: null,
         sortOrder: null,
       },
+      isOpenTableCustomize: false,
     };
   },
   methods: {
@@ -296,6 +304,14 @@ export default {
      * Author: txphuc (17/08/2023)
      */
     onFixedColumnChange(columns) {
+      this.tableColumns = columns;
+    },
+
+    /**
+     * Description: Lưu sự thay đổi tuỳ chỉnh cột
+     * Author: txphuc (18/08/2023)
+     */
+    applyTableCustomize(columns) {
       this.tableColumns = columns;
     },
 

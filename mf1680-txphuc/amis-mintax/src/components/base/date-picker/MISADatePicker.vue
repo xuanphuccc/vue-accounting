@@ -3,11 +3,11 @@
     :value="value"
     @value-changed="onValueChanged"
     type="date"
-    display-format="dd/MM/yyyy"
+    :display-format="displayFormat"
     :use-mask-behavior="true"
     :show-clear-button="true"
     :max="max"
-    placeholder="__/__/____"
+    :placeholder="placeholder"
     drop-down-button-template="imageIcon"
   >
     <template #imageIcon="{}">
@@ -38,6 +38,18 @@ export default {
     // Ngày tối đa có thể chọn
     max: {
       type: Date,
+    },
+
+    // Gợi ý
+    placeholder: {
+      type: String,
+      default: "__/__/____",
+    },
+
+    // Định dạng hiển thị
+    displayFormat: {
+      type: String,
+      default: "dd/MM/yyyy",
     },
   },
   methods: {

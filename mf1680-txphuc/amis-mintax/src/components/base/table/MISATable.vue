@@ -6,6 +6,7 @@
       :key-expr="keyExpr"
       :allow-column-resizing="true"
       column-resizing-mode="widget"
+      :allow-column-reordering="true"
       :column-auto-width="true"
       :show-row-lines="true"
       :show-column-lines="false"
@@ -20,11 +21,13 @@
       <DxColumn type="selection" :width="44" :allow-resizing="false" />
       <DxSelection mode="multiple" show-check-boxes-mode="always" />
 
+      {{ test(columns) }}
       <!-- Các cột dữ liệu -->
       <DxColumn
         v-for="column in columns"
         :key="column.dataField"
         v-bind="column"
+        :visible="column.visible"
         :allow-sorting="false"
         header-cell-template="headerCellTemplate"
       />
@@ -137,7 +140,10 @@ export default {
      * Author: txphuc (17/08/2023)
      */
     fixedColumnIndex() {
-      const fixedColumns = this.columns.filter((column) => column.fixed === true);
+      // Tìm những cột được ghim và không bị ẩn
+      const fixedColumns = this.columns.filter(
+        (column) => column.fixed === true && column.visible !== false
+      );
 
       let pinIndex = fixedColumns.length || null;
 
@@ -205,6 +211,10 @@ export default {
       }
 
       this.$emit("fixed-column-change", localColumns);
+    },
+
+    test(e) {
+      console.log(e);
     },
   },
 };

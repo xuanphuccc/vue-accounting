@@ -8,12 +8,11 @@
     </div>
 
     <div class="ms-table-customize__search">
-      <!-- <MISAInputGroup for="table-customize-search">
-        <MISAInputAction>
+      <DxTextBox v-model="search" placeholder="Tìm kiếm">
+        <div class="input-action">
           <MISAIcon size="20" icon="search" />
-        </MISAInputAction>
-        <MISAInput v-model="search" placeholder="Tìm kiếm" id="table-customize-search" />
-      </MISAInputGroup> -->
+        </div>
+      </DxTextBox>
     </div>
 
     <div class="ms-table-customize__content">
@@ -27,7 +26,10 @@
             v-show="element?.caption?.toLowerCase()?.includes(search.toLowerCase())"
           >
             <div class="ms-table-customize__menu-table-name-wrap">
-              <DxCheckBox />
+              <DxCheckBox
+                @value-changed="toggleColumn(element.dataField)"
+                :value="element.visible !== false"
+              />
               <div class="ms-table-customize__menu-table-name">{{ element?.caption }}</div>
             </div>
             <div class="ms-table-customize__menu-item-actions">
@@ -47,18 +49,15 @@
       <MISAButton @click="resetDefault" color="secondary"> Mặc định </MISAButton>
       <MISAButton @click="saveChange" type="primary"> Lưu </MISAButton>
     </div>
-    <!-- {{ console.log(localColumns) }} -->
+    <!-- {{ test(localColumns) }} -->
   </div>
 </template>
 
 <script>
 import DxCheckBox from "devextreme-vue/check-box";
 import MISAButton from "../button/MISAButton.vue";
-// import MISACheckbox from "../checkbox/MISACheckbox.vue";
 import MISAIcon from "../icon/MISAIcon.vue";
-// import MISAInput from "../input/MISAInput.vue";
-// import MISAInputAction from "../input/MISAInputAction.vue";
-// import MISAInputGroup from "../input/MISAInputGroup.vue";
+import DxTextBox from "devextreme-vue/text-box";
 import draggable from "vuedraggable";
 
 export default {
@@ -69,6 +68,7 @@ export default {
     MISAIcon,
     DxCheckBox,
     draggable,
+    DxTextBox,
   },
   props: {
     // Mảng các cột của bảng
@@ -91,7 +91,8 @@ export default {
     return {
       // Deep clone prop sang state để thực hiện thay đổi
       // (tránh việc chưa bấm lưu nhưng đã thay đổi)
-      localColumns: JSON.parse(JSON.stringify(this.columns) ?? []),
+      localColumns: this.columns,
+      // localColumns: JSON.parse(JSON.stringify(this.columns) ?? []),
 
       // Tìm kiếm cột
       search: "",
@@ -133,7 +134,7 @@ export default {
         let result = [...stickyColumns, ...normalColumns];
 
         // Deep clone loại bỏ tham chiếu
-        result = JSON.parse(JSON.stringify(result));
+        // result = JSON.parse(JSON.stringify(result));
 
         return result;
       } catch (error) {
@@ -168,11 +169,13 @@ export default {
       try {
         let column = this.localColumns.find((column) => column.dataField === dataField);
 
-        if (column && column.visible) {
+        if (column && (column.visible === true || column.visible === undefined)) {
           column.visible = false;
         } else if (column) {
           column.visible = true;
         }
+
+        console.log(this.localColumns);
       } catch (error) {
         console.warn(error);
       }
@@ -184,8 +187,8 @@ export default {
      */
     resetDefault() {
       try {
-        this.localColumns = JSON.parse(JSON.stringify(this.defaultColumns));
-
+        this.localColumns = this.defaultColumns;
+        console.log(this.localColumns);
         this.saveChange();
       } catch (error) {
         console.warn(error);
@@ -198,6 +201,10 @@ export default {
      */
     closeMenu() {
       this.$emit("close");
+    },
+
+    test(e) {
+      console.log("click", e);
     },
   },
 
