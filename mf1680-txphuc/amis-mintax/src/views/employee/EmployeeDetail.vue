@@ -34,7 +34,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Loại đối tượng</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
+                        Loại đối tượng
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
@@ -50,7 +52,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
                         Mã người nộp thuế <span class="required-mark">*</span>
                       </div>
                     </MISACol>
@@ -63,7 +65,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
                         Họ tên <span class="required-mark">*</span>
                       </div>
                     </MISACol>
@@ -76,7 +78,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Ngày sinh</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">Ngày sinh</div>
                     </MISACol>
                     <MISACol :span="8">
                       <MISADatePicker />
@@ -87,7 +89,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Giới tính</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">Giới tính</div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="height-36 d-flex align-center">
@@ -106,7 +108,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Số điện thoại</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
+                        Số điện thoại
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <DxTextBox placeholder="Nhập số điện thoại"></DxTextBox>
@@ -117,7 +121,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Email</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">Email</div>
                     </MISACol>
                     <MISACol :span="8">
                       <DxTextBox placeholder="Nhập email"></DxTextBox>
@@ -129,7 +133,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Mã số thuế</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">Mã số thuế</div>
                     </MISACol>
                     <MISACol :span="8">
                       <MISARow>
@@ -150,7 +154,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Loại giấy tờ</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">Loại giấy tờ</div>
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
@@ -166,7 +170,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
                         Số CMND <span class="required-mark">*</span>
                       </div>
                     </MISACol>
@@ -189,7 +193,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
                         Ngày cấp <span class="required-mark">*</span>
                       </div>
                     </MISACol>
@@ -202,7 +206,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
                         Nơi cấp <span class="required-mark">*</span>
                       </div>
                     </MISACol>
@@ -221,7 +225,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Quốc tịch</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">Quốc tịch</div>
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
@@ -238,7 +242,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
                         Loại hợp đồng <span class="required-mark">*</span>
                       </div>
                     </MISACol>
@@ -265,7 +269,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Quốc gia</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">Quốc gia</div>
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
@@ -282,7 +286,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Tỉnh/thành phố</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
+                        Tỉnh/thành phố
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
@@ -299,7 +305,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Quận/huyện</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">Quận/huyện</div>
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
@@ -317,7 +323,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Xã/phường</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">Xã/phường</div>
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
@@ -334,7 +340,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Số nhà, đường/phố, thôn/xóm</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
+                        Số nhà, đường/phố, thôn/xóm
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <DxTextBox placeholder="Nhập số nhà, đường/phố, thôn/xóm"></DxTextBox>
@@ -345,7 +353,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Địa chỉ</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">Địa chỉ</div>
                     </MISACol>
                     <MISACol :span="8">
                       <DxTextBox :disabled="true"></DxTextBox>
@@ -364,7 +372,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Giống hộ khẩu thường trú</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
+                        Giống hộ khẩu thường trú
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="d-flex">
@@ -378,7 +388,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Quốc gia</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">Quốc gia</div>
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
@@ -395,7 +405,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Tỉnh/thành phố</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
+                        Tỉnh/thành phố
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
@@ -412,7 +424,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Quận/huyện</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">Quận/huyện</div>
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
@@ -436,7 +448,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Xã/phường</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">Xã/phường</div>
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
@@ -453,7 +465,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Số nhà, đường/phố, thôn/xóm</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
+                        Số nhà, đường/phố, thôn/xóm
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <DxTextBox placeholder="Nhập số nhà, đường/phố, thôn/xóm"></DxTextBox>
@@ -464,7 +478,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Địa chỉ</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">Địa chỉ</div>
                     </MISACol>
                     <MISACol :span="8">
                       <DxTextBox :disabled="true"></DxTextBox>
@@ -484,7 +498,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
                         Bộ phận/phòng ban <span class="required-mark">*</span>
                       </div>
                     </MISACol>
@@ -497,7 +511,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
                         Vị trí công việc <span class="required-mark">*</span>
                       </div>
                     </MISACol>
@@ -516,7 +530,7 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Chức danh</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">Chức danh</div>
                     </MISACol>
                     <MISACol :span="8">
                       <DxTextBox :disabled="true"></DxTextBox>
@@ -527,7 +541,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Trạng thái làm việc</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
+                        Trạng thái làm việc
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <MISASelectBox
@@ -546,7 +562,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Ngày học việc</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
+                        Ngày học việc
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <MISADatePicker />
@@ -557,7 +575,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Ngày thử việc</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
+                        Ngày thử việc
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <MISADatePicker />
@@ -568,7 +588,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Ngày chính thức</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
+                        Ngày chính thức
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <MISADatePicker />
@@ -579,7 +601,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center">Ngày nghỉ việc</div>
+                      <div class="height-100 d-flex align-center flex-wrap pr-12">
+                        Ngày nghỉ việc
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <MISADatePicker />

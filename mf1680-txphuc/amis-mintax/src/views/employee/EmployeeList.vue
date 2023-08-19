@@ -77,11 +77,9 @@
         <div v-if="selectedRowsData?.length === 0" class="filter-container">
           <div class="filter__left">
             <div class="controls__group">
-              <DxTextBox placeholder="Tìm theo Mã/Tên nhân viên">
-                <div class="input-action">
-                  <MISAIcon size="20" icon="search" />
-                </div>
-              </DxTextBox>
+              <MISATextBox v-model="dataTest.search" placeholder="Tìm theo Mã/Tên nhân viên">
+                <MISAIcon size="20" icon="search" />
+              </MISATextBox>
 
               <MISATreeView placeholder="Bộ phận/phòng ban" />
             </div>
@@ -153,8 +151,6 @@
         :columns="tableColumns"
         :defaultColumns="defaultColumns"
       />
-
-      {{ test(tableColumns) }}
     </div>
   </div>
 </template>
@@ -166,7 +162,7 @@ import MISAButtonGroup from "@/components/base/button/MISAButtonGroup.vue";
 import MISATable from "@/components/base/table/MISATable.vue";
 import MISATableFooter from "@/components/base/table-footer/MISATableFooter.vue";
 import MISATableCustomize from "@/components/base/table-customize/MISATableCustomize.vue";
-import DxTextBox from "devextreme-vue/text-box";
+import MISATextBox from "@/components/base/text-box/MISATextBox.vue";
 import MISATreeView from "@/components/base/tree-view/MISATreeView.vue";
 import mockEmployee from "./mock-employee";
 
@@ -185,8 +181,8 @@ const defaultColumns = [
     caption: "Tên nhân viên",
     dataType: "string",
     alignment: "left",
-    width: 150,
     fixed: true,
+    width: 150,
   },
   {
     dataField: "Position",
@@ -248,20 +244,31 @@ export default {
     MISATable,
     MISATableFooter,
     MISATableCustomize,
-    DxTextBox,
+
+    MISATextBox,
     MISATreeView,
   },
   data: function () {
     return {
       dataSource: mockEmployee.getEmployees() || [],
+
       defaultColumns: [...defaultColumns],
-      tableColumns: [...defaultColumns],
+
+      // Loại bỏ tham chiếu tránh thay đổi mảng gốc
+      tableColumns: defaultColumns.map((col) => ({ ...col })),
+
       selectedRowsData: [],
+
       filterRequest: {
         sortColumn: null,
         sortOrder: null,
       },
+
       isOpenTableCustomize: false,
+
+      dataTest: {
+        search: "",
+      },
     };
   },
   methods: {
@@ -286,7 +293,6 @@ export default {
      * Author: txphuc (17/08/2023)
      */
     clearAllSelection() {
-      console.log(this.$refs);
       this.$refs.tableRef.clearAllSelection();
     },
 

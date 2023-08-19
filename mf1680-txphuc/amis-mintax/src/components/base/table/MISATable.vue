@@ -6,7 +6,7 @@
       :key-expr="keyExpr"
       :allow-column-resizing="true"
       column-resizing-mode="widget"
-      :allow-column-reordering="true"
+      :allow-column-reordering="false"
       :column-auto-width="true"
       :show-row-lines="true"
       :show-column-lines="false"
@@ -21,13 +21,12 @@
       <DxColumn type="selection" :width="44" :allow-resizing="false" />
       <DxSelection mode="multiple" show-check-boxes-mode="always" />
 
-      {{ test(columns) }}
       <!-- Các cột dữ liệu -->
       <DxColumn
-        v-for="column in columns"
-        :key="column.dataField"
+        v-for="(column, index) in columns"
+        :key="index"
         v-bind="column"
-        :visible="column.visible"
+        :visible="column.visible === true || column.visible === undefined ? true : false"
         :allow-sorting="false"
         header-cell-template="headerCellTemplate"
       />
@@ -188,10 +187,12 @@ export default {
      * Author: txphuc (17/08/2023)
      */
     onFixedColumChange(columnIndex) {
-      let localColumns = this.columns;
+      // Loại bỏ tham chiếu tránh thay đổi mảng gốc
+      // (làm cho component không được render lại)
+      let localColumns = this.columns.map((col) => ({ ...col }));
 
       if (this.fixedColumnIndex === columnIndex) {
-        // Bỏ ghim nếu bấm ghim hai lần vào một cột
+        // Bỏ ghim nếu bấm ghim hai lần vào một cột thì bỏ ghim
         localColumns = this.columns.map((column) => {
           column.fixed = false;
 

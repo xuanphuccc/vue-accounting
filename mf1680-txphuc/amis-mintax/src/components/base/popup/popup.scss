@@ -16,6 +16,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 400px;
+  max-width: calc(100% - 80px) !important;
   max-height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;

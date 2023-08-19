@@ -4,7 +4,7 @@
       <div class="navbar__menu-icon" title="Menu"></div>
       <div class="navbar__logo-container">
         <div class="navbar__logo" title="Thuế TNCN"></div>
-        <div class="navbar__logo-text">Thuế TNCN</div>
+        <div class="navbar__logo-text">{{ $t("Product") }}</div>
       </div>
     </div>
     <div class="navbar__right">
@@ -12,7 +12,7 @@
         <div class="navbar__company-avatar">M</div>
 
         <div class="navbar__title">
-          <p>CÔNG TY CỔ PHẦN MISA</p>
+          <p>{{ $t("Company") }}</p>
 
           <div class="navbar__title-toggle">
             <MISAIcon icon="angle-down" />

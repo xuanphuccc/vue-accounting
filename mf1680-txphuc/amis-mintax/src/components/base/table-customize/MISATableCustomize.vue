@@ -8,11 +8,9 @@
     </div>
 
     <div class="ms-table-customize__search">
-      <DxTextBox v-model="search" placeholder="Tìm kiếm">
-        <div class="input-action">
-          <MISAIcon size="20" icon="search" />
-        </div>
-      </DxTextBox>
+      <MISATextBox v-model="search" placeholder="Tìm kiếm">
+        <MISAIcon size="20" icon="search" />
+      </MISATextBox>
     </div>
 
     <div class="ms-table-customize__content">
@@ -57,7 +55,7 @@
 import DxCheckBox from "devextreme-vue/check-box";
 import MISAButton from "../button/MISAButton.vue";
 import MISAIcon from "../icon/MISAIcon.vue";
-import DxTextBox from "devextreme-vue/text-box";
+import MISATextBox from "../text-box/MISATextBox.vue";
 import draggable from "vuedraggable";
 
 export default {
@@ -68,7 +66,7 @@ export default {
     MISAIcon,
     DxCheckBox,
     draggable,
-    DxTextBox,
+    MISATextBox,
   },
   props: {
     // Mảng các cột của bảng
@@ -90,9 +88,8 @@ export default {
   data: function () {
     return {
       // Deep clone prop sang state để thực hiện thay đổi
-      // (tránh việc chưa bấm lưu nhưng đã thay đổi)
-      localColumns: this.columns,
-      // localColumns: JSON.parse(JSON.stringify(this.columns) ?? []),
+      // (tránh việc chưa bấm lưu nhưng đã thay đổi/không render lại)
+      localColumns: this.columns.map((col) => ({ ...col })),
 
       // Tìm kiếm cột
       search: "",
@@ -125,16 +122,13 @@ export default {
 
         this.localColumns?.forEach((column) => {
           if (column.fixed) {
-            stickyColumns = [...stickyColumns, column];
+            stickyColumns = [...stickyColumns, { ...column }];
           } else {
-            normalColumns = [...normalColumns, column];
+            normalColumns = [...normalColumns, { ...column }];
           }
         });
 
         let result = [...stickyColumns, ...normalColumns];
-
-        // Deep clone loại bỏ tham chiếu
-        // result = JSON.parse(JSON.stringify(result));
 
         return result;
       } catch (error) {
@@ -187,8 +181,10 @@ export default {
      */
     resetDefault() {
       try {
-        this.localColumns = this.defaultColumns;
-        console.log(this.localColumns);
+        // Sao chép mảng loại bỏ tham chiếu
+        // (tránh bị thay đổi mảng cột mặc định)
+        this.localColumns = this.defaultColumns.map((col) => ({ ...col }));
+
         this.saveChange();
       } catch (error) {
         console.warn(error);

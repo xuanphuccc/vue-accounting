@@ -29,7 +29,6 @@
 import TheDefaultLayout from "./components/layout/default-layout/TheDefaultLayout.vue";
 import TheEmptyLayout from "./components/layout/empty-layout/TheEmptyLayout.vue";
 // import MISADialog from "@/components/base/dialog/MISADialog.vue";
-import MISAResource from "@/resource/resource";
 
 export default {
   name: "App",
@@ -43,7 +42,7 @@ export default {
    * Author: txphuc (23/07/2023)
    */
   mounted: function () {
-    document.title = MISAResource["vi-VN"]?.FullProductName;
+    document.title = this.$t("FullProductName");
   },
 };
 </script>

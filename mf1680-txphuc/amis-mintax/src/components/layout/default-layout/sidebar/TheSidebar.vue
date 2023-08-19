@@ -15,21 +15,19 @@
       </li>
     </ul>
 
-    <div ref="tippyRef" class="sidebar__tippy">Tổng quan</div>
+    <div ref="tippyRef" class="sidebar__tippy">{{ $t("Sidebar.Report") }}</div>
 
     <div @click="toggleSidebar" class="sidebar__toggle">
       <div class="sidebar__toggle-icon">
         <MISAIcon icon="angle-left" />
       </div>
-      <div class="sidebar__toggle-text">Thu gọn</div>
+      <div class="sidebar__toggle-text">{{ $t("Sidebar.Collapse") }}</div>
     </div>
   </nav>
 </template>
 
 <script>
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
-// import { useGlobalStore } from "@/stores/global-store";
-// import MISAResource from "@/resource/resource";
 
 export default {
   name: "TheSidebar",
@@ -42,67 +40,67 @@ export default {
         {
           key: 1,
           url: "/notfound",
-          title: "Đăng ký mã số thuế",
+          title: this.$t("Sidebar.RegisterTaxId"),
           icon: "tax",
         },
         {
           key: 2,
           url: "/notfound",
-          title: "Đăng ký người phụ thuộc",
+          title: this.$t("Sidebar.RegisterDependents"),
           icon: "family",
         },
         {
           key: 3,
           url: "/notfound",
-          title: "Khai thuế theo kỳ",
+          title: this.$t("Sidebar.TaxReportingByPeriod"),
           icon: "file",
         },
         {
           key: 4,
           url: "/notfound",
-          title: "Chứng từ khấu trừ thuế",
+          title: this.$t("Sidebar.TaxDeductionReceipts"),
           icon: "tax-deduction",
         },
         {
           key: 5,
           url: "/notfound",
-          title: "Quyết toán thuế",
+          title: this.$t("Sidebar.TaxFinalization"),
           icon: "box",
         },
         {
           key: 6,
           url: "/notfound",
-          title: "Thủ tục",
+          title: this.$t("Sidebar.Procedure"),
           icon: "procedure",
         },
         {
           key: 7,
           url: "/",
-          title: "Báo cáo",
+          title: this.$t("Sidebar.Report"),
           icon: "tax-report",
         },
         {
           key: 8,
           url: "/employee",
-          title: "Người nộp thuế",
+          title: this.$t("Sidebar.Taxpayer"),
           icon: "person-file",
         },
         {
           key: 9,
           url: "/notfound",
-          title: "Đăng ký dịch vụ thuế",
+          title: this.$t("Sidebar.TaxServiceRegistration"),
           icon: "tax-service",
         },
         {
           key: 10,
           url: "/notfound",
-          title: "Thiết lập",
+          title: this.$t("Sidebar.Configuration"),
           icon: "mintax-setting",
         },
         {
           key: 11,
           url: "/notfound",
-          title: "Thùng rác",
+          title: this.$t("Sidebar.TrashBin"),
           icon: "trash",
         },
       ],
