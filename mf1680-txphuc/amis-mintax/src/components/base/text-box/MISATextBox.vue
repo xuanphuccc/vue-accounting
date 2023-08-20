@@ -1,5 +1,12 @@
 <template>
-  <DxTextBox :value="value" @input="onInput" :placeholder="placeholder" ref="textBoxRef">
+  <DxTextBox
+    :value="value"
+    @input="onInput"
+    :placeholder="placeholder"
+    :width="width"
+    :disabled="disabled"
+    ref="textBoxRef"
+  >
     <!-- input action -->
     <div v-if="$slots.default" location="after" class="input-action">
       <slot></slot>
@@ -31,6 +38,17 @@ export default {
 
     // Gợi ý
     placeholder: {
+      type: String,
+    },
+
+    // Vô hiệu hoá
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+
+    // Chiều dài
+    width: {
       type: String,
     },
   },

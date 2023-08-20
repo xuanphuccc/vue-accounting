@@ -57,7 +57,7 @@
                       </div>
                     </MISACol>
                     <MISACol :span="8">
-                      <DxTextBox placeholder="Nhập mã người nộp thuế"></DxTextBox>
+                      <MISATextBox placeholder="Nhập mã người nộp thuế" />
                     </MISACol>
                   </MISARow>
                 </div>
@@ -70,7 +70,7 @@
                       </div>
                     </MISACol>
                     <MISACol :span="8">
-                      <DxTextBox placeholder="Nhập họ tên"></DxTextBox>
+                      <MISATextBox placeholder="Nhập họ tên" />
                     </MISACol>
                   </MISARow>
                 </div>
@@ -113,7 +113,7 @@
                       </div>
                     </MISACol>
                     <MISACol :span="8">
-                      <DxTextBox placeholder="Nhập số điện thoại"></DxTextBox>
+                      <MISATextBox placeholder="Nhập số điện thoại" />
                     </MISACol>
                   </MISARow>
                 </div>
@@ -124,7 +124,7 @@
                       <div class="height-100 d-flex align-center flex-wrap pr-12">Email</div>
                     </MISACol>
                     <MISACol :span="8">
-                      <DxTextBox placeholder="Nhập email"></DxTextBox>
+                      <MISATextBox placeholder="Nhập email" />
                     </MISACol>
                   </MISARow>
                 </div>
@@ -138,7 +138,8 @@
                     <MISACol :span="8">
                       <MISARow>
                         <div class="d-flex width-100 col-gap-8">
-                          <DxTextBox width="100%" placeholder="Nhập mã số thuế"></DxTextBox>
+                          <MISATextBox width="100%" placeholder="Nhập mã số thuế" />
+
                           <MISAButton color="secondary"
                             >Lấy thông tin
                             <template #icon>
@@ -177,7 +178,8 @@
                     <MISACol :span="8">
                       <MISARow>
                         <div class="d-flex width-100 col-gap-8">
-                          <DxTextBox width="100%" placeholder="Nhập số CMND"></DxTextBox>
+                          <MISATextBox width="100%" placeholder="Nhập số CMND" />
+
                           <MISAButton color="secondary"
                             >Lấy thông tin
                             <template #icon>
@@ -345,7 +347,7 @@
                       </div>
                     </MISACol>
                     <MISACol :span="8">
-                      <DxTextBox placeholder="Nhập số nhà, đường/phố, thôn/xóm"></DxTextBox>
+                      <MISATextBox placeholder="Nhập số nhà, đường/phố, thôn/xóm" />
                     </MISACol>
                   </MISARow>
                 </div>
@@ -356,7 +358,7 @@
                       <div class="height-100 d-flex align-center flex-wrap pr-12">Địa chỉ</div>
                     </MISACol>
                     <MISACol :span="8">
-                      <DxTextBox :disabled="true"></DxTextBox>
+                      <MISATextBox :disabled="true" />
                     </MISACol>
                   </MISARow>
                 </div>
@@ -470,7 +472,7 @@
                       </div>
                     </MISACol>
                     <MISACol :span="8">
-                      <DxTextBox placeholder="Nhập số nhà, đường/phố, thôn/xóm"></DxTextBox>
+                      <MISATextBox placeholder="Nhập số nhà, đường/phố, thôn/xóm" />
                     </MISACol>
                   </MISARow>
                 </div>
@@ -481,7 +483,7 @@
                       <div class="height-100 d-flex align-center flex-wrap pr-12">Địa chỉ</div>
                     </MISACol>
                     <MISACol :span="8">
-                      <DxTextBox :disabled="true"></DxTextBox>
+                      <MISATextBox :disabled="true" />
                     </MISACol>
                   </MISARow>
                 </div>
@@ -533,7 +535,7 @@
                       <div class="height-100 d-flex align-center flex-wrap pr-12">Chức danh</div>
                     </MISACol>
                     <MISACol :span="8">
-                      <DxTextBox :disabled="true"></DxTextBox>
+                      <MISATextBox :disabled="true" />
                     </MISACol>
                   </MISARow>
                 </div>
@@ -662,8 +664,7 @@
 <script>
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import MISAButton from "@/components/base/button/MISAButton.vue";
-import DxTextBox from "devextreme-vue/text-box";
-// import { ValidationProvider } from "vee-validate";
+import MISATextBox from "@/components/base/text-box/MISATextBox.vue";
 import MISASelectBox from "@/components/base/select-box/MISASelectBox.vue";
 import MISADatePicker from "@/components/base/date-picker/MISADatePicker.vue";
 import MISARow from "@/components/base/grid/MISARow.vue";
@@ -672,6 +673,7 @@ import DxCheckBox from "devextreme-vue/check-box";
 import DxRadioGroup from "devextreme-vue/radio-group";
 import EmployeeFamilyDetail from "./EmployeeFamilyDetail.vue";
 import MISATreeView from "@/components/base/tree-view/MISATreeView.vue";
+// import { ValidationProvider } from "vee-validate";
 
 const simpleProducts = [
   { label: "HD Video Player", value: 1 },
@@ -691,9 +693,8 @@ export default {
   name: "EmployeeList",
   components: {
     MISAButton,
-    DxTextBox,
+    MISATextBox,
     MISAIcon,
-    // ValidationProvider,
     MISADatePicker,
     MISASelectBox,
     MISARow,
@@ -702,6 +703,7 @@ export default {
     DxRadioGroup,
     EmployeeFamilyDetail,
     MISATreeView,
+    // ValidationProvider,
   },
   data: function () {
     return {

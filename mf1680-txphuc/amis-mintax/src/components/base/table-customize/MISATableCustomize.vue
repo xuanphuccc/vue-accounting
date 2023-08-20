@@ -47,7 +47,6 @@
       <MISAButton @click="resetDefault" color="secondary"> Mặc định </MISAButton>
       <MISAButton @click="saveChange" type="primary"> Lưu </MISAButton>
     </div>
-    <!-- {{ test(localColumns) }} -->
   </div>
 </template>
 
@@ -87,7 +86,7 @@ export default {
   },
   data: function () {
     return {
-      // Deep clone prop sang state để thực hiện thay đổi
+      // Deep clone prop sang state để thực hiện thay đổi (bắt buộc sử dụng v-if)
       // (tránh việc chưa bấm lưu nhưng đã thay đổi/không render lại)
       localColumns: this.columns.map((col) => ({ ...col })),
 
@@ -168,8 +167,6 @@ export default {
         } else if (column) {
           column.visible = true;
         }
-
-        console.log(this.localColumns);
       } catch (error) {
         console.warn(error);
       }
@@ -197,10 +194,6 @@ export default {
      */
     closeMenu() {
       this.$emit("close");
-    },
-
-    test(e) {
-      console.log("click", e);
     },
   },
 

@@ -77,7 +77,7 @@
         <div v-if="selectedRowsData?.length === 0" class="filter-container">
           <div class="filter__left">
             <div class="controls__group">
-              <MISATextBox v-model="dataTest.search" placeholder="Tìm theo Mã/Tên nhân viên">
+              <MISATextBox placeholder="Tìm theo Mã/Tên nhân viên">
                 <MISAIcon size="20" icon="search" />
               </MISATextBox>
 
@@ -115,7 +115,7 @@
               </MISAButton>
             </MISAButtonGroup>
 
-            <MISAButton color="secondary">
+            <MISAButton @click="isOpenFilterPopup = true" color="secondary">
               <template slot="icon">
                 <MISAIcon size="20" icon="mintax-filter" />
               </template>
@@ -143,7 +143,7 @@
       ></MISATable>
       <MISATableFooter :pageSize="15" :totalRecords="100" />
 
-      <!-- Table customize -->
+      <!-- Tuỳ chỉnh cột -->
       <MISATableCustomize
         @close="isOpenTableCustomize = false"
         @change="applyTableCustomize"
@@ -151,6 +151,9 @@
         :columns="tableColumns"
         :defaultColumns="defaultColumns"
       />
+
+      <!-- Bộ lọc nâng cao -->
+      <MISAFilterPopup @close="isOpenFilterPopup = false" v-if="isOpenFilterPopup" />
     </div>
   </div>
 </template>
@@ -164,6 +167,7 @@ import MISATableFooter from "@/components/base/table-footer/MISATableFooter.vue"
 import MISATableCustomize from "@/components/base/table-customize/MISATableCustomize.vue";
 import MISATextBox from "@/components/base/text-box/MISATextBox.vue";
 import MISATreeView from "@/components/base/tree-view/MISATreeView.vue";
+import MISAFilterPopup from "@/components/base/filter-popup/MISAFilterPopup.vue";
 import mockEmployee from "./mock-employee";
 
 const defaultColumns = [
@@ -175,6 +179,7 @@ const defaultColumns = [
     customizeText: (e) => "NV" + e.value,
     fixed: true,
     width: 150,
+    visible: true,
   },
   {
     dataField: "FullName",
@@ -183,6 +188,7 @@ const defaultColumns = [
     alignment: "left",
     fixed: true,
     width: 150,
+    visible: true,
   },
   {
     dataField: "Position",
@@ -190,6 +196,7 @@ const defaultColumns = [
     dataType: "string",
     alignment: "left",
     width: 180,
+    visible: true,
   },
   {
     dataField: "BirthDate",
@@ -197,6 +204,7 @@ const defaultColumns = [
     dataType: "date",
     alignment: "center",
     width: 180,
+    visible: true,
   },
   {
     dataField: "Address",
@@ -204,6 +212,7 @@ const defaultColumns = [
     dataType: "string",
     alignment: "left",
     width: 240,
+    visible: true,
   },
   {
     dataField: "City",
@@ -211,6 +220,7 @@ const defaultColumns = [
     dataType: "string",
     alignment: "left",
     width: 150,
+    visible: true,
   },
   {
     dataField: "Region",
@@ -218,6 +228,7 @@ const defaultColumns = [
     dataType: "string",
     alignment: "left",
     width: 150,
+    visible: true,
   },
   {
     dataField: "PostalCode",
@@ -225,6 +236,7 @@ const defaultColumns = [
     dataType: "string",
     alignment: "left",
     width: 150,
+    visible: true,
   },
   {
     dataField: "Country",
@@ -232,6 +244,7 @@ const defaultColumns = [
     dataType: "string",
     alignment: "left",
     width: 150,
+    visible: true,
   },
 ];
 
@@ -244,7 +257,7 @@ export default {
     MISATable,
     MISATableFooter,
     MISATableCustomize,
-
+    MISAFilterPopup,
     MISATextBox,
     MISATreeView,
   },
@@ -265,10 +278,7 @@ export default {
       },
 
       isOpenTableCustomize: false,
-
-      dataTest: {
-        search: "",
-      },
+      isOpenFilterPopup: false,
     };
   },
   methods: {

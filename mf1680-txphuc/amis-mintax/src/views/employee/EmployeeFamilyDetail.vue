@@ -16,7 +16,7 @@
                 </div>
               </MISACol>
               <MISACol :span="8">
-                <DxTextBox placeholder="Nhập họ tên thành viên"></DxTextBox>
+                <MISATextBox placeholder="Nhập họ tên thành viên" />
               </MISACol>
             </MISARow>
           </div>
@@ -77,7 +77,8 @@
               <MISACol :span="8">
                 <MISARow>
                   <div class="d-flex width-100 col-gap-8">
-                    <DxTextBox placeholder="Nhập mã số thuế" width="100%"></DxTextBox>
+                    <MISATextBox placeholder="Nhập mã số thuế" width="100%" />
+
                     <MISAButton color="secondary"
                       >Lấy thông tin
                       <template #icon>
@@ -130,7 +131,8 @@
               <MISACol :span="8">
                 <MISARow>
                   <div class="d-flex width-100 col-gap-8">
-                    <DxTextBox placeholder="Nhập số CMND/CCCD/Hộ chiếu" width="100%"></DxTextBox>
+                    <MISATextBox placeholder="Nhập số CMND/CCCD/Hộ chiếu" width="100%" />
+
                     <MISAButton color="secondary"
                       >Lấy thông tin
                       <template #icon>
@@ -184,7 +186,7 @@
                 <div class="height-100 d-flex align-center flex-wrap pr-12">Số khai sinh</div>
               </MISACol>
               <MISACol :span="8">
-                <DxTextBox placeholder="Nhập số khai sinh"></DxTextBox>
+                <MISATextBox placeholder="Nhập số khai sinh" />
               </MISACol>
             </MISARow>
           </div>
@@ -195,7 +197,7 @@
                 <div class="height-100 d-flex align-center flex-wrap pr-12">Quyển số</div>
               </MISACol>
               <MISACol :span="8">
-                <DxTextBox placeholder="Nhập quyển số"></DxTextBox>
+                <MISATextBox placeholder="Nhập quyển số" />
               </MISACol>
             </MISARow>
           </div>
@@ -343,7 +345,7 @@
                 </div>
               </MISACol>
               <MISACol :span="8">
-                <DxTextBox placeholder="Nhập số nhà, đường/phố, thôn/xóm"></DxTextBox>
+                <MISATextBox placeholder="Nhập số nhà, đường/phố, thôn/xóm" />
               </MISACol>
             </MISARow>
           </div>
@@ -413,7 +415,7 @@
                 </div>
               </MISACol>
               <MISACol :span="8">
-                <DxTextBox placeholder="Nhập số nhà, đường/phố, thôn/xóm"></DxTextBox>
+                <MISATextBox placeholder="Nhập số nhà, đường/phố, thôn/xóm" />
               </MISACol>
             </MISARow>
           </div>
@@ -494,15 +496,15 @@
 import MISAPopup from "@/components/base/popup/MISAPopup.vue";
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import MISAButton from "@/components/base/button/MISAButton.vue";
-import DxTextBox from "devextreme-vue/text-box";
+import MISATextBox from "@/components/base/text-box/MISATextBox.vue";
 import { DxTextArea } from "devextreme-vue/text-area";
-// import { ValidationProvider } from "vee-validate";
 import MISASelectBox from "@/components/base/select-box/MISASelectBox.vue";
 import MISADatePicker from "@/components/base/date-picker/MISADatePicker.vue";
 import MISARow from "@/components/base/grid/MISARow.vue";
 import MISACol from "@/components/base/grid/MISACol.vue";
 import DxCheckBox from "devextreme-vue/check-box";
 import DxRadioGroup from "devextreme-vue/radio-group";
+// import { ValidationProvider } from "vee-validate";
 
 export default {
   name: "EmployeeFamilyDetail",
@@ -510,16 +512,16 @@ export default {
   components: {
     MISAPopup,
     MISAButton,
-    DxTextBox,
+    MISATextBox,
     DxTextArea,
     MISAIcon,
-    // ValidationProvider,
     MISADatePicker,
     MISASelectBox,
     MISARow,
     MISACol,
     DxCheckBox,
     DxRadioGroup,
+    // ValidationProvider,
   },
   props: {},
   data: function () {

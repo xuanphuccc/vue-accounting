@@ -213,10 +213,6 @@ export default {
 
       this.$emit("fixed-column-change", localColumns);
     },
-
-    test(e) {
-      console.log(e);
-    },
   },
 };
 </script>
