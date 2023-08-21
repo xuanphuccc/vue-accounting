@@ -69,34 +69,20 @@
             <MISAButton @click="clearAllSelection" type="link" color="danger">Bỏ chọn</MISAButton>
           </div>
           <div class="selection-controls">
-            <div class="selection-controls__group">
+            <div class="controls__group">
               <MISAButton color="secondary">
-                Lập tờ khai
+                Sử dụng
                 <template slot="icon">
-                  <MISAIcon size="20" icon="plus" />
-                </template>
-              </MISAButton>
-
-              <MISAButton color="secondary">
-                Lập thủ tục
-                <template slot="icon">
-                  <MISAIcon size="20" icon="plus" />
+                  <MISAIcon color="#50b83c" size="20" icon="plus" />
                 </template>
               </MISAButton>
             </div>
 
-            <div class="selection-controls__group">
+            <div class="controls__group">
               <MISAButton color="secondary">
-                Xuất khẩu
+                Ngừng sử dụng
                 <template slot="icon">
-                  <MISAIcon size="20" icon="export" />
-                </template>
-              </MISAButton>
-
-              <MISAButton color="secondary">
-                Xoá
-                <template slot="icon">
-                  <MISAIcon color="#eb3333" size="20" icon="trash" />
+                  <MISAIcon color="#eb3333" size="20" icon="circle-slash" />
                 </template>
               </MISAButton>
             </div>
@@ -104,10 +90,20 @@
         </div>
 
         <div v-if="selectedRowsData.length === 0" class="filter-container">
-          <div class="filter__left"></div>
+          <div class="filter__left">
+            <div class="controls__group">
+              <MISATextBox placeholder="Tìm theo Mã/Tên nhân viên">
+                <MISAIcon size="20" icon="search" />
+              </MISATextBox>
+
+              <MISATreeView placeholder="Bộ phận/phòng ban" />
+
+              <MISASelectBox placeholder="Trạng thái sử dụng" />
+            </div>
+          </div>
 
           <div class="filter__right">
-            <MISAButton color="secondary">
+            <MISAButton @click="isOpenTableCustomize = true" color="secondary">
               <template slot="icon">
                 <MISAIcon size="20" icon="setting-gear" />
               </template>
@@ -124,11 +120,21 @@
         @fixed-column-change="onFixedColumnChange"
         :sort="filterRequest"
         :columns="tableColumns"
-        :dataSource="dataSource"
+        :data-source="dataSource"
         keyExpr="EmployeeID"
+        :action-column-enabled="false"
         ref="tableRef"
       ></MISATable>
       <MISATableFooter />
+
+      <!-- Tuỳ chỉnh cột -->
+      <MISATableCustomize
+        @close="isOpenTableCustomize = false"
+        @change="applyTableCustomize"
+        v-if="isOpenTableCustomize"
+        :columns="tableColumns"
+        :defaultColumns="defaultColumns"
+      />
     </div>
   </div>
 </template>
@@ -136,97 +142,46 @@
 <script>
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import MISAButton from "@/components/base/button/MISAButton.vue";
+import MISATextBox from "@/components/base/text-box/MISATextBox.vue";
 import MISATable from "@/components/base/table/MISATable.vue";
 import MISATableFooter from "@/components/base/table-footer/MISATableFooter.vue";
+import MISATableCustomize from "@/components/base/table-customize/MISATableCustomize.vue";
+import employeeColumns from "../employee/employee-columns";
 import mockEmployee from "@/views/employee/mock-employee";
+import MISATreeView from "@/components/base/tree-view/MISATreeView.vue";
+import MISASelectBox from "@/components/base/select-box/MISASelectBox.vue";
 
 export default {
   name: "EmployeeList",
   components: {
     MISAIcon,
     MISAButton,
-
+    MISATextBox,
+    MISATreeView,
+    MISASelectBox,
     MISATable,
     MISATableFooter,
+    MISATableCustomize,
   },
   data: function () {
     return {
       dataSource: mockEmployee.getEmployees(),
-      tableColumns: [
-        {
-          dataField: "EmployeeID",
-          caption: "Mã nhân viên",
-          dataType: "number",
-          alignment: "left",
-          customizeText: (e) => "NV" + e.value,
-          fixed: true,
-          width: 150,
-        },
-        {
-          dataField: "FullName",
-          caption: "Tên nhân viên",
-          dataType: "string",
-          alignment: "left",
-          width: 150,
-          fixed: true,
-          allowSorting: false,
-        },
-        {
-          dataField: "Position",
-          caption: "Chức danh",
-          dataType: "string",
-          alignment: "left",
-          width: 180,
-        },
-        {
-          dataField: "BirthDate",
-          caption: "Ngày sinh",
-          dataType: "date",
-          alignment: "center",
-          width: 180,
-        },
-        {
-          dataField: "Address",
-          caption: "Địa chỉ",
-          dataType: "string",
-          alignment: "left",
-          width: 240,
-        },
-        {
-          dataField: "City",
-          caption: "Thành phố",
-          dataType: "string",
-          alignment: "left",
-          width: 150,
-        },
-        {
-          dataField: "Region",
-          caption: "Khu vực",
-          dataType: "string",
-          alignment: "left",
-          width: 150,
-        },
-        {
-          dataField: "PostalCode",
-          caption: "Mã bưu chính",
-          dataType: "string",
-          alignment: "left",
-          width: 150,
-        },
-        {
-          dataField: "Country",
-          caption: "Quốc gia",
-          dataType: "string",
-          alignment: "left",
-          width: 150,
-        },
-      ],
+
+      defaultColumns: [...employeeColumns],
+
+      // Loại bỏ tham chiếu tránh thay đổi mảng gốc
+      tableColumns: employeeColumns.map((col) => ({ ...col })),
+
       isOpenCounter: true,
+
       selectedRowsData: [],
+
       filterRequest: {
         sortColumn: null,
         sortOrder: null,
       },
+
+      isOpenTableCustomize: false,
     };
   },
   methods: {
@@ -278,6 +233,14 @@ export default {
      */
     toggleCounter() {
       this.isOpenCounter = !this.isOpenCounter;
+    },
+
+    /**
+     * Description: Lưu sự thay đổi tuỳ chỉnh cột
+     * Author: txphuc (18/08/2023)
+     */
+    applyTableCustomize(columns) {
+      this.tableColumns = columns;
     },
   },
 };

@@ -169,84 +169,7 @@ import MISATextBox from "@/components/base/text-box/MISATextBox.vue";
 import MISATreeView from "@/components/base/tree-view/MISATreeView.vue";
 import MISAFilterPopup from "@/components/base/filter-popup/MISAFilterPopup.vue";
 import mockEmployee from "./mock-employee";
-
-const defaultColumns = [
-  {
-    dataField: "EmployeeID",
-    caption: "Mã nhân viên",
-    dataType: "number",
-    alignment: "left",
-    customizeText: (e) => "NV" + e.value,
-    fixed: true,
-    width: 150,
-    visible: true,
-  },
-  {
-    dataField: "FullName",
-    caption: "Tên nhân viên",
-    dataType: "string",
-    alignment: "left",
-    fixed: true,
-    width: 150,
-    visible: true,
-  },
-  {
-    dataField: "Position",
-    caption: "Chức danh",
-    dataType: "string",
-    alignment: "left",
-    width: 180,
-    visible: true,
-  },
-  {
-    dataField: "BirthDate",
-    caption: "Ngày sinh",
-    dataType: "date",
-    alignment: "center",
-    width: 180,
-    visible: true,
-  },
-  {
-    dataField: "Address",
-    caption: "Địa chỉ",
-    dataType: "string",
-    alignment: "left",
-    width: 240,
-    visible: true,
-  },
-  {
-    dataField: "City",
-    caption: "Thành phố",
-    dataType: "string",
-    alignment: "left",
-    width: 150,
-    visible: true,
-  },
-  {
-    dataField: "Region",
-    caption: "Khu vực",
-    dataType: "string",
-    alignment: "left",
-    width: 150,
-    visible: true,
-  },
-  {
-    dataField: "PostalCode",
-    caption: "Mã bưu chính",
-    dataType: "string",
-    alignment: "left",
-    width: 150,
-    visible: true,
-  },
-  {
-    dataField: "Country",
-    caption: "Quốc gia",
-    dataType: "string",
-    alignment: "left",
-    width: 150,
-    visible: true,
-  },
-];
+import employeeColumns from "./employee-columns";
 
 export default {
   name: "EmployeeList",
@@ -265,10 +188,10 @@ export default {
     return {
       dataSource: mockEmployee.getEmployees() || [],
 
-      defaultColumns: [...defaultColumns],
+      defaultColumns: [...employeeColumns],
 
       // Loại bỏ tham chiếu tránh thay đổi mảng gốc
-      tableColumns: defaultColumns.map((col) => ({ ...col })),
+      tableColumns: employeeColumns.map((col) => ({ ...col })),
 
       selectedRowsData: [],
 

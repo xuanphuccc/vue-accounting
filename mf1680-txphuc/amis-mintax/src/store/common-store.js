@@ -1,4 +1,6 @@
 const commonStore = {
+  namespaced: true,
+
   state: () => ({
     isCompactSidebar: false,
   }),

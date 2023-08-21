@@ -50,7 +50,11 @@
       </template>
 
       <!-- Cột action -->
-      <DxColumn cell-template="cellTemplate" css-class="ms-table__action-column"> </DxColumn>
+      <DxColumn
+        v-if="actionColumnEnabled"
+        cell-template="cellTemplate"
+        css-class="ms-table__action-column"
+      ></DxColumn>
       <template #cellTemplate="{}">
         <div class="ms-table__action-container">
           <MISAButton type="rounded" color="secondary">
@@ -128,6 +132,12 @@ export default {
     // - sortOrder: String (Loại sắp xếp: asc | desc)
     sort: {
       type: Object,
+    },
+
+    // Hiện/ẩn cột action
+    actionColumnEnabled: {
+      type: Boolean,
+      default: true,
     },
   },
   data: function () {
