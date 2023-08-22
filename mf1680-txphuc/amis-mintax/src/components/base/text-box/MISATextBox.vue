@@ -2,6 +2,7 @@
   <DxTextBox
     :value="value"
     @input="onInput"
+    @enter-key="$emit('enter-key', $event)"
     :placeholder="placeholder"
     :width="width"
     :disabled="disabled"
@@ -19,7 +20,7 @@ import DxTextBox from "devextreme-vue/text-box";
 
 export default {
   name: "MISATextBox",
-  emits: ["input"],
+  emits: ["input", "enter-key"],
   components: {
     DxTextBox,
   },

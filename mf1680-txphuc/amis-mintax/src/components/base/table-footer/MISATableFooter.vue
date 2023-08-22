@@ -41,12 +41,12 @@
       <div class="ms-table__page-controls">
         <span
           @click="handlePrevPage"
-          :class="['ms-table__prev-btn', { '--disable': this.currentPage <= 1 }]"
+          :class="['ms-table__prev-btn', { '--disable': currentPage <= 1 }]"
           ><MISAIcon icon="angle-left"
         /></span>
         <span
           @click="handleNextPage"
-          :class="['ms-table__next-btn', { '--disable': this.currentPage >= this.totalPage }]"
+          :class="['ms-table__next-btn', { '--disable': currentPage >= totalPages }]"
         >
           <MISAIcon icon="angle-right" />
         </span>
@@ -74,7 +74,7 @@ export default {
     },
 
     // Tổng số trang
-    totalPage: {
+    totalPages: {
       type: Number,
       default: 0,
     },
@@ -102,7 +102,7 @@ export default {
         let maxRange = this.currentPage * this.pageSize;
         let minRange = maxRange - this.pageSize + 1;
 
-        if (this.currentPage === this.totalPage) {
+        if (this.currentPage === this.totalPages) {
           maxRange = this.totalRecords;
         }
 
@@ -124,7 +124,7 @@ export default {
      * Author: txphuc (30/06/2023)
      */
     handleNextPage() {
-      if (this.currentPage && this.totalPage && this.currentPage < this.totalPage) {
+      if (this.currentPage && this.totalPages && this.currentPage < this.totalPages) {
         const nextPage = this.currentPage + 1;
         this.$emit("next-page", nextPage);
       }

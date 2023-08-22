@@ -77,7 +77,7 @@
         <div v-if="selectedRowsData?.length === 0" class="filter-container">
           <div class="filter__left">
             <div class="controls__group">
-              <MISATextBox placeholder="Tìm theo Mã/Tên nhân viên">
+              <MISATextBox @enter-key="applySearch" placeholder="Tìm theo Mã/Tên nhân viên">
                 <MISAIcon size="20" icon="search" />
               </MISATextBox>
 
@@ -141,7 +141,17 @@
         keyExpr="EmployeeID"
         ref="tableRef"
       ></MISATable>
-      <MISATableFooter :pageSize="15" :totalRecords="100" />
+
+      <!-- Phân trang -->
+      <MISATableFooter
+        @next-page="onNextPage"
+        @prev-page="onPrevPage"
+        @select-page-size="onPageSizeChange"
+        :currentPage="filterRequest.page"
+        :pageSize="filterRequest.pageSize"
+        :totalRecords="pagingInfo.totalRecords"
+        :totalPages="pagingInfo.totalPages"
+      />
 
       <!-- Tuỳ chỉnh cột -->
       <MISATableCustomize
@@ -170,6 +180,7 @@ import MISATreeView from "@/components/base/tree-view/MISATreeView.vue";
 import MISAFilterPopup from "@/components/base/filter-popup/MISAFilterPopup.vue";
 import mockEmployee from "./mock-employee";
 import employeeColumns from "./employee-columns";
+import employeeApi from "@/api/employee-api";
 
 export default {
   name: "EmployeeList",
@@ -193,15 +204,32 @@ export default {
       // Loại bỏ tham chiếu tránh thay đổi mảng gốc
       tableColumns: employeeColumns.map((col) => ({ ...col })),
 
+      // Các bản ghi đã được chọn (xoá nhiều)
       selectedRowsData: [],
 
+      // Bộ lọc, tìm kiếm, sắp xếp, phân trang
       filterRequest: {
+        page: 1,
+        pageSize: 15,
+        search: null,
         sortColumn: null,
         sortOrder: null,
       },
 
+      // Thông tin phân trang
+      pagingInfo: {
+        totalPages: 0,
+        totalRecords: 0,
+      },
+
+      // Trạng thái của các popup
       isOpenTableCustomize: false,
       isOpenFilterPopup: false,
+
+      // Trạng thái loading của table
+      loading: {
+        table: false,
+      },
     };
   },
   methods: {
@@ -254,9 +282,97 @@ export default {
       this.tableColumns = columns;
     },
 
-    test(e) {
-      console.log(e);
+    /**
+     * Description: Xử lý sang trang tiếp theo
+     * Author: txphuc (22/08/2023)
+     */
+    onNextPage(page) {
+      this.filterRequest.page = page;
     },
+
+    /**
+     * Description: Xử lý sang trang trước đó
+     * Author: txphuc (22/08/2023)
+     */
+    onPrevPage(page) {
+      this.filterRequest.page = page;
+    },
+
+    /**
+     * Description: Xử lý thay đổi page size
+     * Author: txphuc (22/08/2023)
+     */
+    onPageSizeChange(pageSize) {
+      this.filterRequest.pageSize = pageSize;
+
+      // Về trang đầu khi đổi page size
+      this.filterRequest.page = 1;
+    },
+
+    /**
+     * Description: Apply search để bắt đầu tìm kiếm
+     * Author: txphuc (22/08/2023)
+     */
+    applySearch(e) {
+      this.filterRequest.search = e.event?.target?.value;
+
+      // Về trang đầu khi tìm kiếm
+      this.filterRequest.page = 1;
+    },
+
+    /**
+     * Description: Hàm load dữ liệu danh sách nhân viên từ api
+     * Author: txphuc (27/06/2023)
+     */
+    async getEmployeesData() {
+      try {
+        this.loading.table = true;
+
+        const response = await employeeApi.filter(this.filterRequest);
+
+        // Hiển thị dữ liệu ra bảng
+        this.dataSource = response.data?.Data;
+
+        // Lấy dữ liệu phân trang
+        const totalRecords = response.data.TotalRecords;
+        const pageSize = this.filterRequest.pageSize;
+        const totalPages = Math.ceil(totalRecords / pageSize);
+
+        this.pagingInfo.totalRecords = totalRecords;
+        this.pagingInfo.totalPages = totalPages;
+
+        this.loading.table = false;
+
+        // Nếu trang hiện tại không có data thì về trang cuối
+        // (dùng cho trường hợp xoá hết bản ghi trang cuối)
+        if (response.data?.Data?.length === 0) {
+          this.filterRequest.page = totalPages;
+        }
+      } catch (error) {
+        console.warn(error);
+      }
+    },
+  },
+
+  watch: {
+    /**
+     * Description: Gọi lại data khi filter thay đổi
+     * Author: txphuc (22/08/2023)
+     */
+    filterRequest: {
+      handler: function () {
+        this.getEmployeesData();
+      },
+      deep: true,
+    },
+  },
+
+  /**
+   * Description: Get dữ liệu khi khởi tạo
+   * Author: txphuc (22/08/2023)
+   */
+  created: function () {
+    this.getEmployeesData();
   },
 };
 </script>

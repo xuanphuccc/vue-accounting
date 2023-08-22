@@ -6,7 +6,7 @@
       :key-expr="keyExpr"
       :allow-column-resizing="true"
       column-resizing-mode="widget"
-      :allow-column-reordering="false"
+      :allow-column-reordering="true"
       :column-auto-width="true"
       :show-row-lines="true"
       :show-column-lines="false"
@@ -27,7 +27,7 @@
         :key="index"
         v-bind="column"
         :visible="column.visible === true || column.visible === undefined ? true : false"
-        :allow-sorting="false"
+        :allow-sorting="!apiSort"
         header-cell-template="headerCellTemplate"
       />
       <template #headerCellTemplate="{ data }">
@@ -35,7 +35,7 @@
           {{ data.column.caption }}
 
           <span
-            v-if="data.column.dataField === sort.sortColumn"
+            v-if="apiSort && data.column.dataField === sort.sortColumn"
             :class="['ms-table__sort-icon', `--order-${sort.sortOrder}`]"
           >
             <MISAIcon size="20" icon="arrow-down" />
@@ -76,12 +76,16 @@
           </MISAButton>
         </div>
       </template>
+
+      <!-- Ẩn phân trang mặc định -->
+      <DxPager :allowed-page-sizes="[1000]" />
+      <DxPaging :page-size="1000" />
     </DxDataGrid>
   </div>
 </template>
 
 <script>
-import { DxDataGrid, DxColumn, DxSelection } from "devextreme-vue/data-grid";
+import { DxDataGrid, DxColumn, DxSelection, DxPager, DxPaging } from "devextreme-vue/data-grid";
 import MISAButton from "../button/MISAButton.vue";
 import MISAIcon from "../icon/MISAIcon.vue";
 import enums from "@/enum/enum";
@@ -94,6 +98,8 @@ export default {
     DxSelection,
     MISAButton,
     MISAIcon,
+    DxPager,
+    DxPaging,
   },
   emits: [
     "selection-changed",
@@ -132,6 +138,11 @@ export default {
     // - sortOrder: String (Loại sắp xếp: asc | desc)
     sort: {
       type: Object,
+    },
+
+    apiSort: {
+      type: Boolean,
+      default: false,
     },
 
     // Hiện/ẩn cột action

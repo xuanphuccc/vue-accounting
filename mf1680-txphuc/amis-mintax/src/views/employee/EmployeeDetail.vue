@@ -52,12 +52,12 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-100 d-flex align-center flex-wrap pr-12">
+                      <label for="test" class="height-100 d-flex align-center flex-wrap pr-12">
                         Mã người nộp thuế <span class="required-mark">*</span>
-                      </div>
+                      </label>
                     </MISACol>
                     <MISACol :span="8">
-                      <MISATextBox placeholder="Nhập mã người nộp thuế" />
+                      <MISATextBox id="test" placeholder="Nhập mã người nộp thuế" />
                     </MISACol>
                   </MISARow>
                 </div>
