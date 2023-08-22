@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Domain
 {
-    public class EmployeeRelationship
+    public class EmployeeRelationship : IHasKey
     {
         /// <summary>
         /// Khoá chính
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
         [Required]
-        public string EmployeeRelationshipID { get; set; } = string.Empty;
+        public Guid EmployeeRelationshipID { get; set; }
 
         /// <summary>
         /// Khoá ngoại liên kết bảng Employee
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
         [Required]
-        public string EmployeeID { get; set; } = string.Empty;
+        public Guid EmployeeID { get; set; }
 
         /// <summary>
         /// Họ tên thành viên
@@ -227,5 +227,15 @@ namespace MISA.AmisMintax.Domain
         [StringLength(255)]
         public string? Description { get; set; }
 
+
+        /// <summary>
+        /// Lấy Id của đối tượng
+        /// </summary>
+        /// <returns>Id của đối tượng</returns>
+        /// CreatedBy: txphuc (18/07/2023)
+        public Guid GetKey()
+        {
+            return EmployeeRelationshipID;
+        }
     }
 }

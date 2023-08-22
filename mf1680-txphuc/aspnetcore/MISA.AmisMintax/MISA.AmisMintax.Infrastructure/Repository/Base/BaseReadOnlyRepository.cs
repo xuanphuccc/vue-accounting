@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Infrastructure
 {
-    public abstract class BaseReadOnlyRepository<TEntity, TModel> : IBaseReadOnlyRepository<TEntity, TModel>
+    public abstract class BaseReadOnlyRepository<TEntity> : IBaseReadOnlyRepository<TEntity>
     {
         #region Fields & Properties
         protected readonly IUnitOfWork _unitOfWork;
         public virtual string TableName { get; protected set; } = typeof(TEntity).Name;
-        public virtual string TableId { get; protected set; } = $"{typeof(TEntity).Name}Id";
+        public virtual string TableId { get; protected set; } = $"{typeof(TEntity).Name}ID";
         #endregion
 
         #region Constructors
@@ -31,11 +31,11 @@ namespace MISA.AmisMintax.Infrastructure
         /// </summary>
         /// <returns>Danh sách đối tượng</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        public async Task<IEnumerable<TModel>> GetAllAsync()
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             var sql = $"Proc_{TableName}_GetAll";
 
-            var entities = await _unitOfWork.Connection.QueryAsync<TModel>(sql, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
+            var entities = await _unitOfWork.Connection.QueryAsync<TEntity>(sql, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
 
             return entities;
         }
@@ -74,26 +74,6 @@ namespace MISA.AmisMintax.Infrastructure
             var sql = $"Proc_{TableName}_GetListByIds";
 
             var entities = await _unitOfWork.Connection.QueryAsync<TEntity>(sql, param, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
-
-            return entities;
-        }
-
-        /// <summary>
-        /// Lấy danh sách bản ghi đầy đủ thông tin đơn vị và vị trí theo Id
-        /// </summary>
-        /// <param name="entityIds">Danh sách Id</param>
-        /// <returns>Danh sách bản ghi thoả mãn</returns>
-        /// CreatedBy: txphuc (26/07/2023)
-        public async Task<IEnumerable<TModel>> GetListInfoByIdsAsync(IEnumerable<Guid> entityIds)
-        {
-            var entityIdsString = string.Join(", ", entityIds.Select(entityId => $"'{entityId}'"));
-
-            var param = new DynamicParameters();
-            param.Add($"@{TableId}s", entityIdsString);
-
-            var sql = $"Proc_{TableName}_GetListInfoByIds";
-
-            var entities = await _unitOfWork.Connection.QueryAsync<TModel>(sql, param, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
 
             return entities;
         }

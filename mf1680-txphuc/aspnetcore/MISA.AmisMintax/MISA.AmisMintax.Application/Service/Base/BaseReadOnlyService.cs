@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Application
 {
-    public abstract class BaseReadOnlyService<TEntity, TModel, TEntityDto> : IBaseReadOnlyService<TEntityDto>
+    public abstract class BaseReadOnlyService<TEntity, TEntityDto> : IBaseReadOnlyService<TEntityDto>
     {
         #region Fields
-        protected readonly IBaseReadOnlyRepository<TEntity, TModel> _baseReadOnlyRepository;
+        protected readonly IBaseReadOnlyRepository<TEntity> _baseReadOnlyRepository;
         protected readonly IMapper _mapper;
         #endregion
 
         #region Constructors
-        protected BaseReadOnlyService(IBaseReadOnlyRepository<TEntity, TModel> repository, IMapper mapper)
+        protected BaseReadOnlyService(IBaseReadOnlyRepository<TEntity> repository, IMapper mapper)
         {
             _baseReadOnlyRepository = repository;
             _mapper = mapper;
@@ -50,8 +50,21 @@ namespace MISA.AmisMintax.Application
 
             var entityDto = _mapper.Map<TEntityDto>(entity);
 
+            // Custom lại dữ liệu nếu cần
+            await CustomDetailData(entityDto);
+
             return entityDto;
-        } 
+        }
+
+        /// <summary>
+        /// Xử lý chỉnh sửa dữ liệu theo yêu cầu
+        /// </summary>
+        /// <param name="entityDto">Đối tượng cần chỉnh sửa</param>
+        /// CreatedBy: txphuc (22/08/2023)
+        public virtual Task CustomDetailData(TEntityDto entityDto)
+        {
+            return Task.FromResult(entityDto);
+        }
         #endregion
     }
 }

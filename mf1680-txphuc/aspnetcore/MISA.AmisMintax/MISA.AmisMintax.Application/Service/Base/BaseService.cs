@@ -10,18 +10,18 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Application
 {
-    public abstract class BaseService<TEntity, TModel, TEntityDto, TEntityCreateDto, TEntityUpdateDto> :
-        BaseReadOnlyService<TEntity, TModel, TEntityDto>,
+    public abstract class BaseService<TEntity, TEntityDto, TEntityCreateDto, TEntityUpdateDto> :
+        BaseReadOnlyService<TEntity, TEntityDto>,
         IBaseService<TEntityDto, TEntityCreateDto, TEntityUpdateDto> where TEntity : IHasKey
     {
         #region Fields
-        protected readonly IBaseRepository<TEntity, TModel> _baseRepository;
+        protected readonly IBaseRepository<TEntity> _baseRepository;
         protected readonly IUnitOfWork _unitOfWork;
         #endregion
 
         #region Constructor
         protected BaseService(
-            IBaseRepository<TEntity, TModel> baseRepository,
+            IBaseRepository<TEntity> baseRepository,
             IUnitOfWork unitOfWork,
             IMapper mapper
             ) : base(baseRepository, mapper)

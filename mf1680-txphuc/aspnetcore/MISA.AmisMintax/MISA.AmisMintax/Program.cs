@@ -6,6 +6,7 @@ using MISA.AmisMintax.Infrastructure;
 using System.Globalization;
 using MISA.AmisMintax.Middleware;
 using MISA.AmisMintax.Domain.Resources.ErrorMessage;
+using MISA.AmisMintax.Domain.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,6 +52,8 @@ builder.Services.AddScoped<IUnitOfWork>(provider => new UnitOfWork(connectionStr
 
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+
+builder.Services.AddScoped<IEmployeeRelationshipRepository, EmployeeRelationshipRepository>();
 
 //Localization config
 builder.Services.AddLocalization();

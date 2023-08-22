@@ -16,7 +16,7 @@ namespace MISA.AmisMintax.Application
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
         [Required]
-        public string EmployeeID { get; set; } = string.Empty;
+        public Guid EmployeeID { get; set; }
 
         /// <summary>
         /// Mã Loại đối tượng
@@ -252,6 +252,10 @@ namespace MISA.AmisMintax.Application
         /// CreatedBy: txphuc (21/08/2023)
         public bool? UsageStatus { get; set; }
 
-        List<EmployeeRelationshipDto>? EmployeeRelationships { get; set; }
+        /// <summary>
+        /// Danh sách người thân của nhân viên
+        /// </summary>
+        /// CreatedBy: txphuc (21/08/2023)
+        public List<EmployeeRelationshipDto> EmployeeRelationships { get; set; } = new List<EmployeeRelationshipDto>();
     }
 }

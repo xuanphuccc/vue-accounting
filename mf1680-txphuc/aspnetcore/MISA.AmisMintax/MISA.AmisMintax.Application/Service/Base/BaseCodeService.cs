@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Application
 {
-    public abstract class BaseCodeService<TEntity, TModel, TEntityDto, TEntityCreateDto, TEntityUpdateDto> :
-        BaseService<TEntity, TModel, TEntityDto, TEntityCreateDto, TEntityUpdateDto>,
+    public abstract class BaseCodeService<TEntity, TEntityDto, TEntityCreateDto, TEntityUpdateDto> :
+        BaseService<TEntity, TEntityDto, TEntityCreateDto, TEntityUpdateDto>,
         IBaseCodeService<TEntityDto, TEntityCreateDto, TEntityUpdateDto> where TEntity: IHasKey
     {
         #region Fields
-        protected readonly IBaseCodeRepository<TEntity, TModel> _baseCodeRepository;
+        protected readonly IBaseCodeRepository<TEntity> _baseCodeRepository;
         #endregion
 
         #region Constructors
         protected BaseCodeService(
-            IBaseCodeRepository<TEntity, TModel> baseCodeRepository,
+            IBaseCodeRepository<TEntity> baseCodeRepository,
             IUnitOfWork unitOfWork,
             IMapper mapper
             ) : base(baseCodeRepository, unitOfWork, mapper)

@@ -10,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Infrastructure
 {
-    public abstract class ExcelService<TEntity, TModel, TEntityDto, TEntityExcelInsertDto> : ExcelCore<TEntityDto, TEntityExcelInsertDto>, IExcelService<TEntityDto, TEntityExcelInsertDto>
+    public abstract class ExcelService<TEntity, TEntityDto, TEntityExcelInsertDto> : ExcelCore<TEntityDto, TEntityExcelInsertDto>, IExcelService<TEntityDto, TEntityExcelInsertDto>
     {
         #region Fields
-        protected readonly IBaseReadOnlyRepository<TEntity, TModel> _baseReadOnlyRepository;
+        protected readonly IBaseReadOnlyRepository<TEntity> _baseReadOnlyRepository;
         protected readonly IMapper _mapper;
         #endregion
 
         #region Constructors
-        protected ExcelService(IBaseReadOnlyRepository<TEntity, TModel> baseReadOnlyRepository, IMapper mapper)
+        protected ExcelService(IBaseReadOnlyRepository<TEntity> baseReadOnlyRepository, IMapper mapper)
         {
             _baseReadOnlyRepository = baseReadOnlyRepository;
             _mapper = mapper;
@@ -51,7 +51,7 @@ namespace MISA.AmisMintax.Infrastructure
         /// CreatedBy: txphuc (26/07/2023)
         public async Task<byte[]> ExportList(IEnumerable<Guid> entityIds, IEnumerable<ExcelExportRequestColumnDto> columns)
         {
-            var entities = await _baseReadOnlyRepository.GetListInfoByIdsAsync(entityIds);
+            var entities = await _baseReadOnlyRepository.GetListByIdsAsync(entityIds);
             var entityDtos = _mapper.Map<IEnumerable<TEntityDto>>(entities);
 
             var bytes = ExportToExcel(entityDtos, columns);

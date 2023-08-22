@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Infrastructure
 {
-    public abstract class BaseCodeRepository<TEntity, TModel> : BaseRepository<TEntity, TModel>, IBaseCodeRepository<TEntity, TModel> where TEntity : IHasKey
+    public abstract class BaseCodeRepository<TEntity> : BaseRepository<TEntity>, IBaseCodeRepository<TEntity> where TEntity : IHasKey
     {
         #region Constructors
         public BaseCodeRepository(IUnitOfWork unitOfWork) : base(unitOfWork)

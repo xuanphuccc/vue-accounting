@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Domain
 {
-    public interface IBaseRepository<TEntity, TModel> : IBaseReadOnlyRepository<TEntity, TModel>
+    public interface IBaseRepository<TEntity> : IBaseReadOnlyRepository<TEntity>
     {
         /// <summary>
         /// Tạo đối tượng mới

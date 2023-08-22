@@ -19,6 +19,9 @@ namespace MISA.AmisMintax.Application
 
             // Cập nhật
             CreateMap<EmployeeUpdateDto, Employee>();
+
+            // Filter, tìm kiếm, sắp xếp, phân trang
+            CreateMap<EmployeeFilterDto, EmployeeFilterModel>();
         }
     }
 }
