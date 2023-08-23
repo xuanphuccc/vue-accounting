@@ -256,6 +256,6 @@ namespace MISA.AmisMintax.Application
         /// Danh sách người thân của nhân viên
         /// </summary>
         /// CreatedBy: txphuc (21/08/2023)
-        public List<EmployeeRelationshipDto> EmployeeRelationships { get; set; } = new List<EmployeeRelationshipDto>();
+        public List<EmployeeRelationshipDto> EmployeeRelationships { get; set; } = new();
     }
 }

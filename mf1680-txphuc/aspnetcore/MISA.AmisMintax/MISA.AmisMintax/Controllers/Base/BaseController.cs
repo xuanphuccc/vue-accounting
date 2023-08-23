@@ -52,7 +52,7 @@ namespace MISA.AmisMintax
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteByIdAsync([FromRoute] Guid id)
         {
-            var result = await _baseService.DeleteByIdAsync(id);
+            var result = await _baseService.DeleteAsync(id);
 
             return Ok(result);
         }
@@ -66,7 +66,7 @@ namespace MISA.AmisMintax
         [HttpDelete]
         public async Task<IActionResult> DeleteAsync([FromBody] List<Guid> entityIds)
         {
-            var result = await _baseService.DeleteAsync(entityIds);
+            var result = await _baseService.DeleteMultipleAsync(entityIds);
 
             return Ok(result);
         }

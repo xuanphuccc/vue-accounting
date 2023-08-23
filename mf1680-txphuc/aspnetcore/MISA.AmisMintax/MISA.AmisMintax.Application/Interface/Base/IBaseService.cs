@@ -29,7 +29,7 @@ namespace MISA.AmisMintax.Application
         /// </summary>
         /// <param name="entityId">Id của đối tượng</param>
         /// CreatedBy: txphuc (18/07/2023)
-        Task<int> DeleteByIdAsync(Guid entityId);
+        Task<int> DeleteAsync(Guid entityId);
 
         /// <summary>
         /// Xoá nhiều đối tượng
@@ -37,6 +37,6 @@ namespace MISA.AmisMintax.Application
         /// <param name="employeeIds">Danh sách Id của các đối tượng cần xoá</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        Task<int> DeleteAsync(List<Guid> entityIds);
+        Task<int> DeleteMultipleAsync(List<Guid> entityIds);
     }
 }

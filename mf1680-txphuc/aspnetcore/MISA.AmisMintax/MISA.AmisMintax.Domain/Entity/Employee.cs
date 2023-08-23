@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Domain
 {
-    public class Employee : IHasKey, IHasCode
+    public class Employee : BaseAuditEntity, IHasKey, IHasCode
     {
         /// <summary>
         /// Khoá chính

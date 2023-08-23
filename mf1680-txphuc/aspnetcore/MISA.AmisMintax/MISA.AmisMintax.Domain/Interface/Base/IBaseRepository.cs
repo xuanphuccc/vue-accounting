@@ -17,6 +17,14 @@ namespace MISA.AmisMintax.Domain
         Task<int> InsertAsync(TEntity entity);
 
         /// <summary>
+        /// Thêm nhiều bản ghi
+        /// </summary>
+        /// <param name="entities">Danh sách đối tượng</param>
+        /// <returns>Số bản ghi được thêm thành công</returns>
+        /// CreatedBy: txphuc (22/08/2023)
+        Task<int> InsertMultipleAsync(IEnumerable<TEntity> entities);
+
+        /// <summary>
         /// Cập nhật đối tượng
         /// </summary>
         /// <param name="entity">Data của đối tượng</param>
@@ -25,12 +33,19 @@ namespace MISA.AmisMintax.Domain
         Task<int> UpdateAsync(TEntity entity);
 
         /// <summary>
+        /// Cập nhật nhều bản ghi
+        /// </summary>
+        /// <param name="entities">Danh sách đối tượng</param>
+        /// <returns>Số bản ghi bị ảnh hưởng</returns>
+        Task<int> UpdateMultipleAsync(IEnumerable<TEntity> entities);
+
+        /// <summary>
         /// Xoá đối tượng theo Id
         /// </summary>
         /// <param name="entity">Thông tin đối tượng</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        Task<int> DeleteByIdAsync(TEntity entity);
+        Task<int> DeleteAsync(TEntity entity);
 
         /// <summary>
         /// Xoá nhiều đối tượng
@@ -38,6 +53,6 @@ namespace MISA.AmisMintax.Domain
         /// <param name="entityIds">Danh sách Id của đối tượng cần xoá</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (24/07/2023)
-        Task<int> DeleteAsync(IEnumerable<Guid> entityIds);
+        Task<int> DeleteMultipleAsync(IEnumerable<Guid> entityIds);
     }
 }

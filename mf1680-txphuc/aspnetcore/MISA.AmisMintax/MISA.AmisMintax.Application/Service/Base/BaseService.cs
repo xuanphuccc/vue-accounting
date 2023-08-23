@@ -51,6 +51,12 @@ namespace MISA.AmisMintax.Application
 
             var result = await _baseRepository.InsertAsync(entity);
 
+            // Insert các bảng phụ nếu có
+            if(result > 0)
+            {
+                await InsertDetailTableAsync(entityCreateDto, entity.GetKey());
+            }
+
             return result;
         }
 
@@ -80,7 +86,7 @@ namespace MISA.AmisMintax.Application
         /// </summary>
         /// <param name="entityId">Id của đối tượng</param>
         /// CreatedBy: txphuc (18/07/2023)
-        public virtual async Task<int> DeleteByIdAsync(Guid entityId)
+        public virtual async Task<int> DeleteAsync(Guid entityId)
         {
             // Check đối tượng có tồn tại hay không
             var existEntity = await _baseRepository.GetByIdAsync(entityId);
@@ -88,7 +94,7 @@ namespace MISA.AmisMintax.Application
             // Check các bản ghi phụ thuộc
             await CheckConstraintForDeleteAsync(entityId);
 
-            var result = await _baseRepository.DeleteByIdAsync(existEntity);
+            var result = await _baseRepository.DeleteAsync(existEntity);
 
             return result;
         }
@@ -99,7 +105,7 @@ namespace MISA.AmisMintax.Application
         /// <param name="entityIds">Danh sách Id của các đối tượng cần xoá</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        public virtual async Task<int> DeleteAsync(List<Guid> entityIds)
+        public virtual async Task<int> DeleteMultipleAsync(List<Guid> entityIds)
         {
             try
             {
@@ -121,7 +127,7 @@ namespace MISA.AmisMintax.Application
                 }
 
                 // Xoá các bản ghi hợp lệ
-                var result = await _baseRepository.DeleteAsync(validIds);
+                var result = await _baseRepository.DeleteMultipleAsync(validIds);
 
                 // Trả về lỗi các mã không hợp lệ nếu có
                 if (invalidEntities != null && invalidEntities.ToList().Count > 0)
@@ -191,6 +197,18 @@ namespace MISA.AmisMintax.Application
         /// <returns></returns>
         /// CreatedBy: txphuc (18/07/2023)
         protected virtual Task CheckConstraintForDeleteAsync(Guid entityId)
+        {
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Insert các bảng phụ (nếu có)
+        /// </summary>
+        /// <param name="entityCreateDto">Data</param>
+        /// <param name="entityId">Id của bảng chính</param>
+        /// <returns></returns>
+        /// CreatedBy: txphuc (23/08/2023)
+        protected virtual Task InsertDetailTableAsync (TEntityCreateDto entityCreateDto, Guid entityId)
         {
             return Task.CompletedTask;
         }

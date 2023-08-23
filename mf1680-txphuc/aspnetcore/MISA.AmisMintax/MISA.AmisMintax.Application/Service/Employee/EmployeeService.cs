@@ -53,11 +53,46 @@ namespace MISA.AmisMintax.Application
             employeeDto.EmployeeRelationships = employeeRelationshipDtos.ToList();
         }
 
+        /// <summary>
+        /// Validate nghiệp vụ cho Insert
+        /// </summary>
+        /// <param name="entityCreateDto">CreateDto</param>
+        /// <returns>Entity</returns>
+        /// CreatedBy: txphuc (18/07/2023)
         protected override Task<Employee> MapCreateDtoToEntityAsync(EmployeeCreateDto entityCreateDto)
         {
-            throw new NotImplementedException();
+            var employee = _mapper.Map<Employee>(entityCreateDto);
+
+            employee.EmployeeID = Guid.NewGuid();
+
+            return Task.FromResult(employee);
         }
 
+        /// <summary>
+        /// Insert các bảng phụ
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
+        protected override async Task InsertDetailTableAsync(EmployeeCreateDto employeeCreateDto, Guid employeeId)
+        {
+            var employeeRelationShips = _mapper.Map<IEnumerable<EmployeeRelationship>>(employeeCreateDto.EmployeeRelationships);
+
+            foreach (var employeeRelationship in employeeRelationShips)
+            {
+                employeeRelationship.EmployeeRelationshipID = Guid.NewGuid();
+                employeeRelationship.EmployeeID = employeeId;
+            }
+
+            await _employeeRelationshipRepository.InsertMultipleAsync(employeeRelationShips);
+        }
+
+        /// <summary>
+        /// Validate nghiệp vụ cho Update
+        /// </summary>
+        /// <param name="entityId">Id của bản ghi</param>
+        /// <param name="entityUpdateDto">UpdateDto</param>
+        /// <returns>Entity</returns>
+        /// CreatedBy: txphuc (18/07/2023)
         protected override Task<Employee> MapUpdateDtoToEntityAsync(Guid entityId, EmployeeUpdateDto entityUpdateDto)
         {
             throw new NotImplementedException();

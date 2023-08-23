@@ -245,5 +245,11 @@ namespace MISA.AmisMintax.Application
         /// </summary>
         /// CreatedBy: txphuc (21/08/2023)
         public bool? UsageStatus { get; set; }
+
+        /// <summary>
+        /// Danh sách người thân của nhân viên
+        /// </summary>
+        /// CreatedBy: txphuc (21/08/2023)
+        public List<EmployeeRelationshipUpdateDto> EmployeeRelationships { get; set; } = new();
     }
 }
