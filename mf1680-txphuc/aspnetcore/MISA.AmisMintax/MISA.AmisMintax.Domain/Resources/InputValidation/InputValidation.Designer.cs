@@ -61,7 +61,7 @@ namespace MISA.AmisMintax.Domain.Resources.InputValidation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The {0} must be in the format XX-1000 +.
+        ///   Looks up a localized string similar to The {0} must be in the format NV1000 +.
         /// </summary>
         public static string CodeFormat {
             get {

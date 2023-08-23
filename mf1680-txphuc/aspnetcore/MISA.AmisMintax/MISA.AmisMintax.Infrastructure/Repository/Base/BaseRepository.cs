@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using static Dapper.SqlMapper;
+using static OfficeOpenXml.ExcelErrorValue;
 
 namespace MISA.AmisMintax.Infrastructure
 {
@@ -45,38 +46,46 @@ namespace MISA.AmisMintax.Infrastructure
         /// CreatedBy: txphuc (22/08/2023)
         public async Task<int> InsertMultipleAsync(IEnumerable<TEntity> entities)
         {
-            List<string> queries = new();
+            var parameters = new DynamicParameters();
 
-            foreach (var entity in entities)
-            {
-                var sql = BuildInsertSql(entity);
-                queries.Add(sql);
-            }
-
-            // Gộp các lệnh INSERT
-            var queriesString = String.Join(" ", queries);
-
-            var result = await _unitOfWork.Connection.ExecuteAsync(queriesString, transaction: _unitOfWork.Transaction);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Tạo câu lệnh INSERT cho đối tượng
-        /// </summary>
-        /// <param name="entity">Đối tượng cần insert</param>
-        /// <returns>Chuỗi SQL</returns>
-        /// CreatedBy: txphuc (22/08/2023)
-        private string BuildInsertSql(TEntity entity)
-        {
             PropertyInfo[] properties = typeof(TEntity).GetProperties();
 
-            string columns = string.Join(", ", properties.Select(p => p.Name));
-            string values = string.Join(", ", properties.Select(p => GetSqlValue(p.GetValue(entity))));
+            List<string> insertQueries = new();
 
-            string insertSql = $"INSERT INTO {TableName} ({columns}) VALUES ({values})";
+            // Lấy tên các cột
+            IEnumerable<string> columns = properties.Select(property => property.Name);
+            string columnsString = string.Join(", ", columns);
 
-            return insertSql;
+            var index = 0;
+            foreach (var entity in entities)
+            {
+                // Gán placeholder và gán giá trị cho paramerter
+                IEnumerable<string> valuePlaceholders = properties.Select(property =>
+                {
+                    var propName = property.Name;
+                    var propValue = property.GetValue(entity);
+
+                    var valuePlaceholder = $"@{propName}{index}";
+
+                    parameters.Add(valuePlaceholder, propValue);
+
+                    return valuePlaceholder;
+                });
+
+                var valuePlaceholdersString = string.Join(", ", valuePlaceholders);
+
+                string insertQuery = $"INSERT INTO {TableName} ({columnsString}) VALUES ({valuePlaceholdersString})";
+
+                insertQueries.Add(insertQuery);
+
+                index++;
+            }
+
+            var insertSqlString = string.Join("; ", insertQueries);
+
+            var result = await _unitOfWork.Connection.ExecuteAsync(insertSqlString, parameters, transaction: _unitOfWork.Transaction);
+
+            return result;
         }
 
         /// <summary>
@@ -103,24 +112,46 @@ namespace MISA.AmisMintax.Infrastructure
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
         public async Task<int> UpdateMultipleAsync(IEnumerable<TEntity> entities)
         {
-            return 0;
-        }
+            var parameters = new DynamicParameters();
 
-        /// <summary>
-        /// Tạo câu lệnh INSERT cho đối tượng
-        /// </summary>
-        /// <param name="entity">Đối tượng cần insert</param>
-        /// <returns>Chuỗi SQL</returns>
-        /// CreatedBy: txphuc (22/08/2023)
-        private string BuildUpdateSql(TEntity entity)
-        {
             PropertyInfo[] properties = typeof(TEntity).GetProperties();
 
-            string columns = string.Join(", ", properties.Select(p => p.Name));
-            string values = string.Join(", ", properties.Select(p => GetSqlValue(p.GetValue(entity))));
+            List<string> insertQueries = new();
 
-            string insertSql = $"UPDATE {TableName} e \r\nSET EmployeeID = '',\r\nWHERE EmployeeID = '';";
-            return insertSql;
+            // Lấy tên các cột
+            IEnumerable<string> columns = properties.Select(p => p.Name);
+            string columnsString = string.Join(", ", columns);
+
+            var index = 0;
+            foreach (var entity in entities)
+            {
+                // Gán placeholder và gán giá trị cho paramerter
+                IEnumerable<string> valuePlaceholders = properties.Select(property =>
+                {
+                    var propName = property.Name;
+                    var propValue = property.GetValue(entity);
+
+                    var valuePlaceholder = $"@{propName}{index}";
+
+                    parameters.Add(valuePlaceholder, propValue);
+
+                    return $"{propName} = {valuePlaceholder}";
+                });
+
+                var valuePlaceholdersString = string.Join(", ", valuePlaceholders);
+
+                string insertQuery = $"UPDATE {TableName} SET {valuePlaceholdersString} WHERE {TableName}ID = '{entity.GetKey()}'";
+
+                insertQueries.Add(insertQuery);
+
+                index++;
+            }
+
+            var insertSqlString = string.Join("; ", insertQueries);
+
+            var result = await _unitOfWork.Connection.ExecuteAsync(insertSqlString, parameters, transaction: _unitOfWork.Transaction);
+
+            return result;
         }
 
         /// <summary>
@@ -157,7 +188,7 @@ namespace MISA.AmisMintax.Infrastructure
         {
             var entityIdsString = string.Join(", ", entityIds.Select(entity => $"'{entity}'"));
 
-            if(String.IsNullOrEmpty(entityIdsString))
+            if (String.IsNullOrEmpty(entityIdsString))
             {
                 // Trường hợp không có Id nào
                 entityIdsString = "''";
@@ -194,88 +225,6 @@ namespace MISA.AmisMintax.Infrastructure
 
             return parameters;
         }
-
-        /// <summary>
-        /// Chuyển đổi dữ liệu phù hợp với lệnh SQL
-        /// </summary>
-        /// <param name="value">Giá trị cần chuyển</param>
-        /// <returns>Chuỗi có định dạng phù hợp</returns>
-        /// CreatedBy: txphuc (22/08/2023)
-        private string GetSqlValue(object value)
-        {
-            if (value is null)
-            {
-                return "NULL";
-            }
-            else if (value is string || value is Guid)
-            {
-                return $"'{value}'";
-            }
-            else if (value is DateTime)
-            {
-                return $"'{((DateTime)value).ToString("yyyy-MM-dd")}'";
-            }
-            else if (value.GetType().IsEnum)
-            {
-                return ((int)value).ToString();
-            }
-            else
-            {
-                return value.ToString() ?? "NULL";
-            }
-        }
-
-
-        //public async Task<int> InsertManyAsync(List<TEntity> entities)
-        //{
-        //    int rowsInserted = 0;
-
-        //    var parameters = new DynamicParameters();
-        //    var sb = new StringBuilder();
-        //    sb.Append($"INSERT INTO {tableName} (");
-
-        //    // Get the properties of the entity
-        //    var properties = typeof(TEntity).GetProperties();
-
-        //    // Add the property names to the SQL statement
-        //    foreach (var property in properties)
-        //    {
-        //        var propertyName = $"m_{property.Name}";
-        //        sb.Append($"{propertyName}, ");
-        //    }
-
-        //    sb.Append("m_CreatedDate, m_CreatedBy, m_ModifiedDate, m_ModifiedBy) VALUES ");
-
-        //    // Add the parameter placeholders to the SQL statement
-        //    for (int i = 0; i < entities.Count; i++)
-        //    {
-        //        sb.Append("(");
-
-        //        foreach (var property in properties)
-        //        {
-        //            var propertyName = $"m_{property.Name}{i}";
-        //            var propertyValue = property.GetValue(entities[i]);
-        //            parameters.Add(propertyName, propertyValue);
-        //            sb.Append($"@{propertyName}, ");
-        //        }
-
-        //        sb.Append($"@m_CreatedDate{i}, @m_CreatedBy{i}, @m_ModifiedDate{i}, @m_ModifiedBy{i}), ");
-
-        //        parameters.Add($"m_{tableName}Id{i}", Guid.NewGuid());
-        //        parameters.Add($"m_CreatedDate{i}", DateTime.Now);
-        //        parameters.Add($"m_CreatedBy{i}", "dgbao");
-        //        parameters.Add($"m_ModifiedDate{i}", DateTime.Now);
-        //        parameters.Add($"m_ModifiedBy{i}", "dgbao");
-        //    }
-
-        //    sb.Remove(sb.Length - 2, 2);
-
-        //    // Thực thi câu lệnh insert tổng hợp 
-        //    rowsInserted = await _uow.Connection.ExecuteAsync(sb.ToString(), parameters,
-        //        commandType: CommandType.Text, transaction: _uow.Transaction);
-
-        //    return rowsInserted;
-        //}
         #endregion
     }
 }

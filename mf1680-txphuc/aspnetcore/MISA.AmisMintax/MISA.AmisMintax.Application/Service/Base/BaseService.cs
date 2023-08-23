@@ -51,7 +51,7 @@ namespace MISA.AmisMintax.Application
 
             var result = await _baseRepository.InsertAsync(entity);
 
-            // Insert các bảng phụ nếu có
+            // Insert các bảng phụ (nếu có)
             if(result > 0)
             {
                 await InsertDetailTableAsync(entityCreateDto, entity.GetKey());
@@ -77,6 +77,12 @@ namespace MISA.AmisMintax.Application
             }
 
             var result = await _baseRepository.UpdateAsync(entity);
+
+            // Cập nhật bảng phụ (nếu có)
+            if(result > 0)
+            {
+                await UpdateDetailTableAsync(entityUpdateDto, entity.GetKey());
+            }
 
             return result;
         }
@@ -209,6 +215,18 @@ namespace MISA.AmisMintax.Application
         /// <returns></returns>
         /// CreatedBy: txphuc (23/08/2023)
         protected virtual Task InsertDetailTableAsync (TEntityCreateDto entityCreateDto, Guid entityId)
+        {
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Update các bảng phụ (nếu có)
+        /// </summary>
+        /// <param name="entityCreateDto">Data</param>
+        /// <param name="entityId">Id của bảng chính</param>
+        /// <returns></returns>
+        /// CreatedBy: txphuc (23/08/2023)
+        protected virtual Task UpdateDetailTableAsync(TEntityUpdateDto entityUpdateDto, Guid entityId)
         {
             return Task.CompletedTask;
         }

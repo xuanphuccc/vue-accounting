@@ -32,21 +32,5 @@ namespace MISA.AmisMintax.Controllers
 
             return Ok(pagedEmployees);
         }
-
-        [HttpPost("Test")]
-        public async Task<IActionResult> InsertMultipleTest([FromBody] List<EmployeeRelationship> employeeRelationshipCreateDto)
-        {
-            foreach (var item in employeeRelationshipCreateDto)
-            {
-                item.EmployeeRelationshipID = Guid.NewGuid();
-                item.EmployeeID = new Guid("11452b0c-768e-5ff7-0d63-eeb1d8ed8cef");
-                item.FullName = "Test";
-                item.Relationship = 9;
-            }
-
-            var result = await _employeeRelationshipRepository.InsertMultipleAsync(employeeRelationshipCreateDto);
-
-            return Ok();
-        }
     }
 }

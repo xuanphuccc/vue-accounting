@@ -12,6 +12,13 @@ namespace MISA.AmisMintax.Application
     public class EmployeeRelationshipUpdateDto
     {
         /// <summary>
+        /// Khoá chính
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        [Required(ErrorMessageResourceName = nameof(InputValidation.IsRequired), ErrorMessageResourceType = typeof(InputValidation))]
+        public string EmployeeRelationshipID { get; set; } = string.Empty;
+
+        /// <summary>
         /// Họ tên thành viên
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
@@ -219,6 +226,6 @@ namespace MISA.AmisMintax.Application
         /// Trạng thái sửa đổi
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
-        public bool IsModified { get; set; }
+        public EditMode? EditMode  { get; set; }
     }
 }
