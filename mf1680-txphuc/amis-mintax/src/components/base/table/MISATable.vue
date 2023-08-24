@@ -55,7 +55,7 @@
         cell-template="cellTemplate"
         css-class="ms-table__action-column"
       ></DxColumn>
-      <template #cellTemplate="{}">
+      <template #cellTemplate="{ data }">
         <div class="ms-table__action-container">
           <MISAButton type="rounded" color="secondary">
             <template slot="icon">
@@ -63,13 +63,13 @@
             </template>
           </MISAButton>
 
-          <MISAButton @click="$emit('edit-row')" type="rounded" color="secondary">
+          <MISAButton @click="$emit('edit-row', data)" type="rounded" color="secondary">
             <template slot="icon">
               <MISAIcon size="20" icon="pen" />
             </template>
           </MISAButton>
 
-          <MISAButton @click="$emit('delete-row')" type="rounded" color="secondary">
+          <MISAButton @click="$emit('delete-row', data)" type="rounded" color="secondary">
             <template slot="icon">
               <MISAIcon color="#eb3333" size="20" icon="trash" />
             </template>

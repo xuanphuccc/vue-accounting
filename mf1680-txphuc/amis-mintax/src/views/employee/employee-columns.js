@@ -33,7 +33,7 @@ const employeeColumns = [
     dataType: "string",
     alignment: "left",
     customizeText: (e) =>
-      e.value === enums.gender.MALE ? "Nam" : e.value === enums.gender.FEMALE ? "Nữ" : "Khác",
+      e.value === enums.gender.male ? "Nam" : e.value === enums.gender.female ? "Nữ" : "Khác",
     width: 180,
     visible: true,
   },

@@ -42,7 +42,7 @@ export default {
    * Author: txphuc (23/07/2023)
    */
   mounted: function () {
-    document.title = this.$t("FullProductName");
+    document.title = this.$t("fullProductName");
   },
 };
 </script>

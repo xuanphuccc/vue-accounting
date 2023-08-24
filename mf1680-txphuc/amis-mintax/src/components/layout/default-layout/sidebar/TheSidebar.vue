@@ -15,13 +15,13 @@
       </li>
     </ul>
 
-    <div ref="tippyRef" class="sidebar__tippy">{{ $t("Sidebar.Report") }}</div>
+    <div ref="tippyRef" class="sidebar__tippy">{{ $t("sidebar.report") }}</div>
 
     <div @click="toggleSidebar" class="sidebar__toggle">
       <div class="sidebar__toggle-icon">
         <MISAIcon icon="angle-left" />
       </div>
-      <div class="sidebar__toggle-text">{{ $t("Sidebar.Collapse") }}</div>
+      <div class="sidebar__toggle-text">{{ $t("sidebar.collapse") }}</div>
     </div>
   </nav>
 </template>
@@ -40,67 +40,67 @@ export default {
         {
           key: 1,
           url: "/notfound",
-          title: this.$t("Sidebar.RegisterTaxId"),
+          title: this.$t("sidebar.registerTaxId"),
           icon: "tax",
         },
         {
           key: 2,
           url: "/notfound",
-          title: this.$t("Sidebar.RegisterDependents"),
+          title: this.$t("sidebar.registerDependents"),
           icon: "family",
         },
         {
           key: 3,
           url: "/notfound",
-          title: this.$t("Sidebar.TaxReportingByPeriod"),
+          title: this.$t("sidebar.taxReportingByPeriod"),
           icon: "file",
         },
         {
           key: 4,
           url: "/notfound",
-          title: this.$t("Sidebar.TaxDeductionReceipts"),
+          title: this.$t("sidebar.taxDeductionReceipts"),
           icon: "tax-deduction",
         },
         {
           key: 5,
           url: "/notfound",
-          title: this.$t("Sidebar.TaxFinalization"),
+          title: this.$t("sidebar.taxFinalization"),
           icon: "box",
         },
         {
           key: 6,
           url: "/notfound",
-          title: this.$t("Sidebar.Procedure"),
+          title: this.$t("sidebar.procedure"),
           icon: "procedure",
         },
         {
           key: 7,
           url: "/",
-          title: this.$t("Sidebar.Report"),
+          title: this.$t("sidebar.report"),
           icon: "tax-report",
         },
         {
           key: 8,
           url: "/employee",
-          title: this.$t("Sidebar.Taxpayer"),
+          title: this.$t("sidebar.taxpayer"),
           icon: "person-file",
         },
         {
           key: 9,
           url: "/notfound",
-          title: this.$t("Sidebar.TaxServiceRegistration"),
+          title: this.$t("sidebar.taxServiceRegistration"),
           icon: "tax-service",
         },
         {
           key: 10,
           url: "/notfound",
-          title: this.$t("Sidebar.Configuration"),
+          title: this.$t("sidebar.configuration"),
           icon: "mintax-setting",
         },
         {
           key: 11,
           url: "/notfound",
-          title: this.$t("Sidebar.TrashBin"),
+          title: this.$t("sidebar.trashBin"),
           icon: "trash",
         },
       ],

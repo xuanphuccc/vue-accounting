@@ -14,20 +14,21 @@
     </div>
 
     <!-- toast message -->
-    <!-- <MISAToastContainer></MISAToastContainer> -->
+    <MISAToastContainer></MISAToastContainer>
   </div>
 </template>
 
 <script>
 import TheNavbar from "./navbar/TheNavbar.vue";
 import TheSidebar from "./sidebar/TheSidebar.vue";
-// import MISAToastContainer from "@/components/base/toast-message/MISAToastContainer.vue";
+import MISAToastContainer from "@/components/base/toast/MISAToastContainer.vue";
 
 export default {
   name: "TheDefaultLayout",
   components: {
     TheNavbar,
     TheSidebar,
+    MISAToastContainer,
   },
 };
 </script>

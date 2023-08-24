@@ -1,97 +1,97 @@
 const resourceVn = {
-  Product: "Thuế TNCN",
-  FullProductName: "Thuế thu nhập cá nhân",
-  Company: "CÔNG TY CỔ PHẦN MISA",
+  product: "Thuế TNCN",
+  fullProductName: "Thuế thu nhập cá nhân",
+  company: "CÔNG TY CỔ PHẦN MISA",
 
-  Sidebar: {
-    RegisterTaxId: "Đăng ký mã số thuế",
-    RegisterDependents: "Đăng ký người phụ thuộc",
-    TaxReportingByPeriod: "Khai thuế theo kỳ",
-    TaxDeductionReceipts: "Chứng từ khấu trừ thuế",
-    TaxFinalization: "Quyết toán thuế",
-    Procedure: "Thủ tục",
-    Report: "Báo cáo",
-    Taxpayer: "Người nộp thuế",
-    TaxServiceRegistration: "Đăng ký dịch vụ thuế",
-    Configuration: "Thiết lập",
-    TrashBin: "Thùng rác",
+  sidebar: {
+    registerTaxId: "Đăng ký mã số thuế",
+    registerDependents: "Đăng ký người phụ thuộc",
+    taxReportingByPeriod: "Khai thuế theo kỳ",
+    taxDeductionReceipts: "Chứng từ khấu trừ thuế",
+    taxFinalization: "Quyết toán thuế",
+    procedure: "Thủ tục",
+    report: "Báo cáo",
+    taxpayer: "Người nộp thuế",
+    taxServiceRegistration: "Đăng ký dịch vụ thuế",
+    configuration: "Thiết lập",
+    trashBin: "Thùng rác",
 
-    Collapse: "Thu gọn",
+    collapse: "Thu gọn",
   },
 
-  UserMenu: {
-    ChangePassword: "Đổi mật khẩu",
-    AccountSettings: "Thiết lập tài khoản",
-    SecuritySettings: "Thiết lập bảo mật",
-    LicenseAndPayment: "Giấy phép & Thanh toán",
-    ReferralsEarnPoints: "Giới thiệu - Tích điểm",
-    Language: "Ngôn ngữ",
-    SignOut: "Đăng xuất",
+  userMenu: {
+    changePassword: "Đổi mật khẩu",
+    accountSettings: "Thiết lập tài khoản",
+    securitySettings: "Thiết lập bảo mật",
+    licenseAndPayment: "Giấy phép & Thanh toán",
+    referralsEarnPoints: "Giới thiệu - Tích điểm",
+    language: "Ngôn ngữ",
+    signOut: "Đăng xuất",
   },
 
-  Gender: {
-    Male: "Nam",
-    Female: "Nữ",
-    Other: "Khác",
+  gender: {
+    male: "Nam",
+    female: "Nữ",
+    other: "Khác",
   },
 
-  Button: {
-    Save: "Cất",
-    SaveS: "Lưu",
-    SaveAndContinue: "Cất và thêm",
-    Cancel: "Huỷ",
-    OK: "Đồng ý",
-    Yes: "Có",
-    No: "Không",
-    UnChecked: "Bỏ chọn",
-    Delete: "Xoá",
-    Update: "Sửa",
-    RestoreDefault: "Lấy lại mặc định",
-    ExportExcel: "Xuất Excel",
+  button: {
+    save: "Cất",
+    saveS: "Lưu",
+    saveAndContinue: "Cất và thêm",
+    cancel: "Huỷ",
+    oK: "Đồng ý",
+    yes: "Có",
+    no: "Không",
+    unChecked: "Bỏ chọn",
+    delete: "Xoá",
+    update: "Sửa",
+    restoreDefault: "Lấy lại mặc định",
+    exportExcel: "Xuất Excel",
   },
 
-  PlaceHolder: {
-    SelectAValue: "Chọn giá trị",
-    Search: "Tìm kiếm",
-    EnterValue: "Nhập giá trị",
+  placeHolder: {
+    selectAValue: "Chọn giá trị",
+    search: "Tìm kiếm",
+    enterValue: "Nhập giá trị",
   },
 
-  Paging: {
-    TotalRecords: "Tổng",
-    ItemsPerPage: "Số bản ghi/Trang",
-    Records: "Bản ghi",
-    NextPage: "Trang Sau",
-    PrevPage: "Trang Trước",
+  paging: {
+    totalRecords: "Tổng",
+    itemsPerPage: "Số bản ghi/Trang",
+    records: "Bản ghi",
+    nextPage: "Trang Sau",
+    prevPage: "Trang Trước",
   },
 
-  Dialog: {
-    ErrorTitle: "Đã có lỗi",
-    WarningTitle: "Cảnh báo",
-    InfoTitle: "Thông tin",
-    CloseFormWarning: "Dữ liệu đã bị thay đổi. Bạn có muốn cất không?",
+  dialog: {
+    errorTitle: "Đã có lỗi",
+    warningTitle: "Cảnh báo",
+    infoTitle: "Thông tin",
+    closeFormWarning: "Dữ liệu đã bị thay đổi. Bạn có muốn cất không?",
   },
 
-  Toast: {
-    Success: "Thành công!",
-    Error: "Lỗi!",
-    Warning: "Cảnh báo!",
-    Info: "Thông tin!",
+  toast: {
+    success: "Thành công!",
+    error: "Lỗi!",
+    warning: "Cảnh báo!",
+    info: "Thông tin!",
   },
 
-  Tooltip: {
-    Reload: "Tải lại",
-    Notification: "Thông báo",
-    Account: "Tài khoản",
-    Close: "Đóng",
-    ExportExcel: "Xuất ra Excel",
-    Setting: "Tuỳ chỉnh cột",
+  tooltip: {
+    reload: "Tải lại",
+    notification: "Thông báo",
+    account: "Tài khoản",
+    close: "Đóng",
+    exportExcel: "Xuất ra Excel",
+    setting: "Tuỳ chỉnh cột",
   },
 
-  Text: {
-    Selected: "Đã chọn",
+  text: {
+    selected: "Đã chọn",
   },
 
-  Month: {
+  month: {
     M1: "Tháng 1",
     M2: "Tháng 2",
     M3: "Tháng 3",
@@ -106,8 +106,8 @@ const resourceVn = {
     M12: "Tháng 12",
   },
 
-  Day: {
-    Today: "Hôm nay",
+  day: {
+    today: "Hôm nay",
     Mo: "T2",
     Tu: "T3",
     We: "T4",
@@ -117,8 +117,32 @@ const resourceVn = {
     Su: "CN",
   },
 
-  Page: {
-    Employee: {},
+  // Loại giấy tờ
+  identifyType: {
+    nationalIdentityCard: "CMND",
+    citizenCard: "CCCD",
+    passport: "Hộ chiếu",
+  },
+
+  // Loại hợp đồng
+  contractType: {
+    nonResident: "Không cư trú",
+    residenceWithContract: "Cư trú và có HĐLĐ từ 3 tháng trở lên",
+    residenceWithoutContract: "Cư trú và không đăng ký HĐLĐ/HĐLĐ dưới 3 tháng",
+  },
+
+  page: {
+    employee: {
+      employeeType: {
+        employee: "Nhân viên",
+        client: "Vãng lai",
+      },
+
+      workStatus: {
+        formerlyEmployed: "Đã nghỉ việc",
+        currentlyEmployed: "Đang làm việc",
+      },
+    },
   },
 };
 

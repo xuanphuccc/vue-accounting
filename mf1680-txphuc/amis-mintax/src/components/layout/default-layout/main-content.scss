@@ -180,12 +180,14 @@
 
 /* ----- form -----*/
 .form-content {
+  display: flex;
   padding: 24px 0;
   overflow: hidden;
 }
 
 .form-content-wrapper {
   padding: 0 24px;
+  width: 100%;
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
@@ -202,6 +204,46 @@
   font-size: 14px;
   font-weight: 700;
   line-height: 21px;
+}
+
+.form-input-view {
+  line-height: 36px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 500;
+}
+
+/* ----- form sidebar -----*/
+.form-sidebar {
+  flex-shrink: 0;
+  width: 180px;
+  height: 100%;
+  padding: 0 12px;
+  border-right: 1px solid var(--border-color);
+}
+
+.form-sidebar__item {
+  padding: 16px 12px;
+  background-color: transparent;
+  line-height: 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  user-select: none;
+
+  & + .form-sidebar__item {
+    margin-top: 4px;
+  }
+
+  &:hover {
+    background-color: #eff1fb;
+  }
+
+  &.--active {
+    background-color: var(--primary-color-50);
+    color: var(--primary-color-500);
+    font-weight: 700;
+  }
 }
 
 /* selection container */

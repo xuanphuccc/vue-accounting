@@ -60,13 +60,10 @@
   color: var(--primary-text-color);
 }
 
-.ms-btn__color--secondary .ms-btn__icon {
-  color: var(--secondary-text-color);
-}
-
 .ms-btn__color--secondary:hover {
   background: var(--gray-100);
   border-color: var(--primary-color-500);
+  color: var(--primary-color-500);
 
   & .ms-btn__text {
     color: var(--primary-color-500);
@@ -74,7 +71,8 @@
 }
 
 .ms-btn__color--secondary:active {
-  background: var(--gray-200);
+  background: var(--primary-color-100);
+  color: var(--primary-color-500);
 }
 
 /* inverse color */
@@ -109,6 +107,23 @@
 .ms-btn__color--danger:active {
   background: var(--red-700);
   border-color: var(--red-700);
+}
+
+/* light danger color */
+.ms-btn__color--light-danger {
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--red-400);
+}
+
+.ms-btn__color--light-danger:hover {
+  background: var(--white);
+  border-color: var(--red-400);
+}
+
+.ms-btn__color--light-danger:active {
+  background: var(--red-100);
+  border-color: var(--red-400);
 }
 
 /* button icon */

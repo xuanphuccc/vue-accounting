@@ -64,7 +64,7 @@
                 </template>
               </MISAButton>
 
-              <MISAButton color="secondary">
+              <MISAButton @click="handleDeleteEmployee" color="secondary">
                 Xoá
                 <template slot="icon">
                   <MISAIcon color="#eb3333" size="20" icon="trash" />
@@ -135,6 +135,8 @@
         @row-dbl-click="onRowDoubleClick"
         @sort-change="onSortChange"
         @fixed-column-change="onFixedColumnChange"
+        @edit-row="onClickEditRow"
+        @delete-row="onClickDeleteRow"
         :sort="filterRequest"
         :columns="tableColumns"
         :dataSource="dataSource"
@@ -164,6 +166,19 @@
 
       <!-- Bộ lọc nâng cao -->
       <MISAFilterPopup @close="isOpenFilterPopup = false" v-if="isOpenFilterPopup" />
+
+      <!-- Dialog xác nhận xoá -->
+      <MISADialog
+        v-if="confirmDialog.active"
+        :title="confirmDialog.title"
+        :description="confirmDialog.description"
+        @cancel="hideConfirmDialog"
+      >
+        <template #right-controls>
+          <MISAButton @click="hideConfirmDialog" color="secondary">Không</MISAButton>
+          <MISAButton @click="handleDeleteEmployee" color="danger">Có</MISAButton>
+        </template>
+      </MISADialog>
     </div>
   </div>
 </template>
@@ -178,7 +193,7 @@ import MISATableCustomize from "@/components/base/table-customize/MISATableCusto
 import MISATextBox from "@/components/base/text-box/MISATextBox.vue";
 import MISATreeView from "@/components/base/tree-view/MISATreeView.vue";
 import MISAFilterPopup from "@/components/base/filter-popup/MISAFilterPopup.vue";
-import mockEmployee from "./mock-employee";
+import MISADialog from "@/components/base/dialog/MISADialog.vue";
 import employeeColumns from "./employee-columns";
 import employeeApi from "@/api/employee-api";
 
@@ -194,10 +209,11 @@ export default {
     MISAFilterPopup,
     MISATextBox,
     MISATreeView,
+    MISADialog,
   },
   data: function () {
     return {
-      dataSource: mockEmployee.getEmployees() || [],
+      dataSource: [],
 
       defaultColumns: [...employeeColumns],
 
@@ -206,6 +222,9 @@ export default {
 
       // Các bản ghi đã được chọn (xoá nhiều)
       selectedRowsData: [],
+
+      // Một hàng đang được xác nhận xoá
+      activeRowState: null,
 
       // Bộ lọc, tìm kiếm, sắp xếp, phân trang
       filterRequest: {
@@ -220,6 +239,13 @@ export default {
       pagingInfo: {
         totalPages: 0,
         totalRecords: 0,
+      },
+
+      // Dialog xác nhận xoá
+      confirmDialog: {
+        active: false,
+        title: "Xoá người nộp thuế",
+        description: "Bạn có chắc muốn xoá (2) người nộp thuế vào Thùng rác?",
       },
 
       // Trạng thái của các popup
@@ -242,11 +268,30 @@ export default {
     },
 
     /**
+     * Description: Mở form sửa bản ghi
+     * Author: txphuc (24/08/2023)
+     */
+    onClickEditRow(row) {
+      console.log(row);
+    },
+
+    /**
+     * Description: Lưu bản ghi để xác nhận xoá
+     * Author: txphuc (24/08/2023)
+     */
+    onClickDeleteRow(row) {
+      this.activeRowState = row.data;
+      this.showDeleteConfirmDialog(
+        `Bạn có chắc chắn muốn xóa người nộp thuế ${row?.data?.FullName} vào Thùng rác?`
+      );
+    },
+
+    /**
      * Description: Xử lý khi double click vào một hàng
      * Author: txphuc (17/08/2023)
      */
     onRowDoubleClick(data) {
-      console.log(data);
+      this.$router.push({ name: "employee-detail-view", params: { id: data.key } });
     },
 
     /**
@@ -321,6 +366,28 @@ export default {
     },
 
     /**
+     * Description: Hiện dialog xác nhận xoá
+     * Author: txphuc (24/06/2023).
+     */
+    showDeleteConfirmDialog(description) {
+      this.confirmDialog = {
+        ...this.confirmDialog,
+        active: true,
+        description: description,
+      };
+    },
+
+    /**
+     * Description: Ẩn dialog xác nhận và bỏ hàng được chọn
+     * Author: txphuc (27/06/2023).
+     */
+    hideConfirmDialog() {
+      this.confirmDialog.active = false;
+      this.clearAllSelection();
+      this.activeRowState = null;
+    },
+
+    /**
      * Description: Hàm load dữ liệu danh sách nhân viên từ api
      * Author: txphuc (27/06/2023)
      */
@@ -350,6 +417,81 @@ export default {
         }
       } catch (error) {
         console.warn(error);
+      }
+    },
+
+    /**
+     * Description: Hàm xoá nhân viên active hoặc đang được chọn
+     * Author: txphuc (11/07/2023)
+     */
+    async handleDeleteEmployee() {
+      if (this.activeRowState) {
+        // Nếu có hàng đang được active thì xoá hàng đó trước
+        await this.deleteActiveEmployee();
+      } else {
+        // Xoá các hàng đang checked
+        await this.deleteSelectedEmployee();
+      }
+    },
+
+    /**
+     * Description: Hàm xoá nhiều nhân viên đã được chọn
+     * Author: txphuc (27/06/2023)
+     */
+    async deleteSelectedEmployee() {
+      console.log("delete");
+      try {
+        const deleteIds = this.selectedRowsData?.map((row) => row.EmployeeID);
+
+        await employeeApi.delete(deleteIds);
+
+        // Ẩn dialog xác nhận xoá và bỏ chọn tất cả
+        this.hideConfirmDialog();
+
+        // Load lại data
+        await this.getEmployeesData();
+
+        // Hiện toast message xoá thành công
+        // toastStore.pushSuccessMessage({
+        //   message: MISAResource[globalStore.lang]?.Page?.Employee?.Toast?.DeleteSuccess,
+        // });
+      } catch (error) {
+        console.warn(error);
+
+        // Ẩn dialog xác nhận xoá
+        this.hideConfirmDialog();
+
+        // Load lại data
+        await this.getEmployeesData();
+      }
+    },
+
+    /**
+     * Description: Hàm xoá một nhân viên đang active
+     * Author: txphuc (11/07/2023)
+     */
+    async deleteActiveEmployee() {
+      try {
+        await employeeApi.deleteById(this.activeRowState.EmployeeID);
+
+        // Ẩn dialog xác nhận xoá
+        this.hideConfirmDialog();
+
+        // Load lại data
+        await this.getEmployeesData();
+
+        // Hiện toast message xoá thành công
+        // toastStore.pushSuccessMessage({
+        //   message: MISAResource[globalStore.lang]?.Page?.Employee?.Toast?.DeleteSuccess,
+        // });
+      } catch (error) {
+        console.warn(error);
+
+        // Ẩn dialog xác nhận xoá
+        this.hideConfirmDialog();
+
+        // Load lại data
+        await this.getEmployeesData();
       }
     },
   },

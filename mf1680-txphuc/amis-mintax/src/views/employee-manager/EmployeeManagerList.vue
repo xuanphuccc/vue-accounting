@@ -147,7 +147,6 @@ import MISATable from "@/components/base/table/MISATable.vue";
 import MISATableFooter from "@/components/base/table-footer/MISATableFooter.vue";
 import MISATableCustomize from "@/components/base/table-customize/MISATableCustomize.vue";
 import employeeColumns from "../employee/employee-columns";
-import mockEmployee from "@/views/employee/mock-employee";
 import MISATreeView from "@/components/base/tree-view/MISATreeView.vue";
 import MISASelectBox from "@/components/base/select-box/MISASelectBox.vue";
 
@@ -165,7 +164,7 @@ export default {
   },
   data: function () {
     return {
-      dataSource: mockEmployee.getEmployees(),
+      dataSource: [],
 
       defaultColumns: [...employeeColumns],
 

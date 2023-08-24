@@ -1,4 +1,5 @@
 const enums = {
+  // Các chế độ form
   form: {
     mode: {
       CREATE: 0,
@@ -6,6 +7,8 @@ const enums = {
       DUPLICATE: 2,
     },
   },
+
+  // Loại dialog
   dialog: {
     type: {
       INFO: "info",
@@ -13,10 +16,14 @@ const enums = {
       ERROR: "error",
     },
   },
+
+  // Loại sắp xếp
   sort: {
     DESC: "desc",
     ASC: "asc",
   },
+
+  // Loại filter
   filter: {
     EQUAL: "equal",
     NOTEQUAL: "notequal",
@@ -25,15 +32,57 @@ const enums = {
     SMALLER: "smaller",
     GREATER: "greater",
   },
-  type: {
-    GENDER: "Gender",
-    DATE: "Date",
-  },
+
+  // Giới tính
   gender: {
-    MALE: 0,
-    FEMALE: 1,
-    OTHER: 2,
+    male: 0,
+    female: 1,
+    other: 2,
   },
+
+  // Loại đối tượng
+  employeeType: {
+    // Nhân viên
+    employee: 0,
+
+    // Vãng lai
+    client: 1,
+  },
+
+  // Loại giấy tờ
+  identifyType: {
+    // CMND
+    nationalIdentityCard: 0,
+
+    // CCCD
+    citizenCard: 1,
+
+    // Hộ chiếu
+    passport: 2,
+  },
+
+  // Loại hợp đồng
+  contractType: {
+    // Không cư trú
+    nonResident: 0,
+
+    // Cư trú và có HĐLD từ 3 tháng trở lên
+    residenceWithContract: 1,
+
+    // Cư trú và không đăng ký HĐLĐ/HĐLĐ dưới 3 tháng
+    residenceWithoutContract: 2,
+  },
+
+  // Trạng thái làm việc
+  workStatus: {
+    // Đã nghỉ việc
+    formerlyEmployed: 0,
+
+    // Đang làm việc
+    currentlyEmployed: 1,
+  },
+
+  // Mã bàn phím
   key: {
     TAB: 9,
     ENTER: 13,
@@ -47,6 +96,8 @@ const enums = {
     S: 83,
     Y: 89,
   },
+
+  // Các chế độ import Excel
   import: {
     step: {
       UPLOAD: 1,
@@ -55,6 +106,8 @@ const enums = {
       RESULT: 4,
     },
   },
+
+  // Mã ngôn ngữ
   language: {
     VN: "vi-VN",
     EN: "en-US",
