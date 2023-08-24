@@ -1,12 +1,22 @@
 import { extend } from "vee-validate";
+import { required, email } from "vee-validate/dist/rules";
+// import { setInteractionMode } from "vee-validate";
 
-// extend("even", (value) => {
-//   return value % 2 === 0;
+// setInteractionMode("aggressive");
+
+// extend("even", {
+//   validate: (value) => {
+//     return value % 2 === 0;
+//   },
+//   message: "Hello World",
 // });
 
-extend("even", {
-  validate: (value) => {
-    return value % 2 === 0;
-  },
-  message: "Hello World",
+extend("required", {
+  ...required,
+  message: "{_field_} không được để trống",
+});
+
+extend("email", {
+  ...email,
+  message: "Email không đúng định dạng",
 });

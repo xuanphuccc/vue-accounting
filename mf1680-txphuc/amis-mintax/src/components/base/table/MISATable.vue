@@ -29,7 +29,17 @@
         :visible="column.visible === true || column.visible === undefined ? true : false"
         :allow-sorting="!apiSort"
         header-cell-template="headerCellTemplate"
+        cell-template="customCell"
       />
+
+      <!-- Tuỳ chỉnh cột bất kỳ -->
+      <template #customCell="{ data }">
+        <slot :name="data?.column?.dataField" v-bind="data">
+          {{ data.text }}
+        </slot>
+      </template>
+
+      <!-- Tuỳ chỉnh header -->
       <template #headerCellTemplate="{ data }">
         <div class="ms-table__header-cell">
           {{ data.column.caption }}

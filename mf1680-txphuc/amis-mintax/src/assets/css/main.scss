@@ -182,6 +182,10 @@ body {
   border-radius: 5px;
 }
 
+.validate-error {
+  margin-top: 8px;
+  color: var(--red-500);
+}
 /* ----- scroll bar ----- */
 ::-webkit-scrollbar {
   width: 8px;

@@ -64,7 +64,14 @@
                 </template>
               </MISAButton>
 
-              <MISAButton @click="handleDeleteEmployee" color="secondary">
+              <MISAButton
+                @click="
+                  showDeleteConfirmDialog(
+                    'Bạn có chắc chắn muốn xoá (2) người nộp thuế vào Thùng rác?'
+                  )
+                "
+                color="secondary"
+              >
                 Xoá
                 <template slot="icon">
                   <MISAIcon color="#eb3333" size="20" icon="trash" />
@@ -96,13 +103,7 @@
 
           <div class="filter__right">
             <MISAButtonGroup>
-              <MISAButton
-                @click="
-                  () => {
-                    this.$router.push({ name: 'employee-detail' });
-                  }
-                "
-              >
+              <MISAButton @click="$store.dispatch('employeeStore/openFormForCreate')">
                 Thêm mới
                 <template slot="icon">
                   <MISAIcon size="20" icon="plus" />
@@ -142,7 +143,11 @@
         :dataSource="dataSource"
         keyExpr="EmployeeID"
         ref="tableRef"
-      ></MISATable>
+      >
+        <template #EmployeeStatus="data">
+          <MISABadge :text="data.text" :color="data.value == 0 ? 'disabled' : 'success'" />
+        </template>
+      </MISATable>
 
       <!-- Phân trang -->
       <MISATableFooter
@@ -196,6 +201,7 @@ import MISAFilterPopup from "@/components/base/filter-popup/MISAFilterPopup.vue"
 import MISADialog from "@/components/base/dialog/MISADialog.vue";
 import employeeColumns from "./employee-columns";
 import employeeApi from "@/api/employee-api";
+import MISABadge from "@/components/base/badge/MISABadge.vue";
 
 export default {
   name: "EmployeeList",
@@ -210,6 +216,7 @@ export default {
     MISATextBox,
     MISATreeView,
     MISADialog,
+    MISABadge,
   },
   data: function () {
     return {
@@ -272,7 +279,7 @@ export default {
      * Author: txphuc (24/08/2023)
      */
     onClickEditRow(row) {
-      console.log(row);
+      this.$store.dispatch("employeeStore/openFormForUpdate", row.data);
     },
 
     /**
@@ -452,9 +459,9 @@ export default {
         await this.getEmployeesData();
 
         // Hiện toast message xoá thành công
-        // toastStore.pushSuccessMessage({
-        //   message: MISAResource[globalStore.lang]?.Page?.Employee?.Toast?.DeleteSuccess,
-        // });
+        this.$store.dispatch("toastStore/pushSuccessMessage", {
+          message: "Xoá người nộp thuế thành công",
+        });
       } catch (error) {
         console.warn(error);
 
@@ -481,9 +488,9 @@ export default {
         await this.getEmployeesData();
 
         // Hiện toast message xoá thành công
-        // toastStore.pushSuccessMessage({
-        //   message: MISAResource[globalStore.lang]?.Page?.Employee?.Toast?.DeleteSuccess,
-        // });
+        this.$store.dispatch("toastStore/pushSuccessMessage", {
+          message: "Xoá người nộp thuế thành công",
+        });
       } catch (error) {
         console.warn(error);
 
@@ -493,6 +500,10 @@ export default {
         // Load lại data
         await this.getEmployeesData();
       }
+    },
+
+    test(e) {
+      console.log(e);
     },
   },
 

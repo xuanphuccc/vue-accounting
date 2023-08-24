@@ -149,6 +149,7 @@ import MISATableCustomize from "@/components/base/table-customize/MISATableCusto
 import employeeColumns from "../employee/employee-columns";
 import MISATreeView from "@/components/base/tree-view/MISATreeView.vue";
 import MISASelectBox from "@/components/base/select-box/MISASelectBox.vue";
+import employeeApi from "@/api/employee-api";
 
 export default {
   name: "EmployeeList",
@@ -176,8 +177,15 @@ export default {
       selectedRowsData: [],
 
       filterRequest: {
+        page: 1,
+        pageSize: 15,
+        search: null,
         sortColumn: null,
         sortOrder: null,
+      },
+
+      loading: {
+        table: false,
       },
 
       isOpenTableCustomize: false,
@@ -241,6 +249,47 @@ export default {
     applyTableCustomize(columns) {
       this.tableColumns = columns;
     },
+
+    /**
+     * Description: Hàm load dữ liệu danh sách nhân viên từ api
+     * Author: txphuc (27/06/2023)
+     */
+    async getEmployeesData() {
+      try {
+        this.loading.table = true;
+
+        const response = await employeeApi.filter(this.filterRequest);
+
+        // Hiển thị dữ liệu ra bảng
+        this.dataSource = response.data?.Data;
+
+        // Lấy dữ liệu phân trang
+        const totalRecords = response.data.TotalRecords;
+        const pageSize = this.filterRequest.pageSize;
+        const totalPages = Math.ceil(totalRecords / pageSize);
+
+        this.pagingInfo.totalRecords = totalRecords;
+        this.pagingInfo.totalPages = totalPages;
+
+        this.loading.table = false;
+
+        // Nếu trang hiện tại không có data thì về trang cuối
+        // (dùng cho trường hợp xoá hết bản ghi trang cuối)
+        if (response.data?.Data?.length === 0) {
+          this.filterRequest.page = totalPages;
+        }
+      } catch (error) {
+        console.warn(error);
+      }
+    },
+  },
+
+  /**
+   * Description: Get dữ liệu khi khởi tạo
+   * Author: txphuc (22/08/2023)
+   */
+  created: function () {
+    this.getEmployeesData();
   },
 };
 </script>
