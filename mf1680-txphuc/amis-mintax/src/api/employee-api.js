@@ -61,6 +61,15 @@ const employeeApi = {
   },
 
   /**
+   * Description: Đếm số bản ghi đang sử dụng
+   * Author: txphuc (27/07/2023)
+   */
+  getUsageCount() {
+    const url = `${rootUrl}/UsageCount`;
+    return axiosClient.get(url);
+  },
+
+  /**
    * Description: Tạo một nhân viên mới
    * Author: txphuc (27/07/2023)
    */

@@ -11,30 +11,40 @@
     </the-empty-layout>
 
     <!-- dialog thông báo lỗi -->
-    <!-- <Teleport to="#app">
-      <MISADialog
-        v-if="dialogStore.active"
-        :type="dialogStore.type"
-        :title="dialogStore.title"
-        :description="dialogStore.description"
-        @cancel="dialogStore.closeDialog"
-        @ok="dialogStore.closeDialog"
-        :ok-text="MISAResource[globalStore.lang]?.Button?.OK"
-      />
-    </Teleport> -->
+    <MISADialog
+      @cancel="$store.dispatch('dialogStore/closeDialog')"
+      @ok="$store.dispatch('dialogStore/closeDialog')"
+      v-if="dialogStore.active"
+      :type="dialogStore.type"
+      :title="dialogStore.title"
+      :description="dialogStore.description"
+      ok-text="Đóng"
+    />
   </div>
 </template>
 
 <script>
 import TheDefaultLayout from "./components/layout/default-layout/TheDefaultLayout.vue";
 import TheEmptyLayout from "./components/layout/empty-layout/TheEmptyLayout.vue";
-// import MISADialog from "@/components/base/dialog/MISADialog.vue";
+import MISADialog from "@/components/base/dialog/MISADialog.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "App",
   components: {
     TheDefaultLayout,
     TheEmptyLayout,
+    MISADialog,
+  },
+
+  data: function () {
+    return {};
+  },
+
+  computed: {
+    ...mapState("dialogStore", {
+      dialogStore: (state) => state,
+    }),
   },
 
   /**

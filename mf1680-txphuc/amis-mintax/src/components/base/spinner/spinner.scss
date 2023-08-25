@@ -1,4 +1,5 @@
 .ms-spinner {
+  flex-shrink: 0;
   width: 20px;
   height: 20px;
   background: transparent;
@@ -20,4 +21,19 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.ms-loading {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #ffffff9d;
+  color: var(--primary-color-500);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  user-select: none;
 }

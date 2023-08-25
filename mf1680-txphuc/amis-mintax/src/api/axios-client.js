@@ -1,5 +1,6 @@
 import axios from "axios";
 import enums from "@/enum/enum";
+import store from "@/store";
 
 // Create new instance
 const axiosClient = axios.create({
@@ -32,6 +33,10 @@ axiosClient.interceptors.response.use(
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+
+    // Hiển thị dialog báo lỗi
+    const userMessage = error.response?.data?.UserMessage ?? "Lỗi hệ thống, vui lòng thử lại sau";
+    store.dispatch("dialogStore/showWarning", userMessage);
 
     return Promise.reject(error);
   }

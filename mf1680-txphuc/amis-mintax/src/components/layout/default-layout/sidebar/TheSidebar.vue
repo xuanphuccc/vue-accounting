@@ -112,7 +112,7 @@ export default {
      * Author: txphuc (15/08/2023)
      */
     toggleSidebar: function () {
-      this.$store.commit("commonStore/toggleSidebar");
+      this.$store.dispatch("commonStore/toggleSidebar");
     },
 
     /**

@@ -29,24 +29,26 @@
 
     <div v-if="isOpenCounter" class="counter-block">
       <div class="counter-block__item --blue">
-        <div class="counter-block__number">1078</div>
+        <div class="counter-block__number">{{ usageCount.totalRecords }}</div>
         <div class="counter-block__title">Tổng số lao động</div>
         <div class="counter-block__text">
-          Tất cả người nộp thuế có loại đối tượng là Nhân viên Vãng lai trên AMIS Thuế TNCN
+          Tất cả người nộp thuế có loại đối tượng là Nhân viên và Vãng lai trên AMIS Thuế TNCN
         </div>
       </div>
       <div class="counter-block__item --green">
-        <div class="counter-block__number">1078</div>
-        <div class="counter-block__title">Tổng số lao động</div>
+        <div class="counter-block__number">{{ usageCount.usedRecords }}</div>
+        <div class="counter-block__title">Đang sử dụng dịch vụ</div>
         <div class="counter-block__text">
-          Tất cả người nộp thuế có loại đối tượng là Nhân viên Vãng lai trên AMIS Thuế TNCN
+          Người nộp thuế có loại đối tượng là Nhân viên và Vãng lai có thiết lập sử dụng dịch vụ
+          Thuế TNCN
         </div>
       </div>
       <div class="counter-block__item --red">
-        <div class="counter-block__number">1078</div>
-        <div class="counter-block__title">Tổng số lao động</div>
+        <div class="counter-block__number">{{ usageCount.unusedRecords }}</div>
+        <div class="counter-block__title">Không sử dụng dịch vụ</div>
         <div class="counter-block__text">
-          Tất cả người nộp thuế có loại đối tượng là Nhân viên Vãng lai trên AMIS Thuế TNCN
+          Người nộp thuế có loại đối tượng là Nhân viên và Vãng lai không thiết lập sử dụng dịch vụ
+          Thuế TNCN
         </div>
       </div>
     </div>
@@ -174,8 +176,10 @@ export default {
 
       isOpenCounter: true,
 
+      // Các bản ghi đang được chọn
       selectedRowsData: [],
 
+      // Filter
       filterRequest: {
         page: 1,
         pageSize: 15,
@@ -184,8 +188,17 @@ export default {
         sortOrder: null,
       },
 
-      loading: {
-        table: false,
+      // Thông tin phân trang
+      pagingInfo: {
+        totalRecords: 0,
+        totalPages: 0,
+      },
+
+      // Đếm số bản ghi đang sử dụng
+      usageCount: {
+        totalRecords: 0,
+        usedRecords: 0,
+        unusedRecords: 0,
       },
 
       isOpenTableCustomize: false,
@@ -213,7 +226,6 @@ export default {
      * Author: txphuc (17/08/2023)
      */
     clearAllSelection() {
-      console.log(this.$refs);
       this.$refs.tableRef.clearAllSelection();
     },
 
@@ -256,7 +268,8 @@ export default {
      */
     async getEmployeesData() {
       try {
-        this.loading.table = true;
+        // Loading
+        this.$store.dispatch("commonStore/setLoading", true);
 
         const response = await employeeApi.filter(this.filterRequest);
 
@@ -271,13 +284,37 @@ export default {
         this.pagingInfo.totalRecords = totalRecords;
         this.pagingInfo.totalPages = totalPages;
 
-        this.loading.table = false;
+        // Tắt loading
+        this.$store.dispatch("commonStore/setLoading", false);
 
         // Nếu trang hiện tại không có data thì về trang cuối
         // (dùng cho trường hợp xoá hết bản ghi trang cuối)
         if (response.data?.Data?.length === 0) {
           this.filterRequest.page = totalPages;
         }
+      } catch (error) {
+        console.warn(error);
+      }
+    },
+
+    /**
+     * Description: Đếm số bản ghi đang sử dụng
+     * Author: txphuc (25/08/2023)
+     */
+    async getUsageCount() {
+      try {
+        const response = await employeeApi.getUsageCount();
+
+        const usageCount = response.data;
+
+        const totalRecords = usageCount.TotalRecords;
+        const usedRecords = usageCount.UsedRecords;
+
+        this.usageCount = {
+          totalRecords,
+          usedRecords,
+          unusedRecords: totalRecords - usedRecords,
+        };
       } catch (error) {
         console.warn(error);
       }
@@ -290,6 +327,8 @@ export default {
    */
   created: function () {
     this.getEmployeesData();
+
+    this.getUsageCount();
   },
 };
 </script>

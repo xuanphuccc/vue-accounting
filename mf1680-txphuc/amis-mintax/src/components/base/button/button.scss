@@ -261,3 +261,13 @@
 .ms-btn-group .ms-btn--icon {
   padding: 0 12px !important;
 }
+
+/* button badge */
+.ms-btn__badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  padding: 4.5px;
+  border-radius: 50px;
+  background-color: var(--primary-color-500);
+}

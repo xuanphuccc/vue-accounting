@@ -24,6 +24,9 @@
       <!-- Chỉ chứa icon -->
       <div v-if="$slots.icon" class="ms-btn__icon">
         <slot name="icon"></slot>
+
+        <!-- Dấu chấm thông báo -->
+        <span v-if="badge" class="ms-btn__badge"></span>
       </div>
 
       <!-- Chứa text-->
@@ -79,6 +82,12 @@ export default {
 
     // Trạng thái loading
     loading: {
+      type: Boolean,
+      default: false,
+    },
+
+    // Dấu chám thông báo
+    badge: {
       type: Boolean,
       default: false,
     },

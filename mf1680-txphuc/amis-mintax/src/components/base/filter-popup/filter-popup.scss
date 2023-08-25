@@ -43,8 +43,13 @@
 }
 
 /* content */
-.ms-filter-popup__content {
+.ms-filter-popup__scroll {
   flex: 1;
+  overflow-y: auto;
+}
+
+.ms-filter-popup__content {
+  height: 100%;
   padding-left: 16px;
   padding-right: 16px;
   padding-bottom: 12px;
@@ -53,12 +58,17 @@
 
 /* item with radio button */
 .ms-filter-popup__item {
-  padding: 0 8px 10px;
+  padding: 11px 10px;
   margin-bottom: 8px;
-  background-color: var(--gray-100);
   border-radius: 4px;
 
-  &.--separate-header .ms-filter-popup__item-header {
+  &.--enabled {
+    background-color: var(--gray-100);
+  }
+  &.--enabled .ms-filter-popup__item-header {
+    padding-bottom: 10px;
+  }
+  &.--separate-header.--enabled .ms-filter-popup__item-header {
     border-bottom: 1px solid var(--border-color);
   }
 }
@@ -66,7 +76,6 @@
 .ms-filter-popup__item-header {
   display: flex;
   align-items: center;
-  height: 42px;
 }
 
 .ms-filter-popup__item-content {

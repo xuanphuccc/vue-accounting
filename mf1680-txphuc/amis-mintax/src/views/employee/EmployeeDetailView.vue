@@ -752,17 +752,17 @@ export default {
      * Author: txphuc (23/08/2023)
      */
     async getEmployeeData() {
+      // Loading
+      this.$store.dispatch("commonStore/setLoading", true);
+
       const employeeId = this.$route.params.id;
 
       var response = await employeeApi.get(employeeId);
 
-      console.log(response);
-
       this.employeeData = response.data;
-    },
 
-    test(e) {
-      console.log(e);
+      // Tắt loading
+      this.$store.dispatch("commonStore/setLoading", false);
     },
   },
 

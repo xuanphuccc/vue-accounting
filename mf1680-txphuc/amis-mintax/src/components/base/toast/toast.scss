@@ -1,6 +1,6 @@
 .ms-toast-container {
   position: fixed;
-  top: 4px;
+  top: 8px;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -13,6 +13,8 @@
   background: #ddd;
   border: 1px solid #bbb;
   border-radius: 4px;
+  box-shadow: var(--box-shadow-medium);
+  animation: fadeInDown 0.2s ease;
 }
 
 .ms-toast + .ms-toast {
@@ -22,7 +24,7 @@
 .ms-toast__content {
   flex: 1;
   padding: 0 12px;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .ms-toast__close {
@@ -42,11 +44,11 @@
 }
 
 .ms-toast.--success {
-  background: var(--light-green-100);
-  border-color: var(--light-green-500);
+  background: #e1fbeb;
+  border-color: #00c853;
 
   .ms-toast__header {
-    background: var(--light-green-500);
+    background: #00c853;
     color: var(--white);
   }
 }

@@ -811,11 +811,6 @@ export default {
       },
 
       isOpenEmployeeFamilyDetail: false,
-
-      loading: {
-        submitAndContinue: false,
-        submit: false,
-      },
     };
   },
 
@@ -824,6 +819,7 @@ export default {
       mode: (state) => state.mode,
       title: (state) => state.title,
       currentEmployee: (state) => state.currentEmployee,
+      employeeStore: (state) => state,
     }),
   },
 
@@ -844,46 +840,40 @@ export default {
       try {
         let result = false;
 
-        this.$refs.formValidation.validate().then(async (success) => {
-          if (success) {
-            // Bắt đầu loading
-            if (isContinue) {
-              this.loading.submitAndContinue = true;
-            } else {
-              this.loading.submit = true;
-            }
+        const success = await this.$refs.formValidation.validate();
 
-            if (this.mode === enums.form.mode.CREATE) {
-              result = await this.handleCreateEmployee();
-            } else if (this.mode === enums.form.mode.UPDATE) {
-              result = await this.handleUpdateEmployee();
+        if (success) {
+          // Bắt đầu loading
+          this.$store.dispatch("commonStore/setLoading", true);
 
-              // if (result) {
-              //   // Reset lại trạng thái form
-              //   modifiedInput.value = false;
-              // }
-            }
+          if (this.mode === enums.form.mode.CREATE) {
+            result = await this.handleCreateEmployee();
+          } else if (this.mode === enums.form.mode.UPDATE) {
+            result = await this.handleUpdateEmployee();
+
+            // if (result) {
+            //   // Reset lại trạng thái form
+            //   modifiedInput.value = false;
+            // }
           }
-        });
 
-        if (result && isContinue) {
-          // Reset intpus và reload bảng
-          await this.resetInputs();
-          // this.$emit("submit");
+          if (result && isContinue) {
+            // Reset intpus và reload bảng
+            // await this.resetInputs();
+            // this.$emit("submit");
+            // Focus vào ô đầu tiên
+            // if (employeeCodeRef.value) {
+            //   employeeCodeRef.value.focus();
+            // }
+          } else if (result) {
+            // Đóng form và reload lại bảng
+            // this.closeForm();
+            // this.$emit("submit");
+          }
 
-          // Focus vào ô đầu tiên
-          // if (employeeCodeRef.value) {
-          //   employeeCodeRef.value.focus();
-          // }
-        } else if (result) {
-          // Đóng form và reload lại bảng
-          // this.closeForm();
-          // this.$emit("submit");
+          // Tắt loading
+          this.$store.dispatch("commonStore/setLoading", false);
         }
-
-        // Tắt loading
-        this.loading.submit = false;
-        this.loading.submitAndContinue = false;
       } catch (error) {
         console.warn(error);
       }
@@ -946,8 +936,6 @@ export default {
           // Gọi API lấy thông tin nhân viên cần sửa
           const response = await employeeApi.get(employeeId);
           const employeeData = response.data;
-
-          console.log(employeeData);
 
           // Binding dữ liệu vào form
           this.formData = {

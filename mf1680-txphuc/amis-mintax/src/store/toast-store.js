@@ -37,7 +37,7 @@ const toastStore = {
 
       setTimeout(() => {
         commit("REMOVE_MESSAGE", message.key);
-      }, 5000);
+      }, 3000);
     },
 
     /**

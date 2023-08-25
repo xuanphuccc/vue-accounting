@@ -12,9 +12,7 @@
       </div>
 
       <div class="ms-dialog__content">
-        <p class="ms-dialog__text">
-          {{ description }}
-        </p>
+        <p v-html="description" class="ms-dialog__text"></p>
       </div>
 
       <div class="ms-dialog__controls">
@@ -27,7 +25,7 @@
             <MISAButton tabindex="2" v-if="cancelText" @click="$emit('cancel')" type="secondary">{{
               cancelText
             }}</MISAButton>
-            <MISAButton auto-focus tabindex="1" @click="$emit('ok')" type="primary">{{
+            <MISAButton auto-focus tabindex="1" @click="$emit('ok')" :color="buttonColor">{{
               okText
             }}</MISAButton>
           </slot>
@@ -80,6 +78,23 @@ export default {
       default: "OK",
     },
   },
+
+  computed: {
+    /**
+     * Description: Hiển thị màu sắc button tương ứng với loại dialog
+     * Author: txphuc (24/08/2023)
+     */
+    buttonColor() {
+      if (this.type == "info") {
+        return "primary";
+      } else if (this.type == "warning" || this.type == "error") {
+        return "danger";
+      } else {
+        return "primary";
+      }
+    },
+  },
+
   methods: {
     /**
      * Description: Xử lý sự kiện bàn phím

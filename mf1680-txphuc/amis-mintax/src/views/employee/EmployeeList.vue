@@ -67,7 +67,7 @@
               <MISAButton
                 @click="
                   showDeleteConfirmDialog(
-                    'Bạn có chắc chắn muốn xoá (2) người nộp thuế vào Thùng rác?'
+                    'Bạn có chắc chắn muốn xoá <b>(2)</b> người nộp thuế vào Thùng rác?'
                   )
                 "
                 color="secondary"
@@ -116,7 +116,7 @@
               </MISAButton>
             </MISAButtonGroup>
 
-            <MISAButton @click="isOpenFilterPopup = true" color="secondary">
+            <MISAButton @click="isOpenFilterPopup = true" :badge="detectFilter" color="secondary">
               <template slot="icon">
                 <MISAIcon size="20" icon="mintax-filter" />
               </template>
@@ -170,7 +170,14 @@
       />
 
       <!-- Bộ lọc nâng cao -->
-      <MISAFilterPopup @close="isOpenFilterPopup = false" v-if="isOpenFilterPopup" />
+      <MISAFilterPopup
+        @close="isOpenFilterPopup = false"
+        @apply="applyFilter"
+        @reset="resetFilter"
+        v-if="isOpenFilterPopup"
+        :filterGroups="filterGroups"
+        :defaultFilterGroups="defaultFilterGroups"
+      />
 
       <!-- Dialog xác nhận xoá -->
       <MISADialog
@@ -181,7 +188,7 @@
       >
         <template #right-controls>
           <MISAButton @click="hideConfirmDialog" color="secondary">Không</MISAButton>
-          <MISAButton @click="handleDeleteEmployee" color="danger">Có</MISAButton>
+          <MISAButton autoFocus @click="handleDeleteEmployee" color="danger">Có</MISAButton>
         </template>
       </MISADialog>
     </div>
@@ -202,6 +209,21 @@ import MISADialog from "@/components/base/dialog/MISADialog.vue";
 import employeeColumns from "./employee-columns";
 import employeeApi from "@/api/employee-api";
 import MISABadge from "@/components/base/badge/MISABadge.vue";
+import { employeeFilterGroups } from "./employee-filter";
+import { formatDate } from "devextreme/localization";
+
+const defaultFilter = {
+  WorkStatus: null,
+  WorkStatusFilterBy: null,
+  EmployeeType: null,
+  EmployeeTypeFilterBy: null,
+  TaxCode: null,
+  TaxCodeFilterBy: null,
+  DateColumn: null,
+  DateColumnFilterBy: null,
+  DateStart: null,
+  DateEnd: null,
+};
 
 export default {
   name: "EmployeeList",
@@ -233,6 +255,10 @@ export default {
       // Một hàng đang được xác nhận xoá
       activeRowState: null,
 
+      // Cấu hình filter
+      defaultFilterGroups: JSON.parse(JSON.stringify(employeeFilterGroups)),
+      filterGroups: JSON.parse(JSON.stringify(employeeFilterGroups)),
+
       // Bộ lọc, tìm kiếm, sắp xếp, phân trang
       filterRequest: {
         page: 1,
@@ -240,6 +266,8 @@ export default {
         search: null,
         sortColumn: null,
         sortOrder: null,
+
+        ...defaultFilter,
       },
 
       // Thông tin phân trang
@@ -252,19 +280,39 @@ export default {
       confirmDialog: {
         active: false,
         title: "Xoá người nộp thuế",
-        description: "Bạn có chắc muốn xoá (2) người nộp thuế vào Thùng rác?",
+        description: "Bạn có chắc muốn xoá <span>(2)</span> người nộp thuế vào Thùng rác?",
       },
 
       // Trạng thái của các popup
       isOpenTableCustomize: false,
       isOpenFilterPopup: false,
-
-      // Trạng thái loading của table
-      loading: {
-        table: false,
-      },
     };
   },
+
+  computed: {
+    /**
+     * Description: Phát hiện bộ lọc được áp dụng
+     * Author: txphuc (25/08/2023)
+     */
+    detectFilter() {
+      const hasFilter = this.filterGroups?.some((filterGroup) => filterGroup.enabled);
+      return hasFilter;
+    },
+  },
+
+  watch: {
+    /**
+     * Description: Gọi lại data khi filter thay đổi
+     * Author: txphuc (22/08/2023)
+     */
+    filterRequest: {
+      handler: function () {
+        this.getEmployeesData();
+      },
+      deep: true,
+    },
+  },
+
   methods: {
     /**
      * Description: Lấy các hàng được chọn
@@ -289,7 +337,7 @@ export default {
     onClickDeleteRow(row) {
       this.activeRowState = row.data;
       this.showDeleteConfirmDialog(
-        `Bạn có chắc chắn muốn xóa người nộp thuế ${row?.data?.FullName} vào Thùng rác?`
+        `Bạn có chắc chắn muốn xóa người nộp thuế <b>${row?.data?.FullName}</b> vào Thùng rác?`
       );
     },
 
@@ -373,6 +421,73 @@ export default {
     },
 
     /**
+     * Description: Áp dụng bộ lọc
+     * Author: txphuc (25/08/2023)
+     */
+    applyFilter(newFilterGroups) {
+      try {
+        // Lưu bộ lọc
+        this.filterGroups = newFilterGroups;
+
+        // Xoá filter cũ
+        const newRequest = {
+          ...defaultFilter,
+        };
+
+        // Format lại filter để gọi API
+        newFilterGroups.forEach((filterGroup) => {
+          // Nếu filter group được bật
+          if (filterGroup.enabled) {
+            // Gán các trường filter
+            filterGroup?.filters.forEach((filter) => {
+              if (filter.key && filter.filterBy && filter.type) {
+                if (filter.type == "date-between") {
+                  // Khoảng ngày tháng (từ ngày - đến ngày)
+                  console.log(filter);
+
+                  newRequest[filter.key + "Start"] = formatDate(
+                    new Date(filter.start),
+                    "yyyy-MM-dd"
+                  );
+
+                  newRequest[filter.key + "End"] = formatDate(new Date(filter.end), "yyyy-MM-dd");
+
+                  newRequest[filter.key + "FilterBy"] = filter.filterBy;
+                } else {
+                  // Các kiểu lọc khác chỉ có một giá trị
+                  newRequest[filter.key] = filter.value;
+                  newRequest[filter.key + "FilterBy"] = filter.filterBy;
+                }
+              }
+            });
+          }
+        });
+
+        this.filterRequest = {
+          ...this.filterRequest,
+          page: 1,
+          ...newRequest,
+        };
+      } catch (error) {
+        console.warn(error);
+      }
+    },
+
+    /**
+     * Description: Reset bộ lọc về mặc đình
+     * Author: txphuc (25/08/2023)
+     */
+    resetFilter(defaultFilterGroups) {
+      this.filterGroups = defaultFilterGroups;
+
+      this.filterRequest = {
+        ...this.filterRequest,
+        page: 1,
+        ...defaultFilter,
+      };
+    },
+
+    /**
      * Description: Hiện dialog xác nhận xoá
      * Author: txphuc (24/06/2023).
      */
@@ -400,7 +515,7 @@ export default {
      */
     async getEmployeesData() {
       try {
-        this.loading.table = true;
+        this.$store.dispatch("commonStore/setLoading", true);
 
         const response = await employeeApi.filter(this.filterRequest);
 
@@ -415,7 +530,7 @@ export default {
         this.pagingInfo.totalRecords = totalRecords;
         this.pagingInfo.totalPages = totalPages;
 
-        this.loading.table = false;
+        this.$store.dispatch("commonStore/setLoading", false);
 
         // Nếu trang hiện tại không có data thì về trang cuối
         // (dùng cho trường hợp xoá hết bản ghi trang cuối)
@@ -432,6 +547,8 @@ export default {
      * Author: txphuc (11/07/2023)
      */
     async handleDeleteEmployee() {
+      this.$store.dispatch("commonStore/setLoading", true);
+
       if (this.activeRowState) {
         // Nếu có hàng đang được active thì xoá hàng đó trước
         await this.deleteActiveEmployee();
@@ -439,6 +556,8 @@ export default {
         // Xoá các hàng đang checked
         await this.deleteSelectedEmployee();
       }
+
+      this.$store.dispatch("commonStore/setLoading", false);
     },
 
     /**
@@ -446,7 +565,6 @@ export default {
      * Author: txphuc (27/06/2023)
      */
     async deleteSelectedEmployee() {
-      console.log("delete");
       try {
         const deleteIds = this.selectedRowsData?.map((row) => row.EmployeeID);
 
@@ -500,23 +618,6 @@ export default {
         // Load lại data
         await this.getEmployeesData();
       }
-    },
-
-    test(e) {
-      console.log(e);
-    },
-  },
-
-  watch: {
-    /**
-     * Description: Gọi lại data khi filter thay đổi
-     * Author: txphuc (22/08/2023)
-     */
-    filterRequest: {
-      handler: function () {
-        this.getEmployeesData();
-      },
-      deep: true,
     },
   },
 
