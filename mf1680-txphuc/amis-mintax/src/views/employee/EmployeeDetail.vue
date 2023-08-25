@@ -693,12 +693,33 @@
               </MISAButton>
             </div>
 
+            <!-- Form thông tin gia đình -->
             <EmployeeFamilyDetail
               v-if="isOpenEmployeeFamilyDetail"
               @close="isOpenEmployeeFamilyDetail = false"
             />
 
-            <div @click="$store.dispatch('dialogStore/showExistFormWarning')" class="ms-empty-data">
+            <!-- Bảng thông tin gia đình -->
+            <MISATable
+              v-if="formData?.EmployeeRelationships?.length > 0"
+              :columns="tableColumns"
+              :dataSource="formData?.EmployeeRelationships"
+              tableStyle="solid"
+            >
+              <template #IsDependent="{ value }">
+                <div v-if="value" class="width-100 d-flex justify-content-center text-blue">
+                  <MISAIcon icon="check" />
+                </div>
+                <div v-else></div>
+              </template>
+            </MISATable>
+            <MISATableFooter
+              v-if="formData?.EmployeeRelationships?.length > 0"
+              :pageSize="25"
+              :totalRecords="formData?.EmployeeRelationships?.length"
+            />
+
+            <div v-if="formData?.EmployeeRelationships?.length == 0" class="ms-empty-data">
               Chưa có thông tin gia đình
             </div>
           </div>
@@ -709,6 +730,8 @@
 </template>
 
 <script>
+import MISATable from "@/components/base/table/MISATable.vue";
+import MISATableFooter from "@/components/base/table-footer/MISATableFooter.vue";
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import MISAButton from "@/components/base/button/MISAButton.vue";
 import MISATextBox from "@/components/base/text-box/MISATextBox.vue";
@@ -737,6 +760,7 @@ import enums from "@/enum/enum";
 import employeeApi from "@/api/employee-api";
 import { formatDate } from "devextreme/localization";
 import { ValidationProvider, ValidationObserver } from "vee-validate";
+import { employeeRelationshipColumns } from "./employee-columns";
 
 const defaultFormData = {
   EmployeeType: 0,
@@ -779,6 +803,8 @@ const defaultFormData = {
 export default {
   name: "EmployeeDetail",
   components: {
+    MISATable,
+    MISATableFooter,
     MISAButton,
     MISATextBox,
     MISAIcon,
@@ -815,6 +841,8 @@ export default {
       formModified: false,
       isLoadFormData: false,
 
+      tableColumns: employeeRelationshipColumns.map((col) => ({ ...col })),
+
       // Trạng thái đóng/mở form thêm thành viên gia đình
       isOpenEmployeeFamilyDetail: false,
     };
@@ -822,9 +850,6 @@ export default {
 
   computed: {
     ...mapState("employeeStore", {
-      mode: (state) => state.mode,
-      title: (state) => state.title,
-      currentEmployee: (state) => state.currentEmployee,
       employeeStore: (state) => state,
     }),
   },
@@ -851,6 +876,10 @@ export default {
   },
 
   methods: {
+    test(e) {
+      console.log(e);
+    },
+
     /**
      * Description: Hàm xử lý gọi api lấy mã nhân viên mới nhất
      * Author: txphuc (28/06/2023)
@@ -925,9 +954,9 @@ export default {
           // Bắt đầu loading
           this.$store.dispatch("commonStore/setLoading", true);
 
-          if (this.mode === enums.form.mode.CREATE) {
+          if (this.employeeStore.mode === enums.form.mode.CREATE) {
             result = await this.handleCreateEmployee();
-          } else if (this.mode === enums.form.mode.UPDATE) {
+          } else if (this.employeeStore.mode === enums.form.mode.UPDATE) {
             result = await this.handleUpdateEmployee();
 
             // if (result) {
@@ -982,7 +1011,7 @@ export default {
      */
     async handleCreateEmployee() {
       try {
-        if (this.mode === enums.form.mode.CREATE) {
+        if (this.employeeStore.mode === enums.form.mode.CREATE) {
           const data = this.generateData();
 
           await employeeApi.create(data);
@@ -1007,12 +1036,14 @@ export default {
      */
     async handleLoadDataForUpdate() {
       try {
-        if (this.mode === enums.form.mode.UPDATE) {
-          const employeeId = this.currentEmployee.EmployeeID;
+        if (this.employeeStore.mode === enums.form.mode.UPDATE) {
+          const employeeId = this.employeeStore?.currentEmployee?.EmployeeID;
 
           // Gọi API lấy thông tin nhân viên cần sửa
           const response = await employeeApi.get(employeeId);
           const employeeData = response.data;
+
+          console.log(employeeData);
 
           // Binding dữ liệu vào form
           this.formData = {
@@ -1039,8 +1070,8 @@ export default {
      */
     async handleUpdateEmployee() {
       try {
-        if (this.mode === enums.form.mode.UPDATE) {
-          const employeeId = this.currentEmployee.EmployeeID;
+        if (this.employeeStore.mode === enums.form.mode.UPDATE) {
+          const employeeId = this.employeeStore?.currentEmployee?.EmployeeID;
 
           const data = this.generateData();
 

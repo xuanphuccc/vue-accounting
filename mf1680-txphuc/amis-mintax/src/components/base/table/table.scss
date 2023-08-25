@@ -129,3 +129,14 @@
 .dx-scrollbar-vertical .dx-scrollable-scroll {
   width: 10px;
 }
+
+/* table solid style */
+.ms-table.--solid-style {
+  border-radius: 4px 4px 0px 0px;
+  border: 1px solid var(--border-color);
+}
+
+.ms-table.--solid-style .dx-header-row td {
+  background-color: var(--gray-200);
+  font-weight: 500;
+}

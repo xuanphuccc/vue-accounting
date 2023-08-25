@@ -206,7 +206,7 @@ import MISATextBox from "@/components/base/text-box/MISATextBox.vue";
 import MISATreeView from "@/components/base/tree-view/MISATreeView.vue";
 import MISAFilterPopup from "@/components/base/filter-popup/MISAFilterPopup.vue";
 import MISADialog from "@/components/base/dialog/MISADialog.vue";
-import employeeColumns from "./employee-columns";
+import { employeeColumns } from "./employee-columns";
 import employeeApi from "@/api/employee-api";
 import MISABadge from "@/components/base/badge/MISABadge.vue";
 import { employeeFilterGroups } from "./employee-filter";

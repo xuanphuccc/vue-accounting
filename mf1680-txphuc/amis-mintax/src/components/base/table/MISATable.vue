@@ -1,5 +1,5 @@
 <template>
-  <div class="ms-table">
+  <div :class="['ms-table', `--${tableStyle}-style`]">
     <DxDataGrid
       id="grid-container"
       :data-source="dataSource"
@@ -136,7 +136,7 @@ export default {
       },
     },
 
-    // Trường lấy làm khoá
+    // Trường lấy làm khoá khi chọn
     keyExpr: {
       type: String,
       default: "",
@@ -159,6 +159,12 @@ export default {
     actionColumnEnabled: {
       type: Boolean,
       default: true,
+    },
+
+    // Style
+    tableStyle: {
+      type: String,
+      default: "default",
     },
   },
   data: function () {

@@ -90,6 +90,9 @@ body {
 .justify-content-between {
   justify-content: space-between;
 }
+.justify-content-center {
+  justify-content: center;
+}
 
 .col-gap-8 {
   column-gap: 8px;
@@ -182,6 +185,9 @@ body {
 
 .text-danger {
   color: var(--red-400);
+}
+.text-blue {
+  color: var(--blue-500);
 }
 
 /* ----- Empty data ----- */

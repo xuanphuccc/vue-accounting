@@ -216,6 +216,14 @@ export const workStatuses = [
  * Description: Tìm thông tin quốc gia
  * Author: txphuc (23/08/2023)
  */
+export const getRelationship = (code) => {
+  return relationships.find((co) => co.value == code);
+};
+
+/**
+ * Description: Tìm thông tin quốc gia
+ * Author: txphuc (23/08/2023)
+ */
 export const getCountry = (code) => {
   return countries.find((co) => co.value == code);
 };

@@ -1,8 +1,8 @@
 import enums from "@/enum/enum";
 import { formatDate } from "devextreme/localization";
-import { getPosition } from "@/api/mock-data";
+import { getPosition, getRelationship } from "@/api/mock-data";
 
-const employeeColumns = [
+export const employeeColumns = [
   {
     dataField: "EmployeeCode",
     caption: "Mã nhân viên",
@@ -156,4 +156,72 @@ const employeeColumns = [
   },
 ];
 
-export default employeeColumns;
+export const employeeRelationshipColumns = [
+  {
+    dataField: "FullName",
+    caption: "Họ và tên",
+    dataType: "string",
+    alignment: "left",
+    fixed: false,
+    width: 150,
+    visible: true,
+  },
+  {
+    dataField: "TaxCode",
+    caption: "Mã số thuế",
+    dataType: "string",
+    alignment: "left",
+    fixed: false,
+    width: 150,
+    visible: true,
+  },
+  {
+    dataField: "IsDependent",
+    caption: "Là người phụ thuộc",
+    dataType: "string",
+    alignment: "center",
+    fixed: false,
+    width: 180,
+    visible: true,
+  },
+  {
+    dataField: "DateOfBirth",
+    caption: "Ngày sinh",
+    dataType: "date",
+    customizeText: (e) => formatDate(new Date(e.value), "dd/MM/yyyy"),
+    alignment: "center",
+    fixed: false,
+    width: 150,
+    visible: true,
+  },
+  {
+    dataField: "Relationship",
+    caption: "Quan hệ",
+    dataType: "string",
+    customizeText: (e) => getRelationship(e.value)?.label,
+    alignment: "left",
+    fixed: false,
+    width: 100,
+    visible: true,
+  },
+  {
+    dataField: "DeductionStartDate",
+    caption: "Giảm trừ từ",
+    dataType: "date",
+    customizeText: (e) => formatDate(new Date(e.value), "dd/MM/yyyy"),
+    alignment: "center",
+    fixed: false,
+    width: 150,
+    visible: true,
+  },
+  {
+    dataField: "DeductionEndDate",
+    caption: "Giảm trừ đến",
+    dataType: "date",
+    customizeText: (e) => formatDate(new Date(e.value), "dd/MM/yyyy"),
+    alignment: "center",
+    fixed: false,
+    width: 150,
+    visible: true,
+  },
+];
