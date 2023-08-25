@@ -37,6 +37,18 @@ namespace MISA.AmisMintax.Application
             return pagedEmployees;
         }
 
+        /// <summary>
+        /// Đếm số bản ghi đang được sử dụng
+        /// </summary>
+        /// <returns>Số bản ghi đang được sử dụng và tổng số bản ghi</returns>
+        /// CreatedBy: txphuc (25/08/2023)
+        public async Task<UsageCount> GetUsageCountAsync()
+        {
+            var usageCount = await _employeeRepository.GetUsageCountAsync();
+
+            return usageCount;
+        }
+
 
         /// <summary>
         /// Xử lý chỉnh sửa dữ liệu theo yêu cầu
@@ -90,6 +102,7 @@ namespace MISA.AmisMintax.Application
         /// </summary>
         /// <param name="employee"></param>
         /// <returns></returns>
+        /// CreatedBy: txphuc (23/08/2023)
         protected override async Task InsertDetailTableAsync(EmployeeCreateDto employeeCreateDto, Guid employeeId)
         {
             if (employeeCreateDto.EmployeeRelationships.Count > 0)

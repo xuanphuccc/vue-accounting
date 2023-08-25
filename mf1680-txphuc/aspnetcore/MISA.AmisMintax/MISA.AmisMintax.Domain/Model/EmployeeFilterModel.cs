@@ -90,13 +90,13 @@ namespace MISA.AmisMintax.Domain
         /// Cột cần filter theo ngày
         /// </summary>
         /// CreatedBy: txphuc (22/08/2023)
-        public string? DateFilterColumn { get; set; }
+        public string? DateColumn { get; set; }
 
         /// <summary>
         /// Loại filter (equal, notequal, contain, notcontain,...)
         /// </summary>
         /// CreatedBy: txphuc (22/08/2023)
-        public string? DateFilterBy { get;set; }
+        public string? DateColumnFilterBy { get;set; }
 
         /// <summary>
         /// Filter ngày bắt đầu

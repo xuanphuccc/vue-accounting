@@ -12,11 +12,9 @@ namespace MISA.AmisMintax.Controllers
     public class EmployeesController : BaseCodeController<EmployeeDto, EmployeeCreateDto, EmployeeUpdateDto>
     {
         private readonly IEmployeeService _employeeService;
-        private readonly IEmployeeRelationshipRepository _employeeRelationshipRepository;
-        public EmployeesController(IEmployeeService employeeService, IEmployeeRelationshipRepository employeeRelationshipRepository) : base(employeeService)
+        public EmployeesController(IEmployeeService employeeService) : base(employeeService)
         {
             _employeeService = employeeService;
-            _employeeRelationshipRepository = employeeRelationshipRepository;
         }
 
         /// <summary>
@@ -31,6 +29,19 @@ namespace MISA.AmisMintax.Controllers
             var pagedEmployees = await _employeeService.FilterAsync(employeeFilterDto);
 
             return Ok(pagedEmployees);
+        }
+
+        /// <summary>
+        /// Đếm số bản ghi đang được sử dụng
+        /// </summary>
+        /// <returns>Số bản ghi đang được sử dụng và tổng số bản ghi</returns>
+        /// CreatedBy: txphuc (25/08/2023)
+        [HttpGet("UsageCount")]
+        public async Task<IActionResult> GetUsageCountAsync()
+        {
+            var usageCount = await _employeeService.GetUsageCountAsync();
+
+            return Ok(usageCount);
         }
     }
 }

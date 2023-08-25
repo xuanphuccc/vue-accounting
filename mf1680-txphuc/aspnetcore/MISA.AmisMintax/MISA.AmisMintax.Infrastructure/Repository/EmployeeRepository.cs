@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +21,7 @@ namespace MISA.AmisMintax.Infrastructure
         /// </summary>
         /// <param name="employeeFilter"></param>
         /// <returns>Thông tin phân trang</returns>
+        /// CreatedBy: txphuc (20/08/2023)
         public async Task<Pagination> FilterAsync(EmployeeFilterModel employeeFilter)
         {
             var parameters = new DynamicParameters();
@@ -49,6 +51,32 @@ namespace MISA.AmisMintax.Infrastructure
             {
                 Data = employeeModels,
                 TotalRecords = totalRecords,
+            };
+        }
+
+        /// <summary>
+        /// Đếm số bản ghi đang được sử dụng
+        /// </summary>
+        /// <returns>Số bản ghi đang được sử dụng và tổng số bản ghi</returns>
+        /// CreatedBy: txphuc (25/08/2023)
+        public async Task<UsageCount> GetUsageCountAsync()
+        {
+            var parameters = new DynamicParameters();
+
+            parameters.Add("@TotalRecords", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("@UsedRecords", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+            var sql = "Proc_Employee_GetUsageCount";
+
+            await _unitOfWork.Connection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
+
+            var totalRecords = parameters.Get<int?>("@TotalRecords");
+            var usedRecords = parameters.Get<int?>("@UsedRecords");
+
+            return new UsageCount()
+            {
+                TotalRecords = totalRecords,
+                UsedRecords = usedRecords
             };
         }
     }
