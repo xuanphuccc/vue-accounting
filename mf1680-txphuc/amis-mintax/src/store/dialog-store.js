@@ -8,6 +8,7 @@ const dialogStore = {
     type: enums.dialog.type.INFO,
     title: "Cảnh báo",
     description: "",
+    buttons: [],
   }),
 
   mutations: {
@@ -42,6 +43,14 @@ const dialogStore = {
     SET_DESCRIPTION(state, description) {
       state.description = description;
     },
+
+    /**
+     * Description: Set button hiển thị và hành động của nó
+     * Author: txphuc (24/08/2023)
+     */
+    SET_BUTTONS(state, buttons) {
+      state.buttons = buttons;
+    },
   },
   actions: {
     /**
@@ -53,6 +62,25 @@ const dialogStore = {
       commit("SET_TYPE", enums.dialog.type.WARNING);
       commit("SET_TITLE", "Cảnh báo");
       commit("SET_DESCRIPTION", description);
+
+      commit("SET_BUTTONS", [{ key: 1, text: "Đồng ý", color: "danger", action: "closeDialog" }]);
+    },
+
+    /**
+     * Description: Hiện cảnh báo
+     * Author: txphuc: (03/08/2023)
+     */
+    showExistFormWarning({ commit }, handler) {
+      commit("SET_ACTIVE", true);
+      commit("SET_TYPE", enums.dialog.type.WARNING);
+      commit("SET_TITLE", "Dữ liệu đã thay đổi");
+      commit("SET_DESCRIPTION", "Lưu lại những thay đổi?");
+
+      commit("SET_BUTTONS", [
+        { key: 1, text: "Huỷ", color: "secondary", action: "closeDialog" },
+        { key: 2, text: "Không lưu", color: "secondary", action: handler.cancel },
+        { key: 3, text: "Lưu", color: "primary", action: handler.submit },
+      ]);
     },
 
     /**

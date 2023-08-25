@@ -6,9 +6,7 @@
       </div>
 
       <div class="page__header-controls">
-        <MISAButton @click="$store.dispatch('employeeStore/closeForm')" color="secondary"
-          >Huỷ</MISAButton
-        >
+        <MISAButton @click="onCloseForm" color="secondary">Huỷ</MISAButton>
 
         <MISAButton @click="handleSubmitForm(true)" color="secondary">Lưu & Thêm mới</MISAButton>
         <MISAButton @click="handleSubmitForm(false)" color="primary">Lưu</MISAButton>
@@ -687,8 +685,8 @@
             <!-- ----- THÔNG TIN GIA ĐÌNH ----- -->
             <div class="d-flex align-center justify-content-between mt-44 pb-24">
               <div class="form-content__header">Thông tin gia đình</div>
-              <MISAButton @click="isOpenEmployeeFamilyDetail = true" type="outline" color="primary"
-                >Thêm
+              <MISAButton @click="isOpenEmployeeFamilyDetail = true" type="outline" color="primary">
+                Thêm
                 <template #icon>
                   <MISAIcon :size="20" icon="plus" />
                 </template>
@@ -700,7 +698,9 @@
               @close="isOpenEmployeeFamilyDetail = false"
             />
 
-            <div class="ms-empty-data">Chưa có thông tin gia đình</div>
+            <div @click="$store.dispatch('dialogStore/showExistFormWarning')" class="ms-empty-data">
+              Chưa có thông tin gia đình
+            </div>
           </div>
         </ValidationObserver>
       </div>
@@ -806,10 +806,16 @@ export default {
       positions,
       workStatuses,
 
+      // Dữ liệu của form
       formData: {
         ...defaultFormData,
       },
 
+      // Trạng thái sửa đổi form
+      formModified: false,
+      isLoadFormData: false,
+
+      // Trạng thái đóng/mở form thêm thành viên gia đình
       isOpenEmployeeFamilyDetail: false,
     };
   },
@@ -823,13 +829,86 @@ export default {
     }),
   },
 
+  watch: {
+    /**
+     * Description: Phát hiện sự thay đổi của form
+     * Author: txphuc (25/08/2023)
+     */
+    formData: {
+      handler: function () {
+        if (this.isLoadFormData) {
+          // Nếu form thay đổi do load dữ liệu (mã mới, data update)
+          // thì reset lại trạng thái thành chưa thay đổi
+          this.formModified = false;
+
+          this.isLoadFormData = false;
+        } else {
+          this.formModified = true;
+        }
+      },
+      deep: true,
+    },
+  },
+
   methods: {
     /**
-     * Description: Xử lý validate input
-     * Author: txphuc (24/08/2023)
+     * Description: Hàm xử lý gọi api lấy mã nhân viên mới nhất
+     * Author: txphuc (28/06/2023)
      */
-    handleValidateInputs() {
-      return true;
+    async getNewEmployeeCode() {
+      try {
+        if (this.employeeStore.mode === enums.form.mode.CREATE) {
+          const response = await employeeApi.getNewCode();
+
+          this.formData.EmployeeCode = response.data;
+
+          // Tránh thay đổi trạng thái của form
+          this.isLoadFormData = true;
+        }
+      } catch (error) {
+        console.warn(error);
+      }
+    },
+
+    /**
+     * Description: Xử lý sự kiện thoát form
+     * Author: txphuc (25/08/2023)
+     */
+    onCloseForm() {
+      if (this.formModified) {
+        this.$store.dispatch("dialogStore/showExistFormWarning", {
+          cancel: this.confirmExitForm,
+          submit: this.confirmSubmitForm,
+        });
+      } else {
+        this.$store.dispatch("employeeStore/closeForm");
+      }
+    },
+
+    /**
+     * Description: Xác nhận thoát form khi dialog cảnh báo thay đổi
+     * được bật lên
+     * Author: txphuc (25/08/2023)
+     */
+    confirmExitForm() {
+      // Đóng dialog cảnh báo
+      this.$store.dispatch("dialogStore/closeDialog");
+
+      // Thoát form
+      this.$store.dispatch("employeeStore/closeForm");
+    },
+
+    /**
+     * Description: Xác nhận submit form và đóng dialog
+     * khi dialog cảnh báo thay đổi được bật lên
+     * Author: txphuc (25/08/2023)
+     */
+    async confirmSubmitForm() {
+      // Đóng dialog cảnh báo
+      this.$store.dispatch("dialogStore/closeDialog");
+
+      // Submit form
+      await this.handleSubmitForm();
     },
 
     /**
@@ -906,8 +985,6 @@ export default {
         if (this.mode === enums.form.mode.CREATE) {
           const data = this.generateData();
 
-          console.log(data);
-
           await employeeApi.create(data);
 
           // Hiện toast message thành công
@@ -949,7 +1026,7 @@ export default {
           };
 
           // Tránh thay đổi trạng thái của form
-          // isLoadData.value = true;
+          this.isLoadFormData = true;
         }
       } catch (error) {
         console.warn(error);
@@ -984,7 +1061,12 @@ export default {
     },
   },
 
+  /**
+   * Description: Load dữ liệu khi form được tạo
+   * Author: txphuc (25/08/2023)
+   */
   created: function () {
+    this.getNewEmployeeCode();
     this.handleLoadDataForUpdate();
   },
 };

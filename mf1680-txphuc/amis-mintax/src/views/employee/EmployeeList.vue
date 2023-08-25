@@ -264,6 +264,7 @@ export default {
         page: 1,
         pageSize: 15,
         search: null,
+        usageStatus: true,
         sortColumn: null,
         sortOrder: null,
 

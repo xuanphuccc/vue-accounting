@@ -157,5 +157,3 @@ const employeeColumns = [
 ];
 
 export default employeeColumns;
-
-// customizeText: (e) => "NV" + e.value,

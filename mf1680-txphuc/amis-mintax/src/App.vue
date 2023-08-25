@@ -18,8 +18,17 @@
       :type="dialogStore.type"
       :title="dialogStore.title"
       :description="dialogStore.description"
-      ok-text="Đóng"
-    />
+    >
+      <template #right-controls>
+        <MISAButton
+          v-for="button in dialogStore.buttons"
+          :key="button.key"
+          :color="button.color"
+          @click="handleOnClickDialogButton(button.action)"
+          >{{ button.text }}</MISAButton
+        >
+      </template>
+    </MISADialog>
   </div>
 </template>
 
@@ -27,6 +36,7 @@
 import TheDefaultLayout from "./components/layout/default-layout/TheDefaultLayout.vue";
 import TheEmptyLayout from "./components/layout/empty-layout/TheEmptyLayout.vue";
 import MISADialog from "@/components/base/dialog/MISADialog.vue";
+import MISAButton from "./components/base/button/MISAButton.vue";
 import { mapState } from "vuex";
 
 export default {
@@ -35,6 +45,7 @@ export default {
     TheDefaultLayout,
     TheEmptyLayout,
     MISADialog,
+    MISAButton,
   },
 
   data: function () {
@@ -45,6 +56,20 @@ export default {
     ...mapState("dialogStore", {
       dialogStore: (state) => state,
     }),
+  },
+
+  methods: {
+    /**
+     * Description: Xử lý sự kiện click các button của dialog
+     * Author: txphuc (25/08/2023)
+     */
+    handleOnClickDialogButton(action) {
+      if (typeof action === "string") {
+        this.$store.dispatch(`dialogStore/${action}`);
+      } else if (typeof action === "function") {
+        action();
+      }
+    },
   },
 
   /**
