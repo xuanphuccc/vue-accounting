@@ -52,6 +52,7 @@ builder.Services.AddScoped<IUnitOfWork>(provider => new UnitOfWork(connectionStr
 
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IEmployeeManager, EmployeeManager>();
 
 builder.Services.AddScoped<IEmployeeRelationshipRepository, EmployeeRelationshipRepository>();
 

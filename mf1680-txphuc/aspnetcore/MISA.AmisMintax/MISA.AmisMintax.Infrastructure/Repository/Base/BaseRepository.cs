@@ -143,7 +143,7 @@ namespace MISA.AmisMintax.Infrastructure
                 string insertQuery = $"UPDATE {TableName} SET {valuePlaceholdersString} WHERE {TableName}ID = '{entity.GetKey()}'";
 
                 insertQueries.Add(insertQuery);
-
+                                                                                                                                                                                                              
                 index++;
             }
 

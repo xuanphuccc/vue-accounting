@@ -121,7 +121,7 @@
     <value>Invalid data input</value>
   </data>
   <data name="ConflictCode" xml:space="preserve">
-    <value>The code &lt;{0}&gt; already exists in the system, please check again</value>
+    <value>The {0} code &lt;b&gt;{1}&lt;/b&gt; already exists in the system, please check again</value>
   </data>
   <data name="ConstraintError" xml:space="preserve">
     <value>Cannot delete {0} due to dependent records</value>

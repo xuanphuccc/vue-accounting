@@ -12,11 +12,13 @@ namespace MISA.AmisMintax.Application
     public class EmployeeService : BaseCodeService<Employee, EmployeeDto, EmployeeCreateDto, EmployeeUpdateDto>, IEmployeeService
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IEmployeeManager _employeeManager;
         private readonly IEmployeeRelationshipRepository _employeeRelationshipRepository;
 
-        public EmployeeService(IEmployeeRepository employeeRepository, IEmployeeRelationshipRepository employeeRelationshipRepository, IUnitOfWork unitOfWork, IMapper mapper) : base(employeeRepository, unitOfWork, mapper)
+        public EmployeeService(IEmployeeRepository employeeRepository, IEmployeeManager employeeManager, IEmployeeRelationshipRepository employeeRelationshipRepository, IUnitOfWork unitOfWork, IMapper mapper) : base(employeeRepository, unitOfWork, mapper)
         {
             _employeeRepository = employeeRepository;
+            _employeeManager = employeeManager;
             _employeeRelationshipRepository = employeeRelationshipRepository;
         }
 
@@ -71,13 +73,16 @@ namespace MISA.AmisMintax.Application
         /// <param name="entityCreateDto">CreateDto</param>
         /// <returns>Entity</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        protected override Task<Employee> MapCreateDtoToEntityAsync(EmployeeCreateDto entityCreateDto)
+        protected override async Task<Employee> MapCreateDtoToEntityAsync(EmployeeCreateDto entityCreateDto)
         {
+            // Check trùng mã
+            await _employeeManager.CheckExistEmployeeCode(entityCreateDto.EmployeeCode);
+
             var employee = _mapper.Map<Employee>(entityCreateDto);
 
             employee.EmployeeID = Guid.NewGuid();
 
-            return Task.FromResult(employee);
+            return employee;
         }
 
         /// <summary>
@@ -91,6 +96,9 @@ namespace MISA.AmisMintax.Application
         {
             // Check nhân viên có tồn tại hay không
             var oldEmployee = await _employeeRepository.GetByIdAsync(employeeId);
+
+            // Check trùng mã
+            await _employeeManager.CheckExistEmployeeCode(entityUpdateDto.EmployeeCode, oldEmployee.EmployeeCode);
 
             var employee = _mapper.Map(entityUpdateDto, oldEmployee);
 

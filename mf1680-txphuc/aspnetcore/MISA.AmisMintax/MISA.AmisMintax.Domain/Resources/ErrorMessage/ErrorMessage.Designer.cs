@@ -70,7 +70,7 @@ namespace MISA.AmisMintax.Domain.Resources.ErrorMessage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The code &lt;{0}&gt; already exists in the system, please check again.
+        ///   Looks up a localized string similar to The {0} code &lt;b&gt;{1}&lt;/b&gt; already exists in the system, please check again.
         /// </summary>
         public static string ConflictCode {
             get {
