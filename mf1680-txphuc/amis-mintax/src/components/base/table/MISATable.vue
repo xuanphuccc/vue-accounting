@@ -18,7 +18,13 @@
       ref="dataGridRef"
     >
       <!-- Cột chọn bản ghi -->
-      <DxColumn v-if="allowSelection" type="selection" :width="44" :allow-resizing="false" />
+      <DxColumn
+        v-if="allowSelection"
+        type="selection"
+        :width="44"
+        :allow-resizing="false"
+        :allow-sorting="false"
+      />
       <DxSelection v-if="allowSelection" mode="multiple" show-check-boxes-mode="always" />
 
       <!-- Các cột dữ liệu -->
@@ -198,7 +204,7 @@ export default {
      * Author: txphuc (17/08/2023)
      */
     onSortChange(sortColumn) {
-      if (sortColumn.rowType === "header") {
+      if (sortColumn.rowType === "header" && this.apiSort) {
         const dataField = sortColumn.column?.dataField;
 
         if (this.sort?.sortColumn === dataField && this.sort?.sortOrder === enums.sort.ASC) {

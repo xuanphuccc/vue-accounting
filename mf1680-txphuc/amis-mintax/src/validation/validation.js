@@ -13,7 +13,7 @@ import { required, email } from "vee-validate/dist/rules";
 
 extend("required", {
   ...required,
-  message: "{_field_} không được để trống",
+  message: "{_field_} không được bỏ trống",
 });
 
 extend("email", {

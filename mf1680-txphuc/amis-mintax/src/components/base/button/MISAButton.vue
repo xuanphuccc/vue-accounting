@@ -1,9 +1,6 @@
 <template>
   <button
     @click.stop="handleOnClick"
-    @focus="isShowOutline = true"
-    @focusout="isShowOutline = false"
-    @mousedown="isShowOutline = false"
     :class="[
       `ms-btn`,
       `ms-btn__color--${color}`,
@@ -11,8 +8,6 @@
       { 'ms-btn--icon': $slots.icon && !$slots.default },
       { 'ms-btn--with-icon': $slots.icon && $slots.default },
       { 'ms-btn--has-dropdown': $slots.dropdown && isOpenDropdown },
-      { '--outline': isShowOutline },
-      { '--rounded': isShowOutline },
     ]"
     :disabled="disabled"
     ref="buttonRef"
@@ -101,7 +96,6 @@ export default {
   data: function () {
     return {
       isOpenDropdown: false,
-      isShowOutline: false,
     };
   },
   methods: {
@@ -113,7 +107,6 @@ export default {
       this.$emit("click", event);
 
       this.isOpenDropdown = !this.isOpenDropdown;
-      this.isShowOutline = false;
     },
 
     /**

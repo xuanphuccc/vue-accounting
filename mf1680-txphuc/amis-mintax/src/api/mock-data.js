@@ -191,12 +191,12 @@ export const contractTypes = [
     label: "Không cư trú",
   },
   {
-    value: 1,
-    label: "Cư trú và có HĐLD từ 3 tháng trở lên",
-  },
-  {
     value: 2,
     label: "Cư trú và không đăng ký HĐLĐ/HĐLĐ dưới 3 tháng",
+  },
+  {
+    value: 1,
+    label: "Cư trú và có HĐLD từ 3 tháng trở lên",
   },
 ];
 

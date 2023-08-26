@@ -1,7 +1,7 @@
 <template>
   <MISAPopup
-    @submit="$emit('submit')"
-    @close="$store.dispatch('employeeRelationshipStore/closeForm')"
+    @submit="handleSubmitForm()"
+    @close="onCloseForm"
     title="Thêm thành viên gia đình"
     :width="1146"
   >
@@ -16,7 +16,7 @@
                 </div>
               </MISACol>
               <MISACol :span="8">
-                <MISATextBox placeholder="Nhập họ tên thành viên" />
+                <MISATextBox v-model="formData.FullName" placeholder="Nhập họ tên thành viên" />
               </MISACol>
             </MISARow>
           </div>
@@ -30,6 +30,8 @@
               </MISACol>
               <MISACol :span="8">
                 <MISASelectBox
+                  v-model="formData.Relationship"
+                  :dataSource="relationships"
                   displayExpr="label"
                   valueExpr="value"
                   :searchEnabled="true"
@@ -45,7 +47,7 @@
                 <div class="height-100 d-flex align-center flex-wrap pr-12">Ngày sinh</div>
               </MISACol>
               <MISACol :span="8">
-                <MISADatePicker />
+                <MISADatePicker v-model="formData.DateOfBirth" />
               </MISACol>
             </MISARow>
           </div>
@@ -58,10 +60,13 @@
               <MISACol :span="8">
                 <div class="height-36 d-flex align-center">
                   <DxRadioGroup
+                    v-model="formData.Gender"
                     :items="[
-                      { id: 0, text: 'Nam' },
-                      { id: 1, text: 'Nữ' },
+                      { value: 0, label: 'Nam' },
+                      { value: 1, label: 'Nữ' },
                     ]"
+                    value-expr="value"
+                    display-expr="label"
                     layout="horizontal"
                   />
                 </div>
@@ -77,7 +82,11 @@
               <MISACol :span="8">
                 <MISARow>
                   <div class="d-flex width-100 col-gap-8">
-                    <MISATextBox placeholder="Nhập mã số thuế" width="100%" />
+                    <MISATextBox
+                      v-model="formData.TaxCode"
+                      placeholder="Nhập mã số thuế"
+                      width="100%"
+                    />
 
                     <MISAButton color="secondary"
                       >Lấy thông tin
@@ -99,6 +108,8 @@
               </MISACol>
               <MISACol :span="8">
                 <MISASelectBox
+                  v-model="formData.NationalityCode"
+                  :dataSource="countries"
                   displayExpr="label"
                   valueExpr="value"
                   :searchEnabled="true"
@@ -115,6 +126,8 @@
               </MISACol>
               <MISACol :span="8">
                 <MISASelectBox
+                  v-model="formData.IdentifyKindOfPaper"
+                  :dataSource="identifyTypes"
                   displayExpr="label"
                   valueExpr="value"
                   placeholder="Chọn loại giấy tờ"
@@ -131,7 +144,11 @@
               <MISACol :span="8">
                 <MISARow>
                   <div class="d-flex width-100 col-gap-8">
-                    <MISATextBox placeholder="Nhập số CMND/CCCD/Hộ chiếu" width="100%" />
+                    <MISATextBox
+                      v-model="formData.IdentifyPaperNumber"
+                      placeholder="Nhập số CMND/CCCD/Hộ chiếu"
+                      width="100%"
+                    />
 
                     <MISAButton color="secondary"
                       >Lấy thông tin
@@ -151,7 +168,7 @@
                 <div class="height-100 d-flex align-center flex-wrap pr-12">Ngày cấp</div>
               </MISACol>
               <MISACol :span="8">
-                <MISADatePicker />
+                <MISADatePicker v-model="formData.IdentifyNumberIssuedDate" />
               </MISACol>
             </MISARow>
           </div>
@@ -163,6 +180,8 @@
               </MISACol>
               <MISACol :span="8">
                 <MISASelectBox
+                  v-model="formData.IdentifyNumberIssuedPlaceCode"
+                  :dataSource="provinces"
                   displayExpr="label"
                   valueExpr="value"
                   :searchEnabled="true"
@@ -186,7 +205,7 @@
                 <div class="height-100 d-flex align-center flex-wrap pr-12">Số khai sinh</div>
               </MISACol>
               <MISACol :span="8">
-                <MISATextBox placeholder="Nhập số khai sinh" />
+                <MISATextBox v-model="formData.DependentNumber" placeholder="Nhập số khai sinh" />
               </MISACol>
             </MISARow>
           </div>
@@ -197,7 +216,7 @@
                 <div class="height-100 d-flex align-center flex-wrap pr-12">Quyển số</div>
               </MISACol>
               <MISACol :span="8">
-                <MISATextBox placeholder="Nhập quyển số" />
+                <MISATextBox v-model="formData.NumberBook" placeholder="Nhập quyển số" />
               </MISACol>
             </MISARow>
           </div>
@@ -210,7 +229,7 @@
                 </div>
               </MISACol>
               <MISACol :span="8">
-                <MISADatePicker />
+                <MISADatePicker v-model="formData.BirthCertificationIssueDate" />
               </MISACol>
             </MISARow>
           </div>
@@ -222,6 +241,8 @@
               </MISACol>
               <MISACol :span="8">
                 <MISASelectBox
+                  v-model="formData.CountryCode"
+                  :dataSource="countries"
                   displayExpr="label"
                   valueExpr="value"
                   :searchEnabled="true"
@@ -239,6 +260,8 @@
               </MISACol>
               <MISACol :span="8">
                 <MISASelectBox
+                  v-model="formData.ProvinceCode"
+                  :dataSource="provinces"
                   displayExpr="label"
                   valueExpr="value"
                   :searchEnabled="true"
@@ -255,6 +278,8 @@
               </MISACol>
               <MISACol :span="8">
                 <MISASelectBox
+                  v-model="formData.DistrictCode"
+                  :dataSource="districts"
                   displayExpr="label"
                   valueExpr="value"
                   :searchEnabled="true"
@@ -271,6 +296,8 @@
               </MISACol>
               <MISACol :span="8">
                 <MISASelectBox
+                  v-model="formData.WardCode"
+                  :dataSource="wards"
                   displayExpr="label"
                   valueExpr="value"
                   :searchEnabled="true"
@@ -295,6 +322,8 @@
               </MISACol>
               <MISACol :span="8">
                 <MISASelectBox
+                  v-model="formData.FamilyPermanentAddressProvinceCode"
+                  :dataSource="provinces"
                   displayExpr="label"
                   valueExpr="value"
                   :searchEnabled="true"
@@ -311,6 +340,8 @@
               </MISACol>
               <MISACol :span="8">
                 <MISASelectBox
+                  v-model="formData.FamilyPermanentAddressDistrictCode"
+                  :dataSource="districts"
                   displayExpr="label"
                   valueExpr="value"
                   :searchEnabled="true"
@@ -328,6 +359,8 @@
               </MISACol>
               <MISACol :span="8">
                 <MISASelectBox
+                  v-model="formData.FamilyPermanentAddressWardCode"
+                  :dataSource="wards"
                   displayExpr="label"
                   valueExpr="value"
                   :searchEnabled="true"
@@ -345,7 +378,10 @@
                 </div>
               </MISACol>
               <MISACol :span="8">
-                <MISATextBox placeholder="Nhập số nhà, đường/phố, thôn/xóm" />
+                <MISATextBox
+                  v-model="formData.FamilyPermanentAddressStreetHouseNumber"
+                  placeholder="Nhập số nhà, đường/phố, thôn/xóm"
+                />
               </MISACol>
             </MISARow>
           </div>
@@ -365,6 +401,8 @@
               </MISACol>
               <MISACol :span="8">
                 <MISASelectBox
+                  v-model="formData.FamilyCurrentProvinceCode"
+                  :dataSource="provinces"
                   displayExpr="label"
                   valueExpr="value"
                   :searchEnabled="true"
@@ -381,6 +419,8 @@
               </MISACol>
               <MISACol :span="8">
                 <MISASelectBox
+                  v-model="formData.FamilyCurrentDistrictCode"
+                  :dataSource="districts"
                   displayExpr="label"
                   valueExpr="value"
                   :searchEnabled="true"
@@ -398,6 +438,8 @@
               </MISACol>
               <MISACol :span="8">
                 <MISASelectBox
+                  v-model="formData.FamilyCurrentWardCode"
+                  :dataSource="wards"
                   displayExpr="label"
                   valueExpr="value"
                   :searchEnabled="true"
@@ -415,7 +457,10 @@
                 </div>
               </MISACol>
               <MISACol :span="8">
-                <MISATextBox placeholder="Nhập số nhà, đường/phố, thôn/xóm" />
+                <MISATextBox
+                  v-model="formData.FamilyCurrentStreetHouseNumber"
+                  placeholder="Nhập số nhà, đường/phố, thôn/xóm"
+                />
               </MISACol>
             </MISARow>
           </div>
@@ -435,7 +480,7 @@
               </MISACol>
               <MISACol :span="8">
                 <div class="d-flex">
-                  <DxCheckBox />
+                  <DxCheckBox v-model="formData.IsDependent" />
                   <div class="height-36"></div>
                 </div>
               </MISACol>
@@ -448,7 +493,11 @@
                 <div class="height-100 d-flex align-center flex-wrap pr-12">Giảm trừ từ tháng</div>
               </MISACol>
               <MISACol :span="8">
-                <MISADatePicker displayFormat="MM/yyyy" placeholder="__/ ____" />
+                <MISADatePicker
+                  v-model="formData.DeductionStartDate"
+                  displayFormat="MM/yyyy"
+                  placeholder="__/ ____"
+                />
               </MISACol>
             </MISARow>
           </div>
@@ -459,7 +508,11 @@
                 <div class="height-100 d-flex align-center flex-wrap pr-12">Giảm trừ đến tháng</div>
               </MISACol>
               <MISACol :span="8">
-                <MISADatePicker displayFormat="MM/yyyy" placeholder="__/ ____" />
+                <MISADatePicker
+                  v-model="formData.DeductionEndDate"
+                  displayFormat="MM/yyyy"
+                  placeholder="__/ ____"
+                />
               </MISACol>
             </MISARow>
           </div>
@@ -477,7 +530,7 @@
                 <div class="height-100 d-flex align-center flex-wrap pr-12">Ghi chú</div>
               </MISACol>
               <MISACol :span="8">
-                <DxTextArea :min-height="72"></DxTextArea>
+                <DxTextArea v-model="formData.Description" :min-height="72"></DxTextArea>
               </MISACol>
             </MISARow>
           </div>
@@ -486,9 +539,7 @@
     </div>
 
     <template #controls-right>
-      <MISAButton @click="$store.dispatch('employeeRelationshipStore/closeForm')" color="secondary"
-        >Huỷ</MISAButton
-      >
+      <MISAButton @click="onCloseForm" color="secondary">Huỷ</MISAButton>
       <MISAButton @click="handleSubmitForm()">Đồng ý</MISAButton>
     </template>
   </MISAPopup>
@@ -509,22 +560,31 @@ import DxRadioGroup from "devextreme-vue/radio-group";
 // import { ValidationProvider } from "vee-validate";
 import enums from "@/enum/enum";
 import { mapState } from "vuex";
+import {
+  relationships,
+  countries,
+  provinces,
+  districts,
+  wards,
+  identifyTypes,
+} from "@/api/mock-data";
+import { formatDate } from "devextreme/localization";
 
 const defaultFormData = {
-  FullName: "string",
-  Relationship: 0,
+  FullName: null,
+  Relationship: null,
   DateOfBirth: null,
   Gender: 0,
   TaxCode: null,
-  NationalityCode: null,
-  IdentifyKindOfPaper: null,
+  NationalityCode: "VN",
+  IdentifyKindOfPaper: 0,
   IdentifyPaperNumber: null,
   IdentifyNumberIssuedDate: null,
   IdentifyNumberIssuedPlaceCode: null,
   DependentNumber: null,
   NumberBook: null,
   BirthCertificationIssueDate: null,
-  CountryCode: null,
+  CountryCode: "VN",
   ProvinceCode: null,
   DistrictCode: null,
   WardCode: null,
@@ -536,7 +596,7 @@ const defaultFormData = {
   FamilyCurrentDistrictCode: null,
   FamilyCurrentWardCode: null,
   FamilyCurrentStreetHouseNumber: null,
-  IsDependent: true,
+  IsDependent: false,
   DeductionStartDate: null,
   DeductionEndDate: null,
   Description: null,
@@ -561,10 +621,21 @@ export default {
   props: {},
   data: function () {
     return {
+      relationships,
+      countries,
+      provinces,
+      districts,
+      wards,
+      identifyTypes,
+
       // Dữ liệu của form
       formData: {
         ...defaultFormData,
       },
+
+      // Trạng thái sửa đổi form
+      formModified: false,
+      isLoadFormData: false,
     };
   },
 
@@ -574,7 +645,69 @@ export default {
     }),
   },
 
+  watch: {
+    /**
+     * Description: Phát hiện sự thay đổi của form
+     * Author: txphuc (25/08/2023)
+     */
+    formData: {
+      handler: function () {
+        if (this.isLoadFormData) {
+          // Nếu form thay đổi do load dữ liệu (mã mới, data update)
+          // thì reset lại trạng thái thành chưa thay đổi
+          this.formModified = false;
+
+          this.isLoadFormData = false;
+        } else {
+          this.formModified = true;
+        }
+      },
+      deep: true,
+    },
+  },
+
   methods: {
+    /**
+     * Description: Xử lý sự kiện thoát form
+     * Author: txphuc (25/08/2023)
+     */
+    onCloseForm() {
+      if (this.formModified) {
+        this.$store.dispatch("dialogStore/showExistFormWarning", {
+          cancel: this.confirmExitForm,
+          submit: this.confirmSubmitForm,
+        });
+      } else {
+        this.$store.dispatch("employeeRelationshipStore/closeForm");
+      }
+    },
+
+    /**
+     * Description: Xác nhận thoát form khi dialog cảnh báo thay đổi
+     * được bật lên
+     * Author: txphuc (25/08/2023)
+     */
+    confirmExitForm() {
+      // Đóng dialog cảnh báo
+      this.$store.dispatch("dialogStore/closeDialog");
+
+      // Thoát form
+      this.$store.dispatch("employeeRelationshipStore/closeForm");
+    },
+
+    /**
+     * Description: Xác nhận submit form và đóng dialog
+     * khi dialog cảnh báo thay đổi được bật lên
+     * Author: txphuc (25/08/2023)
+     */
+    async confirmSubmitForm() {
+      // Đóng dialog cảnh báo
+      this.$store.dispatch("dialogStore/closeDialog");
+
+      // Submit form
+      await this.handleSubmitForm();
+    },
+
     /**
      * Description: Hàm xử lý submit form ở các chế độ create/update
      * Author: txphuc (26/08/2023)
@@ -590,7 +723,7 @@ export default {
           if (this.employeeRelationshipStore.mode === enums.form.mode.CREATE) {
             result = this.handleCreateRelationship();
           } else if (this.employeeRelationshipStore.mode === enums.form.mode.UPDATE) {
-            result = this.handleUpdateEmployee();
+            result = this.handleUpdateRelationship();
           }
 
           if (result) {
@@ -609,13 +742,25 @@ export default {
     generateData() {
       const data = {
         ...this.formData,
+
+        DateOfBirth: formatDate(this.formData.DateOfBirth, "yyyy-MM-dd"),
+
+        IdentifyNumberIssuedDate: formatDate(this.formData.IdentifyNumberIssuedDate, "yyyy-MM-dd"),
+
+        BirthCertificationIssueDate: formatDate(
+          this.formData.BirthCertificationIssueDate,
+          "yyyy-MM-dd"
+        ),
+
+        DeductionStartDate: formatDate(this.formData.DeductionStartDate, "yyyy-MM-dd"),
+        DeductionEndDate: formatDate(this.formData.DeductionEndDate, "yyyy-MM-dd"),
       };
 
       return data;
     },
 
     /**
-     * Description: Hàm xử lý gọi api thêm thành viên gia đình
+     * Description: Hàm xử lý thêm thành viên gia đình
      * Author: txphuc (26/08/2023)
      */
     handleCreateRelationship() {
@@ -633,6 +778,74 @@ export default {
         return false;
       }
     },
+
+    /**
+     * Description: Hàm load dữ liệu để thực hiện update
+     * Author: txphuc (27/08/2023)
+     */
+    handleLoadDataForUpdate() {
+      try {
+        if (this.employeeRelationshipStore.mode === enums.form.mode.UPDATE) {
+          const employeeData = this.employeeRelationshipStore?.currentRelationship;
+
+          console.log(employeeData);
+
+          // Binding dữ liệu vào form
+          this.formData = {
+            ...employeeData,
+
+            DateOfBirth: employeeData.DateOfBirth && new Date(employeeData.DateOfBirth),
+
+            IdentifyNumberIssuedDate:
+              employeeData.IdentifyNumberIssuedDate &&
+              new Date(employeeData.IdentifyNumberIssuedDate),
+
+            BirthCertificationIssueDate:
+              employeeData.BirthCertificationIssueDate &&
+              new Date(employeeData.BirthCertificationIssueDate),
+
+            DeductionStartDate:
+              employeeData.DeductionStartDate && new Date(employeeData.DeductionStartDate),
+
+            DeductionEndDate:
+              employeeData.DeductionEndDate && new Date(employeeData.DeductionEndDate),
+          };
+
+          // Tránh thay đổi trạng thái của form
+          this.isLoadFormData = true;
+        }
+      } catch (error) {
+        console.warn(error);
+      }
+    },
+
+    /**
+     * Description: Hàm xử cập nhật thành viên gia đình
+     * Author: txphuc (26/08/2023)
+     */
+    handleUpdateRelationship() {
+      try {
+        if (this.employeeRelationshipStore.mode === enums.form.mode.UPDATE) {
+          const data = this.generateData();
+
+          this.$store.dispatch("employeeRelationshipStore/updateRelationship", data);
+
+          return true;
+        }
+      } catch (error) {
+        console.warn(error);
+
+        return false;
+      }
+    },
+  },
+
+  /**
+   * Description: Load dữ liệu khi form được tạo
+   * Author: txphuc (27/08/2023)
+   */
+  created: function () {
+    this.handleLoadDataForUpdate();
   },
 };
 </script>

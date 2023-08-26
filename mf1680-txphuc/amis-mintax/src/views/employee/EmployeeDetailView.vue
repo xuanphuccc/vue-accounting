@@ -18,14 +18,14 @@
       </div>
 
       <div class="page__header-controls">
-        <MISAButton color="light-danger">
+        <MISAButton @click="showDeleteConfirmDialog" color="light-danger">
           <template #icon>
             <MISAIcon size="20" icon="trash" />
           </template>
           Xoá
         </MISAButton>
 
-        <MISAButton color="primary">
+        <MISAButton @click="onClickEditButton" color="primary">
           <template #icon>
             <MISAIcon size="20" icon="pen" />
           </template>
@@ -550,7 +550,7 @@
           <!-- ----- THÔNG TIN GIA ĐÌNH ----- -->
           <div ref="familyInfo" class="d-flex align-center justify-content-between mt-44 pb-24">
             <div class="form-content__header">Thông tin gia đình</div>
-            <MISAButton @click="isOpenEmployeeFamilyDetail = true" type="outline" color="primary"
+            <MISAButton type="outline" color="primary"
               >Thêm
               <template #icon>
                 <MISAIcon :size="20" icon="plus" />
@@ -624,7 +624,8 @@ export default {
           : this.$t("page.employee.employeeType.client");
 
       // Ngày sinh
-      data.DateOfBirthFormated = formatDate(new Date(data.DateOfBirth), "dd/MM/yyyy");
+      data.DateOfBirthFormated =
+        data.DateOfBirth && formatDate(new Date(data.DateOfBirth), "dd/MM/yyyy");
 
       // Loại giấy tờ
       data.IdentifyTypeName =
@@ -635,7 +636,8 @@ export default {
           : this.$t("identifyType.passport");
 
       // Ngày cấp
-      data.IdentifyDateFormated = formatDate(new Date(data.IdentifyDate), "dd/MM/yyyy");
+      data.IdentifyDateFormated =
+        data.IdentifyDate && formatDate(new Date(data.IdentifyDate), "dd/MM/yyyy");
 
       // Nơi cấp
       data.IdentifyIssuedPlaceName = getProvince(data.IdentifyIssuedPlaceCode)?.label;
@@ -694,16 +696,19 @@ export default {
           : this.$t("page.employee.workStatus.formerlyEmployed");
 
       // Ngày học việc
-      data.ProbationDateFormated = formatDate(new Date(data.ProbationDate), "dd/MM/yyyy");
+      data.ProbationDateFormated =
+        data.ProbationDate && formatDate(new Date(data.ProbationDate), "dd/MM/yyyy");
 
       // Ngày thử việc
-      data.HireDateFormated = formatDate(new Date(data.HireDate), "dd/MM/yyyy");
+      data.HireDateFormated = data.HireDate && formatDate(new Date(data.HireDate), "dd/MM/yyyy");
 
       // Ngày chính thức
-      data.ReceiveDateFormated = formatDate(new Date(data.ReceiveDate), "dd/MM/yyyy");
+      data.ReceiveDateFormated =
+        data.ReceiveDate && formatDate(new Date(data.ReceiveDate), "dd/MM/yyyy");
 
       // Ngảy nghỉ việc
-      data.TerminationDateFormated = formatDate(new Date(data.TerminationDate), "dd/MM/yyyy");
+      data.TerminationDateFormated =
+        data.TerminationDate && formatDate(new Date(data.TerminationDate), "dd/MM/yyyy");
 
       return data;
     },
@@ -737,6 +742,68 @@ export default {
       if (element) {
         element.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
       }
+    },
+
+    /**
+     * Description: Hiện dialog xác nhận xoá
+     * Author: txphuc (24/08/2023).
+     */
+    showDeleteConfirmDialog() {
+      this.$store.dispatch("dialogStore/showDeleteWarning", {
+        title: "Xoá người nộp thuế",
+        description: `Bạn có chắc chắn muốn xóa người nộp thuế <b>${this.employeeData?.FullName}</b> vào Thùng rác?`,
+        handler: this.deleteActiveEmployee,
+      });
+    },
+
+    /**
+     * Description: Ẩn dialog xác nhận xoá
+     * Author: txphuc (27/08/2023).
+     */
+    hideConfirmDialog() {
+      this.$store.dispatch("dialogStore/closeDialog");
+    },
+
+    /**
+     * Description: Hàm xoá một nhân viên đang active
+     * Author: txphuc (27/08/2023)
+     */
+    async deleteActiveEmployee() {
+      try {
+        if (this.employeeData) {
+          // Loading
+          this.$store.dispatch("commonStore/setLoading", true);
+
+          await employeeApi.deleteById(this.employeeData.EmployeeID);
+
+          // Ẩn dialog xác nhận xoá
+          this.hideConfirmDialog();
+
+          // Hiện toast message xoá thành công
+          this.$store.dispatch("toastStore/pushSuccessMessage", {
+            message: "Xoá người nộp thuế thành công",
+          });
+
+          // Tắt loading
+          this.$store.dispatch("commonStore/setLoading", false);
+
+          // Quay về trang danh sách
+          this.$router.push({ name: "employee" });
+        }
+      } catch (error) {
+        console.warn(error);
+
+        // Ẩn dialog xác nhận xoá
+        this.hideConfirmDialog();
+      }
+    },
+
+    /**
+     * Description: Mở form sửa bản ghi
+     * Author: txphuc (24/08/2023)
+     */
+    onClickEditButton() {
+      this.$store.dispatch("employeeStore/openFormForUpdate", this.employeeData);
     },
 
     /**

@@ -1,7 +1,7 @@
 <template>
   <div :class="['ms-toast', `--${type}`]">
     <div class="ms-toast__header">
-      <MISAIcon icon="check" />
+      <MISAIcon :icon="typeIcon" />
     </div>
     <div class="ms-toast__content">{{ title }}</div>
     <div @click="$emit('click')" class="ms-toast__close">
@@ -31,6 +31,20 @@ export default {
   },
   components: {
     MISAIcon,
+  },
+
+  computed: {
+    /**
+     * Description: Xác định icon theo loại toast
+     * Author: txphuc (26/08/2023)
+     */
+    typeIcon() {
+      if (this.type == "success") {
+        return "check-circle";
+      } else {
+        return "info-circle";
+      }
+    },
   },
 };
 </script>

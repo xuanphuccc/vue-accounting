@@ -24,6 +24,7 @@
           v-for="button in dialogStore.buttons"
           :key="button.key"
           :color="button.color"
+          :autoFocus="button.focus"
           @click="handleOnClickDialogButton(button.action)"
           >{{ button.text }}</MISAButton
         >

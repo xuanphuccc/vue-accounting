@@ -79,6 +79,28 @@ const employeeRelationshipStore = {
     },
 
     /**
+     * Description: Cập nhật viên gia đình
+     * Author: txphuc (24/08/2023)
+     */
+    UPDATE_RELATIONSHIP(state, newRelationship) {
+      state.relationships = state.relationships.map((relationship) => {
+        if (relationship.EmployeeRelationshipID == newRelationship.EmployeeRelationshipID) {
+          relationship = newRelationship;
+
+          if (relationship.EditMode !== enums.editMode.CREATE) {
+            // Nếu vừa được tạo thì không chuyển chế độ
+            // mà chỉ sửa dữ liệu (chế độ cập nhật nhân viên)
+            relationship.EditMode = enums.editMode.UPDATE;
+          }
+
+          return relationship;
+        } else {
+          return relationship;
+        }
+      });
+    },
+
+    /**
      * Description: Xoá thành viên gia đình
      * Author: txphuc (24/08/2023)
      */
@@ -156,6 +178,14 @@ const employeeRelationshipStore = {
      */
     addRelationship({ commit }, relationship) {
       commit("ADD_RELATIONSHIP", relationship);
+    },
+
+    /**
+     * Description: Cập nhật thành viên gia đình
+     * Author: txphuc (24/08/2023)
+     */
+    updateRelationship({ commit }, relationship) {
+      commit("UPDATE_RELATIONSHIP", relationship);
     },
 
     /**

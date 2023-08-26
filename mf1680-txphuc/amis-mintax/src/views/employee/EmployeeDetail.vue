@@ -771,23 +771,23 @@ const defaultFormData = {
   TaxCode: null,
   IdentifyType: 0,
   IdentifyNumber: "",
-  IdentifyDate: new Date(),
+  IdentifyDate: null,
   IdentifyIssuedPlaceCode: "",
   NationalCode: "VN",
-  ContractMintaxType: 0,
-  NativeCountryCode: null,
+  ContractMintaxType: 1,
+  NativeCountryCode: "VN",
   NativeProvinceCode: null,
   NativeDistrictCode: null,
   NativeWardCode: null,
   NativeStreetHouseNumber: null,
   IsCopyAddress: false,
-  CurrentCountryCode: null,
+  CurrentCountryCode: "VN",
   CurrentProvinceCode: null,
   CurrentDistrictCode: null,
   CurrentWardCode: null,
   CurrentStreetHouseNumber: null,
   OrganizationUnitId: 0,
-  JobPositionId: 0,
+  JobPositionId: null,
   JobTitleId: null,
   EmployeeStatus: 1,
   ProbationDate: null,
@@ -978,9 +978,14 @@ export default {
             //   employeeCodeRef.value.focus();
             // }
           } else if (result) {
-            // Đóng form và reload lại bảng
-            // this.closeForm();
-            // this.$emit("submit");
+            // Đóng form và chuyển sang trang xem chi tiết
+            let employeeID = result;
+
+            if (this.employeeStore.mode === enums.form.mode.UPDATE) {
+              employeeID = this.employeeStore?.currentEmployee?.EmployeeID;
+            }
+
+            this.$router.push({ name: "employee-detail-view", params: { id: employeeID } });
           }
 
           // Tắt loading
@@ -1026,14 +1031,14 @@ export default {
         if (this.employeeStore.mode === enums.form.mode.CREATE) {
           const data = this.generateData();
 
-          await employeeApi.create(data);
+          const result = await employeeApi.create(data);
 
           // Hiện toast message thành công
           this.$store.dispatch("toastStore/pushSuccessMessage", {
             message: "Thêm người nộp thuế thành công",
           });
 
-          return true;
+          return result.data;
         }
       } catch (error) {
         console.warn(error);
@@ -1060,12 +1065,12 @@ export default {
           // Binding dữ liệu vào form
           this.formData = {
             ...employeeData,
-            IdentifyDate: new Date(employeeData.IdentifyDate),
-            DateOfBirth: new Date(employeeData.DateOfBirth),
-            ProbationDate: new Date(employeeData.ProbationDate),
-            HireDate: new Date(employeeData.HireDate),
-            ReceiveDate: new Date(employeeData.ReceiveDate),
-            TerminationDate: new Date(employeeData.TerminationDate),
+            IdentifyDate: employeeData.IdentifyDate && new Date(employeeData.IdentifyDate),
+            DateOfBirth: employeeData.DateOfBirth && new Date(employeeData.DateOfBirth),
+            ProbationDate: employeeData.ProbationDate && new Date(employeeData.ProbationDate),
+            HireDate: employeeData.HireDate && new Date(employeeData.HireDate),
+            ReceiveDate: employeeData.ReceiveDate && new Date(employeeData.ReceiveDate),
+            TerminationDate: employeeData.TerminationDate && new Date(employeeData.TerminationDate),
           };
 
           // Load danh sách thành viên gia đình vào bảng
@@ -1093,14 +1098,14 @@ export default {
 
           const data = this.generateData();
 
-          await employeeApi.update(employeeId, data);
+          const result = await employeeApi.update(employeeId, data);
 
           // Hiện toast message thành công
           this.$store.dispatch("toastStore/pushSuccessMessage", {
             message: "Sửa người nộp thuế thành công",
           });
 
-          return true;
+          return result.data;
         }
       } catch (error) {
         console.warn(error);

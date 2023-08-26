@@ -63,7 +63,9 @@ const dialogStore = {
       commit("SET_TITLE", "Cảnh báo");
       commit("SET_DESCRIPTION", description);
 
-      commit("SET_BUTTONS", [{ key: 1, text: "Đồng ý", color: "danger", action: "closeDialog" }]);
+      commit("SET_BUTTONS", [
+        { key: 1, text: "Đồng ý", color: "danger", focus: true, action: "closeDialog" },
+      ]);
     },
 
     /**
@@ -78,8 +80,8 @@ const dialogStore = {
 
       commit("SET_BUTTONS", [
         { key: 1, text: "Huỷ", color: "secondary", action: "closeDialog" },
-        { key: 2, text: "Không lưu", color: "secondary", action: handler.cancel },
-        { key: 3, text: "Lưu", color: "primary", action: handler.submit },
+        { key: 2, text: "Không lưu", color: "solid-secondary", action: handler.cancel },
+        { key: 3, text: "Lưu", color: "primary", focus: true, action: handler.submit },
       ]);
     },
 
@@ -95,7 +97,7 @@ const dialogStore = {
 
       commit("SET_BUTTONS", [
         { key: 1, text: "Không", color: "secondary", action: "closeDialog" },
-        { key: 2, text: "Có", color: "danger", action: options.handler },
+        { key: 2, text: "Có", color: "danger", focus: true, action: options.handler },
       ]);
     },
 
