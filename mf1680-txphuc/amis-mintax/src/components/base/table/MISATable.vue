@@ -18,8 +18,8 @@
       ref="dataGridRef"
     >
       <!-- Cột chọn bản ghi -->
-      <DxColumn type="selection" :width="44" :allow-resizing="false" />
-      <DxSelection mode="multiple" show-check-boxes-mode="always" />
+      <DxColumn v-if="allowSelection" type="selection" :width="44" :allow-resizing="false" />
+      <DxSelection v-if="allowSelection" mode="multiple" show-check-boxes-mode="always" />
 
       <!-- Các cột dữ liệu -->
       <DxColumn
@@ -157,6 +157,12 @@ export default {
 
     // Hiện/ẩn cột action
     actionColumnEnabled: {
+      type: Boolean,
+      default: true,
+    },
+
+    // Cho phép chọn bản ghi
+    allowSelection: {
       type: Boolean,
       default: true,
     },

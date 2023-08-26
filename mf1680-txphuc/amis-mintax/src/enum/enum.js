@@ -8,6 +8,17 @@ const enums = {
     },
   },
 
+  editMode: {
+    // Thêm mới
+    CREATE: 0,
+
+    // Cập nhật
+    UPDATE: 1,
+
+    // Xoá
+    DELETE: 2,
+  },
+
   // Loại dialog
   dialog: {
     type: {

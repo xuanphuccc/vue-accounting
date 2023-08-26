@@ -84,6 +84,22 @@ const dialogStore = {
     },
 
     /**
+     * Description: Hiện cảnh báo xác nhận xoá
+     * Author: txphuc: (03/08/2023)
+     */
+    showDeleteWarning({ commit }, options = { title: "", description: "", handler: null }) {
+      commit("SET_ACTIVE", true);
+      commit("SET_TYPE", enums.dialog.type.WARNING);
+      commit("SET_TITLE", options.title);
+      commit("SET_DESCRIPTION", options.description);
+
+      commit("SET_BUTTONS", [
+        { key: 1, text: "Không", color: "secondary", action: "closeDialog" },
+        { key: 2, text: "Có", color: "danger", action: options.handler },
+      ]);
+    },
+
+    /**
      * Description: Đóng dialog
      * Author: txphuc: (03/08/2023)
      */
@@ -92,6 +108,7 @@ const dialogStore = {
       commit("SET_TYPE", enums.dialog.type.INFO);
       commit("SET_TITLE", "");
       commit("SET_DESCRIPTION", "");
+      commit("SET_BUTTONS", []);
     },
   },
   getters: {},

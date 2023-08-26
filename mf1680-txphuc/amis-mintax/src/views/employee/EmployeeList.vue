@@ -178,19 +178,6 @@
         :filterGroups="filterGroups"
         :defaultFilterGroups="defaultFilterGroups"
       />
-
-      <!-- Dialog xác nhận xoá -->
-      <MISADialog
-        v-if="confirmDialog.active"
-        :title="confirmDialog.title"
-        :description="confirmDialog.description"
-        @cancel="hideConfirmDialog"
-      >
-        <template #right-controls>
-          <MISAButton @click="hideConfirmDialog" color="secondary">Không</MISAButton>
-          <MISAButton autoFocus @click="handleDeleteEmployee" color="danger">Có</MISAButton>
-        </template>
-      </MISADialog>
     </div>
   </div>
 </template>
@@ -205,12 +192,12 @@ import MISATableCustomize from "@/components/base/table-customize/MISATableCusto
 import MISATextBox from "@/components/base/text-box/MISATextBox.vue";
 import MISATreeView from "@/components/base/tree-view/MISATreeView.vue";
 import MISAFilterPopup from "@/components/base/filter-popup/MISAFilterPopup.vue";
-import MISADialog from "@/components/base/dialog/MISADialog.vue";
 import { employeeColumns } from "./employee-columns";
 import employeeApi from "@/api/employee-api";
 import MISABadge from "@/components/base/badge/MISABadge.vue";
 import { employeeFilterGroups } from "./employee-filter";
 import { formatDate } from "devextreme/localization";
+import { mapState } from "vuex";
 
 const defaultFilter = {
   WorkStatus: null,
@@ -237,7 +224,6 @@ export default {
     MISAFilterPopup,
     MISATextBox,
     MISATreeView,
-    MISADialog,
     MISABadge,
   },
   data: function () {
@@ -277,13 +263,6 @@ export default {
         totalRecords: 0,
       },
 
-      // Dialog xác nhận xoá
-      confirmDialog: {
-        active: false,
-        title: "Xoá người nộp thuế",
-        description: "Bạn có chắc muốn xoá <span>(2)</span> người nộp thuế vào Thùng rác?",
-      },
-
       // Trạng thái của các popup
       isOpenTableCustomize: false,
       isOpenFilterPopup: false,
@@ -291,6 +270,10 @@ export default {
   },
 
   computed: {
+    ...mapState("dialogStore", {
+      dialogStore: (state) => state,
+    }),
+
     /**
      * Description: Phát hiện bộ lọc được áp dụng
      * Author: txphuc (25/08/2023)
@@ -444,7 +427,6 @@ export default {
               if (filter.key && filter.filterBy && filter.type) {
                 if (filter.type == "date-between") {
                   // Khoảng ngày tháng (từ ngày - đến ngày)
-                  console.log(filter);
 
                   newRequest[filter.key + "Start"] = formatDate(
                     new Date(filter.start),
@@ -493,11 +475,11 @@ export default {
      * Author: txphuc (24/06/2023).
      */
     showDeleteConfirmDialog(description) {
-      this.confirmDialog = {
-        ...this.confirmDialog,
-        active: true,
-        description: description,
-      };
+      this.$store.dispatch("dialogStore/showDeleteWarning", {
+        title: "Xoá người nộp thuế",
+        description,
+        handler: this.handleDeleteEmployee,
+      });
     },
 
     /**
@@ -505,7 +487,7 @@ export default {
      * Author: txphuc (27/06/2023).
      */
     hideConfirmDialog() {
-      this.confirmDialog.active = false;
+      this.$store.dispatch("dialogStore/closeDialog");
       this.clearAllSelection();
       this.activeRowState = null;
     },

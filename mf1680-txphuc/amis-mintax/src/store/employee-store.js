@@ -67,10 +67,13 @@ const employeeStore = {
      * Description: Thoát form
      * Author: txphuc (24/08/2023)
      */
-    closeForm({ commit }) {
+    closeForm({ commit, dispatch }) {
       commit("SET_FORM_MODE", enums.form.mode.CREATE);
       commit("SET_FORM_TITLE", "");
       commit("SET_FORM_DATA", {});
+
+      // Làm trống bảng danh sách thành viên gia đình khi thoát form
+      dispatch("employeeRelationshipStore/setRelationships", [], { root: true });
 
       router.push({ name: "employee" });
     },

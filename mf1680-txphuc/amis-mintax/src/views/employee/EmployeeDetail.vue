@@ -685,7 +685,11 @@
             <!-- ----- THÔNG TIN GIA ĐÌNH ----- -->
             <div class="d-flex align-center justify-content-between mt-44 pb-24">
               <div class="form-content__header">Thông tin gia đình</div>
-              <MISAButton @click="isOpenEmployeeFamilyDetail = true" type="outline" color="primary">
+              <MISAButton
+                @click="$store.dispatch('employeeRelationshipStore/openFormForCreate')"
+                type="outline"
+                color="primary"
+              >
                 Thêm
                 <template #icon>
                   <MISAIcon :size="20" icon="plus" />
@@ -694,16 +698,16 @@
             </div>
 
             <!-- Form thông tin gia đình -->
-            <EmployeeFamilyDetail
-              v-if="isOpenEmployeeFamilyDetail"
-              @close="isOpenEmployeeFamilyDetail = false"
-            />
+            <EmployeeFamilyDetail v-if="employeeRelationshipStore.active" />
 
             <!-- Bảng thông tin gia đình -->
             <MISATable
-              v-if="formData?.EmployeeRelationships?.length > 0"
+              v-if="displayRelationships?.length > 0"
+              @edit-row="onClickEditRow"
+              @delete-row="onClickDeleteRow"
               :columns="tableColumns"
-              :dataSource="formData?.EmployeeRelationships"
+              :dataSource="displayRelationships"
+              :allowSelection="false"
               tableStyle="solid"
             >
               <template #IsDependent="{ value }">
@@ -713,13 +717,8 @@
                 <div v-else></div>
               </template>
             </MISATable>
-            <MISATableFooter
-              v-if="formData?.EmployeeRelationships?.length > 0"
-              :pageSize="25"
-              :totalRecords="formData?.EmployeeRelationships?.length"
-            />
 
-            <div v-if="formData?.EmployeeRelationships?.length == 0" class="ms-empty-data">
+            <div v-if="displayRelationships?.length == 0" class="ms-empty-data">
               Chưa có thông tin gia đình
             </div>
           </div>
@@ -731,7 +730,6 @@
 
 <script>
 import MISATable from "@/components/base/table/MISATable.vue";
-import MISATableFooter from "@/components/base/table-footer/MISATableFooter.vue";
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
 import MISAButton from "@/components/base/button/MISAButton.vue";
 import MISATextBox from "@/components/base/text-box/MISATextBox.vue";
@@ -755,7 +753,7 @@ import {
   positions,
   workStatuses,
 } from "@/api/mock-data";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import enums from "@/enum/enum";
 import employeeApi from "@/api/employee-api";
 import { formatDate } from "devextreme/localization";
@@ -804,7 +802,6 @@ export default {
   name: "EmployeeDetail",
   components: {
     MISATable,
-    MISATableFooter,
     MISAButton,
     MISATextBox,
     MISAIcon,
@@ -841,10 +838,11 @@ export default {
       formModified: false,
       isLoadFormData: false,
 
+      // Các cột của bảng thành viên gia đình
       tableColumns: employeeRelationshipColumns.map((col) => ({ ...col })),
 
-      // Trạng thái đóng/mở form thêm thành viên gia đình
-      isOpenEmployeeFamilyDetail: false,
+      // Bản ghi thành viên gia đình đang chờ xoá
+      activeRowState: null,
     };
   },
 
@@ -852,6 +850,12 @@ export default {
     ...mapState("employeeStore", {
       employeeStore: (state) => state,
     }),
+
+    ...mapState("employeeRelationshipStore", {
+      employeeRelationshipStore: (state) => state,
+    }),
+
+    ...mapGetters("employeeRelationshipStore", ["displayRelationships"]),
   },
 
   watch: {
@@ -1002,6 +1006,14 @@ export default {
         TerminationDate: formatDate(this.formData.TerminationDate, "yyyy-MM-dd"),
       };
 
+      if (this.employeeStore.mode === enums.form.mode.CREATE) {
+        // Chỉ lấy bản ghi thành viên gia đình có EditMode khác Delete
+        data.EmployeeRelationships = this.displayRelationships;
+      } else if (this.employeeStore.mode === enums.form.mode.UPDATE) {
+        // Lấy tất cả các bản ghi thành viên gia đình
+        data.EmployeeRelationships = this.employeeRelationshipStore.relationships;
+      }
+
       return data;
     },
 
@@ -1056,6 +1068,12 @@ export default {
             TerminationDate: new Date(employeeData.TerminationDate),
           };
 
+          // Load danh sách thành viên gia đình vào bảng
+          this.$store.dispatch(
+            "employeeRelationshipStore/setRelationships",
+            employeeData.EmployeeRelationships
+          );
+
           // Tránh thay đổi trạng thái của form
           this.isLoadFormData = true;
         }
@@ -1088,6 +1106,67 @@ export default {
         console.warn(error);
 
         return false;
+      }
+    },
+
+    // -------------- Thành viên gia đình --------------
+
+    /**
+     * Description: Mở form sửa thành viên gia đình
+     * Author: txphuc (24/08/2023)
+     */
+    onClickEditRow(row) {
+      this.$store.dispatch("employeeRelationshipStore/openFormForUpdate", row.data);
+    },
+
+    /**
+     * Description: Lưu bản ghi để xác nhận xoá
+     * Author: txphuc (24/08/2023)
+     */
+    onClickDeleteRow(row) {
+      this.activeRowState = row.data;
+      this.showDeleteConfirmDialog(
+        `Bạn có chắc chắn xóa thông tin gia đình này khỏi danh sách không?`
+      );
+    },
+
+    /**
+     * Description: Hiện dialog xác nhận xoá
+     * Author: txphuc (24/06/2023).
+     */
+    showDeleteConfirmDialog(description) {
+      this.$store.dispatch("dialogStore/showDeleteWarning", {
+        title: "Xoá dữ liệu",
+        description,
+        handler: this.deleteActiveRelationship,
+      });
+    },
+
+    /**
+     * Description: Ẩn dialog xác nhận
+     * Author: txphuc (27/06/2023).
+     */
+    hideConfirmDialog() {
+      this.$store.dispatch("dialogStore/closeDialog");
+      this.activeRowState = null;
+    },
+
+    /**
+     * Description: Hàm xoá một thành viên gia đình đang active
+     * Author: txphuc (11/07/2023)
+     */
+    async deleteActiveRelationship() {
+      try {
+        const key = this.activeRowState.EmployeeRelationshipID;
+        this.$store.dispatch("employeeRelationshipStore/removeRelationship", key);
+
+        // Ẩn dialog xác nhận xoá
+        this.hideConfirmDialog();
+      } catch (error) {
+        console.warn(error);
+
+        // Ẩn dialog xác nhận xoá
+        this.hideConfirmDialog();
       }
     },
   },

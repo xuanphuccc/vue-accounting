@@ -1,7 +1,7 @@
 <template>
   <MISAPopup
     @submit="$emit('submit')"
-    @close="$emit('close')"
+    @close="$store.dispatch('employeeRelationshipStore/closeForm')"
     title="Thêm thành viên gia đình"
     :width="1146"
   >
@@ -486,8 +486,10 @@
     </div>
 
     <template #controls-right>
-      <MISAButton @click="$emit('close')" color="secondary">Huỷ</MISAButton>
-      <MISAButton>Đồng ý</MISAButton>
+      <MISAButton @click="$store.dispatch('employeeRelationshipStore/closeForm')" color="secondary"
+        >Huỷ</MISAButton
+      >
+      <MISAButton @click="handleSubmitForm()">Đồng ý</MISAButton>
     </template>
   </MISAPopup>
 </template>
@@ -505,10 +507,43 @@ import MISACol from "@/components/base/grid/MISACol.vue";
 import DxCheckBox from "devextreme-vue/check-box";
 import DxRadioGroup from "devextreme-vue/radio-group";
 // import { ValidationProvider } from "vee-validate";
+import enums from "@/enum/enum";
+import { mapState } from "vuex";
+
+const defaultFormData = {
+  FullName: "string",
+  Relationship: 0,
+  DateOfBirth: null,
+  Gender: 0,
+  TaxCode: null,
+  NationalityCode: null,
+  IdentifyKindOfPaper: null,
+  IdentifyPaperNumber: null,
+  IdentifyNumberIssuedDate: null,
+  IdentifyNumberIssuedPlaceCode: null,
+  DependentNumber: null,
+  NumberBook: null,
+  BirthCertificationIssueDate: null,
+  CountryCode: null,
+  ProvinceCode: null,
+  DistrictCode: null,
+  WardCode: null,
+  FamilyPermanentAddressProvinceCode: null,
+  FamilyPermanentAddressDistrictCode: null,
+  FamilyPermanentAddressWardCode: null,
+  FamilyPermanentAddressStreetHouseNumber: null,
+  FamilyCurrentProvinceCode: null,
+  FamilyCurrentDistrictCode: null,
+  FamilyCurrentWardCode: null,
+  FamilyCurrentStreetHouseNumber: null,
+  IsDependent: true,
+  DeductionStartDate: null,
+  DeductionEndDate: null,
+  Description: null,
+};
 
 export default {
   name: "EmployeeFamilyDetail",
-  emits: ["close", "submit"],
   components: {
     MISAPopup,
     MISAButton,
@@ -525,7 +560,79 @@ export default {
   },
   props: {},
   data: function () {
-    return {};
+    return {
+      // Dữ liệu của form
+      formData: {
+        ...defaultFormData,
+      },
+    };
+  },
+
+  computed: {
+    ...mapState("employeeRelationshipStore", {
+      employeeRelationshipStore: (state) => state,
+    }),
+  },
+
+  methods: {
+    /**
+     * Description: Hàm xử lý submit form ở các chế độ create/update
+     * Author: txphuc (26/08/2023)
+     */
+    async handleSubmitForm() {
+      try {
+        let result = false;
+
+        // const success = await this.$refs.formValidation.validate();
+        const success = true;
+
+        if (success) {
+          if (this.employeeRelationshipStore.mode === enums.form.mode.CREATE) {
+            result = this.handleCreateRelationship();
+          } else if (this.employeeRelationshipStore.mode === enums.form.mode.UPDATE) {
+            result = this.handleUpdateEmployee();
+          }
+
+          if (result) {
+            this.$store.dispatch("employeeRelationshipStore/closeForm");
+          }
+        }
+      } catch (error) {
+        console.warn(error);
+      }
+    },
+
+    /**
+     * Description: Xử lý format data trước khi gửi
+     * Author: txphuc (26/08/2023)
+     */
+    generateData() {
+      const data = {
+        ...this.formData,
+      };
+
+      return data;
+    },
+
+    /**
+     * Description: Hàm xử lý gọi api thêm thành viên gia đình
+     * Author: txphuc (26/08/2023)
+     */
+    handleCreateRelationship() {
+      try {
+        if (this.employeeRelationshipStore.mode === enums.form.mode.CREATE) {
+          const data = this.generateData();
+
+          this.$store.dispatch("employeeRelationshipStore/addRelationship", data);
+
+          return true;
+        }
+      } catch (error) {
+        console.warn(error);
+
+        return false;
+      }
+    },
   },
 };
 </script>
