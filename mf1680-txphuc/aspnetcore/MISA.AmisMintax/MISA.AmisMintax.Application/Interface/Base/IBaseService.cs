@@ -14,7 +14,7 @@ namespace MISA.AmisMintax.Application
         /// </summary>
         /// <param name="entityCreateDto">Thông tin đối tượng</param>
         /// CreatedBy: txphuc (18/07/2023)
-        Task<int> InsertAsync(TEntityCreateDto entityCreateDto);
+        Task<Guid> InsertAsync(TEntityCreateDto entityCreateDto);
 
         /// <summary>
         /// Cập nhật đối tượng

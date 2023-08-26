@@ -12,9 +12,9 @@ namespace MISA.AmisMintax.Domain
         /// Tạo đối tượng mới
         /// </summary>
         /// <param name="entity">Data của đối tượng</param>
-        /// <returns>Số bản ghi được thêm</returns>
+        /// <returns>Id của bản ghi được thêm</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        Task<int> InsertAsync(TEntity entity);
+        Task<Guid> InsertAsync(TEntity entity);
 
         /// <summary>
         /// Thêm nhiều bản ghi

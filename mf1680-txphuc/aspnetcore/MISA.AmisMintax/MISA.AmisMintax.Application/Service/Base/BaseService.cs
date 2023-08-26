@@ -37,7 +37,7 @@ namespace MISA.AmisMintax.Application
         /// </summary>
         /// <param name="entityCreateDto">Thông tin đối tượng</param>
         /// CreatedBy: txphuc (18/07/2023)
-        public virtual async Task<int> InsertAsync(TEntityCreateDto entityCreateDto)
+        public virtual async Task<Guid> InsertAsync(TEntityCreateDto entityCreateDto)
         {
             var entity = await MapCreateDtoToEntityAsync(entityCreateDto);
 
@@ -52,10 +52,7 @@ namespace MISA.AmisMintax.Application
             var result = await _baseRepository.InsertAsync(entity);
 
             // Insert các bảng phụ (nếu có)
-            if(result > 0)
-            {
-                await InsertDetailTableAsync(entityCreateDto, entity.GetKey());
-            }
+            await InsertDetailTableAsync(entityCreateDto, entity.GetKey());
 
             return result;
         }
@@ -79,7 +76,7 @@ namespace MISA.AmisMintax.Application
             var result = await _baseRepository.UpdateAsync(entity);
 
             // Cập nhật bảng phụ (nếu có)
-            if(result > 0)
+            if (result > 0)
             {
                 await UpdateDetailTableAsync(entityUpdateDto, entity.GetKey());
             }
@@ -126,7 +123,7 @@ namespace MISA.AmisMintax.Application
                 // Lấy các Id hợp lệ có thể xoá
                 var validIds = entityIds;
 
-                if(invalidEntities != null && invalidEntities.ToList().Count > 0)
+                if (invalidEntities != null && invalidEntities.ToList().Count > 0)
                 {
                     // Loại bỏ các id không hợp lệ nếu có
                     validIds = entityIds.Where(entityId => !invalidIds.Contains(entityId)).ToList();
@@ -214,7 +211,7 @@ namespace MISA.AmisMintax.Application
         /// <param name="entityId">Id của bảng chính</param>
         /// <returns></returns>
         /// CreatedBy: txphuc (23/08/2023)
-        protected virtual Task InsertDetailTableAsync (TEntityCreateDto entityCreateDto, Guid entityId)
+        protected virtual Task InsertDetailTableAsync(TEntityCreateDto entityCreateDto, Guid entityId)
         {
             return Task.CompletedTask;
         }

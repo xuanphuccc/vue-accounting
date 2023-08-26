@@ -27,15 +27,15 @@ namespace MISA.AmisMintax.Infrastructure
         /// <param name="entity">Data của đối tượng</param>
         /// <returns>Số bản ghi được thêm</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        public async Task<int> InsertAsync(TEntity entity)
+        public async Task<Guid> InsertAsync(TEntity entity)
         {
             var param = MapEntityToParams(entity);
 
             var sql = $"Proc_{TableName}_Create";
 
-            var result = await _unitOfWork.Connection.ExecuteAsync(sql, param, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
+            await _unitOfWork.Connection.ExecuteAsync(sql, param, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
 
-            return result;
+            return entity.GetKey();
         }
 
         /// <summary>
