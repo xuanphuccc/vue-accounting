@@ -33,6 +33,12 @@ const routes = [
     meta: { layout: "default" },
   },
   {
+    path: "/employee-detail-action/:id",
+    name: "employee-detail-update",
+    component: EmployeeDetail,
+    meta: { layout: "default" },
+  },
+  {
     path: "/manage-license",
     name: "manage-license",
     component: EmployeeManagerList,

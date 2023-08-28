@@ -1,13 +1,18 @@
 <template>
   <DxDateBox
-    :value="value"
+    @focus-out="$emit('blur')"
     @value-changed="onValueChanged"
+    :value="value"
     type="date"
+    :is-valid="isValid"
     :display-format="displayFormat"
     :use-mask-behavior="true"
     :show-clear-button="true"
     :max="max"
     :placeholder="placeholder"
+    :input-attr="{ id }"
+    pickerType="calendar"
+    :calendarOptions="{ firstDayOfWeek: 1, zoomLevel }"
     drop-down-button-template="imageIcon"
   >
     <template #imageIcon="{}">
@@ -24,7 +29,7 @@ import MISAIcon from "../icon/MISAIcon.vue";
 
 export default {
   name: "MISADatePicker",
-  emits: ["input"],
+  emits: ["input", "blur"],
   components: {
     DxDateBox,
     MISAIcon,
@@ -50,6 +55,23 @@ export default {
     displayFormat: {
       type: String,
       default: "dd/MM/yyyy",
+    },
+
+    // Trạng thái validate
+    isValid: {
+      type: Boolean,
+      default: true,
+    },
+
+    // Chọn ngày (= month) / chọn tháng (= year) / chọn năm
+    zoomLevel: {
+      type: String,
+      default: "month",
+    },
+
+    // Id (sử dụng cho label)
+    id: {
+      type: String,
     },
   },
   methods: {

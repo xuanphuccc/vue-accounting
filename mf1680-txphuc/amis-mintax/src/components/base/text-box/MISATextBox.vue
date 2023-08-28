@@ -1,8 +1,11 @@
 <template>
   <DxTextBox
-    :value="value"
-    @input="onInput"
+    @focus-out="$emit('blur')"
     @enter-key="$emit('enter-key', $event)"
+    @input="onInput"
+    :value="value"
+    :is-valid="isValid"
+    :input-attr="{ id }"
     :placeholder="placeholder"
     :width="width"
     :disabled="disabled"
@@ -20,7 +23,7 @@ import DxTextBox from "devextreme-vue/text-box";
 
 export default {
   name: "MISATextBox",
-  emits: ["input", "enter-key"],
+  emits: ["input", "enter-key", "blur"],
   components: {
     DxTextBox,
   },
@@ -52,6 +55,17 @@ export default {
     width: {
       type: String,
     },
+
+    // Id (dùng cho label)
+    id: {
+      type: String,
+    },
+
+    // Trạng thái validate
+    isValid: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   methods: {
@@ -80,8 +94,7 @@ export default {
    */
   mounted: function () {
     if (this.autoFocus && this.$refs?.textBoxRef) {
-      console.log(this.$refs?.textBoxRef);
-      this.$refs?.textBoxRef?.instance?.focus();
+      this.focus();
     }
   },
 };

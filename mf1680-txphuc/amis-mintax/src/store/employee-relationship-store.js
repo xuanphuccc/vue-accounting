@@ -169,7 +169,7 @@ const employeeRelationshipStore = {
      * Author: txphuc (26/08/2023)
      */
     setRelationships({ commit }, relationships) {
-      commit("SET_RELATIONSHIPS", relationships);
+      commit("SET_RELATIONSHIPS", relationships ?? []);
     },
 
     /**

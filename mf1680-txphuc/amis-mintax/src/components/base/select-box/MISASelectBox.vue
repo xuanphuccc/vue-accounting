@@ -1,14 +1,19 @@
 <template>
   <DxSelectBox
-    :value="value"
+    @focus-out="$emit('blur')"
     @value-changed="onValueChanged"
     :data-source="dataSource"
+    :value="value"
+    :is-valid="isValid"
     :display-expr="displayExpr"
     :value-expr="valueExpr"
     :search-enabled="searchEnabled"
     drop-down-button-template="imageIcon"
     item-template="item"
+    :input-attr="{ id }"
+    :drop-down-options="{ hideOnParentScroll: true }"
     :placeholder="placeholder"
+    ref="selectBoxRef"
   >
     <template #imageIcon="{}">
       <div :class="['select-dropdown-icon', { '--search-mode': searchEnabled }]">
@@ -35,7 +40,7 @@ import MISAIcon from "../icon/MISAIcon.vue";
 
 export default {
   name: "MISASelectBox",
-  emits: ["input"],
+  emits: ["input", "blur"],
   components: {
     DxSelectBox,
     MISAIcon,
@@ -76,6 +81,23 @@ export default {
       type: String,
       default: "Select...",
     },
+
+    // Trạng thái validate
+    isValid: {
+      type: Boolean,
+      default: true,
+    },
+
+    // Tự động focus khi compoennt được mounted
+    autoFocus: {
+      type: Boolean,
+      default: false,
+    },
+
+    // Id (sử dụng cho label)
+    id: {
+      type: String,
+    },
   },
 
   methods: {
@@ -86,6 +108,26 @@ export default {
     onValueChanged(e) {
       this.$emit("input", e.value);
     },
+
+    /**
+     * Description: Expose phương thức focus input
+     * Author: txphuc (18/08/2023)
+     */
+    focus() {
+      if (this.$refs?.selectBoxRef) {
+        this.$refs?.selectBoxRef?.instance?.focus();
+      }
+    },
+  },
+
+  /**
+   * Description: Tự động focus
+   * Author: txphuc (27/08/2023)
+   */
+  mounted: function () {
+    if (this.autoFocus && this.$refs?.selectBoxRef) {
+      this.$refs?.selectBoxRef?.instance?.focus();
+    }
   },
 };
 </script>

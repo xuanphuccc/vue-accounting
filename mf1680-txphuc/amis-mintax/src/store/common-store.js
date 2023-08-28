@@ -36,7 +36,7 @@ const commonStore = {
       } else {
         setTimeout(() => {
           commit("SET_LOADING", loading);
-        }, 500);
+        }, 200);
       }
     },
 

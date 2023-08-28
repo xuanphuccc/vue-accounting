@@ -67,6 +67,11 @@
   padding-bottom: 4px;
   overflow-y: auto;
   overflow-x: hidden;
+
+  & > span {
+    display: block;
+    width: 100%;
+  }
 }
 
 .ms-popup__desc {

@@ -42,3 +42,14 @@
 .dx-state-disabled.dx-widget .dx-texteditor-container {
   background-color: var(--gray-300);
 }
+
+/* trạng thái lỗi validate */
+.dx-invalid.dx-texteditor {
+  border-color: var(--red-500);
+}
+
+.dx-invalid.dx-texteditor.dx-editor-outlined.dx-show-invalid-badge
+  .dx-texteditor-input-container::after {
+  /* ẩn biểu tượng cảnh báo */
+  display: none;
+}

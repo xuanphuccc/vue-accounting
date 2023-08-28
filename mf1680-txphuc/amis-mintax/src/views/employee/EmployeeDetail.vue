@@ -27,9 +27,12 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-100 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="employee-type"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Loại đối tượng
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
                         <MISASelectBox
@@ -37,7 +40,9 @@
                           v-model="formData.EmployeeType"
                           displayExpr="label"
                           valueExpr="value"
+                          auto-focus
                           placeholder="Chọn loại đối tượng"
+                          id="employee-type"
                         />
                       </MISACol>
                     </MISARow>
@@ -46,7 +51,10 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <label class="height-36 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="employee-code"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Mã người nộp thuế <span class="required-mark">*</span>
                         </label>
                       </MISACol>
@@ -58,9 +66,11 @@
                         >
                           <MISATextBox
                             v-model="formData.EmployeeCode"
+                            :is-valid="!errors[0]"
                             placeholder="Nhập mã người nộp thuế"
+                            id="employee-code"
                           />
-                          <p class="validate-error">{{ errors[0] }}</p>
+                          <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
                         </ValidationProvider>
                       </MISACol>
                     </MISARow>
@@ -69,14 +79,22 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="full-name"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Họ tên <span class="required-mark">*</span>
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
                         <ValidationProvider name="Họ tên" rules="required" v-slot="{ errors }">
-                          <MISATextBox v-model="formData.FullName" placeholder="Nhập họ tên" />
-                          <p class="validate-error">{{ errors[0] }}</p>
+                          <MISATextBox
+                            v-model="formData.FullName"
+                            :is-valid="!errors[0]"
+                            placeholder="Nhập họ tên"
+                            id="full-name"
+                          />
+                          <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
                         </ValidationProvider>
                       </MISACol>
                     </MISARow>
@@ -85,10 +103,14 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">Ngày sinh</div>
+                        <label
+                          for="date-of-birth"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                          >Ngày sinh</label
+                        >
                       </MISACol>
                       <MISACol :span="8">
-                        <MISADatePicker v-model="formData.DateOfBirth" />
+                        <MISADatePicker v-model="formData.DateOfBirth" id="date-of-birth" />
                       </MISACol>
                     </MISARow>
                   </div>
@@ -96,7 +118,9 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">Giới tính</div>
+                        <label for="gender" class="height-36 d-flex align-center flex-wrap pr-12"
+                          >Giới tính</label
+                        >
                       </MISACol>
                       <MISACol :span="8">
                         <div class="height-36 d-flex align-center">
@@ -118,12 +142,16 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        <label for="mobile" class="height-36 d-flex align-center flex-wrap pr-12">
                           Số điện thoại
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
-                        <MISATextBox v-model="formData.Mobile" placeholder="Nhập số điện thoại" />
+                        <MISATextBox
+                          v-model="formData.Mobile"
+                          placeholder="Nhập số điện thoại"
+                          id="mobile"
+                        />
                       </MISACol>
                     </MISARow>
                   </div>
@@ -131,10 +159,12 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">Email</div>
+                        <label for="email" class="height-36 d-flex align-center flex-wrap pr-12"
+                          >Email</label
+                        >
                       </MISACol>
                       <MISACol :span="8">
-                        <MISATextBox v-model="formData.Email" placeholder="Nhập email" />
+                        <MISATextBox v-model="formData.Email" placeholder="Nhập email" id="email" />
                       </MISACol>
                     </MISARow>
                   </div>
@@ -143,7 +173,9 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">Mã số thuế</div>
+                        <label for="tax-code" class="height-36 d-flex align-center flex-wrap pr-12"
+                          >Mã số thuế</label
+                        >
                       </MISACol>
                       <MISACol :span="8">
                         <MISARow>
@@ -152,6 +184,7 @@
                               v-model="formData.TaxCode"
                               width="100%"
                               placeholder="Nhập mã số thuế"
+                              id="tax-code"
                             />
 
                             <MISAButton color="secondary"
@@ -169,9 +202,12 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="identify-type"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Loại giấy tờ
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
                         <MISASelectBox
@@ -180,6 +216,7 @@
                           displayExpr="label"
                           valueExpr="value"
                           placeholder="Chọn loại giấy tờ"
+                          id="identify-type"
                         />
                       </MISACol>
                     </MISARow>
@@ -188,9 +225,12 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="identify-number"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Số CMND <span class="required-mark">*</span>
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
                         <MISARow>
@@ -198,10 +238,12 @@
                             <ValidationProvider name="Số CMND" rules="required" v-slot="{ errors }">
                               <MISATextBox
                                 v-model="formData.IdentifyNumber"
+                                :is-valid="!errors[0]"
                                 width="100%"
                                 placeholder="Nhập số CMND"
+                                id="identify-number"
                               />
-                              <p class="validate-error">{{ errors[0] }}</p>
+                              <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
                             </ValidationProvider>
 
                             <MISAButton color="secondary"
@@ -219,14 +261,21 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="identify-date"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Ngày cấp <span class="required-mark">*</span>
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
                         <ValidationProvider name="Ngày cấp" rules="required" v-slot="{ errors }">
-                          <MISADatePicker v-model="formData.IdentifyDate" />
-                          <p class="validate-error">{{ errors[0] }}</p>
+                          <MISADatePicker
+                            v-model="formData.IdentifyDate"
+                            :is-valid="!errors[0]"
+                            id="identify-date"
+                          />
+                          <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
                         </ValidationProvider>
                       </MISACol>
                     </MISARow>
@@ -235,9 +284,12 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="identify-issued-place-code"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Nơi cấp <span class="required-mark">*</span>
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
                         <ValidationProvider name="Nơi cấp" rules="required" v-slot="{ errors }">
@@ -247,9 +299,11 @@
                             displayExpr="label"
                             valueExpr="value"
                             :searchEnabled="true"
+                            :is-valid="!errors[0]"
                             placeholder="Chọn/nhập nơi cấp"
+                            id="identify-issued-place-code"
                           />
-                          <p class="validate-error">{{ errors[0] }}</p>
+                          <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
                         </ValidationProvider>
                       </MISACol>
                     </MISARow>
@@ -258,7 +312,11 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">Quốc tịch</div>
+                        <label
+                          for="national-code"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                          >Quốc tịch</label
+                        >
                       </MISACol>
                       <MISACol :span="8">
                         <MISASelectBox
@@ -268,6 +326,7 @@
                           valueExpr="value"
                           :searchEnabled="true"
                           placeholder="Chọn/nhập quốc tịch"
+                          id="national-code"
                         />
                       </MISACol>
                     </MISARow>
@@ -276,9 +335,12 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="contract-mintax-type"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Loại hợp đồng <span class="required-mark">*</span>
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
                         <ValidationProvider
@@ -292,9 +354,11 @@
                             displayExpr="label"
                             valueExpr="value"
                             :searchEnabled="false"
+                            :is-valid="!errors[0]"
                             placeholder="Chọn loại hợp đồng"
+                            id="contract-mintax-type"
                           />
-                          <p class="validate-error">{{ errors[0] }}</p>
+                          <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
                         </ValidationProvider>
                       </MISACol>
                     </MISARow>
@@ -311,7 +375,11 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">Quốc gia</div>
+                        <label
+                          for="native-country-code"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                          >Quốc gia</label
+                        >
                       </MISACol>
                       <MISACol :span="8">
                         <MISASelectBox
@@ -321,6 +389,7 @@
                           valueExpr="value"
                           :searchEnabled="true"
                           placeholder="Chọn/nhập quốc gia"
+                          id="native-country-code"
                         />
                       </MISACol>
                     </MISARow>
@@ -329,9 +398,12 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="native-province-code"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Tỉnh/thành phố
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
                         <MISASelectBox
@@ -341,6 +413,7 @@
                           valueExpr="value"
                           :searchEnabled="true"
                           placeholder="Chọn/nhập tỉnh/thành phố"
+                          id="native-province-code"
                         />
                       </MISACol>
                     </MISARow>
@@ -349,7 +422,11 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">Quận/huyện</div>
+                        <label
+                          for="native-district-code"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                          >Quận/huyện</label
+                        >
                       </MISACol>
                       <MISACol :span="8">
                         <MISASelectBox
@@ -359,6 +436,7 @@
                           valueExpr="value"
                           :searchEnabled="true"
                           placeholder="Chọn/nhập quận/huyện"
+                          id="native-district-code"
                         />
                       </MISACol>
                     </MISARow>
@@ -368,7 +446,11 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">Xã/phường</div>
+                        <label
+                          for="native-ward-code"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                          >Xã/phường</label
+                        >
                       </MISACol>
                       <MISACol :span="8">
                         <MISASelectBox
@@ -378,6 +460,7 @@
                           valueExpr="value"
                           :searchEnabled="true"
                           placeholder="Chọn/nhập xã/phường"
+                          id="native-ward-code"
                         />
                       </MISACol>
                     </MISARow>
@@ -386,14 +469,18 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="native-street"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Số nhà, đường/phố, thôn/xóm
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
                         <MISATextBox
                           v-model="formData.NativeStreetHouseNumber"
                           placeholder="Nhập số nhà, đường/phố, thôn/xóm"
+                          id="native-street"
                         />
                       </MISACol>
                     </MISARow>
@@ -402,7 +489,9 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">Địa chỉ</div>
+                        <label for="test" class="height-36 d-flex align-center flex-wrap pr-12"
+                          >Địa chỉ</label
+                        >
                       </MISACol>
                       <MISACol :span="8">
                         <MISATextBox :disabled="true" />
@@ -421,9 +510,12 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="is-copy-address"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Giống hộ khẩu thường trú
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
                         <div class="d-flex">
@@ -437,7 +529,11 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">Quốc gia</div>
+                        <label
+                          for="current-country-code"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                          >Quốc gia</label
+                        >
                       </MISACol>
                       <MISACol :span="8">
                         <MISASelectBox
@@ -447,6 +543,7 @@
                           valueExpr="value"
                           :searchEnabled="true"
                           placeholder="Chọn/nhập quốc gia"
+                          id="current-country-code"
                         />
                       </MISACol>
                     </MISARow>
@@ -455,9 +552,12 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="current-province-code"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Tỉnh/thành phố
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
                         <MISASelectBox
@@ -467,6 +567,7 @@
                           valueExpr="value"
                           :searchEnabled="true"
                           placeholder="Chọn/nhập tỉnh/thành phố"
+                          id="current-province-code"
                         />
                       </MISACol>
                     </MISARow>
@@ -475,7 +576,11 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">Quận/huyện</div>
+                        <label
+                          for="current-district-code"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                          >Quận/huyện</label
+                        >
                       </MISACol>
                       <MISACol :span="8">
                         <MISASelectBox
@@ -485,6 +590,7 @@
                           valueExpr="value"
                           :searchEnabled="true"
                           placeholder="Chọn/nhập quận/huyện"
+                          id="current-district-code"
                         />
                       </MISACol>
                     </MISARow>
@@ -500,7 +606,11 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">Xã/phường</div>
+                        <label
+                          for="current-ward-code"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                          >Xã/phường</label
+                        >
                       </MISACol>
                       <MISACol :span="8">
                         <MISASelectBox
@@ -510,6 +620,7 @@
                           valueExpr="value"
                           :searchEnabled="true"
                           placeholder="Chọn/nhập xã/phường"
+                          id="current-ward-code"
                         />
                       </MISACol>
                     </MISARow>
@@ -518,14 +629,18 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="current-street"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Số nhà, đường/phố, thôn/xóm
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
                         <MISATextBox
                           v-model="formData.CurrentStreetHouseNumber"
                           placeholder="Nhập số nhà, đường/phố, thôn/xóm"
+                          id="current-street"
                         />
                       </MISACol>
                     </MISARow>
@@ -534,7 +649,9 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">Địa chỉ</div>
+                        <label for="test" class="height-36 d-flex align-center flex-wrap pr-12"
+                          >Địa chỉ</label
+                        >
                       </MISACol>
                       <MISACol :span="8">
                         <MISATextBox :disabled="true" />
@@ -554,9 +671,12 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="organization-unit-id"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Bộ phận/phòng ban <span class="required-mark">*</span>
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
                         <MISATreeView
@@ -570,9 +690,12 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="job-position-id"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Vị trí công việc <span class="required-mark">*</span>
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
                         <ValidationProvider
@@ -586,9 +709,11 @@
                             displayExpr="label"
                             valueExpr="value"
                             :searchEnabled="true"
+                            :is-valid="!errors[0]"
                             placeholder="Chọn/ nhập vị trí công việc"
+                            id="job-position-id"
                           />
-                          <p class="validate-error">{{ errors[0] }}</p>
+                          <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
                         </ValidationProvider>
                       </MISACol>
                     </MISARow>
@@ -597,10 +722,18 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-100 d-flex align-center flex-wrap pr-12">Chức danh</div>
+                        <label
+                          for="job-title-id"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                          >Chức danh</label
+                        >
                       </MISACol>
                       <MISACol :span="8">
-                        <MISATextBox v-model="formData.JobTitleId" :disabled="true" />
+                        <MISATextBox
+                          v-model="formData.JobTitleId"
+                          :disabled="true"
+                          id="job-title-id"
+                        />
                       </MISACol>
                     </MISARow>
                   </div>
@@ -608,9 +741,12 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-100 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="employee-status"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Trạng thái làm việc
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
                         <MISASelectBox
@@ -620,6 +756,7 @@
                           valueExpr="value"
                           :searchEnabled="false"
                           placeholder="Chọn trạng thái làm việc"
+                          id="employee-status"
                         />
                       </MISACol>
                     </MISARow>
@@ -630,12 +767,15 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-100 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="probation-date"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Ngày học việc
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
-                        <MISADatePicker v-model="formData.ProbationDate" />
+                        <MISADatePicker v-model="formData.ProbationDate" id="probation-date" />
                       </MISACol>
                     </MISARow>
                   </div>
@@ -643,12 +783,15 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-100 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="hire-date"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Ngày thử việc
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
-                        <MISADatePicker v-model="formData.HireDate" />
+                        <MISADatePicker v-model="formData.HireDate" id="hire-date" />
                       </MISACol>
                     </MISARow>
                   </div>
@@ -656,12 +799,15 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-100 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="receive-date"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Ngày chính thức
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
-                        <MISADatePicker v-model="formData.ReceiveDate" />
+                        <MISADatePicker v-model="formData.ReceiveDate" id="receive-date" />
                       </MISACol>
                     </MISARow>
                   </div>
@@ -669,12 +815,15 @@
                   <div class="mt-16">
                     <MISARow>
                       <MISACol :span="4">
-                        <div class="height-100 d-flex align-center flex-wrap pr-12">
+                        <label
+                          for="termination-date"
+                          class="height-36 d-flex align-center flex-wrap pr-12"
+                        >
                           Ngày nghỉ việc
-                        </div>
+                        </label>
                       </MISACol>
                       <MISACol :span="8">
-                        <MISADatePicker v-model="formData.TerminationDate" />
+                        <MISADatePicker v-model="formData.TerminationDate" id="termination-date" />
                       </MISACol>
                     </MISARow>
                   </div>
@@ -829,6 +978,9 @@ export default {
       positions,
       workStatuses,
 
+      // Chế độ của form
+      formMode: this.$route.params?.id ? enums.form.mode.UPDATE : enums.form.mode.CREATE,
+
       // Dữ liệu của form
       formData: {
         ...defaultFormData,
@@ -847,10 +999,6 @@ export default {
   },
 
   computed: {
-    ...mapState("employeeStore", {
-      employeeStore: (state) => state,
-    }),
-
     ...mapState("employeeRelationshipStore", {
       employeeRelationshipStore: (state) => state,
     }),
@@ -890,7 +1038,7 @@ export default {
      */
     async getNewEmployeeCode() {
       try {
-        if (this.employeeStore.mode === enums.form.mode.CREATE) {
+        if (this.formMode === enums.form.mode.CREATE) {
           const response = await employeeApi.getNewCode();
 
           this.formData.EmployeeCode = response.data;
@@ -914,7 +1062,7 @@ export default {
           submit: this.confirmSubmitForm,
         });
       } else {
-        this.$store.dispatch("employeeStore/closeForm");
+        this.$router.push({ name: "employee" });
       }
     },
 
@@ -928,7 +1076,7 @@ export default {
       this.$store.dispatch("dialogStore/closeDialog");
 
       // Thoát form
-      this.$store.dispatch("employeeStore/closeForm");
+      this.$router.push({ name: "employee" });
     },
 
     /**
@@ -945,22 +1093,23 @@ export default {
     },
 
     /**
-     * Description: Hàm xử lý submit form ở các chế độ create/update/duplicate
-     * Author: txphuc (01/07/2023)
+     * Description: Hàm xử lý submit form ở các chế độ create/update
+     * Author: txphuc (10/08/2023)
      */
     async handleSubmitForm(isContinue = true) {
       try {
         let result = false;
 
+        // Validate toàn bộ input
         const success = await this.$refs.formValidation.validate();
 
         if (success) {
           // Bắt đầu loading
           this.$store.dispatch("commonStore/setLoading", true);
 
-          if (this.employeeStore.mode === enums.form.mode.CREATE) {
+          if (this.formMode === enums.form.mode.CREATE) {
             result = await this.handleCreateEmployee();
-          } else if (this.employeeStore.mode === enums.form.mode.UPDATE) {
+          } else if (this.formMode === enums.form.mode.UPDATE) {
             result = await this.handleUpdateEmployee();
 
             // if (result) {
@@ -979,13 +1128,13 @@ export default {
             // }
           } else if (result) {
             // Đóng form và chuyển sang trang xem chi tiết
-            let employeeID = result;
+            let employeeId = result;
 
-            if (this.employeeStore.mode === enums.form.mode.UPDATE) {
-              employeeID = this.employeeStore?.currentEmployee?.EmployeeID;
+            if (this.formMode === enums.form.mode.UPDATE) {
+              employeeId = this.$route.params?.id;
             }
 
-            this.$router.push({ name: "employee-detail-view", params: { id: employeeID } });
+            this.$router.push({ name: "employee-detail-view", params: { id: employeeId } });
           }
 
           // Tắt loading
@@ -1011,10 +1160,10 @@ export default {
         TerminationDate: formatDate(this.formData.TerminationDate, "yyyy-MM-dd"),
       };
 
-      if (this.employeeStore.mode === enums.form.mode.CREATE) {
+      if (this.formMode === enums.form.mode.CREATE) {
         // Chỉ lấy bản ghi thành viên gia đình có EditMode khác Delete
         data.EmployeeRelationships = this.displayRelationships;
-      } else if (this.employeeStore.mode === enums.form.mode.UPDATE) {
+      } else if (this.formMode === enums.form.mode.UPDATE) {
         // Lấy tất cả các bản ghi thành viên gia đình
         data.EmployeeRelationships = this.employeeRelationshipStore.relationships;
       }
@@ -1028,7 +1177,7 @@ export default {
      */
     async handleCreateEmployee() {
       try {
-        if (this.employeeStore.mode === enums.form.mode.CREATE) {
+        if (this.formMode === enums.form.mode.CREATE) {
           const data = this.generateData();
 
           const result = await employeeApi.create(data);
@@ -1053,14 +1202,16 @@ export default {
      */
     async handleLoadDataForUpdate() {
       try {
-        if (this.employeeStore.mode === enums.form.mode.UPDATE) {
-          const employeeId = this.employeeStore?.currentEmployee?.EmployeeID;
+        if (this.formMode == enums.form.mode.UPDATE) {
+          // Bật loading
+          this.$store.dispatch("commonStore/setLoading", true);
+
+          // Lấy Id từ param
+          const employeeId = this.$route.params?.id;
 
           // Gọi API lấy thông tin nhân viên cần sửa
           const response = await employeeApi.get(employeeId);
           const employeeData = response.data;
-
-          console.log(employeeData);
 
           // Binding dữ liệu vào form
           this.formData = {
@@ -1081,6 +1232,9 @@ export default {
 
           // Tránh thay đổi trạng thái của form
           this.isLoadFormData = true;
+
+          // Tắt loading
+          this.$store.dispatch("commonStore/setLoading", false);
         }
       } catch (error) {
         console.warn(error);
@@ -1093,8 +1247,8 @@ export default {
      */
     async handleUpdateEmployee() {
       try {
-        if (this.employeeStore.mode === enums.form.mode.UPDATE) {
-          const employeeId = this.employeeStore?.currentEmployee?.EmployeeID;
+        if (this.formMode === enums.form.mode.UPDATE) {
+          const employeeId = this.$route.params?.id;
 
           const data = this.generateData();
 
@@ -1183,6 +1337,9 @@ export default {
   created: function () {
     this.getNewEmployeeCode();
     this.handleLoadDataForUpdate();
+
+    // Xoá dữ liệu cũ khi mở form
+    this.$store.dispatch("employeeRelationshipStore/setRelationships", []);
   },
 };
 </script>

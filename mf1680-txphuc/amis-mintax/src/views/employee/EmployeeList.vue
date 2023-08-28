@@ -30,6 +30,7 @@
 
     <div class="page__content">
       <div class="controls-wrapper">
+        <!-- Thông tin các hàng đang được chọn -->
         <div v-if="selectedRowsData?.length > 0" class="selection-container">
           <div class="selection-info">
             <span>Đã chọn</span>
@@ -57,7 +58,7 @@
             </div>
 
             <div class="controls__group">
-              <MISAButton color="secondary">
+              <MISAButton :loading="isLoadingExportExcel" color="secondary">
                 Xuất khẩu
                 <template slot="icon">
                   <MISAIcon size="20" icon="export" />
@@ -81,6 +82,7 @@
           </div>
         </div>
 
+        <!-- Filter, tìm kiếm, tuỳ chỉnh cột -->
         <div v-if="selectedRowsData?.length === 0" class="filter-container">
           <div class="filter__left">
             <div class="controls__group">
@@ -92,7 +94,11 @@
             </div>
 
             <div class="controls__group">
-              <MISAButton color="secondary">
+              <MISAButton
+                @click="downloadExcel()"
+                :loading="isLoadingExportExcel"
+                color="secondary"
+              >
                 Xuất khẩu
                 <template slot="icon">
                   <MISAIcon :size="20" icon="export" />
@@ -103,7 +109,13 @@
 
           <div class="filter__right">
             <MISAButtonGroup>
-              <MISAButton @click="$store.dispatch('employeeStore/openFormForCreate')">
+              <MISAButton
+                @click="
+                  $router.push({
+                    name: 'employee-detail',
+                  })
+                "
+              >
                 Thêm mới
                 <template slot="icon">
                   <MISAIcon size="20" icon="plus" />
@@ -192,7 +204,7 @@ import MISATableCustomize from "@/components/base/table-customize/MISATableCusto
 import MISATextBox from "@/components/base/text-box/MISATextBox.vue";
 import MISATreeView from "@/components/base/tree-view/MISATreeView.vue";
 import MISAFilterPopup from "@/components/base/filter-popup/MISAFilterPopup.vue";
-import { employeeColumns } from "./employee-columns";
+import { employeeColumns, excelExportSheets } from "./employee-columns";
 import employeeApi from "@/api/employee-api";
 import MISABadge from "@/components/base/badge/MISABadge.vue";
 import { employeeFilterGroups } from "./employee-filter";
@@ -266,6 +278,9 @@ export default {
       // Trạng thái của các popup
       isOpenTableCustomize: false,
       isOpenFilterPopup: false,
+
+      // Trạng thái loading Excel
+      isLoadingExportExcel: false,
     };
   },
 
@@ -311,7 +326,8 @@ export default {
      * Author: txphuc (24/08/2023)
      */
     onClickEditRow(row) {
-      this.$store.dispatch("employeeStore/openFormForUpdate", row.data);
+      const employeeId = row.key;
+      this.$router.push({ name: "employee-detail-update", params: { id: employeeId } });
     },
 
     /**
@@ -600,6 +616,33 @@ export default {
 
         // Load lại data
         await this.getEmployeesData();
+      }
+    },
+
+    /**
+     * Description: Download excel danh sách nhân viên
+     * Author: txphuc (21/07/2023)
+     */
+    async downloadExcel(employeeIds = []) {
+      try {
+        this.isLoadingExportExcel = true;
+
+        const response = await employeeApi.downloadExcel(excelExportSheets, employeeIds);
+
+        const blob = new Blob([response.data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+
+        const url = URL.createObjectURL(blob);
+
+        const linkElement = document.createElement("a");
+        linkElement.href = url;
+        linkElement.download = "export.xlsx";
+        linkElement.click();
+
+        this.isLoadingExportExcel = false;
+      } catch (error) {
+        console.warn(error);
       }
     },
   },

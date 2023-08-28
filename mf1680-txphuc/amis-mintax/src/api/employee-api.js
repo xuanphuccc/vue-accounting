@@ -94,11 +94,11 @@ const employeeApi = {
    * - Download theo các bản ghi được chọn
    * Author: txphuc (27/07/2023)
    */
-  downloadExcel(columns = [], employeeIds = []) {
+  downloadExcel(excelExportSheets = [], employeeIds = []) {
     const url = `${rootUrl}/Excel/Export`;
     const data = {
-      entityIds: employeeIds,
-      columns: columns,
+      EntityIds: employeeIds,
+      ExcelExportSheets: excelExportSheets,
     };
 
     return axiosClient.post(url, data, {
