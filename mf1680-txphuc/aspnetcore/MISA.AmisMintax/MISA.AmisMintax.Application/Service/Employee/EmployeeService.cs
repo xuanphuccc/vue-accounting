@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Application
 {
-    public class EmployeeService : BaseCodeService<Employee, EmployeeDto, EmployeeCreateDto, EmployeeUpdateDto>, IEmployeeService
+    public class EmployeeService : BaseCodeService<Employee, Employee, EmployeeDto, EmployeeCreateDto, EmployeeUpdateDto>, IEmployeeService
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IEmployeeManager _employeeManager;
@@ -60,7 +60,7 @@ namespace MISA.AmisMintax.Application
         public override async Task CustomDetailData(EmployeeDto employeeDto)
         {
             // Thêm thông tin người thân cho nhân viên
-            var employeeRelationships = await _employeeRelationshipRepository.GetListByEmployeeIdAsync(employeeDto.EmployeeID);
+            var employeeRelationships = await _employeeRelationshipRepository.GetListByEmployeeIdAsync(new List<Guid>() { employeeDto.EmployeeID });
 
             var employeeRelationshipDtos = _mapper.Map<IEnumerable<EmployeeRelationshipDto>>(employeeRelationships);
 

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Infrastructure
 {
-    public abstract class BaseReadOnlyRepository<TEntity> : IBaseReadOnlyRepository<TEntity>
+    public abstract class BaseReadOnlyRepository<TEntity, TModel> : IBaseReadOnlyRepository<TEntity, TModel>
     {
         #region Fields & Properties
         protected readonly IUnitOfWork _unitOfWork;
@@ -31,11 +31,11 @@ namespace MISA.AmisMintax.Infrastructure
         /// </summary>
         /// <returns>Danh sách đối tượng</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task<IEnumerable<TModel>> GetAllAsync()
         {
             var sql = $"Proc_{TableName}_GetAll";
 
-            var entities = await _unitOfWork.Connection.QueryAsync<TEntity>(sql, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
+            var entities = await _unitOfWork.Connection.QueryAsync<TModel>(sql, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
 
             return entities;
         }
@@ -64,7 +64,7 @@ namespace MISA.AmisMintax.Infrastructure
         /// <param name="entityIds">Danh sách Id</param>
         /// <returns>Danh sách đối tượng thoả mãn</returns>
         /// CreatedBy: txphuc (24/07/2023)
-        public async Task<IEnumerable<TEntity>> GetListByIdsAsync(IEnumerable<Guid> entityIds)
+        public async Task<IEnumerable<TModel>> GetListByIdsAsync(IEnumerable<Guid> entityIds)
         {
             var entityIdsString = string.Join(", ", entityIds.Select(entityId => $"'{entityId}'"));
 
@@ -73,7 +73,7 @@ namespace MISA.AmisMintax.Infrastructure
 
             var sql = $"Proc_{TableName}_GetListByIds";
 
-            var entities = await _unitOfWork.Connection.QueryAsync<TEntity>(sql, param, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
+            var entities = await _unitOfWork.Connection.QueryAsync<TModel>(sql, param, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
 
             return entities;
         }

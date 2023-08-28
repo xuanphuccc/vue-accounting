@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Domain
 {
-    public interface IEmployeeRepository : IBaseCodeRepository<Employee>
+    public interface IEmployeeRepository : IBaseCodeRepository<Employee, Employee>
     {
         /// <summary>
         /// Tìm kiếm, filter, sắp xếp, phân trang

@@ -14,6 +14,7 @@ namespace MISA.AmisMintax.Application
         
             // Lấy dữ liệu
             CreateMap<EmployeeRelationship, EmployeeRelationshipDto>();
+            CreateMap<EmployeeRelationshipModel, EmployeeRelationshipDto>();
 
             // Thêm mới
             CreateMap<EmployeeRelationshipCreateDto, EmployeeRelationship>();

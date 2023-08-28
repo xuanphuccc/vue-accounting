@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Domain
 {
-    public interface IBaseCodeRepository<TEntity> : IBaseRepository<TEntity>
+    public interface IBaseCodeRepository<TEntity, TModel> : IBaseRepository<TEntity, TModel>
     {
         /// <summary>
         /// Lấy đối tượng theo mã

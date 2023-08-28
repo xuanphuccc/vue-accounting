@@ -10,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Infrastructure
 {
-    public abstract class ExcelService<TEntity, TEntityDto, TEntityExcelInsertDto> : ExcelCore, IExcelService
+    public abstract class ExcelService<TEntity, TModel, TEntityDto, TEntityExcelInsertDto> : ExcelCore, IExcelService
     {
         #region Fields
-        protected readonly IBaseReadOnlyRepository<TEntity> _baseReadOnlyRepository;
+        protected readonly IBaseReadOnlyRepository<TEntity, TModel> _baseReadOnlyRepository;
         protected readonly IMapper _mapper;
         #endregion
 
         #region Constructors
-        protected ExcelService(IBaseReadOnlyRepository<TEntity> baseReadOnlyRepository, IMapper mapper)
+        protected ExcelService(IBaseReadOnlyRepository<TEntity, TModel> baseReadOnlyRepository, IMapper mapper)
         {
             _baseReadOnlyRepository = baseReadOnlyRepository;
             _mapper = mapper;

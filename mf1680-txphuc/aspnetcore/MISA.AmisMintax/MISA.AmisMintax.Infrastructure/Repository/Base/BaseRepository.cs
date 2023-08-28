@@ -12,7 +12,7 @@ using static OfficeOpenXml.ExcelErrorValue;
 
 namespace MISA.AmisMintax.Infrastructure
 {
-    public abstract class BaseRepository<TEntity> : BaseReadOnlyRepository<TEntity>, IBaseRepository<TEntity> where TEntity : IHasKey
+    public abstract class BaseRepository<TEntity, TModel> : BaseReadOnlyRepository<TEntity, TModel>, IBaseRepository<TEntity, TModel> where TEntity : IHasKey
     {
         #region Constructors
         protected BaseRepository(IUnitOfWork unitOfWork) : base(unitOfWork)

@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Domain
 {
-    public interface IBaseReadOnlyRepository<TEntity>
+    public interface IBaseReadOnlyRepository<TEntity,TModel>
     {
         /// <summary>
         /// Lấy tất cả bản ghi
         /// </summary>
         /// <returns>Danh sách bản ghi</returns>
         /// CreatedBy: txphuc (18/07/2023)
-        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<IEnumerable<TModel>> GetAllAsync();
 
         /// <summary>
         /// Lấy bản ghi theo Id
@@ -29,7 +29,7 @@ namespace MISA.AmisMintax.Domain
         /// <param name="entityIds">Danh sách Id</param>
         /// <returns>Danh sách bản ghi thoả mãn</returns>
         /// CreatedBy: txphuc (24/07/2023)
-        Task<IEnumerable<TEntity>> GetListByIdsAsync(IEnumerable<Guid> entityIds);
+        Task<IEnumerable<TModel>> GetListByIdsAsync(IEnumerable<Guid> entityIds);
 
         /// <summary>
         /// Tìm bản ghi theo Id

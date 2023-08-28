@@ -28,7 +28,7 @@ namespace MISA.AmisMintax.Infrastructure
         /// </summary>
         /// <returns>Mảng bytes của file Excel</returns>
         /// CreatedBy: txphuc (28/08/2023)
-        public async Task<byte[]> ExportAllToExcel(List<ExcelExportSheetDto> exportSheetDtos)
+        public async Task<byte[]> ExportAllToExcelAsync(List<ExcelExportSheetDto> exportSheetDtos)
         {
             foreach (var exportSheet in exportSheetDtos)
             {
@@ -44,6 +44,41 @@ namespace MISA.AmisMintax.Infrastructure
                 if (exportSheet.SheetKey == "EmployeeRelationship")
                 {
                     var employeeRelationships = await _employeeRelationshipRepository.GetAllAsync();
+
+                    var employeeDtos = _mapper.Map<List<EmployeeRelationshipDto>>(employeeRelationships);
+
+                    // Thêm trang tính nhân viên
+                    AddWorkSheet(employeeDtos, exportSheet);
+                }
+            }
+
+            // Lấy mảng bytes của file Excel
+            var bytes = GetExcelBytes();
+
+            return bytes;
+        }
+
+        /// <summary>
+        /// Xuất danh sách theo ID ra file Excel
+        /// </summary>
+        /// <returns>Mảng bytes của file Excel</returns>
+        /// CreatedBy: txphuc (28/08/2023)
+        public async Task<byte[]> ExportListToExcelAsync(List<Guid> employeeIds, List<ExcelExportSheetDto> exportSheetDtos)
+        {
+            foreach (var exportSheet in exportSheetDtos)
+            {
+                if (exportSheet.SheetKey == "Employee")
+                {
+                    var employees = await _employeeRepository.GetListByIdsAsync(employeeIds);
+
+                    var employeeDtos = _mapper.Map<List<EmployeeDto>>(employees);
+
+                    // Thêm trang tính nhân viên
+                    AddWorkSheet(employeeDtos, exportSheet);
+                }
+                if (exportSheet.SheetKey == "EmployeeRelationship")
+                {
+                    var employeeRelationships = await _employeeRelationshipRepository.GetListByEmployeeIdAsync(employeeIds);
 
                     var employeeDtos = _mapper.Map<List<EmployeeRelationshipDto>>(employeeRelationships);
 

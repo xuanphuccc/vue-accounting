@@ -50,15 +50,23 @@ namespace MISA.AmisMintax.Controllers
         /// Xuất dữ liệu ra file Excel
         /// </summary>
         /// <returns></returns>
+        /// CreatedBy: txphuc (29/08/2023)
         [HttpPost("Excel/Export")]
         public async Task<IActionResult> Test([FromBody] ExcelExportRequestDto exportRequestDto)
         {
             var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             var fileName = "employees.xlsx";
 
-            var bytes = await _employeeExcelService.ExportAllToExcel(exportRequestDto.ExcelExportSheets);
+            if (exportRequestDto.EntityIds.Count > 0)
+            {
+                var exportListbytes = await _employeeExcelService.ExportListToExcelAsync(exportRequestDto.EntityIds, exportRequestDto.ExcelExportSheets);
 
-            return File(bytes, contentType, fileName);
+                return File(exportListbytes, contentType, fileName);
+            }
+
+            var exportAllbytes = await _employeeExcelService.ExportAllToExcelAsync(exportRequestDto.ExcelExportSheets);
+
+            return File(exportAllbytes, contentType, fileName);
         }
     }
 }

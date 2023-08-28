@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Infrastructure
 {
-    public class EmployeeRepository : BaseCodeRepository<Employee>, IEmployeeRepository
+    public class EmployeeRepository : BaseCodeRepository<Employee, Employee>, IEmployeeRepository
     {
         public EmployeeRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {

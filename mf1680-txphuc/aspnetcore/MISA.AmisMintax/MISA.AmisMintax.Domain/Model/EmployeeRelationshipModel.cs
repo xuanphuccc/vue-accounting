@@ -1,17 +1,16 @@
-﻿using MISA.AmisMintax.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MISA.AmisMintax.Application
+namespace MISA.AmisMintax.Domain
 {
     /// <summary>
     /// - Thêm trường EmployeeCode
     /// </summary>
-    public class EmployeeRelationshipDto
+    public class EmployeeRelationshipModel
     {
         /// <summary>
         /// Khoá chính

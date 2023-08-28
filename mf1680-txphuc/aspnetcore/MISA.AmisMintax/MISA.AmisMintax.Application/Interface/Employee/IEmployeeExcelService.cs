@@ -13,6 +13,13 @@ namespace MISA.AmisMintax.Application
         /// </summary>
         /// <returns>Mảng bytes của file Excel</returns>
         /// CreatedBy: txphuc (28/08/2023)
-        Task<byte[]> ExportAllToExcel(List<ExcelExportSheetDto> exportSheetDtos);
+        Task<byte[]> ExportAllToExcelAsync(List<ExcelExportSheetDto> exportSheetDtos);
+
+        /// <summary>
+        /// Xuất danh sách theo ID ra file Excel
+        /// </summary>
+        /// <returns>Mảng bytes của file Excel</returns>
+        /// CreatedBy: txphuc (28/08/2023)
+        Task<byte[]> ExportListToExcelAsync(List<Guid> employeeIds,List<ExcelExportSheetDto> exportSheetDtos);
     }
 }
