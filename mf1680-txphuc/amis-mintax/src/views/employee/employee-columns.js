@@ -472,7 +472,7 @@ export const excelExportSheets = [
     ],
     Columns: [
       {
-        DataField: "EmployeeID",
+        DataField: "EmployeeCode",
         Caption: "Mã người nộp thuế trên sheet \n Thông tin người nộp thuế",
         Index: 1,
         Width: 220,

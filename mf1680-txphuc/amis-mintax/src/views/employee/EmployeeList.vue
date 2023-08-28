@@ -58,7 +58,11 @@
             </div>
 
             <div class="controls__group">
-              <MISAButton :loading="isLoadingExportExcel" color="secondary">
+              <MISAButton
+                @click="exportListToExcel()"
+                :loading="isLoadingExportExcel"
+                color="secondary"
+              >
                 Xuất khẩu
                 <template slot="icon">
                   <MISAIcon size="20" icon="export" />
@@ -644,6 +648,16 @@ export default {
       } catch (error) {
         console.warn(error);
       }
+    },
+
+    /**
+     * Description: Download Excel danh sách nhân viên theo ID
+     * Author: txphuc (28/08/2023)
+     */
+    async exportListToExcel() {
+      const employeeIds = this.selectedRowsData.map((row) => row.EmployeeID);
+
+      await this.downloadExcel(employeeIds);
     },
   },
 
