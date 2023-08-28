@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Application.Interface
 {
-    public interface IExcelService<TEntityDto, TEntityExcelInsertDto> : IExcelCore<TEntityDto, TEntityExcelInsertDto>
+    public interface IExcelService : IExcelCore
     {
         /// <summary>
         /// Xuất toàn bộ danh sách theo các cột được chỉ định
@@ -14,7 +14,7 @@ namespace MISA.AmisMintax.Application.Interface
         /// <param name="columns">Danh sách các cột muốn hiển thị</param>
         /// <returns>Mảng bytes của file Excel</returns>
         /// CreatedBy: txphuc (26/07/2023)
-        Task<byte[]> ExportAll(IEnumerable<ExcelExportRequestColumnDto> columns);
+        Task<byte[]> ExportAll(IEnumerable<ExcelExportColumnDto> columns);
 
         /// <summary>
         /// Xuất danh sách các bản ghi, và theo cột được chỉ định
@@ -23,6 +23,6 @@ namespace MISA.AmisMintax.Application.Interface
         /// <param name="columns">Danh sách các cột muốn hiển thị</param>
         /// <returns>Mảng bytes của file Excel</returns>
         /// CreatedBy: txphuc (26/07/2023)
-        Task<byte[]> ExportList(IEnumerable<Guid> entityIds, IEnumerable<ExcelExportRequestColumnDto> columns);
+        Task<byte[]> ExportList(IEnumerable<Guid> entityIds, IEnumerable<ExcelExportColumnDto> columns);
     }
 }

@@ -18,6 +18,12 @@ namespace MISA.AmisMintax.Application
         public EmployeeType? EmployeeType { get; set; }
 
         /// <summary>
+        /// Tên Loại đối tượng
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        public string? EmployeeTypeName { get; set; }
+
+        /// <summary>
         /// Mã nhân viên
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
@@ -47,6 +53,12 @@ namespace MISA.AmisMintax.Application
         public Gender? Gender { get; set; }
 
         /// <summary>
+        /// Tên giới tính
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        public string? GenderName { get; set; }
+
+        /// <summary>
         /// Số điện thoại
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
@@ -74,6 +86,12 @@ namespace MISA.AmisMintax.Application
         public IdentifyType? IdentifyType { get; set; }
 
         /// <summary>
+        /// Tên loại giấy tờ
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        public string? IdentifyTypeName { get; set; }
+
+        /// <summary>
         /// Số chứng minh nhân dân
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
@@ -97,6 +115,12 @@ namespace MISA.AmisMintax.Application
         public string IdentifyIssuedPlaceCode { get; set; } = string.Empty;
 
         /// <summary>
+        /// Tên nơi cấp
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        public string? IdentifyIssuedPlaceName { get; set; }
+
+        /// <summary>
         /// Mã quốc tịch
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
@@ -104,11 +128,23 @@ namespace MISA.AmisMintax.Application
         public string? NationalCode { get; set; }
 
         /// <summary>
+        /// Tên quốc tịch
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        public string? NationalName { get; set; }
+
+        /// <summary>
         /// Loại hợp đồng
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
         [Required(ErrorMessageResourceName = nameof(InputValidation.IsRequired), ErrorMessageResourceType = typeof(InputValidation))]
         public ContractType ContractMintaxType { get; set; }
+
+        /// <summary>
+        /// Tên loại hợp đồng
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        public string? ContractMintaxTypeName { get; set; }
 
 
         // HỘ KHẨU THƯỜNG TRÚ
@@ -120,11 +156,23 @@ namespace MISA.AmisMintax.Application
         public string? NativeCountryCode { get; set; }
 
         /// <summary>
+        /// Tên quốc gia
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        public string? NativeCountryName { get; set; }
+
+        /// <summary>
         /// Mã tỉnh/thành phố
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
         [StringLength(20, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? NativeProvinceCode { get; set; }
+
+        /// <summary>
+        /// Tên tỉnh/thành phố
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        public string? NativeProvinceName { get; set; }
 
         /// <summary>
         /// Mã quận/huyện
@@ -134,11 +182,23 @@ namespace MISA.AmisMintax.Application
         public string? NativeDistrictCode { get; set; }
 
         /// <summary>
+        /// Tên quận/huyện
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        public string? NativeDistrictName { get; set; }
+
+        /// <summary>
         /// Mã xã/phường
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
         [StringLength(20, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? NativeWardCode { get; set; }
+
+        /// <summary>
+        /// Tên xã/phường
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        public string? NativeWardName { get; set; }
 
         /// <summary>
         /// Số nhà, đường/phố, thôn/xóm
@@ -163,11 +223,23 @@ namespace MISA.AmisMintax.Application
         public string? CurrentCountryCode { get; set; }
 
         /// <summary>
+        /// Tên quốc gia
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        public string? CurrentCountryName { get; set; }
+
+        /// <summary>
         /// Mã tỉnh/thành phố
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
         [StringLength(20, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? CurrentProvinceCode { get; set; }
+
+        /// <summary>
+        /// Tên tỉnh/thành phố
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        public string? CurrentProvinceName { get; set; }
 
         /// <summary>
         /// Mã quận/huyện
@@ -177,11 +249,23 @@ namespace MISA.AmisMintax.Application
         public string? CurrentDistrictCode { get; set; }
 
         /// <summary>
+        /// Tên quận/huyện
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        public string? CurrentDistrictName { get; set; }
+
+        /// <summary>
         /// Mã xã/phường
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
         [StringLength(20, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
         public string? CurrentWardCode { get; set; }
+
+        /// <summary>
+        /// Tên xã/phường
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        public string? CurrentWardName { get; set; }
 
         /// <summary>
         /// Số nhà, đường/phố, thôn/xóm
@@ -199,10 +283,22 @@ namespace MISA.AmisMintax.Application
         public int? OrganizationUnitId { get; set; }
 
         /// <summary>
+        /// Tên bộ phận/phòng ban
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        public string? OrganizationUnitName { get; set; }
+
+        /// <summary>
         /// Mã vị trí công việc
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
         public int? JobPositionId { get; set; }
+
+        /// <summary>
+        /// Tên vị trí công việc
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        public string? JobPositionName { get; set; }
 
         /// <summary>
         /// Mã chức danh
@@ -215,6 +311,12 @@ namespace MISA.AmisMintax.Application
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
         public WorkStatus? EmployeeStatus { get; set; }
+
+        /// <summary>
+        /// Tên trạng thái làm việc
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        public string? EmployeeStatusName { get; set; }
 
         /// <summary>
         /// Ngày học việc

@@ -13,15 +13,15 @@ namespace MISA.AmisMintax.Application
         /// <summary>
         /// Danh sách Id của các bản ghi muốn xuất Excel
         /// </summary>
-        /// CreatedBy: txphuc (26/07/2023)
+        /// CreatedBy: txphuc (28/08/2023)
         [Required(ErrorMessageResourceName = nameof(InputValidation.IsRequired), ErrorMessageResourceType = typeof(InputValidation))]
         public List<Guid> EntityIds { get; set; } = new List<Guid>();
 
         /// <summary>
-        /// Danh sách cột muốn export ra Excel
+        /// Danh sách cấu hình Sheet muốn xuất ra Excel
         /// </summary>
-        /// CreatedBy: txphuc (26/07/2023)
+        /// CreatedBy: txphuc (28/08/2023)
         [Required(ErrorMessageResourceName = nameof(InputValidation.IsRequired), ErrorMessageResourceType = typeof(InputValidation))]
-        public List<ExcelExportRequestColumnDto> Columns { get; set; } = new List<ExcelExportRequestColumnDto>();
+        public List<ExcelExportSheetDto> ExcelExportSheets { get; set; } = new List<ExcelExportSheetDto>();
     }
 }

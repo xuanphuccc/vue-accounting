@@ -12,9 +12,11 @@ namespace MISA.AmisMintax.Controllers
     public class EmployeesController : BaseCodeController<EmployeeDto, EmployeeCreateDto, EmployeeUpdateDto>
     {
         private readonly IEmployeeService _employeeService;
-        public EmployeesController(IEmployeeService employeeService) : base(employeeService)
+        private readonly IEmployeeExcelService _employeeExcelService;
+        public EmployeesController(IEmployeeService employeeService, IEmployeeExcelService employeeExcelService) : base(employeeService)
         {
             _employeeService = employeeService;
+            _employeeExcelService = employeeExcelService;
         }
 
         /// <summary>
@@ -42,6 +44,21 @@ namespace MISA.AmisMintax.Controllers
             var usageCount = await _employeeService.GetUsageCountAsync();
 
             return Ok(usageCount);
+        }
+
+        /// <summary>
+        /// Xuất dữ liệu ra file Excel
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("Excel/Export")]
+        public async Task<IActionResult> Test([FromBody] ExcelExportRequestDto exportRequestDto)
+        {
+            var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            var fileName = "employees.xlsx";
+
+            var bytes = await _employeeExcelService.ExportAllToExcel(exportRequestDto.ExcelExportSheets);
+
+            return File(bytes, contentType, fileName);
         }
     }
 }

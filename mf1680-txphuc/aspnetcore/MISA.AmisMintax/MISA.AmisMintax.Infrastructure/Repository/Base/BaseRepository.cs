@@ -29,11 +29,32 @@ namespace MISA.AmisMintax.Infrastructure
         /// CreatedBy: txphuc (18/07/2023)
         public async Task<Guid> InsertAsync(TEntity entity)
         {
-            var param = MapEntityToParams(entity);
+            var parameters = new DynamicParameters();
 
-            var sql = $"Proc_{TableName}_Create";
+            PropertyInfo[] properties = typeof(TEntity).GetProperties();
 
-            await _unitOfWork.Connection.ExecuteAsync(sql, param, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
+            // Lấy tên các cột
+            IEnumerable<string> columns = properties.Select(property => property.Name);
+            string columnsString = string.Join(", ", columns);
+
+            // Gán placeholder và gán giá trị cho paramerter
+            IEnumerable<string> valuePlaceholders = properties.Select(property =>
+            {
+                var propName = property.Name;
+                var propValue = property.GetValue(entity);
+
+                var valuePlaceholder = $"@{propName}";
+
+                parameters.Add(valuePlaceholder, propValue);
+
+                return valuePlaceholder;
+            });
+
+            var valuePlaceholdersString = string.Join(", ", valuePlaceholders);
+
+            string insertQuery = $"INSERT INTO {TableName} ({columnsString}) VALUES ({valuePlaceholdersString})";
+
+            await _unitOfWork.Connection.ExecuteAsync(insertQuery, parameters, transaction: _unitOfWork.Transaction);
 
             return entity.GetKey();
         }
@@ -96,11 +117,31 @@ namespace MISA.AmisMintax.Infrastructure
         /// CreatedBy: txphuc (18/07/2023)
         public async Task<int> UpdateAsync(TEntity entity)
         {
-            var param = MapEntityToParams(entity);
+            var parameters = new DynamicParameters();
 
-            var sql = $"Proc_{TableName}_UpdateById";
+            PropertyInfo[] properties = typeof(TEntity).GetProperties();
 
-            var result = await _unitOfWork.Connection.ExecuteAsync(sql, param, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
+            // Gán placeholder và gán giá trị cho paramerter
+            // Không cập nhật trường (CreateDate và CreateBy)
+            IEnumerable<string> valuePlaceholders =
+            properties.Where(property => property.Name != "CreatedDate" && property.Name != "CreatedBy")
+            .Select(property =>
+            {
+                var propName = property.Name;
+                var propValue = property.GetValue(entity);
+
+                var valuePlaceholder = $"@{propName}";
+
+                parameters.Add(valuePlaceholder, propValue);
+
+                return $"{propName} = {valuePlaceholder}";
+            });
+
+            var valuePlaceholdersString = string.Join(", ", valuePlaceholders);
+
+            string updateQuery = $"UPDATE {TableName} SET {valuePlaceholdersString} WHERE {TableName}ID = '{entity.GetKey()}'";
+
+            var result = await _unitOfWork.Connection.ExecuteAsync(updateQuery, parameters, transaction: _unitOfWork.Transaction);
 
             return result;
         }
@@ -110,6 +151,7 @@ namespace MISA.AmisMintax.Infrastructure
         /// </summary>
         /// <param name="entities">Danh sách đối tượng</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
+        /// CreatedBy: txphuc (18/07/2023)
         public async Task<int> UpdateMultipleAsync(IEnumerable<TEntity> entities)
         {
             var parameters = new DynamicParameters();
@@ -118,15 +160,14 @@ namespace MISA.AmisMintax.Infrastructure
 
             List<string> insertQueries = new();
 
-            // Lấy tên các cột
-            IEnumerable<string> columns = properties.Select(p => p.Name);
-            string columnsString = string.Join(", ", columns);
-
             var index = 0;
             foreach (var entity in entities)
             {
                 // Gán placeholder và gán giá trị cho paramerter
-                IEnumerable<string> valuePlaceholders = properties.Select(property =>
+                // Không cập nhật trường (CreateDate và CreateBy)
+                IEnumerable<string> valuePlaceholders =
+                properties.Where(property => property.Name != "CreatedDate" && property.Name != "CreatedBy")
+                .Select(property =>
                 {
                     var propName = property.Name;
                     var propValue = property.GetValue(entity);
@@ -143,7 +184,7 @@ namespace MISA.AmisMintax.Infrastructure
                 string insertQuery = $"UPDATE {TableName} SET {valuePlaceholdersString} WHERE {TableName}ID = '{entity.GetKey()}'";
 
                 insertQueries.Add(insertQuery);
-                                                                                                                                                                                                              
+
                 index++;
             }
 

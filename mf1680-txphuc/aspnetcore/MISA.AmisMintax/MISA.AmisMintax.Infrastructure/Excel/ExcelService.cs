@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Infrastructure
 {
-    public abstract class ExcelService<TEntity, TEntityDto, TEntityExcelInsertDto> : ExcelCore<TEntityDto, TEntityExcelInsertDto>, IExcelService<TEntityDto, TEntityExcelInsertDto>
+    public abstract class ExcelService<TEntity, TEntityDto, TEntityExcelInsertDto> : ExcelCore, IExcelService
     {
         #region Fields
         protected readonly IBaseReadOnlyRepository<TEntity> _baseReadOnlyRepository;
@@ -32,14 +32,14 @@ namespace MISA.AmisMintax.Infrastructure
         /// <param name="columns">Danh sách các cột muốn hiển thị</param>
         /// <returns>Mảng bytes của file Excel</returns>
         /// CreatedBy: txphuc (26/07/2023)
-        public async Task<byte[]> ExportAll(IEnumerable<ExcelExportRequestColumnDto> columns)
+        public async Task<byte[]> ExportAll(IEnumerable<ExcelExportColumnDto> columns)
         {
             var entities = await _baseReadOnlyRepository.GetAllAsync();
             var entityDtos = _mapper.Map<IEnumerable<TEntityDto>>(entities);
 
-            var bytes = ExportToExcel(entityDtos, columns);
+            //var bytes = ExportToExcel(entityDtos, columns);
 
-            return bytes;
+            return null;
         }
 
         /// <summary>
@@ -49,14 +49,14 @@ namespace MISA.AmisMintax.Infrastructure
         /// <param name="columns">Danh sách các cột muốn hiển thị</param>
         /// <returns>Mảng bytes của file Excel</returns>
         /// CreatedBy: txphuc (26/07/2023)
-        public async Task<byte[]> ExportList(IEnumerable<Guid> entityIds, IEnumerable<ExcelExportRequestColumnDto> columns)
+        public async Task<byte[]> ExportList(IEnumerable<Guid> entityIds, IEnumerable<ExcelExportColumnDto> columns)
         {
             var entities = await _baseReadOnlyRepository.GetListByIdsAsync(entityIds);
             var entityDtos = _mapper.Map<IEnumerable<TEntityDto>>(entities);
 
-            var bytes = ExportToExcel(entityDtos, columns);
+            //var bytes = ExportToExcel(entityDtos, columns);
 
-            return bytes;
+            return null;
         }
         #endregion
     }

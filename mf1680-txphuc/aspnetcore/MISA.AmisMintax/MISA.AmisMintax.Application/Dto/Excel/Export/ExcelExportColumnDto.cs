@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Application
 {
-    public class ExcelExportRequestColumnDto
+    public class ExcelExportColumnDto
     {
         /// <summary>
         /// Tên thuộc tính muốn ghi ra Excel
         /// </summary>
         /// CreatedBy: txphuc (29/07/2023)
         [Required(ErrorMessageResourceName = nameof(InputValidation.IsRequired), ErrorMessageResourceType = typeof(InputValidation))]
-        public string DataIndex { get; set; } = string.Empty;
+        public string DataField { get; set; } =  string.Empty;
 
         /// <summary>
         /// Tên cột hiển thị trong file Excel
         /// </summary>
         /// CreatedBy: txphuc (03/08/2023)
         [Required(ErrorMessageResourceName = nameof(InputValidation.IsRequired), ErrorMessageResourceType = typeof(InputValidation))]
-        public string Title { get; set;} = string.Empty;
+        public string Caption { get; set;} = string.Empty;
 
         /// <summary>
         /// Vị trí cột trong file Excel
@@ -35,12 +35,23 @@ namespace MISA.AmisMintax.Application
         /// Độ rộng của cột
         /// </summary>
         /// CreatedBy: txphuc (03/08/2023)
-        public double Width { get; set; } = 140;
+        public double Width { get; set; } = 150;
 
         /// <summary>
         /// Căn lề của dữ liệu
         /// </summary>
         /// CreatedBy: txphuc (31/07/2023)
-        public string? Align { get; set; } = "left";
+        public string? Alignment { get; set; } = "left";
+
+        /// <summary>
+        /// Font chữ
+        /// </summary>
+        /// CreatedBy: txphuc (29/08/2023)
+        public float? FontSize { get; set; } = 12;
+
+        /// <summary>
+        /// Màu sắc cột header
+        /// </summary>
+        public string? HeaderBackground { get; set;} = "#BEF2FF";
     }
 }

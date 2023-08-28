@@ -37,6 +37,7 @@ namespace MISA.AmisMintax.Domain
         /// </summary>
         /// <param name="entities">Danh sách đối tượng</param>
         /// <returns>Số bản ghi bị ảnh hưởng</returns>
+        /// CreatedBy: txphuc (18/07/2023)
         Task<int> UpdateMultipleAsync(IEnumerable<TEntity> entities);
 
         /// <summary>

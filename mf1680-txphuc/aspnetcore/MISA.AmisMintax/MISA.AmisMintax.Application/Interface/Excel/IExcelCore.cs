@@ -6,35 +6,22 @@ using System.Threading.Tasks;
 
 namespace MISA.AmisMintax.Application
 {
-    public interface IExcelCore<TEntityDto, TEntityExcelInsertDto>
+    public interface IExcelCore
     {
         /// <summary>
-        /// Xử lý xuất file Excel
+        /// Thêm một trang tính mới
+        /// </summary>
+        /// <param name="entityDtos">Dữ liệu ghi ra trang tính</param>
+        /// <param name="exportSheetDto">Cấu hình trang tính</param>
+        /// CreatedBy: txphuc (28/08/2023)
+        void AddWorkSheet(IEnumerable<object> entityDtos, ExcelExportSheetDto exportSheetDto);
+
+        /// <summary>
+        /// Lấy mảng bytes của file Excel để download 
+        /// (bao gồm tất cả trang tính đã thêm)
         /// </summary>
         /// <returns>Mảng bytes của file Excel</returns>
-        /// CreatedBy: txphuc (23/07/2023)
-        byte[] ExportToExcel(IEnumerable<TEntityDto> entityDtos, IEnumerable<ExcelExportRequestColumnDto> columns);
-
-        /// <summary>
-        /// Lấy dữ liệu về tên các cột trong file Excel
-        /// và tên các thuộc tính của đối tượng cần map từ các cột đó
-        /// </summary>
-        /// <param name="excelGetMapDto">Thông tin của file Excel</param>
-        /// <returns>
-        /// Gồm hai danh sách:
-        /// - Danh sách tên các cột trong file Excel và vị trí cột
-        /// - Danh sách tên các thuộc tính của đối tượng
-        /// </returns>
-        /// CreatedBy: txphuc (29/07/2023)
-        ExcelMapResponseDto GetMapExcel(ExcelGetMapDto excelGetMapDto);
-
-        /// <summary>
-        /// Đọc data từ file Excel và map sang đối tượng
-        /// </summary>
-        /// <param name="excelMapRequestDto">
-        /// Chứa thông tin về file Excel và danh sách hướng dẫn map
-        /// </param>
-        /// <returns>Danh sách các đối tượng đã đọc từ file Excel</returns>
-        IEnumerable<TEntityExcelInsertDto> ReadExcelData(ExcelMapRequestDto excelMapRequestDto);
+        /// CreatedBy: txphuc (28/08/2023)
+        byte[] GetExcelBytes();
     }
 }
