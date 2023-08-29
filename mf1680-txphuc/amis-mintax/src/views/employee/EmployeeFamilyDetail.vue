@@ -710,8 +710,16 @@ import {
   districts,
   wards,
   identifyTypes,
+  getRelationship,
+  getGender,
+  getIdentifyType,
+  getCountry,
+  getProvince,
+  getDistrict,
+  getWard,
 } from "@/api/mock-data";
 import { formatDate } from "devextreme/localization";
+import employeeRelationshipApi from "@/api/employee-relationship-api";
 
 const defaultFormData = {
   FullName: null,
@@ -762,7 +770,18 @@ export default {
     ValidationProvider,
     ValidationObserver,
   },
-  props: {},
+  props: {
+    // Xác định form có gọi api để lưu luôn hay không
+    callApi: {
+      type: Boolean,
+      default: false,
+    },
+
+    // Id của employee
+    parentId: {
+      type: String,
+    },
+  },
   data: function () {
     return {
       relationships,
@@ -867,9 +886,9 @@ export default {
 
         if (success) {
           if (this.employeeRelationshipStore.mode === enums.form.mode.CREATE) {
-            result = this.handleCreateRelationship();
+            result = await this.handleCreateRelationship();
           } else if (this.employeeRelationshipStore.mode === enums.form.mode.UPDATE) {
-            result = this.handleUpdateRelationship();
+            result = await this.handleUpdateRelationship();
           }
 
           if (result) {
@@ -900,6 +919,29 @@ export default {
 
         DeductionStartDate: formatDate(this.formData.DeductionStartDate, "yyyy-MM-dd"),
         DeductionEndDate: formatDate(this.formData.DeductionEndDate, "yyyy-MM-dd"),
+
+        //
+        RelationshipName: getRelationship(this.formData.Relationship)?.label,
+        GenderName: getGender(this.formData.Gender)?.label,
+        NationalityName: getCountry(this.formData.NationalityCode)?.label,
+        IdentifyKindOfPaperName: getIdentifyType(this.formData.IdentifyKindOfPaper)?.label,
+        IdentifyNumberIssuedPlaceName: getProvince(this.formData.IdentifyNumberIssuedPlaceCode)
+          ?.label,
+        CountryName: getCountry(this.formData.CountryCode)?.label,
+        ProvinceName: getProvince(this.formData.ProvinceCode)?.label,
+        DistrictName: getDistrict(this.formData.DistrictCode)?.label,
+        WardName: getWard(this.formData.WardCode)?.label,
+        FamilyPermanentAddressProvinceName: getProvince(
+          this.formData.FamilyPermanentAddressProvinceCode
+        )?.label,
+        FamilyPermanentAddressDistrictName: getDistrict(
+          this.formData.FamilyPermanentAddressDistrictCode
+        )?.label,
+        FamilyPermanentAddressWardName: getWard(this.formData.FamilyPermanentAddressWardCode)
+          ?.label,
+        FamilyCurrentProvinceName: getProvince(this.formData.FamilyCurrentProvinceCode)?.label,
+        FamilyCurrentDistrictName: getDistrict(this.formData.FamilyCurrentDistrictCode)?.label,
+        FamilyCurrentWardName: getWard(this.formData.FamilyCurrentWardCode)?.label,
       };
 
       return data;
@@ -909,12 +951,25 @@ export default {
      * Description: Hàm xử lý thêm thành viên gia đình
      * Author: txphuc (26/08/2023)
      */
-    handleCreateRelationship() {
+    async handleCreateRelationship() {
       try {
         if (this.employeeRelationshipStore.mode === enums.form.mode.CREATE) {
           const data = this.generateData();
 
-          this.$store.dispatch("employeeRelationshipStore/addRelationship", data);
+          if (this.callApi) {
+            data.EmployeeID = this.parentId;
+
+            await employeeRelationshipApi.create(data);
+
+            // Hiện toast message thành công
+            this.$store.dispatch("toastStore/pushSuccessMessage", {
+              message: "Thêm thông tin gia đình thành công",
+            });
+
+            this.$emit("submit");
+          } else {
+            this.$store.dispatch("employeeRelationshipStore/addRelationship", data);
+          }
 
           return true;
         }
@@ -933,8 +988,6 @@ export default {
       try {
         if (this.employeeRelationshipStore.mode === enums.form.mode.UPDATE) {
           const employeeData = this.employeeRelationshipStore?.currentRelationship;
-
-          console.log(employeeData);
 
           // Binding dữ liệu vào form
           this.formData = {
@@ -969,12 +1022,22 @@ export default {
      * Description: Hàm xử cập nhật thành viên gia đình
      * Author: txphuc (26/08/2023)
      */
-    handleUpdateRelationship() {
+    async handleUpdateRelationship() {
       try {
         if (this.employeeRelationshipStore.mode === enums.form.mode.UPDATE) {
           const data = this.generateData();
 
-          this.$store.dispatch("employeeRelationshipStore/updateRelationship", data);
+          if (this.callApi) {
+            // data.EmployeeID = this.parentId;
+            // await employeeRelationshipApi.update(data);
+            // // Hiện toast message thành công
+            // this.$store.dispatch("toastStore/pushSuccessMessage", {
+            //   message: "Sửa thông tin gia đình thành công",
+            // });
+            // this.$emit("submit");
+          } else {
+            this.$store.dispatch("employeeRelationshipStore/updateRelationship", data);
+          }
 
           return true;
         }

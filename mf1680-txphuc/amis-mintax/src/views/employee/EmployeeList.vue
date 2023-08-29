@@ -571,7 +571,7 @@ export default {
       try {
         const deleteIds = this.selectedRowsData?.map((row) => row.EmployeeID);
 
-        await employeeApi.delete(deleteIds);
+        await employeeApi.deleteMultiple(deleteIds);
 
         // Ẩn dialog xác nhận xoá và bỏ chọn tất cả
         this.hideConfirmDialog();
@@ -600,7 +600,7 @@ export default {
      */
     async deleteActiveEmployee() {
       try {
-        await employeeApi.deleteById(this.activeRowState.EmployeeID);
+        await employeeApi.delete(this.activeRowState.EmployeeID);
 
         // Ẩn dialog xác nhận xoá
         this.hideConfirmDialog();

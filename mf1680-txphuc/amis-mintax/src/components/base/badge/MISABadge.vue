@@ -41,5 +41,10 @@ export default {
     background: var(--gray-100);
     color: var(--primary-text-color);
   }
+
+  &.--danger-color {
+    background: #f9c7c7;
+    color: #e61d1d;
+  }
 }
 </style>

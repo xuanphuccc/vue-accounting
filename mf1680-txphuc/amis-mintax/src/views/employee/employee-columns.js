@@ -1,6 +1,6 @@
 import enums from "@/enum/enum";
 import { formatDate } from "devextreme/localization";
-import { getPosition, getRelationship } from "@/api/mock-data";
+import { getRelationship } from "@/api/mock-data";
 
 export const employeeColumns = [
   {
@@ -14,7 +14,7 @@ export const employeeColumns = [
   },
   {
     dataField: "FullName",
-    caption: "Tên nhân viên",
+    caption: "Họ và tên",
     dataType: "string",
     alignment: "left",
     fixed: true,
@@ -31,12 +31,10 @@ export const employeeColumns = [
     visible: true,
   },
   {
-    dataField: "Gender",
+    dataField: "GenderName",
     caption: "Giới tính",
     dataType: "string",
     alignment: "left",
-    customizeText: (e) =>
-      e.value === enums.gender.male ? "Nam" : e.value === enums.gender.female ? "Nữ" : "Khác",
     width: 180,
     visible: true,
   },
@@ -58,9 +56,8 @@ export const employeeColumns = [
     visible: true,
   },
   {
-    dataField: "JobPositionId",
+    dataField: "JobPositionName",
     caption: "Vị trí/Chức vụ",
-    customizeText: (e) => getPosition(e.value)?.label,
     dataType: "string",
     alignment: "left",
     width: 180,
@@ -68,7 +65,7 @@ export const employeeColumns = [
   },
 
   {
-    dataField: "OrganizationUnitId",
+    dataField: "OrganizationUnitName",
     caption: "Bộ phận/Phòng ban",
     dataType: "string",
     alignment: "left",
@@ -77,15 +74,9 @@ export const employeeColumns = [
   },
 
   {
-    dataField: "ContractMintaxType",
+    dataField: "ContractMintaxTypeName",
     caption: "Loại hợp đồng",
     dataType: "string",
-    customizeText: (e) =>
-      e.value == enums.contractType.nonResident
-        ? "Không cư trú"
-        : e.value == enums.contractType.residenceWithContract
-        ? "Cư trú và có HĐLD từ 3 tháng trở lên"
-        : "Cư trú và không đăng ký HĐLĐ/HĐLĐ dưới 3 tháng",
     alignment: "left",
     width: 180,
     visible: true,
@@ -96,16 +87,16 @@ export const employeeColumns = [
     caption: "Ngày học việc",
     dataType: "string",
     customizeText: (e) => (e.value ? formatDate(new Date(e.value), "dd/MM/yyyy") : ""),
-    alignment: "left",
+    alignment: "center",
     width: 180,
     visible: true,
   },
   {
     dataField: "HireDate",
     caption: "Ngày thử việc",
-    dataType: "string",
+    dataType: "center",
     customizeText: (e) => (e.value ? formatDate(new Date(e.value), "dd/MM/yyyy") : ""),
-    alignment: "left",
+    alignment: "center",
     width: 180,
     visible: true,
   },
@@ -115,7 +106,7 @@ export const employeeColumns = [
     caption: "Ngày chính thức",
     dataType: "date",
     customizeText: (e) => (e.value ? formatDate(new Date(e.value), "dd/MM/yyyy") : ""),
-    alignment: "left",
+    alignment: "center",
     width: 180,
     visible: true,
   },
@@ -124,7 +115,7 @@ export const employeeColumns = [
     caption: "Ngày nghỉ việc",
     dataType: "date",
     customizeText: (e) => (e.value ? formatDate(new Date(e.value), "dd/MM/yyyy") : ""),
-    alignment: "left",
+    alignment: "center",
     width: 180,
     visible: true,
   },
@@ -150,7 +141,7 @@ export const employeeColumns = [
     dataType: "string",
     customizeText: (e) =>
       e.value == enums.workStatus.currentlyEmployed ? "Đang làm việc" : "Đã nghỉ việc",
-    alignment: "left",
+    alignment: "center",
     width: 180,
     visible: true,
   },

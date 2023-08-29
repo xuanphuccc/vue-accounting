@@ -32,26 +32,6 @@ const employeeApi = {
   },
 
   /**
-   * Description: Xoá danh sách nhân viên theo Id
-   * Author: txphuc (27/07/2023)
-   */
-  delete(data) {
-    const url = `${rootUrl}`;
-    return axiosClient.delete(url, {
-      data: data,
-    });
-  },
-
-  /**
-   * Description: Xoá nhân viên theo Id
-   * Author: txphuc (27/07/2023)
-   */
-  deleteById(id) {
-    const url = `${rootUrl}/${id}`;
-    return axiosClient.delete(url);
-  },
-
-  /**
    * Description: Lấy mã nhân viên mới
    * Author: txphuc (27/07/2023)
    */
@@ -73,18 +53,47 @@ const employeeApi = {
    * Description: Tạo một nhân viên mới
    * Author: txphuc (27/07/2023)
    */
-  create(data) {
+  create(employee) {
     const url = rootUrl;
-    return axiosClient.post(url, data);
+    return axiosClient.post(url, employee);
   },
 
   /**
    * Description: Cập nhật một nhân viên theo Id
    * Author: txphuc (27/07/2023)
    */
-  update(id, data) {
-    const url = `${rootUrl}/${id}`;
-    return axiosClient.put(url, data);
+  update(employeeId, employee) {
+    const url = `${rootUrl}/${employeeId}`;
+    return axiosClient.put(url, employee);
+  },
+
+  /**
+   * Description: Cập nhật danh sách nhân viên theo Id
+   * Author: txphuc (29/08/2023)
+   */
+  updateMultiple(employees) {
+    const url = `${rootUrl}`;
+    return axiosClient.put(url, employees);
+  },
+
+  /**
+   * Description: Xoá danh sách nhân viên theo Id
+   * Author: txphuc (27/07/2023)
+   */
+  deleteMultiple(employeeIds) {
+    const url = `${rootUrl}`;
+    return axiosClient.delete(url, {
+      data: employeeIds,
+    });
+  },
+
+  /**
+   * Description: Xoá nhân viên theo Id
+   * Author: txphuc (27/07/2023)
+   */
+  delete(employeeId) {
+    const url = `${rootUrl}/${employeeId}`;
+    return axiosClient.delete(url);
   },
 
   /**

@@ -2,7 +2,7 @@
   <div class="page-container">
     <div class="page__header">
       <div class="page__title-wrapper">
-        <h1 class="page__title">Thêm người nộp thuế</h1>
+        <h1 class="page__title">{{ formMode == 0 ? "Thêm" : "Sửa" }} người nộp thuế</h1>
       </div>
 
       <div class="page__header-controls">
@@ -901,6 +901,16 @@ import {
   departments,
   positions,
   workStatuses,
+  getEmployeeType,
+  getGender,
+  getIdentifyType,
+  getCountry,
+  getProvince,
+  getDistrict,
+  getWard,
+  getPosition,
+  getWorkStatus,
+  getContractType,
 } from "@/api/mock-data";
 import { mapState, mapGetters } from "vuex";
 import enums from "@/enum/enum";
@@ -1028,10 +1038,6 @@ export default {
   },
 
   methods: {
-    test(e) {
-      console.log(e);
-    },
-
     /**
      * Description: Hàm xử lý gọi api lấy mã nhân viên mới nhất
      * Author: txphuc (28/06/2023)
@@ -1120,8 +1126,8 @@ export default {
 
           if (result && isContinue) {
             // Reset intpus và reload bảng
-            // await this.resetInputs();
-            // this.$emit("submit");
+            await this.resetInputs();
+
             // Focus vào ô đầu tiên
             // if (employeeCodeRef.value) {
             //   employeeCodeRef.value.focus();
@@ -1146,6 +1152,18 @@ export default {
     },
 
     /**
+     * Description: Reset toàn bộ input về trạng thái ban đầu
+     * Author: txphuc (28/08/2023)
+     */
+    async resetInputs() {
+      if (this.formMode === enums.form.mode.CREATE) {
+        this.formData = { ...defaultFormData };
+
+        await this.getNewEmployeeCode();
+      }
+    },
+
+    /**
      * Description: Xử lý format data trước khi gửi
      * Author: txphuc (17/07/2023)
      */
@@ -1158,6 +1176,25 @@ export default {
         HireDate: formatDate(this.formData.HireDate, "yyyy-MM-dd"),
         ReceiveDate: formatDate(this.formData.ReceiveDate, "yyyy-MM-dd"),
         TerminationDate: formatDate(this.formData.TerminationDate, "yyyy-MM-dd"),
+
+        //
+        EmployeeTypeName: getEmployeeType(this.formData.EmployeeType)?.label,
+        GenderName: getGender(this.formData.Gender)?.label,
+        IdentifyTypeName: getIdentifyType(this.formData.IdentifyType)?.label,
+        IdentifyIssuedPlaceName: getProvince(this.formData.IdentifyIssuedPlaceCode)?.label,
+        NationalName: getCountry(this.formData.NationalCode)?.label,
+        ContractMintaxTypeName: getContractType(this.formData.ContractMintaxType)?.label,
+        NativeCountryName: getCountry(this.formData.NativeCountryCode)?.label,
+        NativeProvinceName: getProvince(this.formData.NativeProvinceCode)?.label,
+        NativeDistrictName: getDistrict(this.formData.NativeDistrictCode)?.label,
+        NativeWardName: getWard(this.formData.NativeWardCode)?.label,
+        CurrentCountryName: getCountry(this.formData.CurrentCountryCode)?.label,
+        CurrentProvinceName: getProvince(this.formData.CurrentProvinceCode)?.label,
+        CurrentDistrictName: getDistrict(this.formData.CurrentDistrictCode)?.label,
+        CurrentWardName: getWard(this.formData.CurrentWardCode)?.label,
+        OrganizationUnitName: "Nhân sự điều hành",
+        JobPositionName: getPosition(this.formData.JobPositionId)?.label,
+        EmployeeStatusName: getWorkStatus(this.formData.EmployeeStatus)?.label,
       };
 
       if (this.formMode === enums.form.mode.CREATE) {

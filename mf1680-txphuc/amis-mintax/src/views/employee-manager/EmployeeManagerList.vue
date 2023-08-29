@@ -28,14 +28,14 @@
     </div>
 
     <div v-if="isOpenCounter" class="counter-block">
-      <div class="counter-block__item --blue">
+      <div @click="filterRequest.usageStatus = null" class="counter-block__item --blue">
         <div class="counter-block__number">{{ usageCount.totalRecords }}</div>
         <div class="counter-block__title">Tổng số lao động</div>
         <div class="counter-block__text">
           Tất cả người nộp thuế có loại đối tượng là Nhân viên và Vãng lai trên AMIS Thuế TNCN
         </div>
       </div>
-      <div class="counter-block__item --green">
+      <div @click="filterRequest.usageStatus = true" class="counter-block__item --green">
         <div class="counter-block__number">{{ usageCount.usedRecords }}</div>
         <div class="counter-block__title">Đang sử dụng dịch vụ</div>
         <div class="counter-block__text">
@@ -43,7 +43,7 @@
           Thuế TNCN
         </div>
       </div>
-      <div class="counter-block__item --red">
+      <div @click="filterRequest.usageStatus = false" class="counter-block__item --red">
         <div class="counter-block__number">{{ usageCount.unusedRecords }}</div>
         <div class="counter-block__title">Không sử dụng dịch vụ</div>
         <div class="counter-block__text">
@@ -72,7 +72,7 @@
           </div>
           <div class="selection-controls">
             <div class="controls__group">
-              <MISAButton color="secondary">
+              <MISAButton @click="updateUsageStatus(true)" color="secondary">
                 Sử dụng
                 <template slot="icon">
                   <MISAIcon color="#50b83c" size="20" icon="plus" />
@@ -81,7 +81,7 @@
             </div>
 
             <div class="controls__group">
-              <MISAButton color="secondary">
+              <MISAButton @click="updateUsageStatus(false)" color="secondary">
                 Ngừng sử dụng
                 <template slot="icon">
                   <MISAIcon color="#eb3333" size="20" icon="circle-slash" />
@@ -94,13 +94,22 @@
         <div v-if="selectedRowsData.length === 0" class="filter-container">
           <div class="filter__left">
             <div class="controls__group">
-              <MISATextBox placeholder="Tìm theo Mã/Tên nhân viên">
+              <MISATextBox @enter-key="applySearch" placeholder="Tìm theo Mã/Tên nhân viên">
                 <MISAIcon size="20" icon="search" />
               </MISATextBox>
 
               <MISATreeView placeholder="Bộ phận/phòng ban" />
 
-              <MISASelectBox placeholder="Trạng thái sử dụng" />
+              <MISASelectBox
+                v-model="filterRequest.usageStatus"
+                :dataSource="[
+                  { value: true, label: 'Đang sử dụng' },
+                  { value: false, label: 'Không sử dụng' },
+                ]"
+                displayExpr="label"
+                valueExpr="value"
+                placeholder="Trạng thái sử dụng"
+              />
             </div>
           </div>
 
@@ -126,8 +135,21 @@
         keyExpr="EmployeeID"
         :action-column-enabled="false"
         ref="tableRef"
-      ></MISATable>
-      <MISATableFooter />
+      >
+        <template #UsageStatus="data">
+          <MISABadge :text="data.text" :color="data.value ? 'success' : 'danger'" />
+        </template>
+      </MISATable>
+
+      <MISATableFooter
+        @next-page="onNextPage"
+        @prev-page="onPrevPage"
+        @select-page-size="onPageSizeChange"
+        :currentPage="filterRequest.page"
+        :pageSize="filterRequest.pageSize"
+        :totalRecords="pagingInfo.totalRecords"
+        :totalPages="pagingInfo.totalPages"
+      />
 
       <!-- Tuỳ chỉnh cột -->
       <MISATableCustomize
@@ -151,10 +173,24 @@ import MISATableCustomize from "@/components/base/table-customize/MISATableCusto
 import { employeeColumns } from "../employee/employee-columns";
 import MISATreeView from "@/components/base/tree-view/MISATreeView.vue";
 import MISASelectBox from "@/components/base/select-box/MISASelectBox.vue";
+import MISABadge from "@/components/base/badge/MISABadge.vue";
 import employeeApi from "@/api/employee-api";
 
+const defaultCols = [
+  ...employeeColumns,
+  {
+    dataField: "UsageStatus",
+    caption: "Trạng thái sử dụng dịch vụ",
+    dataType: "string",
+    customizeText: (e) => (e.value ? "Đang sử dụng" : "Ngừng sử dụng"),
+    alignment: "center",
+    width: 220,
+    visible: true,
+  },
+];
+
 export default {
-  name: "EmployeeList",
+  name: "EmployeeManagerList",
   components: {
     MISAIcon,
     MISAButton,
@@ -164,15 +200,16 @@ export default {
     MISATable,
     MISATableFooter,
     MISATableCustomize,
+    MISABadge,
   },
   data: function () {
     return {
       dataSource: [],
 
-      defaultColumns: [...employeeColumns],
+      defaultColumns: [...defaultCols],
 
       // Loại bỏ tham chiếu tránh thay đổi mảng gốc
-      tableColumns: employeeColumns.map((col) => ({ ...col })),
+      tableColumns: defaultCols.map((col) => ({ ...col })),
 
       isOpenCounter: true,
 
@@ -184,6 +221,7 @@ export default {
         page: 1,
         pageSize: 15,
         search: null,
+        usageStatus: null,
         sortColumn: null,
         sortOrder: null,
       },
@@ -204,6 +242,20 @@ export default {
       isOpenTableCustomize: false,
     };
   },
+
+  watch: {
+    /**
+     * Description: Gọi lại data khi filter thay đổi
+     * Author: txphuc (22/08/2023)
+     */
+    filterRequest: {
+      handler: function () {
+        this.getEmployeesData();
+      },
+      deep: true,
+    },
+  },
+
   methods: {
     /**
      * Description: Lấy các hàng được chọn
@@ -262,6 +314,45 @@ export default {
       this.tableColumns = columns;
     },
 
+    // --- Phân trang ---
+    /**
+     * Description: Xử lý sang trang tiếp theo
+     * Author: txphuc (22/08/2023)
+     */
+    onNextPage(page) {
+      this.filterRequest.page = page;
+    },
+
+    /**
+     * Description: Xử lý sang trang trước đó
+     * Author: txphuc (22/08/2023)
+     */
+    onPrevPage(page) {
+      this.filterRequest.page = page;
+    },
+
+    /**
+     * Description: Xử lý thay đổi page size
+     * Author: txphuc (22/08/2023)
+     */
+    onPageSizeChange(pageSize) {
+      this.filterRequest.pageSize = pageSize;
+
+      // Về trang đầu khi đổi page size
+      this.filterRequest.page = 1;
+    },
+
+    /**
+     * Description: Apply search để bắt đầu tìm kiếm
+     * Author: txphuc (22/08/2023)
+     */
+    applySearch(e) {
+      this.filterRequest.search = e.event?.target?.value;
+
+      // Về trang đầu khi tìm kiếm
+      this.filterRequest.page = 1;
+    },
+
     /**
      * Description: Hàm load dữ liệu danh sách nhân viên từ api
      * Author: txphuc (27/06/2023)
@@ -315,6 +406,38 @@ export default {
           usedRecords,
           unusedRecords: totalRecords - usedRecords,
         };
+      } catch (error) {
+        console.warn(error);
+      }
+    },
+
+    /**
+     * Description: Cập nhật trạng thái sử dụng hàng loạt
+     * Author: txphuc (29/08/2023)
+     */
+    async updateUsageStatus(usageStatus) {
+      try {
+        // Loading
+        this.$store.dispatch("commonStore/setLoading", true);
+
+        // Deep clone loại bỏ tham chiếu (tránh thay đổi dữ liệu hiển thị trên bảng)
+        const selectedEmployees = JSON.parse(JSON.stringify(this.selectedRowsData));
+
+        // Chuyển trạng thái sử dụng của các bản ghi
+        const newEmployees = selectedEmployees.map((employee) => {
+          employee.UsageStatus = usageStatus;
+
+          return employee;
+        });
+
+        // Gọi API cập nhật hàng loạt
+        await employeeApi.updateMultiple(newEmployees);
+
+        // Load lại dữ liệu
+        await this.getEmployeesData();
+
+        // Tắt loading
+        this.$store.dispatch("commonStore/setLoading", false);
       } catch (error) {
         console.warn(error);
       }

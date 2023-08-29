@@ -212,6 +212,18 @@ export const workStatuses = [
   },
 ];
 
+// Trạng thái làm việc
+export const genders = [
+  {
+    value: 0,
+    label: "Nam",
+  },
+  {
+    value: 1,
+    label: "Nữ",
+  },
+];
+
 /**
  * Description: Tìm thông tin quốc gia
  * Author: txphuc (23/08/2023)
@@ -266,4 +278,44 @@ export const getDepartment = (code) => {
  */
 export const getPosition = (code) => {
   return positions.find((po) => po.value == code);
+};
+
+/**
+ * Description: Tìm loại đối tượng
+ * Author: txphuc (29/08/2023)
+ */
+export const getEmployeeType = (code) => {
+  return employeeTypes.find((em) => em.value == code);
+};
+
+/**
+ * Description: Tìm giới tính
+ * Author: txphuc (29/08/2023)
+ */
+export const getGender = (code) => {
+  return genders.find((em) => em.value == code);
+};
+
+/**
+ * Description: Tìm loại giấy tờ
+ * Author: txphuc (29/08/2023)
+ */
+export const getIdentifyType = (code) => {
+  return identifyTypes.find((em) => em.value == code);
+};
+
+/**
+ * Description: Tìm trạng thái làm việc
+ * Author: txphuc (29/08/2023)
+ */
+export const getWorkStatus = (code) => {
+  return workStatuses.find((em) => em.value == code);
+};
+
+/**
+ * Description: Tìm loại hợp đồng
+ * Author: txphuc (29/08/2023)
+ */
+export const getContractType = (code) => {
+  return contractTypes.find((em) => em.value == code);
 };

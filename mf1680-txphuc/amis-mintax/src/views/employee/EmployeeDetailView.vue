@@ -550,7 +550,10 @@
           <!-- ----- THÔNG TIN GIA ĐÌNH ----- -->
           <div ref="familyInfo" class="d-flex align-center justify-content-between mt-44 pb-24">
             <div class="form-content__header">Thông tin gia đình</div>
-            <MISAButton type="outline" color="primary"
+            <MISAButton
+              @click="$store.dispatch('employeeRelationshipStore/openFormForCreate')"
+              type="outline"
+              color="primary"
               >Thêm
               <template #icon>
                 <MISAIcon :size="20" icon="plus" />
@@ -559,7 +562,12 @@
           </div>
 
           <!-- Form thông tin gia đình -->
-          <EmployeeFamilyDetail v-if="employeeRelationshipStore.active" />
+          <EmployeeFamilyDetail
+            @submit="getEmployeeData"
+            :parentId="employeeData?.EmployeeID"
+            :callApi="true"
+            v-if="employeeRelationshipStore.active"
+          />
 
           <!-- Bảng thông tin gia đình -->
           <MISATable
@@ -597,16 +605,8 @@ import MISACol from "@/components/base/grid/MISACol.vue";
 import DxRadioGroup from "devextreme-vue/radio-group";
 import EmployeeFamilyDetail from "./EmployeeFamilyDetail.vue";
 import employeeApi from "@/api/employee-api";
-import enums from "@/enum/enum";
+import employeeRelationshipApi from "@/api/employee-relationship-api";
 import { formatDate } from "devextreme/localization";
-import {
-  getCountry,
-  getDepartment,
-  getDistrict,
-  getPosition,
-  getProvince,
-  getWard,
-} from "@/api/mock-data";
 import { employeeRelationshipColumns } from "./employee-columns";
 import { mapState, mapGetters } from "vuex";
 
@@ -649,83 +649,13 @@ export default {
     employeeFormated() {
       const data = { ...this.employeeData };
 
-      // Loại đối tượng
-      data.EmployeeTypeName =
-        data.EmployeeType == enums.employeeType.employee
-          ? this.$t("page.employee.employeeType.employee")
-          : this.$t("page.employee.employeeType.client");
-
       // Ngày sinh
       data.DateOfBirthFormated =
         data.DateOfBirth && formatDate(new Date(data.DateOfBirth), "dd/MM/yyyy");
 
-      // Loại giấy tờ
-      data.IdentifyTypeName =
-        data.IdentifyType == enums.identifyType.nationalIdentityCard
-          ? this.$t("identifyType.nationalIdentityCard")
-          : enums.identifyType.citizenCard
-          ? this.$t("identifyType.citizenCard")
-          : this.$t("identifyType.passport");
-
       // Ngày cấp
       data.IdentifyDateFormated =
         data.IdentifyDate && formatDate(new Date(data.IdentifyDate), "dd/MM/yyyy");
-
-      // Nơi cấp
-      data.IdentifyIssuedPlaceName = getProvince(data.IdentifyIssuedPlaceCode)?.label;
-
-      // Quốc tịch
-      data.NationalName = getCountry(data.NationalCode)?.label;
-
-      // Loại hợp đồng
-      data.ContractMintaxTypeName =
-        data.ContractMintaxType == enums.contractType.nonResident
-          ? this.$t("contractType.nonResident")
-          : data.ContractMintaxType == enums.contractType.residenceWithContract
-          ? this.$t("contractType.residenceWithContract")
-          : this.$t("contractType.residenceWithoutContract");
-
-      // HỘ KHẨU THƯỜNG TRÚ
-      // Quóc gia
-      data.NativeCountryName = getCountry(data.NativeCountryCode)?.label;
-
-      // Tỉnh thành phố
-      data.NativeProvinceName = getProvince(data.NativeProvinceCode)?.label;
-
-      // Quận/huyện
-      data.NativeDistrictName = getDistrict(data.NativeDistrictCode)?.label;
-
-      // Xã/phường
-      data.NativeWardName = getWard(data.NativeWardCode)?.label;
-
-      // CHỖ Ở HIỆN NAY
-      // Quóc gia
-      data.CurrentCountryName = getCountry(data.CurrentCountryCode)?.label;
-
-      // Tỉnh thành phố
-      data.CurrentProvinceName = getProvince(data.CurrentProvinceCode)?.label;
-
-      // Quận/huyện
-      data.CurrentDistrictName = getDistrict(data.CurrentDistrictCode)?.label;
-
-      // Xã/phường
-      data.CurrentWardName = getWard(data.CurrentWardCode)?.label;
-
-      // THÔNG TIN CÔNG VIỆC
-      // Bộ phận/phòng ban
-      data.OrganizationUnitName = getDepartment(data.OrganizationUnitId)?.label;
-
-      // Vị trí công việc
-      data.JobPositionName = getPosition(data.JobPositionId)?.label;
-
-      // Chức danh
-      data.JobTitleName = null;
-
-      // Trạng thái làm việc
-      data.EmployeeStatusName =
-        data.EmployeeStatus == enums.workStatus.currentlyEmployed
-          ? this.$t("page.employee.workStatus.currentlyEmployed")
-          : this.$t("page.employee.workStatus.formerlyEmployed");
 
       // Ngày học việc
       data.ProbationDateFormated =
@@ -807,7 +737,7 @@ export default {
           // Loading
           this.$store.dispatch("commonStore/setLoading", true);
 
-          await employeeApi.deleteById(this.employeeData.EmployeeID);
+          await employeeApi.delete(this.employeeData.EmployeeID);
 
           // Ẩn dialog xác nhận xoá
           this.hideConfirmDialog();
@@ -867,8 +797,7 @@ export default {
      * Author: txphuc (24/08/2023)
      */
     onClickEditRow(row) {
-      console.log(row);
-      // this.$store.dispatch("employeeRelationshipStore/openFormForUpdate", row.data);
+      this.$store.dispatch("employeeRelationshipStore/openFormForUpdate", row.data);
     },
 
     /**
@@ -910,10 +839,19 @@ export default {
     async deleteActiveRelationship() {
       try {
         const key = this.activeRowState.EmployeeRelationshipID;
-        this.$store.dispatch("employeeRelationshipStore/removeRelationship", key);
+
+        await employeeRelationshipApi.delete(key);
 
         // Ẩn dialog xác nhận xoá
         this.hideRelationshipConfirmDialog();
+
+        // Load lại dữ liệu
+        await this.getEmployeeData();
+
+        // Hiện toast message xoá thành công
+        this.$store.dispatch("toastStore/pushSuccessMessage", {
+          message: "Xoá thông tin gia đình thành công",
+        });
       } catch (error) {
         console.warn(error);
 
@@ -929,6 +867,9 @@ export default {
    */
   created: function () {
     this.getEmployeeData();
+
+    // Xoá dữ liệu cũ khi mở form
+    this.$store.dispatch("employeeRelationshipStore/setRelationships", []);
   },
 };
 </script>
