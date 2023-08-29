@@ -56,6 +56,7 @@ builder.Services.AddScoped<IEmployeeExcelService, EmployeeExcelService>();
 builder.Services.AddScoped<IEmployeeManager, EmployeeManager>();
 
 builder.Services.AddScoped<IEmployeeRelationshipRepository, EmployeeRelationshipRepository>();
+builder.Services.AddScoped<IEmployeeRelationshipService, EmployeeRelationshipService>();
 
 //Localization config
 builder.Services.AddLocalization();

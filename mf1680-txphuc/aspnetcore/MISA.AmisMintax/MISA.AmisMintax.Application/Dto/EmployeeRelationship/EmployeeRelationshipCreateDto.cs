@@ -12,6 +12,12 @@ namespace MISA.AmisMintax.Application
     public class EmployeeRelationshipCreateDto
     {
         /// <summary>
+        /// Khoá ngoại liên kết bảng Employee
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        public Guid? EmployeeID { get; set; }
+
+        /// <summary>
         /// Họ tên thành viên
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)

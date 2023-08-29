@@ -15,7 +15,8 @@ namespace MISA.AmisMintax.Application
         private readonly IEmployeeManager _employeeManager;
         private readonly IEmployeeRelationshipRepository _employeeRelationshipRepository;
 
-        public EmployeeService(IEmployeeRepository employeeRepository, IEmployeeManager employeeManager, IEmployeeRelationshipRepository employeeRelationshipRepository, IUnitOfWork unitOfWork, IMapper mapper) : base(employeeRepository, unitOfWork, mapper)
+        public EmployeeService(IEmployeeRepository employeeRepository, IEmployeeManager employeeManager, IEmployeeRelationshipRepository employeeRelationshipRepository, IUnitOfWork unitOfWork, IMapper mapper) 
+            : base(employeeRepository, unitOfWork, mapper)
         {
             _employeeRepository = employeeRepository;
             _employeeManager = employeeManager;

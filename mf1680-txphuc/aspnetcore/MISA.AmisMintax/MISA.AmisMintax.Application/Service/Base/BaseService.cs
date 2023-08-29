@@ -85,6 +85,31 @@ namespace MISA.AmisMintax.Application
         }
 
         /// <summary>
+        /// Cập nhật nhiều đối tượng
+        /// </summary>
+        /// <param name="entityUpdateDtos">Danh sách đối tượng cần update</param>
+        /// <returns>Số bản ghi bị ảnh hưởng</returns>
+        /// CreatedBy: txphuc (29/08/2023)
+        public async Task<int> UpdateMultipleAsync(IEnumerable<TEntityUpdateDto> entityUpdateDtos)
+        {
+            var entities = await MapUpdateMultipleAsync(entityUpdateDtos);
+
+            // Cập nhật ngày, người chỉnh sửa
+            foreach (var entity in entities)
+            {
+                if(entity is BaseAuditEntity baseAuditEntity)
+                {
+                    baseAuditEntity.ModifiedDate = DateTime.Now;
+                    baseAuditEntity.ModifiedBy = "txphuc";
+                }
+            }
+
+            var result = await _baseRepository.UpdateMultipleAsync(entities);
+
+            return result;
+        }
+
+        /// <summary>
         /// Xoá đối tượng theo Id
         /// </summary>
         /// <param name="entityId">Id của đối tượng</param>
@@ -181,6 +206,13 @@ namespace MISA.AmisMintax.Application
         /// <returns>Entity</returns>
         /// CreatedBy: txphuc (18/07/2023)
         protected abstract Task<TEntity> MapUpdateDtoToEntityAsync(Guid entityId, TEntityUpdateDto entityUpdateDto);
+
+        protected virtual Task<IEnumerable<TEntity>> MapUpdateMultipleAsync(IEnumerable<TEntityUpdateDto> entityUpdateDtos)
+        {
+            var entities = _mapper.Map<IEnumerable<TEntity>>(entityUpdateDtos);
+
+            return Task.FromResult(entities);
+        }
 
         /// <summary>
         /// Kiểm tra có bản ghi phụ thuộc hay không (cho trường hợp xoá nhiều)

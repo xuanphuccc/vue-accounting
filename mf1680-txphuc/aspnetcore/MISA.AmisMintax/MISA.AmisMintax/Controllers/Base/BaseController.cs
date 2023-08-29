@@ -43,6 +43,14 @@ namespace MISA.AmisMintax
             return Ok(result);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateMultipleAsync([FromBody] List<TEntityUpdateDto> entityUpdateDtos)
+        {
+            var result = await _baseService.UpdateMultipleAsync(entityUpdateDtos);
+
+            return Ok(result);
+        }
+
         /// <summary>
         /// Xoá một đối tượng theo Id
         /// </summary>
@@ -64,7 +72,7 @@ namespace MISA.AmisMintax
         /// <returns>Trả về số bản ghi bị ảnh hưởng</returns>
         /// CreatedBy: txphuc (18/07/2023)
         [HttpDelete]
-        public async Task<IActionResult> DeleteAsync([FromBody] List<Guid> entityIds)
+        public async Task<IActionResult> DeleteMultipleAsync([FromBody] List<Guid> entityIds)
         {
             var result = await _baseService.DeleteMultipleAsync(entityIds);
 

@@ -12,6 +12,13 @@ namespace MISA.AmisMintax.Application
     public class EmployeeUpdateDto
     {
         /// <summary>
+        /// Khoá chính
+        /// </summary>
+        /// CreatedBy: txphuc (19/08/2023)
+        [Required]
+        public Guid EmployeeID { get; set; }
+
+        /// <summary>
         /// Mã Loại đối tượng
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)

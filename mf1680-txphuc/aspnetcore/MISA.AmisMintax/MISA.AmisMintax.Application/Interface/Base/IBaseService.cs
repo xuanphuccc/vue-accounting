@@ -25,6 +25,14 @@ namespace MISA.AmisMintax.Application
         Task<int> UpdateAsync(Guid entityId, TEntityUpdateDto entityUpdateDto);
 
         /// <summary>
+        /// Cập nhật nhiều đối tượng
+        /// </summary>
+        /// <param name="entityUpdateDtos">Danh sách đối tượng cần update</param>
+        /// <returns>Số bản ghi bị ảnh hưởng</returns>
+        /// CreatedBy: txphuc (29/08/2023)
+        Task<int> UpdateMultipleAsync(IEnumerable<TEntityUpdateDto> entityUpdateDtos);
+
+        /// <summary>
         /// Xoá đối tượng theo Id
         /// </summary>
         /// <param name="entityId">Id của đối tượng</param>
