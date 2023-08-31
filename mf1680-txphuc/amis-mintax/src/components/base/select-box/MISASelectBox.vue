@@ -73,7 +73,7 @@ export default {
 
     // Giá trị được chọn
     value: {
-      type: [String, Number],
+      type: [String, Number, Boolean],
     },
 
     // Gợi ý

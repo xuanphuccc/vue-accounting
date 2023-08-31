@@ -12,7 +12,7 @@
 
     <!-- dialog thông báo lỗi -->
     <MISADialog
-      @cancel="$store.dispatch('dialogStore/closeDialog')"
+      @cancel="onCloseDialog"
       @ok="$store.dispatch('dialogStore/closeDialog')"
       v-if="dialogStore.active"
       :type="dialogStore.type"
@@ -69,6 +69,18 @@ export default {
         this.$store.dispatch(`dialogStore/${action}`);
       } else if (typeof action === "function") {
         action();
+      }
+    },
+
+    /**
+     * Description: Xử lý sự kiện đóng dialog
+     * Author: txphuc (31/08/2023)
+     */
+    onCloseDialog() {
+      if (typeof this.dialogStore.cancelHandler == "function") {
+        this.dialogStore.cancelHandler();
+      } else {
+        this.$store.dispatch("dialogStore/closeDialog");
       }
     },
   },

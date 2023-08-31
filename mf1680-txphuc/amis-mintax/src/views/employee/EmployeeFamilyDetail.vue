@@ -356,7 +356,7 @@
                 <MISACol :span="8">
                   <MISASelectBox
                     v-model="formData.DistrictCode"
-                    :dataSource="districts"
+                    :dataSource="getDistrictsOfProvince(formData.ProvinceCode)"
                     displayExpr="label"
                     valueExpr="value"
                     :searchEnabled="true"
@@ -377,7 +377,7 @@
                 <MISACol :span="8">
                   <MISASelectBox
                     v-model="formData.WardCode"
-                    :dataSource="wards"
+                    :dataSource="getWardsOfDistrict(formData.DistrictCode)"
                     displayExpr="label"
                     valueExpr="value"
                     :searchEnabled="true"
@@ -431,7 +431,9 @@
                 <MISACol :span="8">
                   <MISASelectBox
                     v-model="formData.FamilyPermanentAddressDistrictCode"
-                    :dataSource="districts"
+                    :dataSource="
+                      getDistrictsOfProvince(formData.FamilyPermanentAddressProvinceCode)
+                    "
                     displayExpr="label"
                     valueExpr="value"
                     :searchEnabled="true"
@@ -455,7 +457,7 @@
                 <MISACol :span="8">
                   <MISASelectBox
                     v-model="formData.FamilyPermanentAddressWardCode"
-                    :dataSource="wards"
+                    :dataSource="getWardsOfDistrict(formData.FamilyPermanentAddressDistrictCode)"
                     displayExpr="label"
                     valueExpr="value"
                     :searchEnabled="true"
@@ -529,7 +531,7 @@
                 <MISACol :span="8">
                   <MISASelectBox
                     v-model="formData.FamilyCurrentDistrictCode"
-                    :dataSource="districts"
+                    :dataSource="getDistrictsOfProvince(formData.FamilyCurrentProvinceCode)"
                     displayExpr="label"
                     valueExpr="value"
                     :searchEnabled="true"
@@ -553,7 +555,7 @@
                 <MISACol :span="8">
                   <MISASelectBox
                     v-model="formData.FamilyCurrentWardCode"
-                    :dataSource="wards"
+                    :dataSource="getWardsOfDistrict(formData.FamilyCurrentDistrictCode)"
                     displayExpr="label"
                     valueExpr="value"
                     :searchEnabled="true"
@@ -707,8 +709,6 @@ import {
   relationships,
   countries,
   provinces,
-  districts,
-  wards,
   identifyTypes,
   getRelationship,
   getGender,
@@ -716,7 +716,9 @@ import {
   getCountry,
   getProvince,
   getDistrict,
+  getDistrictsOfProvince,
   getWard,
+  getWardsOfDistrict,
 } from "@/api/mock-data";
 import { formatDate } from "devextreme/localization";
 import employeeRelationshipApi from "@/api/employee-relationship-api";
@@ -787,8 +789,6 @@ export default {
       relationships,
       countries,
       provinces,
-      districts,
-      wards,
       identifyTypes,
 
       // Dữ liệu của form
@@ -827,9 +827,43 @@ export default {
       },
       deep: true,
     },
+
+    /**
+     * Description: Reset quận/huyện và xã/phường khi tỉnh/TP thay đổi
+     * Author: txphuc (31/08/2023)
+     */
+    "formData.ProvinceCode": function () {
+      this.formData.DistrictCode = null;
+      this.formData.WardCode = null;
+    },
+    "formData.FamilyPermanentAddressProvinceCode": function () {
+      this.formData.FamilyPermanentAddressDistrictCode = null;
+      this.formData.FamilyPermanentAddressWardCode = null;
+    },
+    "formData.FamilyCurrentProvinceCode": function () {
+      this.formData.FamilyCurrentDistrictCode = null;
+      this.formData.FamilyCurrentWardCode = null;
+    },
+
+    /**
+     * Description: Reset xã/phường khi quận/huyện thay đổi
+     * Author: txphuc (31/08/2023)
+     */
+    "formData.DistrictCode": function () {
+      this.formData.WardCode = null;
+    },
+    "formData.FamilyPermanentAddressDistrictCode": function () {
+      this.formData.FamilyPermanentAddressWardCode = null;
+    },
+    "formData.FamilyCurrentDistrictCode": function () {
+      this.formData.FamilyCurrentWardCode = null;
+    },
   },
 
   methods: {
+    getDistrictsOfProvince,
+    getWardsOfDistrict,
+
     /**
      * Description: Xử lý sự kiện thoát form
      * Author: txphuc (25/08/2023)
@@ -1028,13 +1062,13 @@ export default {
           const data = this.generateData();
 
           if (this.callApi) {
-            // data.EmployeeID = this.parentId;
-            // await employeeRelationshipApi.update(data);
-            // // Hiện toast message thành công
-            // this.$store.dispatch("toastStore/pushSuccessMessage", {
-            //   message: "Sửa thông tin gia đình thành công",
-            // });
-            // this.$emit("submit");
+            await employeeRelationshipApi.update(data.EmployeeRelationshipID, data);
+
+            // Hiện toast message thành công
+            this.$store.dispatch("toastStore/pushSuccessMessage", {
+              message: "Sửa thông tin gia đình thành công",
+            });
+            this.$emit("submit");
           } else {
             this.$store.dispatch("employeeRelationshipStore/updateRelationship", data);
           }

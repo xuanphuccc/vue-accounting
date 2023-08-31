@@ -2,7 +2,7 @@ import { extend } from "vee-validate";
 import { required, email } from "vee-validate/dist/rules";
 // import { setInteractionMode } from "vee-validate";
 
-// setInteractionMode("aggressive");
+// setInteractionMode("lazy");
 
 // extend("even", {
 //   validate: (value) => {

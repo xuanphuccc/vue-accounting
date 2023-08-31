@@ -72,7 +72,7 @@
               <MISAButton
                 @click="
                   showDeleteConfirmDialog(
-                    'Bạn có chắc chắn muốn xoá <b>(2)</b> người nộp thuế vào Thùng rác?'
+                    `Bạn có chắc chắn muốn xoá <b>${selectedRowsData.length}</b> người nộp thuế vào Thùng rác?`
                   )
                 "
                 color="secondary"
@@ -90,7 +90,10 @@
         <div v-if="selectedRowsData?.length === 0" class="filter-container">
           <div class="filter__left">
             <div class="controls__group">
-              <MISATextBox @enter-key="applySearch" placeholder="Tìm theo Mã/Tên nhân viên">
+              <MISATextBox
+                @enter-key="applySearch"
+                placeholder="Tìm theo Mã/Tên nhân viên, MST, CMND"
+              >
                 <MISAIcon size="20" icon="search" />
               </MISATextBox>
 
@@ -113,13 +116,7 @@
 
           <div class="filter__right">
             <MISAButtonGroup>
-              <MISAButton
-                @click="
-                  $router.push({
-                    name: 'employee-detail',
-                  })
-                "
-              >
+              <MISAButton @click="openFormForCreate">
                 Thêm mới
                 <template slot="icon">
                   <MISAIcon size="20" icon="plus" />
@@ -214,6 +211,7 @@ import MISABadge from "@/components/base/badge/MISABadge.vue";
 import { employeeFilterGroups } from "./employee-filter";
 import { formatDate } from "devextreme/localization";
 import { mapState } from "vuex";
+import enums from "@/enum/enum";
 
 const defaultFilter = {
   WorkStatus: null,
@@ -491,28 +489,6 @@ export default {
     },
 
     /**
-     * Description: Hiện dialog xác nhận xoá
-     * Author: txphuc (24/06/2023).
-     */
-    showDeleteConfirmDialog(description) {
-      this.$store.dispatch("dialogStore/showDeleteWarning", {
-        title: "Xoá người nộp thuế",
-        description,
-        handler: this.handleDeleteEmployee,
-      });
-    },
-
-    /**
-     * Description: Ẩn dialog xác nhận và bỏ hàng được chọn
-     * Author: txphuc (27/06/2023).
-     */
-    hideConfirmDialog() {
-      this.$store.dispatch("dialogStore/closeDialog");
-      this.clearAllSelection();
-      this.activeRowState = null;
-    },
-
-    /**
      * Description: Hàm load dữ liệu danh sách nhân viên từ api
      * Author: txphuc (27/06/2023)
      */
@@ -543,6 +519,39 @@ export default {
       } catch (error) {
         console.warn(error);
       }
+    },
+
+    /**
+     * Description: Mở form thêm mới nhân viên
+     * Author: txphuc (31/08/2023)
+     */
+    openFormForCreate() {
+      this.$router.push({
+        name: "employee-detail",
+      });
+    },
+
+    /**
+     * Description: Hiện dialog xác nhận xoá
+     * Author: txphuc (24/06/2023).
+     */
+    showDeleteConfirmDialog(description) {
+      this.$store.dispatch("dialogStore/showDeleteWarning", {
+        title: "Xoá người nộp thuế",
+        description,
+        okHandler: this.handleDeleteEmployee,
+        cancelHandler: this.hideConfirmDialog,
+      });
+    },
+
+    /**
+     * Description: Ẩn dialog xác nhận và bỏ hàng được chọn
+     * Author: txphuc (27/06/2023).
+     */
+    hideConfirmDialog() {
+      this.$store.dispatch("dialogStore/closeDialog");
+      this.clearAllSelection();
+      this.activeRowState = null;
     },
 
     /**
@@ -659,6 +668,45 @@ export default {
 
       await this.downloadExcel(employeeIds);
     },
+
+    /**
+     * Description: Xử lý sự kiện bàn phím
+     * Author: txphuc (31/08/2023)
+     */
+    handleKeyboardEvent(e) {
+      try {
+        const keyCode = e.keyCode;
+        const ctrlKey = e.ctrlKey;
+
+        if (ctrlKey) {
+          switch (keyCode) {
+            case enums.key.NUM_1:
+              e.preventDefault();
+
+              // Ctrl + 1: Mở form thêm mới nhân viên
+              this.openFormForCreate();
+
+              break;
+
+            case enums.key.D:
+              // Ctrl + D: Xoá các nhân viên được chọn
+              if (this.selectedRowsData.length > 0) {
+                e.preventDefault();
+
+                this.showDeleteConfirmDialog(
+                  `Bạn có chắc chắn muốn xoá <b>${this.selectedRowsData.length}</b> người nộp thuế vào Thùng rác?`
+                );
+              }
+              break;
+
+            default:
+              break;
+          }
+        }
+      } catch (error) {
+        console.warn(error);
+      }
+    },
   },
 
   /**
@@ -667,6 +715,22 @@ export default {
    */
   created: function () {
     this.getEmployeesData();
+  },
+
+  /**
+   * Description: Gán sự kiện khi component được mounted
+   * Author: txphuc (31/08/2023)
+   */
+  mounted: function () {
+    window.addEventListener("keydown", this.handleKeyboardEvent);
+  },
+
+  /**
+   * Description: Huỷ sự kiện khi component được destroyed
+   * Author: txphuc (31/08/2023)
+   */
+  destroyed: function () {
+    window.removeEventListener("keydown", this.handleKeyboardEvent);
   },
 };
 </script>

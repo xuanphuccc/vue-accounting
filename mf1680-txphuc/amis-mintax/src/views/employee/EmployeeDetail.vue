@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container">
+  <div @keydown.stop="handleKeyboardEvent" class="page-container">
     <div class="page__header">
       <div class="page__title-wrapper">
         <h1 class="page__title">{{ formMode == 0 ? "Thêm" : "Sửa" }} người nộp thuế</h1>
@@ -43,6 +43,7 @@
                           auto-focus
                           placeholder="Chọn loại đối tượng"
                           id="employee-type"
+                          :tabIndex="1"
                         />
                       </MISACol>
                     </MISARow>
@@ -431,7 +432,7 @@
                       <MISACol :span="8">
                         <MISASelectBox
                           v-model="formData.NativeDistrictCode"
-                          :dataSource="districts"
+                          :dataSource="getDistrictsOfProvince(formData.NativeProvinceCode)"
                           displayExpr="label"
                           valueExpr="value"
                           :searchEnabled="true"
@@ -455,7 +456,7 @@
                       <MISACol :span="8">
                         <MISASelectBox
                           v-model="formData.NativeWardCode"
-                          :dataSource="wards"
+                          :dataSource="getWardsOfDistrict(formData.NativeDistrictCode)"
                           displayExpr="label"
                           valueExpr="value"
                           :searchEnabled="true"
@@ -585,7 +586,7 @@
                       <MISACol :span="8">
                         <MISASelectBox
                           v-model="formData.CurrentDistrictCode"
-                          :dataSource="districts"
+                          :dataSource="getDistrictsOfProvince(formData.CurrentProvinceCode)"
                           displayExpr="label"
                           valueExpr="value"
                           :searchEnabled="true"
@@ -615,7 +616,7 @@
                       <MISACol :span="8">
                         <MISASelectBox
                           v-model="formData.CurrentWardCode"
-                          :dataSource="wards"
+                          :dataSource="getWardsOfDistrict(formData.CurrentDistrictCode)"
                           displayExpr="label"
                           valueExpr="value"
                           :searchEnabled="true"
@@ -834,11 +835,7 @@
             <!-- ----- THÔNG TIN GIA ĐÌNH ----- -->
             <div class="d-flex align-center justify-content-between mt-44 pb-24">
               <div class="form-content__header">Thông tin gia đình</div>
-              <MISAButton
-                @click="$store.dispatch('employeeRelationshipStore/openFormForCreate')"
-                type="outline"
-                color="primary"
-              >
+              <MISAButton @click="openFormForCreate" type="outline" color="primary">
                 Thêm
                 <template #icon>
                   <MISAIcon :size="20" icon="plus" />
@@ -895,8 +892,6 @@ import {
   identifyTypes,
   countries,
   provinces,
-  districts,
-  wards,
   contractTypes,
   departments,
   positions,
@@ -907,7 +902,9 @@ import {
   getCountry,
   getProvince,
   getDistrict,
+  getDistrictsOfProvince,
   getWard,
+  getWardsOfDistrict,
   getPosition,
   getWorkStatus,
   getContractType,
@@ -981,8 +978,6 @@ export default {
       identifyTypes,
       countries,
       provinces,
-      districts,
-      wards,
       contractTypes,
       departments,
       positions,
@@ -1035,9 +1030,36 @@ export default {
       },
       deep: true,
     },
+
+    /**
+     * Description: Reset quận/huyện và xã/phường khi tỉnh/TP thay đổi
+     * Author: txphuc (31/08/2023)
+     */
+    "formData.NativeProvinceCode": function () {
+      this.formData.NativeDistrictCode = null;
+      this.formData.NativeWardCode = null;
+    },
+    "formData.CurrentProvinceCode": function () {
+      this.formData.CurrentDistrictCode = null;
+      this.formData.CurrentWardCode = null;
+    },
+
+    /**
+     * Description: Reset xã/phường khi quận/huyện thay đổi
+     * Author: txphuc (31/08/2023)
+     */
+    "formData.NativeDistrictCode": function () {
+      this.formData.NativeWardCode = null;
+    },
+    "formData.CurrentDistrictCode": function () {
+      this.formData.CurrentWardCode = null;
+    },
   },
 
   methods: {
+    getDistrictsOfProvince,
+    getWardsOfDistrict,
+
     /**
      * Description: Hàm xử lý gọi api lấy mã nhân viên mới nhất
      * Author: txphuc (28/06/2023)
@@ -1127,6 +1149,9 @@ export default {
           if (result && isContinue) {
             // Reset intpus và reload bảng
             await this.resetInputs();
+
+            // Đặt lại trạng thái validate
+            this.$refs.formValidation.reset();
 
             // Focus vào ô đầu tiên
             // if (employeeCodeRef.value) {
@@ -1308,6 +1333,14 @@ export default {
     // -------------- Thành viên gia đình --------------
 
     /**
+     * Description: Mở form thêm mới thành viên gia đình
+     * Author: txphuc (24/08/2023)
+     */
+    openFormForCreate() {
+      this.$store.dispatch("employeeRelationshipStore/openFormForCreate");
+    },
+
+    /**
      * Description: Mở form sửa thành viên gia đình
      * Author: txphuc (24/08/2023)
      */
@@ -1334,7 +1367,7 @@ export default {
       this.$store.dispatch("dialogStore/showDeleteWarning", {
         title: "Xoá dữ liệu",
         description,
-        handler: this.deleteActiveRelationship,
+        okHandler: this.deleteActiveRelationship,
       });
     },
 
@@ -1363,6 +1396,33 @@ export default {
 
         // Ẩn dialog xác nhận xoá
         this.hideConfirmDialog();
+      }
+    },
+
+    /**
+     * Description: Xử lý sự kiện bàn phím
+     * Author: txphuc (31/08/2023)
+     */
+    handleKeyboardEvent(e) {
+      try {
+        const keyCode = e.keyCode;
+        const ctrlKey = e.ctrlKey;
+
+        switch (keyCode) {
+          case enums.key.NUM_1:
+            if (ctrlKey) {
+              e.preventDefault();
+
+              // Ctrl + 1: Mở form thêm thành viên gia đình
+              this.openFormForCreate();
+            }
+            break;
+
+          default:
+            break;
+        }
+      } catch (error) {
+        console.warn(error);
       }
     },
   },

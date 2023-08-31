@@ -61,6 +61,7 @@
 
     <div class="page__content">
       <div class="controls-wrapper">
+        <!-- Thông tin các bản ghi được chọn -->
         <div v-if="selectedRowsData.length > 0" class="selection-container">
           <div class="selection-info">
             <span>Đã chọn</span>
@@ -94,7 +95,10 @@
         <div v-if="selectedRowsData.length === 0" class="filter-container">
           <div class="filter__left">
             <div class="controls__group">
-              <MISATextBox @enter-key="applySearch" placeholder="Tìm theo Mã/Tên nhân viên">
+              <MISATextBox
+                @enter-key="applySearch"
+                placeholder="Tìm theo Mã/Tên nhân viên, MST, CMND"
+              >
                 <MISAIcon size="20" icon="search" />
               </MISATextBox>
 
@@ -435,6 +439,10 @@ export default {
 
         // Load lại dữ liệu
         await this.getEmployeesData();
+        await this.getUsageCount();
+
+        // Bỏ chọn tất cả bản ghi
+        this.clearAllSelection();
 
         // Tắt loading
         this.$store.dispatch("commonStore/setLoading", false);

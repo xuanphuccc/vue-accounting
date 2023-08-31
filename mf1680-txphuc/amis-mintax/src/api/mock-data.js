@@ -62,20 +62,189 @@ export const provinces = [
     countryCode: "VN",
     label: "Hồ Chí Minh",
   },
+  {
+    value: "VN03",
+    countryCode: "VN",
+    label: "Cần Thơ",
+  },
+  {
+    value: "VN04",
+    countryCode: "VN",
+    label: "Đà Nẵng",
+  },
+  {
+    value: "VN05",
+    countryCode: "VN",
+    label: "Hải Phòng",
+  },
+  {
+    value: "VN06",
+    countryCode: "VN",
+    label: "An Giang",
+  },
+  {
+    value: "VN07",
+    countryCode: "VN",
+    label: "Bà Rịa - Vũng Tàu",
+  },
+  {
+    value: "VN08",
+    countryCode: "VN",
+    label: "Bắc Giang",
+  },
+  {
+    value: "VN09",
+    countryCode: "VN",
+    label: "Thái Nguyên",
+  },
 ];
 
 // Quận/huyện
 export const districts = [
+  // Các quận của Hà Nội
   {
     value: "VN0101",
-    label: "Cầu Giấy",
+    label: "Quận Ba Đình",
+    provinceCode: "VN01",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0102",
+    label: "Quận Bắc Từ Liêm",
+    provinceCode: "VN01",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0103",
+    label: "Quận Cầu Giấy",
+    provinceCode: "VN01",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0104",
+    label: "Quận Đống Đa",
+    provinceCode: "VN01",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0105",
+    label: "Quận Hà Đông",
+    provinceCode: "VN01",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0106",
+    label: "Quận Hai Bà Trưng",
+    provinceCode: "VN01",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0107",
+    label: "Quận Hoàn Kiếm",
+    provinceCode: "VN01",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0108",
+    label: "Quận Hoàng Mai",
+    provinceCode: "VN01",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0109",
+    label: "Quận Long Biên",
+    provinceCode: "VN01",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0110",
+    label: "Quận Tây Hồ",
+    provinceCode: "VN01",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0111",
+    label: "Quận Thanh Xuân",
     provinceCode: "VN01",
     countryCode: "VN",
   },
 
+  // Các quận của TP Hồ Chí Minh
   {
     value: "VN0201",
+    label: "Thành phố Thủ Đức",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0202",
     label: "Quận 1",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0203",
+    label: "Quận 10",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0204",
+    label: "Quận 11",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0203",
+    label: "Quận 12",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0204",
+    label: "Quận 3",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0205",
+    label: "Quận 4",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0206",
+    label: "Quận 5",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0207",
+    label: "Quận 6",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0208",
+    label: "Quận 7",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0209",
+    label: "Quận 8",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0210",
+    label: "Quận Bình Tân",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0211",
+    label: "Quận Bình Thạnh",
     provinceCode: "VN02",
     countryCode: "VN",
   },
@@ -83,18 +252,125 @@ export const districts = [
 
 // Xã/phường
 export const wards = [
+  // Các phường của quận Cầu Giấy, Hà Nội
   {
     value: "VN0101001",
     label: "Phường Dịch Vọng",
-    districtCode: "VN0101",
+    districtCode: "VN0103",
+    provinceCode: "VN01",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0101002",
+    label: "Phường Dịch Vọng Hậu",
+    districtCode: "VN0103",
+    provinceCode: "VN01",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0101003",
+    label: "Phường Mai Dịch",
+    districtCode: "VN0103",
+    provinceCode: "VN01",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0101004",
+    label: "Phường Nghĩa Đô",
+    districtCode: "VN0103",
+    provinceCode: "VN01",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0101005",
+    label: "Phường Nghĩa Tân",
+    districtCode: "VN0103",
+    provinceCode: "VN01",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0101006",
+    label: "Phường Quan Hoa",
+    districtCode: "VN0103",
+    provinceCode: "VN01",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0101007",
+    label: "Phường Trung Hoà",
+    districtCode: "VN0103",
+    provinceCode: "VN01",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0101008",
+    label: "Phường Yên Hoà",
+    districtCode: "VN0103",
     provinceCode: "VN01",
     countryCode: "VN",
   },
 
+  // Các phường của Quận 1, Hồ Chí Minh
   {
     value: "VN0201001",
     label: "Phường Bến Nghé",
-    districtCode: "VN0201",
+    districtCode: "VN0202",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0201002",
+    label: "Phường Bến Thành",
+    districtCode: "VN0202",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0201003",
+    label: "Phường Cầu Kho",
+    districtCode: "VN0202",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0201004",
+    label: "Phường Cầu Ông Lãnh",
+    districtCode: "VN0202",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0201005",
+    label: "Phường Cô Giang",
+    districtCode: "VN0202",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0201006",
+    label: "Phường Đa Kao",
+    districtCode: "VN0202",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0201007",
+    label: "Phường Nguyễn Cư Trinh",
+    districtCode: "VN0202",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0201008",
+    label: "Phường Nguyễn Thái Bình",
+    districtCode: "VN0202",
+    provinceCode: "VN02",
+    countryCode: "VN",
+  },
+  {
+    value: "VN0201009",
+    label: "Phường Phạm Ngũ Lão",
+    districtCode: "VN0202",
     provinceCode: "VN02",
     countryCode: "VN",
   },
@@ -257,11 +533,27 @@ export const getDistrict = (code) => {
 };
 
 /**
+ * Description: Tìm các quận/huyện của một tỉnh/TP
+ * Author: txphuc (31/08/2023)
+ */
+export const getDistrictsOfProvince = (provinceCode) => {
+  return districts.filter((pr) => pr.provinceCode == provinceCode);
+};
+
+/**
  * Description: Tìm thông tin xã/phường
  * Author: txphuc (23/08/2023)
  */
 export const getWard = (code) => {
   return wards.find((wa) => wa.value == code);
+};
+
+/**
+ * Description: Tìm các quận/huyện của một tỉnh/TP
+ * Author: txphuc (31/08/2023)
+ */
+export const getWardsOfDistrict = (districtCode) => {
+  return wards.filter((wa) => wa.districtCode == districtCode);
 };
 
 /**

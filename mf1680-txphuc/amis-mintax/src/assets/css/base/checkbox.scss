@@ -34,8 +34,18 @@
   background: url("../../../assets/img/iderminate-checkbox.svg");
 }
 
-.dx-state-hover .dx-checkbox-icon {
+.dx-checkbox-container {
+  overflow: visible !important;
+  border-radius: 4px;
+}
+
+.dx-checkbox.dx-state-hover .dx-checkbox-icon {
   border: none !important;
+  outline: 3px solid var(--primary-color-200);
+}
+
+.dx-checkbox.dx-state-focused .dx-checkbox-icon {
+  outline: 3px solid var(--primary-color-200);
 }
 
 .dx-checkbox-text {

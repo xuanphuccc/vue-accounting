@@ -8,6 +8,10 @@ const dialogStore = {
     type: enums.dialog.type.INFO,
     title: "Cảnh báo",
     description: "",
+
+    // Hàm xử lý đóng dialog
+    cancelHandler: null,
+
     buttons: [],
   }),
 
@@ -42,6 +46,14 @@ const dialogStore = {
      */
     SET_DESCRIPTION(state, description) {
       state.description = description;
+    },
+
+    /**
+     * Description: Set hàm xử lý đóng dialog
+     * Author: txphuc (24/08/2023)
+     */
+    SET_CANCEL_HANDLER(state, handler) {
+      state.cancelHandler = handler;
     },
 
     /**
@@ -89,15 +101,30 @@ const dialogStore = {
      * Description: Hiện cảnh báo xác nhận xoá
      * Author: txphuc: (03/08/2023)
      */
-    showDeleteWarning({ commit }, options = { title: "", description: "", handler: null }) {
+    showDeleteWarning(
+      { commit },
+      options = {
+        title: "",
+        description: "",
+        okHandler: null,
+        cancelHandler: null,
+      }
+    ) {
       commit("SET_ACTIVE", true);
       commit("SET_TYPE", enums.dialog.type.WARNING);
       commit("SET_TITLE", options.title);
       commit("SET_DESCRIPTION", options.description);
 
+      commit("SET_CANCEL_HANDLER", options.cancelHandler);
+
       commit("SET_BUTTONS", [
-        { key: 1, text: "Không", color: "secondary", action: "closeDialog" },
-        { key: 2, text: "Có", color: "danger", focus: true, action: options.handler },
+        {
+          key: 1,
+          text: "Không",
+          color: "secondary",
+          action: options.cancelHandler || "closeDialog",
+        },
+        { key: 2, text: "Có", color: "danger", focus: true, action: options.okHandler },
       ]);
     },
 
@@ -110,6 +137,7 @@ const dialogStore = {
       commit("SET_TYPE", enums.dialog.type.INFO);
       commit("SET_TITLE", "");
       commit("SET_DESCRIPTION", "");
+      commit("SET_CANCEL_HANDLER", null);
       commit("SET_BUTTONS", []);
     },
   },

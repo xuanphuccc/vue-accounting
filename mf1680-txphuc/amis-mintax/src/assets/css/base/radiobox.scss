@@ -7,6 +7,11 @@
 
 .dx-radiobutton.dx-state-hover .dx-radiobutton-icon {
   border-color: var(--secondary-text-color);
+  outline: 3px solid var(--primary-color-200);
+}
+
+.dx-radiobutton.dx-state-focused .dx-radiobutton-icon {
+  outline: 3px solid var(--primary-color-200);
 }
 
 .dx-radiobutton-icon.dx-radiobutton-icon-checked {

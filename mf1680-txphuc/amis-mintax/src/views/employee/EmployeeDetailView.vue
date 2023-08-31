@@ -715,7 +715,7 @@ export default {
       this.$store.dispatch("dialogStore/showDeleteWarning", {
         title: "Xoá người nộp thuế",
         description: `Bạn có chắc chắn muốn xóa người nộp thuế <b>${this.employeeData?.FullName}</b> vào Thùng rác?`,
-        handler: this.deleteActiveEmployee,
+        okHandler: this.deleteActiveEmployee,
       });
     },
 
@@ -819,7 +819,7 @@ export default {
       this.$store.dispatch("dialogStore/showDeleteWarning", {
         title: "Xoá dữ liệu",
         description,
-        handler: this.deleteActiveRelationship,
+        okHandler: this.deleteActiveRelationship,
       });
     },
 
