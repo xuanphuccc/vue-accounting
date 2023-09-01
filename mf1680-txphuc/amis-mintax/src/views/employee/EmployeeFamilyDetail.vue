@@ -172,6 +172,7 @@
               <MISARow>
                 <MISACol :span="4">
                   <label
+                    v-tooltip="'Số Chứng minh nhân dân'"
                     for="identify-paper-number"
                     class="height-36 d-flex align-center flex-wrap pr-12"
                     >Số CMND</label
@@ -684,8 +685,8 @@
     </ValidationObserver>
 
     <template #controls-right>
-      <MISAButton @click="onCloseForm" color="secondary">Huỷ</MISAButton>
-      <MISAButton @click="handleSubmitForm()">Đồng ý</MISAButton>
+      <MISAButton v-tooltip="'ESC'" @click="onCloseForm" color="secondary">Huỷ</MISAButton>
+      <MISAButton v-tooltip="'Ctrl + S'" @click="handleSubmitForm()">Đồng ý</MISAButton>
     </template>
   </MISAPopup>
 </template>

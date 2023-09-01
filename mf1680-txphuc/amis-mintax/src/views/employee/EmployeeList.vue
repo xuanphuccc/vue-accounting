@@ -70,6 +70,7 @@
               </MISAButton>
 
               <MISAButton
+                v-tooltip="'Ctrl + D'"
                 @click="
                   showDeleteConfirmDialog(
                     `Bạn có chắc chắn muốn xoá <b>${selectedRowsData.length}</b> người nộp thuế vào Thùng rác?`
@@ -91,6 +92,7 @@
           <div class="filter__left">
             <div class="controls__group">
               <MISATextBox
+                v-tooltip="'Tìm theo Mã/Tên nhân viên, MST, CMND'"
                 @enter-key="applySearch"
                 placeholder="Tìm theo Mã/Tên nhân viên, MST, CMND"
               >
@@ -116,7 +118,7 @@
 
           <div class="filter__right">
             <MISAButtonGroup>
-              <MISAButton @click="openFormForCreate">
+              <MISAButton v-tooltip="'Ctrl + 1'" @click="openFormForCreate">
                 Thêm mới
                 <template slot="icon">
                   <MISAIcon size="20" icon="plus" />
@@ -124,17 +126,28 @@
               </MISAButton>
               <MISAButton>
                 <template slot="icon">
-                  <MISAIcon :size="20" icon="angle-down" />
+                  <MISAIcon size="16" icon="angle-down" />
                 </template>
               </MISAButton>
             </MISAButtonGroup>
 
-            <MISAButton @click="isOpenFilterPopup = true" :badge="detectFilter" color="secondary">
+            <MISAButton
+              v-tooltip="'Bộ lọc'"
+              @click="isOpenFilterPopup = true"
+              :badge="detectFilter"
+              color="secondary"
+              id="employee-list-filter-button"
+            >
               <template slot="icon">
                 <MISAIcon size="20" icon="mintax-filter" />
               </template>
             </MISAButton>
-            <MISAButton @click="isOpenTableCustomize = true" color="secondary">
+
+            <MISAButton
+              v-tooltip="'Tuỳ chỉnh cột'"
+              @click="isOpenTableCustomize = true"
+              color="secondary"
+            >
               <template slot="icon">
                 <MISAIcon size="20" icon="setting-gear" />
               </template>
@@ -149,6 +162,7 @@
         @row-dbl-click="onRowDoubleClick"
         @sort-change="onSortChange"
         @fixed-column-change="onFixedColumnChange"
+        @new-window="onClickNewWindow"
         @edit-row="onClickEditRow"
         @delete-row="onClickDeleteRow"
         :sort="filterRequest"
@@ -321,6 +335,20 @@ export default {
      */
     onSelectionChanged(data) {
       this.selectedRowsData = data.selectedRowsData;
+    },
+
+    /**
+     * Description: Mở xem chi tiết nhân viên trong một cửa sổ mới
+     * Author: txphuc (31/08/2023)
+     */
+    onClickNewWindow(row) {
+      const employeeId = row.key;
+      const routeData = this.$router.resolve({
+        name: "employee-detail-view",
+        params: { id: employeeId },
+      });
+
+      window.open(routeData.href, "_blank");
     },
 
     /**

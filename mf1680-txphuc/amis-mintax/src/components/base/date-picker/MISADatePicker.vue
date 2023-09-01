@@ -37,7 +37,7 @@ export default {
   props: {
     // Giá trị của date picker
     value: {
-      type: Date,
+      type: [Date, Number, String],
     },
 
     // Ngày tối đa có thể chọn

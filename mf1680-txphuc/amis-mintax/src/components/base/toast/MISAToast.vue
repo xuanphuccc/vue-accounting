@@ -4,7 +4,7 @@
       <MISAIcon :icon="typeIcon" />
     </div>
     <div class="ms-toast__content">{{ title }}</div>
-    <div @click="$emit('click')" class="ms-toast__close">
+    <div v-tooltip="'Đóng'" @click="$emit('click')" class="ms-toast__close">
       <MISAIcon :size="20" icon="times" />
     </div>
   </div>

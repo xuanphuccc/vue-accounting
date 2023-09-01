@@ -8,8 +8,16 @@
       <div class="page__header-controls">
         <MISAButton @click="onCloseForm" color="secondary">Huỷ</MISAButton>
 
-        <MISAButton @click="handleSubmitForm(true)" color="secondary">Lưu & Thêm mới</MISAButton>
-        <MISAButton @click="handleSubmitForm(false)" color="primary">Lưu</MISAButton>
+        <MISAButton
+          v-tooltip="'Ctrl + Shift + S'"
+          @click="handleSubmitForm(true)"
+          color="secondary"
+        >
+          Lưu & Thêm mới
+        </MISAButton>
+        <MISAButton v-tooltip="'Ctrl + S'" @click="handleSubmitForm(false)" color="primary">
+          Lưu
+        </MISAButton>
       </div>
     </div>
 
@@ -227,6 +235,7 @@
                     <MISARow>
                       <MISACol :span="4">
                         <label
+                          v-tooltip="'Số Chứng minh nhân dân'"
                           for="identify-number"
                           class="height-36 d-flex align-center flex-wrap pr-12"
                         >
@@ -835,7 +844,12 @@
             <!-- ----- THÔNG TIN GIA ĐÌNH ----- -->
             <div class="d-flex align-center justify-content-between mt-44 pb-24">
               <div class="form-content__header">Thông tin gia đình</div>
-              <MISAButton @click="openFormForCreate" type="outline" color="primary">
+              <MISAButton
+                v-tooltip="'Ctrl + 1'"
+                @click="openFormForCreate"
+                type="outline"
+                color="primary"
+              >
                 Thêm
                 <template #icon>
                   <MISAIcon :size="20" icon="plus" />
@@ -854,6 +868,7 @@
               :columns="tableColumns"
               :dataSource="displayRelationships"
               :allowSelection="false"
+              :actions="['edit', 'delete']"
               tableStyle="solid"
             >
               <template #IsDependent="{ value }">
@@ -1067,12 +1082,12 @@ export default {
     async getNewEmployeeCode() {
       try {
         if (this.formMode === enums.form.mode.CREATE) {
+          // Tránh thay đổi trạng thái của form
+          this.isLoadFormData = true;
+
           const response = await employeeApi.getNewCode();
 
           this.formData.EmployeeCode = response.data;
-
-          // Tránh thay đổi trạng thái của form
-          this.isLoadFormData = true;
         }
       } catch (error) {
         console.warn(error);
@@ -1202,7 +1217,7 @@ export default {
         ReceiveDate: formatDate(this.formData.ReceiveDate, "yyyy-MM-dd"),
         TerminationDate: formatDate(this.formData.TerminationDate, "yyyy-MM-dd"),
 
-        //
+        // Lấy thông tin bổ sung
         EmployeeTypeName: getEmployeeType(this.formData.EmployeeType)?.label,
         GenderName: getGender(this.formData.Gender)?.label,
         IdentifyTypeName: getIdentifyType(this.formData.IdentifyType)?.label,
@@ -1268,6 +1283,9 @@ export default {
           // Bật loading
           this.$store.dispatch("commonStore/setLoading", true);
 
+          // Tránh thay đổi trạng thái của form
+          this.isLoadFormData = true;
+
           // Lấy Id từ param
           const employeeId = this.$route.params?.id;
 
@@ -1291,9 +1309,6 @@ export default {
             "employeeRelationshipStore/setRelationships",
             employeeData.EmployeeRelationships
           );
-
-          // Tránh thay đổi trạng thái của form
-          this.isLoadFormData = true;
 
           // Tắt loading
           this.$store.dispatch("commonStore/setLoading", false);
@@ -1406,6 +1421,7 @@ export default {
     handleKeyboardEvent(e) {
       try {
         const keyCode = e.keyCode;
+        const shiftKey = e.shiftKey;
         const ctrlKey = e.ctrlKey;
 
         switch (keyCode) {
@@ -1415,6 +1431,19 @@ export default {
 
               // Ctrl + 1: Mở form thêm thành viên gia đình
               this.openFormForCreate();
+            }
+            break;
+          case enums.key.S:
+            if (ctrlKey && shiftKey) {
+              e.preventDefault();
+
+              // Ctrl + Shift + S: Lưu và thêm mới
+              this.handleSubmitForm(true);
+            } else if (ctrlKey) {
+              e.preventDefault();
+
+              // Ctrl + S: Lưu và đóng form
+              this.handleSubmitForm(false);
             }
             break;
 

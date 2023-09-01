@@ -11,6 +11,7 @@
     ]"
     :disabled="disabled"
     ref="buttonRef"
+    :id="id"
   >
     <!-- Trạng thái loading -->
     <MISASpinner v-if="loading" absolute />
@@ -91,6 +92,11 @@ export default {
     autoFocus: {
       type: Boolean,
       default: false,
+    },
+
+    //
+    id: {
+      type: String,
     },
   },
   data: function () {

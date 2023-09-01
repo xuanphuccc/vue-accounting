@@ -8,6 +8,14 @@ import router from "./router";
 import store from "./store";
 import i18n from "./i18n";
 
+import "floating-vue/dist/style.css";
+import FloatingVue from "floating-vue";
+import { VTooltip } from "floating-vue";
+Vue.use(FloatingVue, {
+  distance: 12,
+});
+Vue.directive("tooltip", VTooltip);
+
 Vue.config.productionTip = false;
 
 new Vue({

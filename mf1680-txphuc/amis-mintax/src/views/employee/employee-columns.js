@@ -94,7 +94,7 @@ export const employeeColumns = [
   {
     dataField: "HireDate",
     caption: "Ngày thử việc",
-    dataType: "center",
+    dataType: "date",
     customizeText: (e) => (e.value ? formatDate(new Date(e.value), "dd/MM/yyyy") : ""),
     alignment: "center",
     width: 180,
@@ -130,6 +130,7 @@ export const employeeColumns = [
   {
     dataField: "IdentifyNumber",
     caption: "Số CMND/CCCD/Hộ chiếu",
+    trueText: "Số Chứng minh nhân dân/Căn cước công dân/Hộ chiếu",
     dataType: "string",
     alignment: "left",
     width: 220,

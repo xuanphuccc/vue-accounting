@@ -4,6 +4,7 @@
       <div class="page__title-wrapper">
         <h1 class="page__title">
           <div
+            v-tooltip="'Quay lại'"
             @click="
               () => {
                 this.$router.push({ name: 'employee' });
@@ -179,7 +180,12 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Số CMND</div>
+                      <div
+                        v-tooltip="'Số Chứng minh nhân dân'"
+                        class="height-36 d-flex align-center flex-wrap pr-12"
+                      >
+                        Số CMND
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">
@@ -577,6 +583,7 @@
             :columns="tableColumns"
             :dataSource="employeeData?.EmployeeRelationships"
             :allowSelection="false"
+            :actions="['edit', 'delete']"
             tableStyle="solid"
           >
             <template #IsDependent="{ value }">

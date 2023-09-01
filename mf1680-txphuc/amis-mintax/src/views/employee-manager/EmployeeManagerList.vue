@@ -4,6 +4,7 @@
       <div class="page__title-wrapper">
         <h1 class="page__title">
           <div
+            v-tooltip="'Quay lại'"
             @click="
               () => {
                 this.$router.push({ name: 'employee' });
@@ -96,6 +97,7 @@
           <div class="filter__left">
             <div class="controls__group">
               <MISATextBox
+                v-tooltip="'Tìm theo Mã/Tên nhân viên, MST, CMND'"
                 @enter-key="applySearch"
                 placeholder="Tìm theo Mã/Tên nhân viên, MST, CMND"
               >
@@ -118,7 +120,11 @@
           </div>
 
           <div class="filter__right">
-            <MISAButton @click="isOpenTableCustomize = true" color="secondary">
+            <MISAButton
+              v-tooltip="'Tuỳ chỉnh cột'"
+              @click="isOpenTableCustomize = true"
+              color="secondary"
+            >
               <template slot="icon">
                 <MISAIcon size="20" icon="setting-gear" />
               </template>
@@ -137,7 +143,7 @@
         :columns="tableColumns"
         :data-source="dataSource"
         keyExpr="EmployeeID"
-        :action-column-enabled="false"
+        :actions="[]"
         ref="tableRef"
       >
         <template #UsageStatus="data">

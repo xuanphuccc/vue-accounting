@@ -40,11 +40,13 @@
       <!-- page controls -->
       <div class="ms-table__page-controls">
         <span
+          v-tooltip="'Trang trước'"
           @click="handlePrevPage"
           :class="['ms-table__prev-btn', { '--disable': currentPage <= 1 }]"
           ><MISAIcon icon="angle-left"
         /></span>
         <span
+          v-tooltip="'Trang sau'"
           @click="handleNextPage"
           :class="['ms-table__next-btn', { '--disable': currentPage >= totalPages }]"
         >

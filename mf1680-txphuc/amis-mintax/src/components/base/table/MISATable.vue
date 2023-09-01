@@ -47,11 +47,18 @@
 
       <!-- Tuỳ chỉnh header -->
       <template #headerCellTemplate="{ data }">
-        <div class="ms-table__header-cell">
-          {{ data.column.caption }}
+        <div
+          v-tooltip.bottom="{
+            content: data.column?.trueText,
+            disabled: data.column?.trueText == 'true',
+          }"
+          :id="data.column?.dataField"
+          class="ms-table__header-cell"
+        >
+          {{ data.column?.caption }}
 
           <span
-            v-if="apiSort && data.column.dataField === sort.sortColumn"
+            v-if="apiSort && data.column?.dataField === sort.sortColumn"
             :class="['ms-table__sort-icon', `--order-${sort.sortOrder}`]"
           >
             <MISAIcon size="20" icon="arrow-down" />
@@ -66,26 +73,40 @@
       </template>
 
       <!-- Cột action -->
-      <DxColumn
-        v-if="actionColumnEnabled"
-        cell-template="cellTemplate"
-        css-class="ms-table__action-column"
-      ></DxColumn>
+      <DxColumn cell-template="cellTemplate" css-class="ms-table__action-column"></DxColumn>
       <template #cellTemplate="{ data }">
         <div class="ms-table__action-container">
-          <MISAButton type="rounded" color="secondary">
+          <MISAButton
+            v-tooltip="'Mở trong cửa sổ mới'"
+            v-if="isShowActionButton('new-window')"
+            @click="$emit('new-window', data)"
+            type="rounded"
+            color="secondary"
+          >
             <template slot="icon">
               <MISAIcon size="20" icon="new-window" />
             </template>
           </MISAButton>
 
-          <MISAButton @click="$emit('edit-row', data)" type="rounded" color="secondary">
+          <MISAButton
+            v-tooltip="'Chỉnh sửa'"
+            v-if="isShowActionButton('edit')"
+            @click="$emit('edit-row', data)"
+            type="rounded"
+            color="secondary"
+          >
             <template slot="icon">
               <MISAIcon size="20" icon="pen" />
             </template>
           </MISAButton>
 
-          <MISAButton @click="$emit('delete-row', data)" type="rounded" color="secondary">
+          <MISAButton
+            v-tooltip="'Xoá'"
+            v-if="isShowActionButton('delete')"
+            @click="$emit('delete-row', data)"
+            type="rounded"
+            color="secondary"
+          >
             <template slot="icon">
               <MISAIcon color="#eb3333" size="20" icon="trash" />
             </template>
@@ -122,6 +143,7 @@ export default {
     "row-dbl-click",
     "sort-change",
     "fixed-column-change",
+    "new-window",
     "edit-row",
     "delete-row",
   ],
@@ -161,10 +183,12 @@ export default {
       default: false,
     },
 
-    // Hiện/ẩn cột action
-    actionColumnEnabled: {
-      type: Boolean,
-      default: true,
+    // Các nút action: new-window, edit, delete
+    actions: {
+      type: Array,
+      default() {
+        return ["new-window", "edit", "delete"];
+      },
     },
 
     // Cho phép chọn bản ghi
@@ -189,7 +213,7 @@ export default {
      */
     fixedColumnIndex() {
       // Tìm những cột được ghim và không bị ẩn
-      const fixedColumns = this.columns.filter(
+      const fixedColumns = this.columns?.filter(
         (column) => column.fixed === true && column.visible !== false
       );
 
@@ -236,31 +260,43 @@ export default {
      * Author: txphuc (17/08/2023)
      */
     onFixedColumChange(columnIndex) {
-      // Loại bỏ tham chiếu tránh thay đổi mảng gốc
-      // (làm cho component không được render lại)
-      let localColumns = this.columns.map((col) => ({ ...col }));
+      try {
+        // Loại bỏ tham chiếu tránh thay đổi mảng gốc
+        // (làm cho component không được render lại)
+        let localColumns = this.columns?.map((col) => ({ ...col }));
 
-      if (this.fixedColumnIndex === columnIndex) {
-        // Bỏ ghim nếu bấm ghim hai lần vào một cột thì bỏ ghim
-        localColumns = this.columns.map((column) => {
-          column.fixed = false;
+        if (this.fixedColumnIndex === columnIndex) {
+          // Bỏ ghim nếu bấm ghim hai lần vào một cột thì bỏ ghim
+          localColumns = this.columns?.map((column) => {
+            column.fixed = false;
 
-          return column;
-        });
-      } else {
-        // Ghim cột hiện tại và cột trước nó
-        localColumns = this.columns.map((column, index) => {
-          column.fixed = false;
+            return column;
+          });
+        } else {
+          // Ghim cột hiện tại và cột trước nó
+          localColumns = this.columns?.map((column, index) => {
+            column.fixed = false;
 
-          if (index < columnIndex) {
-            column.fixed = true;
-          }
+            if (index < columnIndex) {
+              column.fixed = true;
+            }
 
-          return column;
-        });
+            return column;
+          });
+        }
+
+        this.$emit("fixed-column-change", localColumns);
+      } catch (error) {
+        console.warn(error);
       }
+    },
 
-      this.$emit("fixed-column-change", localColumns);
+    /**
+     * Description: Ẩn/hiện các nút action (cửa sổ mới, sửa, xoá)
+     * Author: txphuc (31/08/2023)
+     */
+    isShowActionButton(action) {
+      return this.actions?.includes(action);
     },
   },
 };

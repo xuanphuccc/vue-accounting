@@ -2,7 +2,7 @@
   <div @click.stop="" class="ms-filter-popup">
     <div class="ms-filter-popup__header">
       <div class="ms-filter-popup__header-title">Bộ lọc</div>
-      <div @click="closeFilter" class="ms-filter-popup__close">
+      <div v-tooltip="'Đóng'" @click="closeFilter" class="ms-filter-popup__close">
         <MISAIcon icon="times" />
       </div>
     </div>
@@ -29,8 +29,8 @@
               class="ms-filter-popup__item-content"
             >
               <DxRadioGroup
-                v-model="filter.value"
                 v-if="filter.type == 'option'"
+                v-model="filter.value"
                 :items="filter.options"
                 display-expr="label"
                 value-expr="value"

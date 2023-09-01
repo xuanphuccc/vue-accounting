@@ -20,13 +20,13 @@
         </div>
       </div>
       <div class="navbar__controls">
-        <div class="navbar__button">
+        <div v-tooltip="'Thông báo'" class="navbar__button">
           <MISAIcon icon="bell" />
         </div>
-        <div class="navbar__button">
+        <div v-tooltip="'Trợ giúp'" class="navbar__button">
           <MISAIcon icon="question-circle" />
         </div>
-        <div class="navbar__button">
+        <div v-tooltip="'Tính năng khác'" class="navbar__button">
           <MISAIcon icon="menu-circle" />
         </div>
 

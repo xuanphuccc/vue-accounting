@@ -2,7 +2,7 @@
   <div @click.stop="" class="ms-table-customize">
     <div class="ms-table-customize__header">
       <div class="ms-table-customize__header-title">Tuỳ chỉnh cột</div>
-      <div @click="$emit('close')" class="ms-table-customize__close">
+      <div v-tooltip="'Đóng'" @click="$emit('close')" class="ms-table-customize__close">
         <MISAIcon icon="times" />
       </div>
     </div>
