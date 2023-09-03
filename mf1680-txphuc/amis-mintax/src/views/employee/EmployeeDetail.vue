@@ -359,7 +359,7 @@
                           <div class="width-100">
                             <MISASelectBox
                               v-model="formData.IdentifyIssuedPlaceCode"
-                              :dataSource="provinces"
+                              :dataSource="getIdentifyPlaceDatasource(formData.IdentifyType)"
                               displayExpr="label"
                               valueExpr="value"
                               :searchEnabled="true"
@@ -990,6 +990,8 @@ import {
   getPosition,
   getWorkStatus,
   getContractType,
+  getIdentifyPlaceDatasource,
+  getIdentifyPlace,
 } from "@/api/mock-data";
 import { mapState, mapGetters } from "vuex";
 import enums from "@/enum/enum";
@@ -1244,6 +1246,7 @@ export default {
     getDistrictsOfProvince,
     getWardsOfDistrict,
     getIdentifyType,
+    getIdentifyPlaceDatasource,
 
     /**
      * Description: Hàm xử lý gọi api lấy mã nhân viên mới nhất
@@ -1392,7 +1395,10 @@ export default {
         EmployeeTypeName: getEmployeeType(this.formData?.EmployeeType)?.label,
         GenderName: getGender(this.formData?.Gender)?.label,
         IdentifyTypeName: getIdentifyType(this.formData?.IdentifyType)?.label,
-        IdentifyIssuedPlaceName: getProvince(this.formData?.IdentifyIssuedPlaceCode)?.label,
+        IdentifyIssuedPlaceName: getIdentifyPlace(
+          this.formData?.IdentifyType,
+          this.formData?.IdentifyIssuedPlaceCode
+        )?.label,
         NationalName: getCountry(this.formData?.NationalCode)?.label,
         ContractMintaxTypeName: getContractType(this.formData?.ContractMintaxType)?.label,
         NativeCountryName: getCountry(this.formData?.NativeCountryCode)?.label,

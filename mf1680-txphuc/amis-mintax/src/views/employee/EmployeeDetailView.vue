@@ -184,7 +184,7 @@
                         v-tooltip="'Số Chứng minh nhân dân'"
                         class="height-36 d-flex align-center flex-wrap pr-12"
                       >
-                        Số CMND
+                        Số {{ employeeFormated?.IdentifyTypeName ?? "-" }}
                       </div>
                     </MISACol>
                     <MISACol :span="8">

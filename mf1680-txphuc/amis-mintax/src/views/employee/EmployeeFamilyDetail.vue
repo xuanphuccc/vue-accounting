@@ -261,7 +261,7 @@
                 <MISACol :span="8">
                   <MISASelectBox
                     v-model="formData.IdentifyNumberIssuedPlaceCode"
-                    :dataSource="provinces"
+                    :dataSource="getIdentifyPlaceDatasource(formData.IdentifyKindOfPaper)"
                     displayExpr="label"
                     valueExpr="value"
                     :searchEnabled="true"
@@ -757,6 +757,8 @@ import {
   getDistrictsOfProvince,
   getWard,
   getWardsOfDistrict,
+  getIdentifyPlaceDatasource,
+  getIdentifyPlace,
 } from "@/api/mock-data";
 import { formatDate } from "devextreme/localization";
 import employeeRelationshipApi from "@/api/employee-relationship-api";
@@ -935,6 +937,7 @@ export default {
     getDistrictsOfProvince,
     getWardsOfDistrict,
     getIdentifyType,
+    getIdentifyPlaceDatasource,
 
     /**
      * Description: Xử lý sự kiện thoát form
@@ -1031,8 +1034,10 @@ export default {
         GenderName: getGender(this.formData?.Gender)?.label,
         NationalityName: getCountry(this.formData?.NationalityCode)?.label,
         IdentifyKindOfPaperName: getIdentifyType(this.formData?.IdentifyKindOfPaper)?.label,
-        IdentifyNumberIssuedPlaceName: getProvince(this.formData?.IdentifyNumberIssuedPlaceCode)
-          ?.label,
+        IdentifyNumberIssuedPlaceName: getIdentifyPlace(
+          this.formData?.IdentifyKindOfPaper,
+          this.formData?.IdentifyNumberIssuedPlaceCode
+        )?.label,
         CountryName: getCountry(this.formData?.CountryCode)?.label,
         ProvinceName: getProvince(this.formData?.ProvinceCode)?.label,
         DistrictName: getDistrict(this.formData?.DistrictCode)?.label,

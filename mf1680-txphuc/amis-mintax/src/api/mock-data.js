@@ -1,3 +1,5 @@
+import enums from "@/enum/enum";
+
 // Mối quan hệ
 export const relationships = [
   {
@@ -463,6 +465,18 @@ export const identifyTypes = [
   },
 ];
 
+// Nơi cấp CCCD
+export const citizenCardPlaces = [
+  {
+    value: "CCCD01",
+    label: "Cục Cảnh sát ĐKQL cư trú và DLQG về dân cư",
+  },
+  {
+    value: "CCCD02",
+    label: "Cục Cảnh sát quản lý hành chính về trật tự xã hội",
+  },
+];
+
 // Loại hợp đồng
 export const contractTypes = [
   {
@@ -613,4 +627,38 @@ export const getWorkStatus = (code) => {
  */
 export const getContractType = (code) => {
   return contractTypes.find((em) => em.value == code);
+};
+
+/**
+ * Description: Xác định nguồn dữ liệu tương ứng với loại giấy tờ
+ * Author: txphuc (02/09/2023)
+ */
+export const getIdentifyPlaceDatasource = (identifyType) => {
+  if (identifyType == enums.identifyType.nationalIdentityCard) {
+    // Là thẻ CMND
+    return provinces;
+  } else if (identifyType == enums.identifyType.citizenCard) {
+    // Là thẻ CCCD
+    return citizenCardPlaces;
+  } else if (identifyType == enums.identifyType.passport) {
+    // Là hộ chiếu
+    return countries;
+  }
+};
+
+/**
+ * Description: Trả về giá trị tương ứng với nguồn dữ liệu của loại giấy tờ
+ * Author: txphuc (02/09/2023)
+ */
+export const getIdentifyPlace = (identifyType, code) => {
+  if (identifyType == enums.identifyType.nationalIdentityCard) {
+    // Là thẻ CMND
+    return provinces.find((pr) => pr.value == code);
+  } else if (identifyType == enums.identifyType.citizenCard) {
+    // Là thẻ CCCD
+    return citizenCardPlaces.find((ci) => ci.value == code);
+  } else if (identifyType == enums.identifyType.passport) {
+    // Là hộ chiếu
+    return countries.find((co) => co.value == code);
+  }
 };
