@@ -120,8 +120,8 @@
   <data name="BadRequest" xml:space="preserve">
     <value>Thông tin nhập liệu không hợp lệ</value>
   </data>
-  <data name="ConflictCode" xml:space="preserve">
-    <value>Mã {0} &lt;b&gt;{1}&lt;/b&gt; đã tồn tại trong hệ thống, vui lòng kiểm tra lại</value>
+  <data name="ConflictEmployee" xml:space="preserve">
+    <value>{0} &lt;b&gt;{1}&lt;/b&gt; trùng với người nộp thuế &lt;b&gt;{2}&lt;/b&gt; tại Hồ sơ người nộp thuế. Vui lòng kiểm tra lại.</value>
   </data>
   <data name="ConstraintError" xml:space="preserve">
     <value>Không thể xoá mã {0} do có bản ghi phụ thuộc</value>

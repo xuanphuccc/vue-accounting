@@ -70,11 +70,11 @@ namespace MISA.AmisMintax.Domain.Resources.ErrorMessage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The {0} code &lt;b&gt;{1}&lt;/b&gt; already exists in the system, please check again.
+        ///   Looks up a localized string similar to {0} &lt;b&gt;{1}&lt;/b&gt; matches with taxpayer &lt;b&gt;{2}&lt;/b&gt; in the Taxpayer Profile. Please double-check..
         /// </summary>
-        public static string ConflictCode {
+        public static string ConflictEmployee {
             get {
-                return ResourceManager.GetString("ConflictCode", resourceCulture);
+                return ResourceManager.GetString("ConflictEmployee", resourceCulture);
             }
         }
         

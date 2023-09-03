@@ -79,11 +79,29 @@ namespace MISA.AmisMintax.Domain.Resources.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Employee code.
+        /// </summary>
+        public static string EmployeeCode {
+            get {
+                return ResourceManager.GetString("EmployeeCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Female.
         /// </summary>
         public static string Female {
             get {
                 return ResourceManager.GetString("Female", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identify number.
+        /// </summary>
+        public static string IdentifyType {
+            get {
+                return ResourceManager.GetString("IdentifyType", resourceCulture);
             }
         }
         
@@ -120,6 +138,15 @@ namespace MISA.AmisMintax.Domain.Resources.Common {
         public static string Position {
             get {
                 return ResourceManager.GetString("Position", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tax code.
+        /// </summary>
+        public static string TaxCode {
+            get {
+                return ResourceManager.GetString("TaxCode", resourceCulture);
             }
         }
     }

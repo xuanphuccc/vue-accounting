@@ -15,7 +15,7 @@ namespace MISA.AmisMintax.Application
         private readonly IEmployeeManager _employeeManager;
         private readonly IEmployeeRelationshipRepository _employeeRelationshipRepository;
 
-        public EmployeeService(IEmployeeRepository employeeRepository, IEmployeeManager employeeManager, IEmployeeRelationshipRepository employeeRelationshipRepository, IUnitOfWork unitOfWork, IMapper mapper) 
+        public EmployeeService(IEmployeeRepository employeeRepository, IEmployeeManager employeeManager, IEmployeeRelationshipRepository employeeRelationshipRepository, IUnitOfWork unitOfWork, IMapper mapper)
             : base(employeeRepository, unitOfWork, mapper)
         {
             _employeeRepository = employeeRepository;
@@ -79,6 +79,12 @@ namespace MISA.AmisMintax.Application
             // Check trùng mã
             await _employeeManager.CheckExistEmployeeCode(entityCreateDto.EmployeeCode);
 
+            // Check trùng mã số thuế
+            await _employeeManager.CheckExistTaxCode(entityCreateDto.TaxCode);
+
+            // Check trùng số CMND/CCCD/Hộ chiếu
+            await _employeeManager.CheckExistIdentifyNumber(entityCreateDto.IdentifyNumber);
+
             var employee = _mapper.Map<Employee>(entityCreateDto);
 
             employee.EmployeeID = Guid.NewGuid();
@@ -100,6 +106,12 @@ namespace MISA.AmisMintax.Application
 
             // Check trùng mã
             await _employeeManager.CheckExistEmployeeCode(entityUpdateDto.EmployeeCode, oldEmployee.EmployeeCode);
+
+            // Check trùng mã số thuế
+            await _employeeManager.CheckExistTaxCode(entityUpdateDto.TaxCode, oldEmployee.TaxCode);
+
+            // Check trùng số CMND/CCCD/Hộ chiếu
+            await _employeeManager.CheckExistIdentifyNumber(entityUpdateDto.IdentifyNumber, oldEmployee.IdentifyNumber);
 
             var employee = _mapper.Map(entityUpdateDto, oldEmployee);
 

@@ -123,8 +123,14 @@
   <data name="Employee" xml:space="preserve">
     <value>nhân viên</value>
   </data>
+  <data name="EmployeeCode" xml:space="preserve">
+    <value>Mã người nộp thuế</value>
+  </data>
   <data name="Female" xml:space="preserve">
     <value>Nữ</value>
+  </data>
+  <data name="IdentifyType" xml:space="preserve">
+    <value>Số CMND/CCCD/Hộ chiếu</value>
   </data>
   <data name="Male" xml:space="preserve">
     <value>Nam</value>
@@ -138,5 +144,8 @@
   </data>
   <data name="Position" xml:space="preserve">
     <value>vị trí</value>
+  </data>
+  <data name="TaxCode" xml:space="preserve">
+    <value>Mã số thuế</value>
   </data>
 </root>
