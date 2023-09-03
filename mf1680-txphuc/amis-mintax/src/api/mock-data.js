@@ -449,14 +449,17 @@ export const identifyTypes = [
   {
     value: 0,
     label: "CMND",
+    description: "Số Chứng minh nhân dân",
   },
   {
     value: 1,
     label: "CCCD",
+    description: "Số Căn cước công dân",
   },
   {
     value: 2,
     label: "Hộ chiếu",
+    description: "Số Hộ chiếu",
   },
 ];
 

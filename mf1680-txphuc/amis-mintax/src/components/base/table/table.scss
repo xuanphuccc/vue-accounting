@@ -47,6 +47,13 @@
   color: var(--primary-text-color);
 }
 
+.ms-table__cell-text-wrap {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* action column */
 .ms-table .ms-table__action-column {
   padding: 0 !important;
@@ -110,6 +117,26 @@
 
 .ms-table .dx-header-row td:hover .ms-table__pin-icon {
   display: block;
+}
+
+.dx-datagrid .dx-sort-up,
+.dx-datagrid .dx-sort-down {
+  display: block;
+  width: 18px;
+  height: 18px;
+  background-image: url("../../../assets/img/arrow-down.svg");
+}
+.dx-datagrid .dx-sort-up {
+  transform: rotate(180deg);
+}
+.dx-datagrid .dx-sort-up::before,
+.dx-datagrid .dx-sort-down::before {
+  font-family: var(--primary-font) !important;
+  content: "" !important;
+}
+
+.dx-datagrid .dx-column-indicators {
+  display: inline-flex;
 }
 
 /* scroll bar*/

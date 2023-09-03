@@ -17,15 +17,23 @@
                   </label>
                 </MISACol>
                 <MISACol :span="8">
-                  <ValidationProvider name="Họ tên thành viên" rules="required" v-slot="{ errors }">
-                    <MISATextBox
-                      v-model="formData.FullName"
-                      :is-valid="!errors[0]"
-                      auto-focus
-                      placeholder="Nhập họ tên thành viên"
-                      id="fullname"
-                    />
-                    <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                  <ValidationProvider
+                    name="Họ tên thành viên"
+                    rules="required"
+                    v-slot="{ errors }"
+                    slim
+                  >
+                    <div class="width-100">
+                      <MISATextBox
+                        v-model="formData.FullName"
+                        :is-valid="!errors[0]"
+                        :max-length="100"
+                        auto-focus
+                        placeholder="Nhập họ tên thành viên"
+                        id="fullname"
+                      />
+                      <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                    </div>
                   </ValidationProvider>
                 </MISACol>
               </MISARow>
@@ -39,18 +47,20 @@
                   </label>
                 </MISACol>
                 <MISACol :span="8">
-                  <ValidationProvider name="Quan hệ" rules="required" v-slot="{ errors }">
-                    <MISASelectBox
-                      v-model="formData.Relationship"
-                      :dataSource="relationships"
-                      displayExpr="label"
-                      valueExpr="value"
-                      :searchEnabled="true"
-                      :is-valid="!errors[0]"
-                      placeholder="Chọn/nhập quan hệ"
-                      id="relationship"
-                    />
-                    <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                  <ValidationProvider name="Quan hệ" rules="required" v-slot="{ errors }" slim>
+                    <div class="width-100">
+                      <MISASelectBox
+                        v-model="formData.Relationship"
+                        :dataSource="relationships"
+                        displayExpr="label"
+                        valueExpr="value"
+                        :searchEnabled="true"
+                        :is-valid="!errors[0]"
+                        placeholder="Chọn/nhập quan hệ"
+                        id="relationship"
+                      />
+                      <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                    </div>
                   </ValidationProvider>
                 </MISACol>
               </MISARow>
@@ -64,7 +74,11 @@
                   >
                 </MISACol>
                 <MISACol :span="8">
-                  <MISADatePicker v-model="formData.DateOfBirth" id="dateofbirth" />
+                  <MISADatePicker
+                    v-model="formData.DateOfBirth"
+                    :max="new Date()"
+                    id="dateofbirth"
+                  />
                 </MISACol>
               </MISARow>
             </div>
@@ -105,6 +119,7 @@
                     <div class="d-flex width-100 col-gap-8">
                       <MISATextBox
                         v-model="formData.TaxCode"
+                        :max-length="10"
                         placeholder="Nhập mã số thuế"
                         width="100%"
                         id="tax-code"
@@ -172,21 +187,36 @@
               <MISARow>
                 <MISACol :span="4">
                   <label
-                    v-tooltip="'Số Chứng minh nhân dân'"
+                    v-tooltip="getIdentifyType(formData.IdentifyKindOfPaper)?.description"
                     for="identify-paper-number"
                     class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Số CMND</label
                   >
+                    Số {{ getIdentifyType(formData.IdentifyKindOfPaper)?.label }}
+                  </label>
                 </MISACol>
                 <MISACol :span="8">
                   <MISARow>
                     <div class="d-flex width-100 col-gap-8">
-                      <MISATextBox
-                        v-model="formData.IdentifyPaperNumber"
-                        placeholder="Nhập số CMND/CCCD/Hộ chiếu"
-                        width="100%"
-                        id="identify-paper-number"
-                      />
+                      <ValidationProvider
+                        :name="'Số ' + getIdentifyType(formData.IdentifyKindOfPaper)?.label"
+                        rules="numeric"
+                        v-slot="{ errors }"
+                        slim
+                      >
+                        <div class="width-100">
+                          <MISATextBox
+                            v-model="formData.IdentifyPaperNumber"
+                            :is-valid="!errors[0]"
+                            :max-length="20"
+                            :placeholder="
+                              'Nhập số ' + getIdentifyType(formData.IdentifyKindOfPaper)?.label
+                            "
+                            width="100%"
+                            id="identify-paper-number"
+                          />
+                          <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                        </div>
+                      </ValidationProvider>
 
                       <MISAButton color="secondary"
                         >Lấy thông tin
@@ -212,6 +242,7 @@
                 <MISACol :span="8">
                   <MISADatePicker
                     v-model="formData.IdentifyNumberIssuedDate"
+                    :max="new Date()"
                     id="identify-number-issued-date"
                   />
                 </MISACol>
@@ -261,6 +292,7 @@
                 <MISACol :span="8">
                   <MISATextBox
                     v-model="formData.DependentNumber"
+                    :max-length="20"
                     placeholder="Nhập số khai sinh"
                     id="dependent-number"
                   />
@@ -278,6 +310,7 @@
                 <MISACol :span="8">
                   <MISATextBox
                     v-model="formData.NumberBook"
+                    :max-length="20"
                     placeholder="Nhập quyển số"
                     id="number-book"
                   />
@@ -298,6 +331,7 @@
                 <MISACol :span="8">
                   <MISADatePicker
                     v-model="formData.BirthCertificationIssueDate"
+                    :max="new Date()"
                     id="birth-certification-issue-date"
                   />
                 </MISACol>
@@ -629,6 +663,7 @@
                     displayFormat="MM/yyyy"
                     placeholder="__/ ____"
                     zoomLevel="year"
+                    maxZoomLevel="year"
                     id="deduction-start-date"
                   />
                 </MISACol>
@@ -647,9 +682,11 @@
                 <MISACol :span="8">
                   <MISADatePicker
                     v-model="formData.DeductionEndDate"
+                    :min="formData.DeductionStartDate"
                     displayFormat="MM/yyyy"
                     placeholder="__/ ____"
                     zoomLevel="year"
+                    maxZoomLevel="year"
                     id="deduction-end-date"
                   />
                 </MISACol>
@@ -800,6 +837,12 @@ export default {
       // Trạng thái sửa đổi form
       formModified: false,
       isLoadFormData: false,
+
+      // Cho phép load data vào các ô địa chỉ khi update mà không bị clear
+      // (VD: thay đổi quân/huyện thì clear xã/phường)
+      allowClearBirthCertificateAddress: true,
+      allowClearNativeAddress: true,
+      allowClearCurrentAddress: true,
     };
   },
 
@@ -834,16 +877,22 @@ export default {
      * Author: txphuc (31/08/2023)
      */
     "formData.ProvinceCode": function () {
-      this.formData.DistrictCode = null;
-      this.formData.WardCode = null;
+      if (this.allowClearBirthCertificateAddress) {
+        this.formData.DistrictCode = null;
+        this.formData.WardCode = null;
+      }
     },
     "formData.FamilyPermanentAddressProvinceCode": function () {
-      this.formData.FamilyPermanentAddressDistrictCode = null;
-      this.formData.FamilyPermanentAddressWardCode = null;
+      if (this.allowClearNativeAddress) {
+        this.formData.FamilyPermanentAddressDistrictCode = null;
+        this.formData.FamilyPermanentAddressWardCode = null;
+      }
     },
     "formData.FamilyCurrentProvinceCode": function () {
-      this.formData.FamilyCurrentDistrictCode = null;
-      this.formData.FamilyCurrentWardCode = null;
+      if (this.allowClearCurrentAddress) {
+        this.formData.FamilyCurrentDistrictCode = null;
+        this.formData.FamilyCurrentWardCode = null;
+      }
     },
 
     /**
@@ -851,19 +900,41 @@ export default {
      * Author: txphuc (31/08/2023)
      */
     "formData.DistrictCode": function () {
-      this.formData.WardCode = null;
+      if (this.allowClearBirthCertificateAddress) {
+        this.formData.WardCode = null;
+      }
     },
     "formData.FamilyPermanentAddressDistrictCode": function () {
-      this.formData.FamilyPermanentAddressWardCode = null;
+      if (this.allowClearNativeAddress) {
+        this.formData.FamilyPermanentAddressWardCode = null;
+      }
     },
     "formData.FamilyCurrentDistrictCode": function () {
-      this.formData.FamilyCurrentWardCode = null;
+      if (this.allowClearCurrentAddress) {
+        this.formData.FamilyCurrentWardCode = null;
+      }
+    },
+
+    /**
+     * Description: Trả lại trạng thái cho phép clear địa chỉ
+     * khi đã load dữ liệu cho update xong
+     * Author: txphuc (02/09/2023)
+     */
+    "formData.WardCode": function () {
+      this.allowClearBirthCertificateAddress = true;
+    },
+    "formData.FamilyPermanentAddressWardCode": function () {
+      this.allowClearNativeAddress = true;
+    },
+    "formData.FamilyCurrentWardCode": function () {
+      this.allowClearCurrentAddress = true;
     },
   },
 
   methods: {
     getDistrictsOfProvince,
     getWardsOfDistrict,
+    getIdentifyType,
 
     /**
      * Description: Xử lý sự kiện thoát form
@@ -943,40 +1014,40 @@ export default {
       const data = {
         ...this.formData,
 
-        DateOfBirth: formatDate(this.formData.DateOfBirth, "yyyy-MM-dd"),
+        DateOfBirth: formatDate(this.formData?.DateOfBirth, "yyyy-MM-dd"),
 
-        IdentifyNumberIssuedDate: formatDate(this.formData.IdentifyNumberIssuedDate, "yyyy-MM-dd"),
+        IdentifyNumberIssuedDate: formatDate(this.formData?.IdentifyNumberIssuedDate, "yyyy-MM-dd"),
 
         BirthCertificationIssueDate: formatDate(
-          this.formData.BirthCertificationIssueDate,
+          this.formData?.BirthCertificationIssueDate,
           "yyyy-MM-dd"
         ),
 
-        DeductionStartDate: formatDate(this.formData.DeductionStartDate, "yyyy-MM-dd"),
-        DeductionEndDate: formatDate(this.formData.DeductionEndDate, "yyyy-MM-dd"),
+        DeductionStartDate: formatDate(this.formData?.DeductionStartDate, "yyyy-MM-dd"),
+        DeductionEndDate: formatDate(this.formData?.DeductionEndDate, "yyyy-MM-dd"),
 
         //
-        RelationshipName: getRelationship(this.formData.Relationship)?.label,
-        GenderName: getGender(this.formData.Gender)?.label,
-        NationalityName: getCountry(this.formData.NationalityCode)?.label,
-        IdentifyKindOfPaperName: getIdentifyType(this.formData.IdentifyKindOfPaper)?.label,
-        IdentifyNumberIssuedPlaceName: getProvince(this.formData.IdentifyNumberIssuedPlaceCode)
+        RelationshipName: getRelationship(this.formData?.Relationship)?.label,
+        GenderName: getGender(this.formData?.Gender)?.label,
+        NationalityName: getCountry(this.formData?.NationalityCode)?.label,
+        IdentifyKindOfPaperName: getIdentifyType(this.formData?.IdentifyKindOfPaper)?.label,
+        IdentifyNumberIssuedPlaceName: getProvince(this.formData?.IdentifyNumberIssuedPlaceCode)
           ?.label,
-        CountryName: getCountry(this.formData.CountryCode)?.label,
-        ProvinceName: getProvince(this.formData.ProvinceCode)?.label,
-        DistrictName: getDistrict(this.formData.DistrictCode)?.label,
-        WardName: getWard(this.formData.WardCode)?.label,
+        CountryName: getCountry(this.formData?.CountryCode)?.label,
+        ProvinceName: getProvince(this.formData?.ProvinceCode)?.label,
+        DistrictName: getDistrict(this.formData?.DistrictCode)?.label,
+        WardName: getWard(this.formData?.WardCode)?.label,
         FamilyPermanentAddressProvinceName: getProvince(
-          this.formData.FamilyPermanentAddressProvinceCode
+          this.formData?.FamilyPermanentAddressProvinceCode
         )?.label,
         FamilyPermanentAddressDistrictName: getDistrict(
-          this.formData.FamilyPermanentAddressDistrictCode
+          this.formData?.FamilyPermanentAddressDistrictCode
         )?.label,
-        FamilyPermanentAddressWardName: getWard(this.formData.FamilyPermanentAddressWardCode)
+        FamilyPermanentAddressWardName: getWard(this.formData?.FamilyPermanentAddressWardCode)
           ?.label,
-        FamilyCurrentProvinceName: getProvince(this.formData.FamilyCurrentProvinceCode)?.label,
-        FamilyCurrentDistrictName: getDistrict(this.formData.FamilyCurrentDistrictCode)?.label,
-        FamilyCurrentWardName: getWard(this.formData.FamilyCurrentWardCode)?.label,
+        FamilyCurrentProvinceName: getProvince(this.formData?.FamilyCurrentProvinceCode)?.label,
+        FamilyCurrentDistrictName: getDistrict(this.formData?.FamilyCurrentDistrictCode)?.label,
+        FamilyCurrentWardName: getWard(this.formData?.FamilyCurrentWardCode)?.label,
       };
 
       return data;
@@ -1028,25 +1099,30 @@ export default {
           this.formData = {
             ...employeeData,
 
-            DateOfBirth: employeeData.DateOfBirth && new Date(employeeData.DateOfBirth),
+            DateOfBirth: employeeData?.DateOfBirth && new Date(employeeData?.DateOfBirth),
 
             IdentifyNumberIssuedDate:
-              employeeData.IdentifyNumberIssuedDate &&
-              new Date(employeeData.IdentifyNumberIssuedDate),
+              employeeData?.IdentifyNumberIssuedDate &&
+              new Date(employeeData?.IdentifyNumberIssuedDate),
 
             BirthCertificationIssueDate:
-              employeeData.BirthCertificationIssueDate &&
-              new Date(employeeData.BirthCertificationIssueDate),
+              employeeData?.BirthCertificationIssueDate &&
+              new Date(employeeData?.BirthCertificationIssueDate),
 
             DeductionStartDate:
-              employeeData.DeductionStartDate && new Date(employeeData.DeductionStartDate),
+              employeeData?.DeductionStartDate && new Date(employeeData?.DeductionStartDate),
 
             DeductionEndDate:
-              employeeData.DeductionEndDate && new Date(employeeData.DeductionEndDate),
+              employeeData?.DeductionEndDate && new Date(employeeData?.DeductionEndDate),
           };
 
           // Tránh thay đổi trạng thái sửa đổi form
           this.isLoadFormData = true;
+
+          // Ngăn các ô địa chỉ bị clear
+          this.allowClearBirthCertificateAddress = false;
+          this.allowClearNativeAddress = false;
+          this.allowClearCurrentAddress = false;
         }
       } catch (error) {
         console.warn(error);

@@ -330,7 +330,7 @@
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">
-                        {{ employeeFormated?.NativeAddress ?? "-" }}
+                        {{ nativeAddress ?? "-" }}
                       </div>
                     </MISACol>
                   </MISARow>
@@ -421,7 +421,7 @@
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">
-                        {{ employeeFormated?.CurrentAddress ?? "-" }}
+                        {{ currentAddress ?? "-" }}
                       </div>
                     </MISACol>
                   </MISARow>
@@ -616,6 +616,7 @@ import employeeRelationshipApi from "@/api/employee-relationship-api";
 import { formatDate } from "devextreme/localization";
 import { employeeRelationshipColumns } from "./employee-columns";
 import { mapState, mapGetters } from "vuex";
+import { getCountry, getProvince, getDistrict, getWard } from "@/api/mock-data";
 
 export default {
   name: "EmployeeDetailView",
@@ -653,6 +654,10 @@ export default {
 
     ...mapGetters("employeeRelationshipStore", ["displayRelationships"]),
 
+    /**
+     * Description: Định dạng dữ liệu hiển thị
+     * Author: txphuc (29/08/2023)
+     */
     employeeFormated() {
       const data = { ...this.employeeData };
 
@@ -680,6 +685,44 @@ export default {
         data.TerminationDate && formatDate(new Date(data.TerminationDate), "dd/MM/yyyy");
 
       return data;
+    },
+
+    /**
+     * Description: Lấy địa chỉ đầy đủ của hộ khẩu thường trú
+     * Author: txphuc (02/09/2023)
+     */
+    nativeAddress() {
+      let addressArr = [
+        this.employeeData?.NativeStreetHouseNumber,
+        getWard(this.employeeData?.NativeWardCode)?.label,
+        getDistrict(this.employeeData?.NativeDistrictCode)?.label,
+        getProvince(this.employeeData?.NativeProvinceCode)?.label,
+        getCountry(this.employeeData?.NativeCountryCode)?.label,
+      ];
+
+      // Bỏ qua giá trị rỗng
+      addressArr = addressArr.filter((item) => item != null && item != undefined);
+
+      return addressArr.join(", ");
+    },
+
+    /**
+     * Description: Lấy địa chỉ đầy đủ của chỗ ở hiện nay
+     * Author: txphuc (02/09/2023)
+     */
+    currentAddress() {
+      let addressArr = [
+        this.employeeData?.CurrentStreetHouseNumber,
+        getWard(this.employeeData?.CurrentWardCode)?.label,
+        getDistrict(this.employeeData?.CurrentDistrictCode)?.label,
+        getProvince(this.employeeData?.CurrentProvinceCode)?.label,
+        getCountry(this.employeeData?.CurrentCountryCode)?.label,
+      ];
+
+      // Bỏ qua giá trị rỗng
+      addressArr = addressArr.filter((item) => item != null && item != undefined);
+
+      return addressArr.join(", ");
     },
   },
 
@@ -744,7 +787,7 @@ export default {
           // Loading
           this.$store.dispatch("commonStore/setLoading", true);
 
-          await employeeApi.delete(this.employeeData.EmployeeID);
+          await employeeApi.delete(this.employeeData?.EmployeeID);
 
           // Ẩn dialog xác nhận xoá
           this.hideConfirmDialog();

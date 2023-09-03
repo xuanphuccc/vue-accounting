@@ -9,6 +9,8 @@
     :placeholder="placeholder"
     :width="width"
     :disabled="disabled"
+    :max-length="maxLength"
+    :show-clear-button="showClearButton"
     ref="textBoxRef"
   >
     <!-- input action -->
@@ -63,6 +65,18 @@ export default {
 
     // Trạng thái validate
     isValid: {
+      type: Boolean,
+      default: true,
+    },
+
+    // Số ký tự tối đa có thể nhập
+    maxLength: {
+      type: [String, Number],
+      default: 255,
+    },
+
+    // Hiện/ẩn nút xoá giá trị input đã nhập
+    showClearButton: {
       type: Boolean,
       default: true,
     },

@@ -72,14 +72,18 @@
                           name="Mã người nộp thuế"
                           rules="required"
                           v-slot="{ errors }"
+                          slim
                         >
-                          <MISATextBox
-                            v-model="formData.EmployeeCode"
-                            :is-valid="!errors[0]"
-                            placeholder="Nhập mã người nộp thuế"
-                            id="employee-code"
-                          />
-                          <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                          <div class="width-100">
+                            <MISATextBox
+                              v-model="formData.EmployeeCode"
+                              :is-valid="!errors[0]"
+                              :max-length="20"
+                              placeholder="Nhập mã người nộp thuế"
+                              id="employee-code"
+                            />
+                            <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                          </div>
                         </ValidationProvider>
                       </MISACol>
                     </MISARow>
@@ -96,14 +100,17 @@
                         </label>
                       </MISACol>
                       <MISACol :span="8">
-                        <ValidationProvider name="Họ tên" rules="required" v-slot="{ errors }">
-                          <MISATextBox
-                            v-model="formData.FullName"
-                            :is-valid="!errors[0]"
-                            placeholder="Nhập họ tên"
-                            id="full-name"
-                          />
-                          <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                        <ValidationProvider name="Họ tên" rules="required" v-slot="{ errors }" slim>
+                          <div class="width-100">
+                            <MISATextBox
+                              v-model="formData.FullName"
+                              :is-valid="!errors[0]"
+                              :max-length="100"
+                              placeholder="Nhập họ tên"
+                              id="full-name"
+                            />
+                            <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                          </div>
                         </ValidationProvider>
                       </MISACol>
                     </MISARow>
@@ -119,7 +126,11 @@
                         >
                       </MISACol>
                       <MISACol :span="8">
-                        <MISADatePicker v-model="formData.DateOfBirth" id="date-of-birth" />
+                        <MISADatePicker
+                          v-model="formData.DateOfBirth"
+                          :max="new Date()"
+                          id="date-of-birth"
+                        />
                       </MISACol>
                     </MISARow>
                   </div>
@@ -156,11 +167,22 @@
                         </label>
                       </MISACol>
                       <MISACol :span="8">
-                        <MISATextBox
-                          v-model="formData.Mobile"
-                          placeholder="Nhập số điện thoại"
-                          id="mobile"
-                        />
+                        <ValidationProvider
+                          name="Số điện thoại"
+                          rules="mobile"
+                          v-slot="{ errors }"
+                          slim
+                        >
+                          <div class="width-100">
+                            <MISATextBox
+                              v-model="formData.Mobile"
+                              :is-valid="!errors[0]"
+                              placeholder="Nhập số điện thoại"
+                              id="mobile"
+                            />
+                            <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                          </div>
+                        </ValidationProvider>
                       </MISACol>
                     </MISARow>
                   </div>
@@ -173,7 +195,17 @@
                         >
                       </MISACol>
                       <MISACol :span="8">
-                        <MISATextBox v-model="formData.Email" placeholder="Nhập email" id="email" />
+                        <ValidationProvider name="Email" rules="email" v-slot="{ errors }" slim>
+                          <div class="width-100">
+                            <MISATextBox
+                              v-model="formData.Email"
+                              :is-valid="!errors[0]"
+                              placeholder="Nhập email"
+                              id="email"
+                            />
+                            <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                          </div>
+                        </ValidationProvider>
                       </MISACol>
                     </MISARow>
                   </div>
@@ -187,23 +219,22 @@
                         >
                       </MISACol>
                       <MISACol :span="8">
-                        <MISARow>
-                          <div class="d-flex width-100 col-gap-8">
-                            <MISATextBox
-                              v-model="formData.TaxCode"
-                              width="100%"
-                              placeholder="Nhập mã số thuế"
-                              id="tax-code"
-                            />
+                        <div class="d-flex width-100 col-gap-8">
+                          <MISATextBox
+                            v-model="formData.TaxCode"
+                            :max-length="10"
+                            width="100%"
+                            placeholder="Nhập mã số thuế"
+                            id="tax-code"
+                          />
 
-                            <MISAButton color="secondary"
-                              >Lấy thông tin
-                              <template #icon>
-                                <MISAIcon :size="20" icon="get-info" />
-                              </template>
-                            </MISAButton>
-                          </div>
-                        </MISARow>
+                          <MISAButton color="secondary"
+                            >Lấy thông tin
+                            <template #icon>
+                              <MISAIcon :size="20" icon="get-info" />
+                            </template>
+                          </MISAButton>
+                        </div>
                       </MISACol>
                     </MISARow>
                   </div>
@@ -235,35 +266,44 @@
                     <MISARow>
                       <MISACol :span="4">
                         <label
-                          v-tooltip="'Số Chứng minh nhân dân'"
+                          v-tooltip="getIdentifyType(formData.IdentifyType)?.description"
                           for="identify-number"
                           class="height-36 d-flex align-center flex-wrap pr-12"
                         >
-                          Số CMND <span class="required-mark">*</span>
+                          Số {{ getIdentifyType(formData.IdentifyType)?.label }}
+                          <span v-if="!formData.TaxCode" class="required-mark">*</span>
                         </label>
                       </MISACol>
                       <MISACol :span="8">
-                        <MISARow>
-                          <div class="d-flex width-100 col-gap-8">
-                            <ValidationProvider name="Số CMND" rules="required" v-slot="{ errors }">
+                        <div class="d-flex width-100 col-gap-8">
+                          <ValidationProvider
+                            :name="'Số ' + getIdentifyType(formData.IdentifyType)?.label"
+                            :rules="`${!formData.TaxCode ? 'required' : ''}|numeric`"
+                            v-slot="{ errors }"
+                            slim
+                          >
+                            <div class="width-100">
                               <MISATextBox
                                 v-model="formData.IdentifyNumber"
                                 :is-valid="!errors[0]"
+                                :max-length="20"
                                 width="100%"
-                                placeholder="Nhập số CMND"
+                                :placeholder="
+                                  'Nhập số ' + getIdentifyType(formData.IdentifyType)?.label
+                                "
                                 id="identify-number"
                               />
                               <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
-                            </ValidationProvider>
+                            </div>
+                          </ValidationProvider>
 
-                            <MISAButton color="secondary"
-                              >Lấy thông tin
-                              <template #icon>
-                                <MISAIcon :size="20" icon="get-info" />
-                              </template>
-                            </MISAButton>
-                          </div>
-                        </MISARow>
+                          <MISAButton color="secondary"
+                            >Lấy thông tin
+                            <template #icon>
+                              <MISAIcon :size="20" icon="get-info" />
+                            </template>
+                          </MISAButton>
+                        </div>
                       </MISACol>
                     </MISARow>
                   </div>
@@ -275,17 +315,25 @@
                           for="identify-date"
                           class="height-36 d-flex align-center flex-wrap pr-12"
                         >
-                          Ngày cấp <span class="required-mark">*</span>
+                          Ngày cấp <span v-if="!formData.TaxCode" class="required-mark">*</span>
                         </label>
                       </MISACol>
                       <MISACol :span="8">
-                        <ValidationProvider name="Ngày cấp" rules="required" v-slot="{ errors }">
-                          <MISADatePicker
-                            v-model="formData.IdentifyDate"
-                            :is-valid="!errors[0]"
-                            id="identify-date"
-                          />
-                          <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                        <ValidationProvider
+                          name="Ngày cấp"
+                          :rules="`${!formData.TaxCode ? 'required' : ''}`"
+                          v-slot="{ errors }"
+                          slim
+                        >
+                          <div class="width-100">
+                            <MISADatePicker
+                              v-model="formData.IdentifyDate"
+                              :max="new Date()"
+                              :is-valid="!errors[0]"
+                              id="identify-date"
+                            />
+                            <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                          </div>
                         </ValidationProvider>
                       </MISACol>
                     </MISARow>
@@ -298,22 +346,29 @@
                           for="identify-issued-place-code"
                           class="height-36 d-flex align-center flex-wrap pr-12"
                         >
-                          Nơi cấp <span class="required-mark">*</span>
+                          Nơi cấp <span v-if="!formData.TaxCode" class="required-mark">*</span>
                         </label>
                       </MISACol>
                       <MISACol :span="8">
-                        <ValidationProvider name="Nơi cấp" rules="required" v-slot="{ errors }">
-                          <MISASelectBox
-                            v-model="formData.IdentifyIssuedPlaceCode"
-                            :dataSource="provinces"
-                            displayExpr="label"
-                            valueExpr="value"
-                            :searchEnabled="true"
-                            :is-valid="!errors[0]"
-                            placeholder="Chọn/nhập nơi cấp"
-                            id="identify-issued-place-code"
-                          />
-                          <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                        <ValidationProvider
+                          name="Nơi cấp"
+                          :rules="`${!formData.TaxCode ? 'required' : ''}`"
+                          v-slot="{ errors }"
+                          slim
+                        >
+                          <div class="width-100">
+                            <MISASelectBox
+                              v-model="formData.IdentifyIssuedPlaceCode"
+                              :dataSource="provinces"
+                              displayExpr="label"
+                              valueExpr="value"
+                              :searchEnabled="true"
+                              :is-valid="!errors[0]"
+                              placeholder="Chọn/nhập nơi cấp"
+                              id="identify-issued-place-code"
+                            />
+                            <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                          </div>
                         </ValidationProvider>
                       </MISACol>
                     </MISARow>
@@ -349,26 +404,30 @@
                           for="contract-mintax-type"
                           class="height-36 d-flex align-center flex-wrap pr-12"
                         >
-                          Loại hợp đồng <span class="required-mark">*</span>
+                          Loại hợp đồng
+                          <span v-if="!formData.TaxCode" class="required-mark">*</span>
                         </label>
                       </MISACol>
                       <MISACol :span="8">
                         <ValidationProvider
                           name="Loại hợp đồng"
-                          rules="required"
+                          :rules="`${!formData.TaxCode ? 'required' : ''}`"
                           v-slot="{ errors }"
+                          slim
                         >
-                          <MISASelectBox
-                            v-model="formData.ContractMintaxType"
-                            :dataSource="contractTypes"
-                            displayExpr="label"
-                            valueExpr="value"
-                            :searchEnabled="false"
-                            :is-valid="!errors[0]"
-                            placeholder="Chọn loại hợp đồng"
-                            id="contract-mintax-type"
-                          />
-                          <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                          <div class="width-100">
+                            <MISASelectBox
+                              v-model="formData.ContractMintaxType"
+                              :dataSource="contractTypes"
+                              displayExpr="label"
+                              valueExpr="value"
+                              :searchEnabled="false"
+                              :is-valid="!errors[0]"
+                              placeholder="Chọn loại hợp đồng"
+                              id="contract-mintax-type"
+                            />
+                            <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                          </div>
                         </ValidationProvider>
                       </MISACol>
                     </MISARow>
@@ -504,7 +563,7 @@
                         >
                       </MISACol>
                       <MISACol :span="8">
-                        <MISATextBox :disabled="true" />
+                        <MISATextBox :value="nativeAddress" :disabled="true" />
                       </MISACol>
                     </MISARow>
                   </div>
@@ -554,6 +613,7 @@
                           :searchEnabled="true"
                           placeholder="Chọn/nhập quốc gia"
                           id="current-country-code"
+                          :disabled="formData.IsCopyAddress"
                         />
                       </MISACol>
                     </MISARow>
@@ -578,6 +638,7 @@
                           :searchEnabled="true"
                           placeholder="Chọn/nhập tỉnh/thành phố"
                           id="current-province-code"
+                          :disabled="formData.IsCopyAddress"
                         />
                       </MISACol>
                     </MISARow>
@@ -601,6 +662,7 @@
                           :searchEnabled="true"
                           placeholder="Chọn/nhập quận/huyện"
                           id="current-district-code"
+                          :disabled="formData.IsCopyAddress"
                         />
                       </MISACol>
                     </MISARow>
@@ -631,6 +693,7 @@
                           :searchEnabled="true"
                           placeholder="Chọn/nhập xã/phường"
                           id="current-ward-code"
+                          :disabled="formData.IsCopyAddress"
                         />
                       </MISACol>
                     </MISARow>
@@ -651,6 +714,7 @@
                           v-model="formData.CurrentStreetHouseNumber"
                           placeholder="Nhập số nhà, đường/phố, thôn/xóm"
                           id="current-street"
+                          :disabled="formData.IsCopyAddress"
                         />
                       </MISACol>
                     </MISARow>
@@ -664,7 +728,7 @@
                         >
                       </MISACol>
                       <MISACol :span="8">
-                        <MISATextBox :disabled="true" />
+                        <MISATextBox :value="currentAddress" :disabled="true" />
                       </MISACol>
                     </MISARow>
                   </div>
@@ -712,18 +776,21 @@
                           name="Vị trí công việc"
                           rules="required"
                           v-slot="{ errors }"
+                          slim
                         >
-                          <MISASelectBox
-                            v-model="formData.JobPositionId"
-                            :dataSource="positions"
-                            displayExpr="label"
-                            valueExpr="value"
-                            :searchEnabled="true"
-                            :is-valid="!errors[0]"
-                            placeholder="Chọn/ nhập vị trí công việc"
-                            id="job-position-id"
-                          />
-                          <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                          <div class="width-100">
+                            <MISASelectBox
+                              v-model="formData.JobPositionId"
+                              :dataSource="positions"
+                              displayExpr="label"
+                              valueExpr="value"
+                              :searchEnabled="true"
+                              :is-valid="!errors[0]"
+                              placeholder="Chọn/ nhập vị trí công việc"
+                              id="job-position-id"
+                            />
+                            <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                          </div>
                         </ValidationProvider>
                       </MISACol>
                     </MISARow>
@@ -1015,6 +1082,11 @@ export default {
 
       // Bản ghi thành viên gia đình đang chờ xoá
       activeRowState: null,
+
+      // Cho phép load data vào các ô địa chỉ khi update mà không bị clear
+      // (VD: thay đổi quân/huyện thì clear xã/phường)
+      allowClearNativeAddress: true,
+      allowClearCurrentAddress: true,
     };
   },
 
@@ -1024,6 +1096,44 @@ export default {
     }),
 
     ...mapGetters("employeeRelationshipStore", ["displayRelationships"]),
+
+    /**
+     * Description: Lấy địa chỉ đầy đủ của hộ khẩu thường trú
+     * Author: txphuc (02/09/2023)
+     */
+    nativeAddress() {
+      let addressArr = [
+        this.formData?.NativeStreetHouseNumber,
+        getWard(this.formData?.NativeWardCode)?.label,
+        getDistrict(this.formData?.NativeDistrictCode)?.label,
+        getProvince(this.formData?.NativeProvinceCode)?.label,
+        getCountry(this.formData?.NativeCountryCode)?.label,
+      ];
+
+      // Bỏ qua giá trị rỗng
+      addressArr = addressArr.filter((item) => item != null && item != undefined);
+
+      return addressArr.join(", ");
+    },
+
+    /**
+     * Description: Lấy địa chỉ đầy đủ của chỗ ở hiện nay
+     * Author: txphuc (02/09/2023)
+     */
+    currentAddress() {
+      let addressArr = [
+        this.formData?.CurrentStreetHouseNumber,
+        getWard(this.formData?.CurrentWardCode)?.label,
+        getDistrict(this.formData?.CurrentDistrictCode)?.label,
+        getProvince(this.formData?.CurrentProvinceCode)?.label,
+        getCountry(this.formData?.CurrentCountryCode)?.label,
+      ];
+
+      // Bỏ qua giá trị rỗng
+      addressArr = addressArr.filter((item) => item != null && item != undefined);
+
+      return addressArr.join(", ");
+    },
   },
 
   watch: {
@@ -1046,17 +1156,40 @@ export default {
       deep: true,
     },
 
+    "formData.IsCopyAddress": function () {
+      if (this.formData?.IsCopyAddress) {
+        this.formData = {
+          ...this.formData,
+
+          CurrentCountryCode: this.formData?.NativeCountryCode,
+          CurrentProvinceCode: this.formData?.NativeProvinceCode,
+          CurrentDistrictCode: this.formData?.NativeDistrictCode,
+          CurrentWardCode: this.formData?.NativeWardCode,
+          CurrentStreetHouseNumber: this.formData?.NativeStreetHouseNumber,
+        };
+      }
+    },
+
     /**
      * Description: Reset quận/huyện và xã/phường khi tỉnh/TP thay đổi
      * Author: txphuc (31/08/2023)
      */
     "formData.NativeProvinceCode": function () {
-      this.formData.NativeDistrictCode = null;
-      this.formData.NativeWardCode = null;
+      if (this.allowClearNativeAddress) {
+        this.formData.NativeDistrictCode = null;
+        this.formData.NativeWardCode = null;
+      }
+
+      // Cập nhật chỗ ở hiện nay khi hộ khẩu thường trú thay đổi
+      if (this.formData.IsCopyAddress) {
+        this.formData.CurrentProvinceCode = this.formData?.NativeProvinceCode;
+      }
     },
     "formData.CurrentProvinceCode": function () {
-      this.formData.CurrentDistrictCode = null;
-      this.formData.CurrentWardCode = null;
+      if (!this.formData.IsCopyAddress && this.allowClearCurrentAddress) {
+        this.formData.CurrentDistrictCode = null;
+        this.formData.CurrentWardCode = null;
+      }
     },
 
     /**
@@ -1064,16 +1197,53 @@ export default {
      * Author: txphuc (31/08/2023)
      */
     "formData.NativeDistrictCode": function () {
-      this.formData.NativeWardCode = null;
+      if (this.allowClearNativeAddress) {
+        this.formData.NativeWardCode = null;
+      }
+
+      // Cập nhật chỗ ở hiện nay khi hộ khẩu thường trú thay đổi
+      if (this.formData.IsCopyAddress) {
+        this.formData.CurrentDistrictCode = this.formData?.NativeDistrictCode;
+      }
     },
     "formData.CurrentDistrictCode": function () {
-      this.formData.CurrentWardCode = null;
+      if (!this.formData.IsCopyAddress && this.allowClearCurrentAddress) {
+        this.formData.CurrentWardCode = null;
+      }
+    },
+
+    /**
+     * Description: Trả lại trạng thái cho phép clear địa chỉ
+     * khi đã load dữ liệu cho update xong
+     * Author: txphuc (02/09/2023)
+     */
+    "formData.NativeWardCode": function () {
+      this.allowClearNativeAddress = true;
+
+      // Cập nhật chỗ ở hiện nay khi hộ khẩu thường trú thay đổi
+      if (this.formData.IsCopyAddress) {
+        this.formData.CurrentWardCode = this.formData?.NativeWardCode;
+      }
+    },
+    "formData.CurrentWardCode": function () {
+      this.allowClearCurrentAddress = true;
+    },
+
+    /**
+     * Description: Cập nhật chỗ ở hiện nay khi hộ khẩu thường trú thay đổi
+     * Author: txphuc (02/09/2023)
+     */
+    "formData.NativeStreetHouseNumber": function () {
+      if (this.formData.IsCopyAddress) {
+        this.formData.CurrentStreetHouseNumber = this.formData?.NativeStreetHouseNumber;
+      }
     },
   },
 
   methods: {
     getDistrictsOfProvince,
     getWardsOfDistrict,
+    getIdentifyType,
 
     /**
      * Description: Hàm xử lý gọi api lấy mã nhân viên mới nhất
@@ -1208,35 +1378,37 @@ export default {
      * Author: txphuc (17/07/2023)
      */
     generateData() {
-      const data = {
+      let data = {
         ...this.formData,
-        IdentifyDate: formatDate(this.formData.IdentifyDate, "yyyy-MM-dd"),
-        DateOfBirth: formatDate(this.formData.DateOfBirth, "yyyy-MM-dd"),
-        ProbationDate: formatDate(this.formData.ProbationDate, "yyyy-MM-dd"),
-        HireDate: formatDate(this.formData.HireDate, "yyyy-MM-dd"),
-        ReceiveDate: formatDate(this.formData.ReceiveDate, "yyyy-MM-dd"),
-        TerminationDate: formatDate(this.formData.TerminationDate, "yyyy-MM-dd"),
+
+        IdentifyDate: formatDate(this.formData?.IdentifyDate, "yyyy-MM-dd"),
+        DateOfBirth: formatDate(this.formData?.DateOfBirth, "yyyy-MM-dd"),
+        ProbationDate: formatDate(this.formData?.ProbationDate, "yyyy-MM-dd"),
+        HireDate: formatDate(this.formData?.HireDate, "yyyy-MM-dd"),
+        ReceiveDate: formatDate(this.formData?.ReceiveDate, "yyyy-MM-dd"),
+        TerminationDate: formatDate(this.formData?.TerminationDate, "yyyy-MM-dd"),
 
         // Lấy thông tin bổ sung
-        EmployeeTypeName: getEmployeeType(this.formData.EmployeeType)?.label,
-        GenderName: getGender(this.formData.Gender)?.label,
-        IdentifyTypeName: getIdentifyType(this.formData.IdentifyType)?.label,
-        IdentifyIssuedPlaceName: getProvince(this.formData.IdentifyIssuedPlaceCode)?.label,
-        NationalName: getCountry(this.formData.NationalCode)?.label,
-        ContractMintaxTypeName: getContractType(this.formData.ContractMintaxType)?.label,
-        NativeCountryName: getCountry(this.formData.NativeCountryCode)?.label,
-        NativeProvinceName: getProvince(this.formData.NativeProvinceCode)?.label,
-        NativeDistrictName: getDistrict(this.formData.NativeDistrictCode)?.label,
-        NativeWardName: getWard(this.formData.NativeWardCode)?.label,
-        CurrentCountryName: getCountry(this.formData.CurrentCountryCode)?.label,
-        CurrentProvinceName: getProvince(this.formData.CurrentProvinceCode)?.label,
-        CurrentDistrictName: getDistrict(this.formData.CurrentDistrictCode)?.label,
-        CurrentWardName: getWard(this.formData.CurrentWardCode)?.label,
+        EmployeeTypeName: getEmployeeType(this.formData?.EmployeeType)?.label,
+        GenderName: getGender(this.formData?.Gender)?.label,
+        IdentifyTypeName: getIdentifyType(this.formData?.IdentifyType)?.label,
+        IdentifyIssuedPlaceName: getProvince(this.formData?.IdentifyIssuedPlaceCode)?.label,
+        NationalName: getCountry(this.formData?.NationalCode)?.label,
+        ContractMintaxTypeName: getContractType(this.formData?.ContractMintaxType)?.label,
+        NativeCountryName: getCountry(this.formData?.NativeCountryCode)?.label,
+        NativeProvinceName: getProvince(this.formData?.NativeProvinceCode)?.label,
+        NativeDistrictName: getDistrict(this.formData?.NativeDistrictCode)?.label,
+        NativeWardName: getWard(this.formData?.NativeWardCode)?.label,
+        CurrentCountryName: getCountry(this.formData?.CurrentCountryCode)?.label,
+        CurrentProvinceName: getProvince(this.formData?.CurrentProvinceCode)?.label,
+        CurrentDistrictName: getDistrict(this.formData?.CurrentDistrictCode)?.label,
+        CurrentWardName: getWard(this.formData?.CurrentWardCode)?.label,
         OrganizationUnitName: "Nhân sự điều hành",
-        JobPositionName: getPosition(this.formData.JobPositionId)?.label,
-        EmployeeStatusName: getWorkStatus(this.formData.EmployeeStatus)?.label,
+        JobPositionName: getPosition(this.formData?.JobPositionId)?.label,
+        EmployeeStatusName: getWorkStatus(this.formData?.EmployeeStatus)?.label,
       };
 
+      // Lấy danh sách thành viên gia đình
       if (this.formMode === enums.form.mode.CREATE) {
         // Chỉ lấy bản ghi thành viên gia đình có EditMode khác Delete
         data.EmployeeRelationships = this.displayRelationships;
@@ -1286,6 +1458,10 @@ export default {
           // Tránh thay đổi trạng thái của form
           this.isLoadFormData = true;
 
+          // Ngăn các ô địa chỉ bị clear
+          this.allowClearNativeAddress = false;
+          this.allowClearCurrentAddress = false;
+
           // Lấy Id từ param
           const employeeId = this.$route.params?.id;
 
@@ -1296,18 +1472,20 @@ export default {
           // Binding dữ liệu vào form
           this.formData = {
             ...employeeData,
-            IdentifyDate: employeeData.IdentifyDate && new Date(employeeData.IdentifyDate),
-            DateOfBirth: employeeData.DateOfBirth && new Date(employeeData.DateOfBirth),
-            ProbationDate: employeeData.ProbationDate && new Date(employeeData.ProbationDate),
-            HireDate: employeeData.HireDate && new Date(employeeData.HireDate),
-            ReceiveDate: employeeData.ReceiveDate && new Date(employeeData.ReceiveDate),
-            TerminationDate: employeeData.TerminationDate && new Date(employeeData.TerminationDate),
+
+            IdentifyDate: employeeData?.IdentifyDate && new Date(employeeData?.IdentifyDate),
+            DateOfBirth: employeeData?.DateOfBirth && new Date(employeeData?.DateOfBirth),
+            ProbationDate: employeeData?.ProbationDate && new Date(employeeData?.ProbationDate),
+            HireDate: employeeData?.HireDate && new Date(employeeData?.HireDate),
+            ReceiveDate: employeeData?.ReceiveDate && new Date(employeeData?.ReceiveDate),
+            TerminationDate:
+              employeeData?.TerminationDate && new Date(employeeData?.TerminationDate),
           };
 
           // Load danh sách thành viên gia đình vào bảng
           this.$store.dispatch(
             "employeeRelationshipStore/setRelationships",
-            employeeData.EmployeeRelationships
+            employeeData?.EmployeeRelationships
           );
 
           // Tắt loading

@@ -7,11 +7,16 @@
   color: var(--secondary-text-color);
 }
 
+.dx-show-clear-button .dx-icon-clear {
+  margin-top: 0;
+  transform: translateY(-50%);
+}
+
 .dx-icon-clear::before {
   content: "";
   display: block;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   -webkit-mask-image: url("../../../assets/img/clear-icon.svg");
   mask-image: url("../../../assets/img/clear-icon.svg");
   -webkit-mask-position: contain;
@@ -19,4 +24,5 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   background: var(--secondary-text-color);
+  margin: 0 !important;
 }

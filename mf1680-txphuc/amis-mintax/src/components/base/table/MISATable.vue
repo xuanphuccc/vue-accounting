@@ -41,7 +41,7 @@
       <!-- Tuỳ chỉnh cột bất kỳ -->
       <template #customCell="{ data }">
         <slot :name="data?.column?.dataField" v-bind="data">
-          {{ data.text }}
+          <div v-tooltip="data.text" class="ms-table__cell-text-wrap">{{ data.text }}</div>
         </slot>
       </template>
 
@@ -63,6 +63,7 @@
           >
             <MISAIcon size="20" icon="arrow-down" />
           </span>
+
           <div
             @click.stop="onFixedColumChange(data.columnIndex)"
             :class="['ms-table__pin-icon', { '--active': data.columnIndex === fixedColumnIndex }]"

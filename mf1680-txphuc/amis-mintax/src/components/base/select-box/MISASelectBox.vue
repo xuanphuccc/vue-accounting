@@ -8,11 +8,12 @@
     :display-expr="displayExpr"
     :value-expr="valueExpr"
     :search-enabled="searchEnabled"
-    drop-down-button-template="imageIcon"
     item-template="item"
     :input-attr="{ id }"
     :drop-down-options="{ hideOnParentScroll: true }"
     :placeholder="placeholder"
+    :disabled="disabled"
+    drop-down-button-template="imageIcon"
     ref="selectBoxRef"
   >
     <template #imageIcon="{}">
@@ -97,6 +98,12 @@ export default {
     // Id (sử dụng cho label)
     id: {
       type: String,
+    },
+
+    // Trạng thái
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
 

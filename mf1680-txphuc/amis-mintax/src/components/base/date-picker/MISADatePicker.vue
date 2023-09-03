@@ -8,11 +8,12 @@
     :display-format="displayFormat"
     :use-mask-behavior="true"
     :show-clear-button="true"
+    :min="min"
     :max="max"
     :placeholder="placeholder"
     :input-attr="{ id }"
     pickerType="calendar"
-    :calendarOptions="{ firstDayOfWeek: 1, zoomLevel }"
+    :calendarOptions="{ firstDayOfWeek: 1, zoomLevel, maxZoomLevel }"
     drop-down-button-template="imageIcon"
   >
     <template #imageIcon="{}">
@@ -40,9 +41,14 @@ export default {
       type: [Date, Number, String],
     },
 
+    // Ngày tối thiểu có thể chọn
+    min: {
+      type: [Date, Number, String],
+    },
+
     // Ngày tối đa có thể chọn
     max: {
-      type: Date,
+      type: [Date, Number, String],
     },
 
     // Gợi ý
@@ -65,6 +71,12 @@ export default {
 
     // Chọn ngày (= month) / chọn tháng (= year) / chọn năm
     zoomLevel: {
+      type: String,
+      default: "month",
+    },
+
+    //
+    maxZoomLevel: {
       type: String,
       default: "month",
     },
