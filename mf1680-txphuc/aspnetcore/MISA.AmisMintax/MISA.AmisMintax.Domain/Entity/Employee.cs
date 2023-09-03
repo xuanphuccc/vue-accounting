@@ -99,24 +99,21 @@ namespace MISA.AmisMintax.Domain
         /// Số chứng minh nhân dân
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
-        [Required]
         [StringLength(25)]
-        public string IdentifyNumber { get; set; } = string.Empty;
+        public string? IdentifyNumber { get; set; }
 
         /// <summary>
         /// Ngày cấp
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
-        [Required]
-        public DateTime IdentifyDate { get; set; }
+        public DateTime? IdentifyDate { get; set; }
 
         /// <summary>
         /// Mã nơi cấp
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
-        [Required]
         [StringLength(20)]
-        public string IdentifyIssuedPlaceCode { get; set; } = string.Empty;
+        public string? IdentifyIssuedPlaceCode { get; set; }
 
         /// <summary>
         /// Tên nơi cấp
@@ -142,8 +139,7 @@ namespace MISA.AmisMintax.Domain
         /// Loại hợp đồng
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
-        [Required]
-        public ContractType ContractMintaxType { get; set; }
+        public ContractType? ContractMintaxType { get; set; }
 
         /// <summary>
         /// Tên loại hợp đồng

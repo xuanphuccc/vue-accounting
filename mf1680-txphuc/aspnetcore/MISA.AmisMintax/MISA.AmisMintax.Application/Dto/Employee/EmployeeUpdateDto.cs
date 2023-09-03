@@ -102,24 +102,21 @@ namespace MISA.AmisMintax.Application
         /// Số chứng minh nhân dân
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
-        [Required(ErrorMessageResourceName = nameof(InputValidation.IsRequired), ErrorMessageResourceType = typeof(InputValidation))]
         [StringLength(25, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
-        public string IdentifyNumber { get; set; } = string.Empty;
+        public string? IdentifyNumber { get; set; }
 
         /// <summary>
         /// Ngày cấp
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
-        [Required(ErrorMessageResourceName = nameof(InputValidation.IsRequired), ErrorMessageResourceType = typeof(InputValidation))]
-        public DateTime IdentifyDate { get; set; }
+        public DateTime? IdentifyDate { get; set; }
 
         /// <summary>
         /// Mã nơi cấp
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
-        [Required(ErrorMessageResourceName = nameof(InputValidation.IsRequired), ErrorMessageResourceType = typeof(InputValidation))]
         [StringLength(20, ErrorMessageResourceName = nameof(InputValidation.MaxLength), ErrorMessageResourceType = typeof(InputValidation))]
-        public string IdentifyIssuedPlaceCode { get; set; } = string.Empty;
+        public string? IdentifyIssuedPlaceCode { get; set; }
 
         /// <summary>
         /// Tên nơi cấp
@@ -144,8 +141,7 @@ namespace MISA.AmisMintax.Application
         /// Loại hợp đồng
         /// </summary>
         /// CreatedBy: txphuc (19/08/2023)
-        [Required(ErrorMessageResourceName = nameof(InputValidation.IsRequired), ErrorMessageResourceType = typeof(InputValidation))]
-        public ContractType ContractMintaxType { get; set; }
+        public ContractType? ContractMintaxType { get; set; }
 
         /// <summary>
         /// Tên loại hợp đồng
