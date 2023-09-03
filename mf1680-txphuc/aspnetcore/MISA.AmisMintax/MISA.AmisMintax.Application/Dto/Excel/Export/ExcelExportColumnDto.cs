@@ -35,7 +35,7 @@ namespace MISA.AmisMintax.Application
         /// Độ rộng của cột
         /// </summary>
         /// CreatedBy: txphuc (03/08/2023)
-        public double Width { get; set; } = 150;
+        public double? Width { get; set; } = 150;
 
         /// <summary>
         /// Căn lề của dữ liệu
@@ -52,6 +52,12 @@ namespace MISA.AmisMintax.Application
         /// <summary>
         /// Màu sắc cột header
         /// </summary>
+        /// CreatedBy: txphuc (29/08/2023)
         public string? HeaderBackground { get; set;} = "#BEF2FF";
+
+        /// <summary>
+        /// Cấu hình định dạng dữ liệu (VD: dd/MM/yyyy)
+        /// </summary>
+        public string? Format { get; set; }
     }
 }

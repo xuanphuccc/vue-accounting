@@ -40,7 +40,7 @@ namespace MISA.AmisMintax.Infrastructure
         /// CreatedBy: txphuc (28/08/2023)
         public void AddWorkSheet(IEnumerable<object> entityDtos, ExcelExportSheetDto exportSheetDto)
         {
-            if(entityDtos.ToList().Count > 0 && exportSheetDto.Columns.Count > 0)
+            if (entityDtos.ToList().Count > 0 && exportSheetDto.Columns.Count > 0)
             {
                 // Định nghĩa một trang tính
                 var worksheet = _excelPackage.Workbook.Worksheets.Add(exportSheetDto.SheetName);
@@ -113,7 +113,7 @@ namespace MISA.AmisMintax.Infrastructure
 
                         // Chuyển đổi từ px sang đơn vị Excel
                         var collumnWidth = column.Width / 7.5;
-                        worksheet.Columns[column.Index].Width = collumnWidth;
+                        worksheet.Columns[column.Index].Width = collumnWidth.Value;
                     }
                 }
 
@@ -136,7 +136,7 @@ namespace MISA.AmisMintax.Infrastructure
                         {
                             var value = property.GetValue(entityDto);
 
-                            FormatData(worksheet, currentRow, column.Index, value, column.Alignment);
+                            FormatData(worksheet, currentRow, column.Index, value, column.Alignment, column.Format);
                         }
                     }
 
@@ -169,7 +169,7 @@ namespace MISA.AmisMintax.Infrastructure
         /// <param name="row">Vị trí hàng của ô</param>
         /// <param name="col">Vị trí cột của ô</param>
         /// <param name="value">Giá trị của ô</param>
-        private void FormatData(ExcelWorksheet worksheet, int row, int col, object? value, string? align)
+        private void FormatData(ExcelWorksheet worksheet, int row, int col, object? value, string? align, string? format = null)
         {
             var horizontalAlign = ExcelHorizontalAlignment.Left;
 
@@ -190,7 +190,14 @@ namespace MISA.AmisMintax.Infrastructure
             switch (value)
             {
                 case DateTime:
-                    worksheet.Cells[row, col].Value = ((DateTime)value).ToString("dd/MM/yyyy");
+                    if (format != null)
+                    {
+                        worksheet.Cells[row, col].Value = ((DateTime)value).ToString(format);
+                    }
+                    else
+                    {
+                        worksheet.Cells[row, col].Value = ((DateTime)value).ToString("dd/MM/yyyy");
+                    }
                     break;
                 default:
                     worksheet.Cells[row, col].Value = value;

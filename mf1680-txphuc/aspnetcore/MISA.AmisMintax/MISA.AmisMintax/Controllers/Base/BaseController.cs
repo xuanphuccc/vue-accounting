@@ -43,6 +43,12 @@ namespace MISA.AmisMintax
             return Ok(result);
         }
 
+        /// <summary>
+        /// Sửa hàng loạt bản ghi
+        /// </summary>
+        /// <param name="entityUpdateDtos">Danh sách bản ghi cần sửa</param>
+        /// <returns>Số bản ghi bị ảnh hưởng</returns>
+        /// CreatedBy: txphuc (28/08/2023)
         [HttpPut]
         public async Task<IActionResult> UpdateMultipleAsync([FromBody] List<TEntityUpdateDto> entityUpdateDtos)
         {
