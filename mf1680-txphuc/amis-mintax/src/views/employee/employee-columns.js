@@ -1,11 +1,12 @@
 import enums from "@/enum/enum";
 import { formatDate } from "devextreme/localization";
 import { getRelationship } from "@/api/mock-data";
+import i18n from "@/i18n";
 
 export const employeeColumns = [
   {
     dataField: "EmployeeCode",
-    caption: "Mã nhân viên",
+    caption: i18n.t("employee.employeeDetail.employeeCodeColumn"),
     dataType: "number",
     alignment: "left",
     fixed: true,
@@ -14,7 +15,7 @@ export const employeeColumns = [
   },
   {
     dataField: "FullName",
-    caption: "Họ và tên",
+    caption: i18n.t("employee.employeeDetail.fullNameColumn"),
     dataType: "string",
     alignment: "left",
     fixed: true,
@@ -23,7 +24,7 @@ export const employeeColumns = [
   },
   {
     dataField: "EmployeeType",
-    caption: "Loại đối tượng",
+    caption: i18n.t("employee.employeeDetail.employeeType"),
     dataType: "string",
     customizeText: (e) => (e.value == enums.employeeType.employee ? "Nhân viên" : "Vãng lai"),
     alignment: "left",
@@ -32,7 +33,7 @@ export const employeeColumns = [
   },
   {
     dataField: "OrganizationUnitName",
-    caption: "Bộ phận/Phòng ban",
+    caption: i18n.t("employee.employeeDetail.departmentColumn"),
     dataType: "string",
     alignment: "left",
     width: 220,
@@ -40,7 +41,7 @@ export const employeeColumns = [
   },
   {
     dataField: "TaxCode",
-    caption: "Mã số thuế",
+    caption: i18n.t("employee.employeeDetail.taxCode"),
     dataType: "string",
     alignment: "left",
     width: 180,
@@ -48,7 +49,7 @@ export const employeeColumns = [
   },
   {
     dataField: "IdentifyNumber",
-    caption: "Số CMND/CCCD/Hộ chiếu",
+    caption: i18n.t("employee.employeeDetail.identifyNumberColumn"),
     trueText: "Số Chứng minh nhân dân/Căn cước công dân/Hộ chiếu",
     dataType: "string",
     alignment: "left",
@@ -57,7 +58,7 @@ export const employeeColumns = [
   },
   {
     dataField: "DateOfBirth",
-    caption: "Ngày sinh",
+    caption: i18n.t("employee.employeeDetail.dateOfBirth"),
     dataType: "date",
     customizeText: (e) => (e.value ? formatDate(new Date(e.value), "dd/MM/yyyy") : ""),
     alignment: "center",
@@ -66,7 +67,7 @@ export const employeeColumns = [
   },
   {
     dataField: "GenderName",
-    caption: "Giới tính",
+    caption: i18n.t("employee.employeeDetail.gender"),
     dataType: "string",
     alignment: "left",
     width: 150,
@@ -74,7 +75,7 @@ export const employeeColumns = [
   },
   {
     dataField: "ContractMintaxTypeName",
-    caption: "Loại hợp đồng",
+    caption: i18n.t("employee.employeeDetail.contractType"),
     dataType: "string",
     alignment: "left",
     width: 180,
@@ -82,7 +83,7 @@ export const employeeColumns = [
   },
   {
     dataField: "Mobile",
-    caption: "Số điện thoại",
+    caption: i18n.t("employee.employeeDetail.mobile"),
     dataType: "string",
     alignment: "left",
     width: 180,
@@ -90,7 +91,7 @@ export const employeeColumns = [
   },
   {
     dataField: "Email",
-    caption: "Email",
+    caption: i18n.t("employee.employeeDetail.email"),
     dataType: "string",
     alignment: "left",
     width: 260,
@@ -98,7 +99,7 @@ export const employeeColumns = [
   },
   {
     dataField: "JobPositionName",
-    caption: "Vị trí/Chức vụ",
+    caption: i18n.t("employee.employeeDetail.jobPositionColumn"),
     dataType: "string",
     alignment: "left",
     width: 220,
@@ -106,7 +107,7 @@ export const employeeColumns = [
   },
   {
     dataField: "ProbationDate",
-    caption: "Ngày học việc",
+    caption: i18n.t("employee.employeeDetail.probationDate"),
     dataType: "string",
     customizeText: (e) => (e.value ? formatDate(new Date(e.value), "dd/MM/yyyy") : ""),
     alignment: "center",
@@ -115,7 +116,7 @@ export const employeeColumns = [
   },
   {
     dataField: "HireDate",
-    caption: "Ngày thử việc",
+    caption: i18n.t("employee.employeeDetail.hireDate"),
     dataType: "date",
     customizeText: (e) => (e.value ? formatDate(new Date(e.value), "dd/MM/yyyy") : ""),
     alignment: "center",
@@ -124,7 +125,7 @@ export const employeeColumns = [
   },
   {
     dataField: "ReceiveDate",
-    caption: "Ngày chính thức",
+    caption: i18n.t("employee.employeeDetail.receiveDate"),
     dataType: "date",
     customizeText: (e) => (e.value ? formatDate(new Date(e.value), "dd/MM/yyyy") : ""),
     alignment: "center",
@@ -133,7 +134,7 @@ export const employeeColumns = [
   },
   {
     dataField: "TerminationDate",
-    caption: "Ngày nghỉ việc",
+    caption: i18n.t("employee.employeeDetail.terminationDate"),
     dataType: "date",
     customizeText: (e) => (e.value ? formatDate(new Date(e.value), "dd/MM/yyyy") : ""),
     alignment: "center",
@@ -142,7 +143,7 @@ export const employeeColumns = [
   },
   {
     dataField: "EmployeeStatus",
-    caption: "Trạng thái làm việc",
+    caption: i18n.t("employee.employeeDetail.employeeStatus"),
     dataType: "string",
     customizeText: (e) =>
       e.value == enums.workStatus.currentlyEmployed ? "Đang làm việc" : "Đã nghỉ việc",
@@ -155,7 +156,7 @@ export const employeeColumns = [
 export const employeeRelationshipColumns = [
   {
     dataField: "FullName",
-    caption: "Họ và tên",
+    caption: i18n.t("employee.employeeFamilyDetail.fullNameColumn"),
     dataType: "string",
     alignment: "left",
     fixed: false,
@@ -164,7 +165,7 @@ export const employeeRelationshipColumns = [
   },
   {
     dataField: "TaxCode",
-    caption: "Mã số thuế",
+    caption: i18n.t("employee.employeeFamilyDetail.taxCode"),
     dataType: "string",
     alignment: "left",
     fixed: false,
@@ -173,7 +174,7 @@ export const employeeRelationshipColumns = [
   },
   {
     dataField: "IsDependent",
-    caption: "Là người phụ thuộc",
+    caption: i18n.t("employee.employeeFamilyDetail.isDependent"),
     dataType: "string",
     alignment: "center",
     fixed: false,
@@ -182,7 +183,7 @@ export const employeeRelationshipColumns = [
   },
   {
     dataField: "DateOfBirth",
-    caption: "Ngày sinh",
+    caption: i18n.t("employee.employeeFamilyDetail.dateOfBirth"),
     dataType: "date",
     customizeText: (e) => (e.value ? formatDate(new Date(e.value), "dd/MM/yyyy") : ""),
     alignment: "center",
@@ -192,7 +193,7 @@ export const employeeRelationshipColumns = [
   },
   {
     dataField: "Relationship",
-    caption: "Quan hệ",
+    caption: i18n.t("employee.employeeFamilyDetail.relationship"),
     dataType: "string",
     customizeText: (e) => getRelationship(e.value)?.label,
     alignment: "left",
@@ -202,7 +203,7 @@ export const employeeRelationshipColumns = [
   },
   {
     dataField: "DeductionStartDate",
-    caption: "Giảm trừ từ",
+    caption: i18n.t("employee.employeeFamilyDetail.deductionStartDateColumn"),
     dataType: "date",
     customizeText: (e) => (e.value ? formatDate(new Date(e.value), "MM/yyyy") : ""),
     alignment: "center",
@@ -212,7 +213,7 @@ export const employeeRelationshipColumns = [
   },
   {
     dataField: "DeductionEndDate",
-    caption: "Giảm trừ đến",
+    caption: i18n.t("employee.employeeFamilyDetail.deductionEndDateColumn"),
     dataType: "date",
     customizeText: (e) => (e.value ? formatDate(new Date(e.value), "MM/yyyy") : ""),
     alignment: "center",

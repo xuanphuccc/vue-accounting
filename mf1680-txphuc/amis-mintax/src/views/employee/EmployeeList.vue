@@ -2,12 +2,12 @@
   <div class="page-container">
     <div class="page__header">
       <div class="page__title-wrapper">
-        <h1 class="page__title">Hồ sơ người nộp thuế</h1>
+        <h1 class="page__title">{{ $t("employee.employeeList.title") }}</h1>
       </div>
 
       <div class="page__header-controls">
-        <MISAButton color="secondary"
-          >Đồng bộ AMIS Hệ thống
+        <MISAButton color="secondary">
+          {{ $t("employee.employeeList.button.syncAmisSystem") }}
           <template slot="icon">
             <MISAIcon icon="amis-system" />
           </template>
@@ -20,7 +20,8 @@
             }
           "
           color="secondary"
-          >Quản lý lao động sử dụng dịch vụ
+        >
+          {{ $t("employee.employeeList.button.manageEmployeeUsingService") }}
           <template slot="icon">
             <MISAIcon color="#007aff" icon="manage-license" no-color />
           </template>
@@ -33,24 +34,26 @@
         <!-- Thông tin các hàng đang được chọn -->
         <div v-if="selectedRowsData?.length > 0" class="selection-container">
           <div class="selection-info">
-            <span>Đã chọn</span>
+            <span>{{ $t("text.selected") }}</span>
             <span class="text-bold selection-info__number">{{ selectedRowsData?.length }}</span>
 
             <div class="v-separate"></div>
 
-            <MISAButton @click="clearAllSelection" type="link" color="danger">Bỏ chọn</MISAButton>
+            <MISAButton @click="clearAllSelection" type="link" color="danger">{{
+              $t("button.unChecked")
+            }}</MISAButton>
           </div>
           <div class="selection-controls">
             <div class="controls__group">
               <MISAButton color="secondary">
-                Lập tờ khai
+                {{ $t("employee.employeeList.button.createDeclaration") }}
                 <template slot="icon">
                   <MISAIcon size="20" icon="plus" />
                 </template>
               </MISAButton>
 
               <MISAButton color="secondary">
-                Lập thủ tục
+                {{ $t("employee.employeeList.button.createProcedure") }}
                 <template slot="icon">
                   <MISAIcon size="20" icon="plus" />
                 </template>
@@ -63,7 +66,7 @@
                 :loading="isLoadingExportExcel"
                 color="secondary"
               >
-                Xuất khẩu
+                {{ $t("button.exportExcel") }}
                 <template slot="icon">
                   <MISAIcon size="20" icon="export" />
                 </template>
@@ -73,12 +76,14 @@
                 v-tooltip="'Ctrl + D'"
                 @click="
                   showDeleteConfirmDialog(
-                    `Bạn có chắc chắn muốn xoá <b>${selectedRowsData.length}</b> người nộp thuế vào Thùng rác?`
+                    $t('employee.dialog.deleteMultipleEmployeeDesc', {
+                      quantity: selectedRowsData.length,
+                    })
                   )
                 "
                 color="secondary"
               >
-                Xoá
+                {{ $t("button.delete") }}
                 <template slot="icon">
                   <MISAIcon color="#eb3333" size="20" icon="trash" />
                 </template>
@@ -92,14 +97,14 @@
           <div class="filter__left">
             <div class="controls__group">
               <MISATextBox
-                v-tooltip="'Tìm theo Mã/Tên nhân viên, MST, CMND'"
+                v-tooltip="$t('employee.filterBar.search')"
                 @enter-key="applySearch"
-                placeholder="Tìm theo Mã/Tên nhân viên, MST, CMND"
+                :placeholder="$t('employee.filterBar.search')"
               >
                 <MISAIcon size="20" icon="search" />
               </MISATextBox>
 
-              <MISATreeView placeholder="Bộ phận/phòng ban" />
+              <MISATreeView :placeholder="$t('employee.filterBar.department')" />
             </div>
 
             <div class="controls__group">
@@ -108,7 +113,7 @@
                 :loading="isLoadingExportExcel"
                 color="secondary"
               >
-                Xuất khẩu
+                {{ $t("button.exportExcel") }}
                 <template slot="icon">
                   <MISAIcon :size="20" icon="export" />
                 </template>
@@ -119,7 +124,7 @@
           <div class="filter__right">
             <MISAButtonGroup>
               <MISAButton v-tooltip="'Ctrl + 1'" @click="openFormForCreate">
-                Thêm mới
+                {{ $t("button.addNew") }}
                 <template slot="icon">
                   <MISAIcon size="20" icon="plus" />
                 </template>
@@ -132,7 +137,7 @@
             </MISAButtonGroup>
 
             <MISAButton
-              v-tooltip="'Bộ lọc'"
+              v-tooltip="$t('employee.filterBar.filter')"
               @click="isOpenFilterPopup = true"
               :badge="detectFilter"
               color="secondary"
@@ -144,7 +149,7 @@
             </MISAButton>
 
             <MISAButton
-              v-tooltip="'Tuỳ chỉnh cột'"
+              v-tooltip="$t('employee.filterBar.customizeColumns')"
               @click="isOpenTableCustomize = true"
               color="secondary"
             >
@@ -366,8 +371,9 @@ export default {
      */
     onClickDeleteRow(row) {
       this.activeRowState = row.data;
+
       this.showDeleteConfirmDialog(
-        `Bạn có chắc chắn muốn xóa người nộp thuế <b>${row?.data?.FullName}</b> vào Thùng rác?`
+        this.$t("employee.dialog.deleteEmployeeDesc", { employee: row?.data?.FullName })
       );
     },
 
@@ -565,7 +571,7 @@ export default {
      */
     showDeleteConfirmDialog(description) {
       this.$store.dispatch("dialogStore/showDeleteWarning", {
-        title: "Xoá người nộp thuế",
+        title: this.$t("employee.dialog.deleteEmployeeTitle"),
         description,
         okHandler: this.handleDeleteEmployee,
         cancelHandler: this.hideConfirmDialog,
@@ -618,7 +624,7 @@ export default {
 
         // Hiện toast message xoá thành công
         this.$store.dispatch("toastStore/pushSuccessMessage", {
-          message: "Xoá người nộp thuế thành công",
+          message: this.$t("employee.toast.deleteSuccess"),
         });
       } catch (error) {
         console.warn(error);
@@ -647,7 +653,7 @@ export default {
 
         // Hiện toast message xoá thành công
         this.$store.dispatch("toastStore/pushSuccessMessage", {
-          message: "Xoá người nộp thuế thành công",
+          message: this.$t("employee.toast.deleteSuccess"),
         });
       } catch (error) {
         console.warn(error);
@@ -722,7 +728,9 @@ export default {
                 e.preventDefault();
 
                 this.showDeleteConfirmDialog(
-                  `Bạn có chắc chắn muốn xoá <b>${this.selectedRowsData.length}</b> người nộp thuế vào Thùng rác?`
+                  this.$t("employee.dialog.deleteMultipleEmployeeDesc", {
+                    quantity: this.selectedRowsData.length,
+                  })
                 );
               }
               break;

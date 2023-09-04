@@ -1,14 +1,18 @@
 <template>
   <div @click.stop="" class="ms-table-customize">
     <div class="ms-table-customize__header">
-      <div class="ms-table-customize__header-title">Tuỳ chỉnh cột</div>
-      <div v-tooltip="'Đóng'" @click="$emit('close')" class="ms-table-customize__close">
+      <div class="ms-table-customize__header-title">{{ $t("customizeColumn.title") }}</div>
+      <div
+        v-tooltip="$t('tooltip.close')"
+        @click="$emit('close')"
+        class="ms-table-customize__close"
+      >
         <MISAIcon icon="times" />
       </div>
     </div>
 
     <div class="ms-table-customize__search">
-      <MISATextBox v-model="search" placeholder="Tìm kiếm">
+      <MISATextBox v-model="search" :placeholder="$t('customizeColumn.search')">
         <MISAIcon size="20" icon="search" />
       </MISATextBox>
     </div>
@@ -44,8 +48,10 @@
     </div>
 
     <div class="ms-table-customize__footer">
-      <MISAButton @click="resetDefault" color="secondary"> Mặc định </MISAButton>
-      <MISAButton @click="saveChange" type="primary"> Lưu </MISAButton>
+      <MISAButton @click="resetDefault" color="secondary">{{
+        $t("button.restoreDefault")
+      }}</MISAButton>
+      <MISAButton @click="saveChange" type="primary">{{ $t("button.save") }}</MISAButton>
     </div>
   </div>
 </template>

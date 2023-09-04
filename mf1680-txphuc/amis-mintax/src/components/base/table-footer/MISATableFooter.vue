@@ -1,15 +1,15 @@
 <template>
   <div class="ms-table__footer">
     <p class="total-row">
-      <span>Tổng số: </span>
+      <span>{{ $t("paging.totalRecords") }}: </span>
       <span class="text-bold">{{ this.totalRecords }}</span>
-      {{ " " }}<span>bản ghi</span>
+      {{ " " }}<span>{{ $t("paging.records") }}</span>
     </p>
 
     <div class="ms-table__page-infor">
       <!-- page size dropdown -->
       <div class="ms-table__page-size">
-        <div class="ms-table__page-size-text">Số bản ghi/trang</div>
+        <div class="ms-table__page-size-text">{{ $t("paging.itemsPerPage") }}</div>
 
         <div class="ms-table__page-size-select-wrap">
           <MISASelectBox
@@ -33,20 +33,20 @@
         <p>
           {{ recordsRange.min }} -
           <span class="text-bold">{{ recordsRange.max }}</span>
-          bản ghi
+          {{ $t("paging.records") }}
         </p>
       </div>
 
       <!-- page controls -->
       <div class="ms-table__page-controls">
         <span
-          v-tooltip="'Trang trước'"
+          v-tooltip="$t('paging.prevPage')"
           @click="handlePrevPage"
           :class="['ms-table__prev-btn', { '--disable': currentPage <= 1 }]"
           ><MISAIcon icon="angle-left"
         /></span>
         <span
-          v-tooltip="'Trang sau'"
+          v-tooltip="$t('paging.nextPage')"
           @click="handleNextPage"
           :class="['ms-table__next-btn', { '--disable': currentPage >= totalPages }]"
         >

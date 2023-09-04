@@ -1,8 +1,8 @@
 <template>
   <div @click.stop="" class="ms-filter-popup">
     <div class="ms-filter-popup__header">
-      <div class="ms-filter-popup__header-title">Bộ lọc</div>
-      <div v-tooltip="'Đóng'" @click="closeFilter" class="ms-filter-popup__close">
+      <div class="ms-filter-popup__header-title">{{ $t("filterPopup.title") }}</div>
+      <div v-tooltip="$t('tooltip.close')" @click="closeFilter" class="ms-filter-popup__close">
         <MISAIcon icon="times" />
       </div>
     </div>
@@ -28,6 +28,7 @@
               :key="filter.key"
               class="ms-filter-popup__item-content"
             >
+              <!-- Lọc chỉ có hai tuỳ chọn -->
               <DxRadioGroup
                 v-if="filter.type == 'option'"
                 v-model="filter.value"
@@ -37,15 +38,16 @@
                 layout="horizontal"
               />
 
+              <!-- Lọc khoảng ngày tháng -->
               <div v-if="filter.type == 'date-between'">
                 <div class="ms-filter-popup__input-wrap">
-                  <div class="ms-filter-popup__input-label">Từ ngày:</div>
+                  <div class="ms-filter-popup__input-label">{{ $t("filterPopup.startDate") }}:</div>
                   <div class="ms-filter-popup__input">
                     <MISADatePicker v-model="filter.start" />
                   </div>
                 </div>
                 <div class="ms-filter-popup__input-wrap">
-                  <div class="ms-filter-popup__input-label">Đến ngày:</div>
+                  <div class="ms-filter-popup__input-label">{{ $t("filterPopup.endDate") }}:</div>
                   <div class="ms-filter-popup__input">
                     <MISADatePicker v-model="filter.end" />
                   </div>
@@ -58,8 +60,10 @@
     </div>
 
     <div class="ms-filter-popup__footer">
-      <MISAButton @click="resetFilter" color="secondary">Bỏ lọc</MISAButton>
-      <MISAButton @click="applyFilterChange" type="primary">Áp dụng</MISAButton>
+      <MISAButton @click="resetFilter" color="secondary">{{
+        $t("button.removeFilter")
+      }}</MISAButton>
+      <MISAButton @click="applyFilterChange" type="primary">{{ $t("button.apply") }}</MISAButton>
     </div>
   </div>
 </template>

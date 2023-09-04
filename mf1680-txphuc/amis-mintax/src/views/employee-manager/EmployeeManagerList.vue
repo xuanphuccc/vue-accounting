@@ -4,7 +4,7 @@
       <div class="page__title-wrapper">
         <h1 class="page__title">
           <div
-            v-tooltip="'Quay lại'"
+            v-tooltip="$t('tooltip.back')"
             @click="
               () => {
                 this.$router.push({ name: 'employee' });
@@ -14,13 +14,13 @@
           >
             <MISAIcon size="24" icon="arrow-left" />
           </div>
-          Quản lý lao động sử dụng dịch vụ
+          {{ $t("employee.employeeManagerList.title") }}
         </h1>
       </div>
 
       <div class="page__header-controls">
-        <MISAButton color="primary"
-          >Thiết lập quy tắc tự động
+        <MISAButton color="primary">
+          {{ $t("employee.employeeManagerList.button.configureAutomaticRules") }}
           <template slot="icon">
             <MISAIcon icon="mintax-setting" />
           </template>
@@ -31,25 +31,29 @@
     <div v-if="isOpenCounter" class="counter-block">
       <div @click="filterRequest.usageStatus = null" class="counter-block__item --blue">
         <div class="counter-block__number">{{ usageCount.totalRecords }}</div>
-        <div class="counter-block__title">Tổng số lao động</div>
+        <div class="counter-block__title">
+          {{ $t("employee.employeeManagerList.totalEmployees") }}
+        </div>
         <div class="counter-block__text">
-          Tất cả người nộp thuế có loại đối tượng là Nhân viên và Vãng lai trên AMIS Thuế TNCN
+          {{ $t("employee.employeeManagerList.totalEmployeesDesc") }}
         </div>
       </div>
       <div @click="filterRequest.usageStatus = true" class="counter-block__item --green">
         <div class="counter-block__number">{{ usageCount.usedRecords }}</div>
-        <div class="counter-block__title">Đang sử dụng dịch vụ</div>
+        <div class="counter-block__title">
+          {{ $t("employee.employeeManagerList.currentlyUsingService") }}
+        </div>
         <div class="counter-block__text">
-          Người nộp thuế có loại đối tượng là Nhân viên và Vãng lai có thiết lập sử dụng dịch vụ
-          Thuế TNCN
+          {{ $t("employee.employeeManagerList.currentlyUsingServiceDesc") }}
         </div>
       </div>
       <div @click="filterRequest.usageStatus = false" class="counter-block__item --red">
         <div class="counter-block__number">{{ usageCount.unusedRecords }}</div>
-        <div class="counter-block__title">Không sử dụng dịch vụ</div>
+        <div class="counter-block__title">
+          {{ $t("employee.employeeManagerList.notUsingService") }}
+        </div>
         <div class="counter-block__text">
-          Người nộp thuế có loại đối tượng là Nhân viên và Vãng lai không thiết lập sử dụng dịch vụ
-          Thuế TNCN
+          {{ $t("employee.employeeManagerList.notUsingServiceDesc") }}
         </div>
       </div>
     </div>
@@ -65,17 +69,19 @@
         <!-- Thông tin các bản ghi được chọn -->
         <div v-if="selectedRowsData.length > 0" class="selection-container">
           <div class="selection-info">
-            <span>Đã chọn</span>
+            <span>{{ $t("text.selected") }}</span>
             <span class="text-bold selection-info__number">{{ selectedRowsData.length }}</span>
 
             <div class="v-separate"></div>
 
-            <MISAButton @click="clearAllSelection" type="link" color="danger">Bỏ chọn</MISAButton>
+            <MISAButton @click="clearAllSelection" type="link" color="danger">{{
+              $t("button.unChecked")
+            }}</MISAButton>
           </div>
           <div class="selection-controls">
             <div class="controls__group">
               <MISAButton @click="updateUsageStatus(true)" color="secondary">
-                Sử dụng
+                {{ $t("button.using") }}
                 <template slot="icon">
                   <MISAIcon color="#50b83c" size="20" icon="plus" />
                 </template>
@@ -84,7 +90,7 @@
 
             <div class="controls__group">
               <MISAButton @click="updateUsageStatus(false)" color="secondary">
-                Ngừng sử dụng
+                {{ $t("button.stopUsing") }}
                 <template slot="icon">
                   <MISAIcon color="#eb3333" size="20" icon="circle-slash" />
                 </template>
@@ -97,31 +103,31 @@
           <div class="filter__left">
             <div class="controls__group">
               <MISATextBox
-                v-tooltip="'Tìm theo Mã/Tên nhân viên, MST, CMND'"
+                v-tooltip="$t('employee.filterBar.search')"
                 @enter-key="applySearch"
-                placeholder="Tìm theo Mã/Tên nhân viên, MST, CMND"
+                :placeholder="$t('employee.filterBar.search')"
               >
                 <MISAIcon size="20" icon="search" />
               </MISATextBox>
 
-              <MISATreeView placeholder="Bộ phận/phòng ban" />
+              <MISATreeView :placeholder="$t('employee.filterBar.department')" />
 
               <MISASelectBox
                 v-model="filterRequest.usageStatus"
                 :dataSource="[
-                  { value: true, label: 'Đang sử dụng' },
-                  { value: false, label: 'Không sử dụng' },
+                  { value: true, label: $t('employee.usageStatus.using') },
+                  { value: false, label: $t('employee.usageStatus.stopUsing') },
                 ]"
                 displayExpr="label"
                 valueExpr="value"
-                placeholder="Trạng thái sử dụng"
+                :placeholder="$t('employee.filterBar.usageStatus')"
               />
             </div>
           </div>
 
           <div class="filter__right">
             <MISAButton
-              v-tooltip="'Tuỳ chỉnh cột'"
+              v-tooltip="$t('employee.filterBar.customizeColumns')"
               @click="isOpenTableCustomize = true"
               color="secondary"
             >
@@ -185,14 +191,16 @@ import MISATreeView from "@/components/base/tree-view/MISATreeView.vue";
 import MISASelectBox from "@/components/base/select-box/MISASelectBox.vue";
 import MISABadge from "@/components/base/badge/MISABadge.vue";
 import employeeApi from "@/api/employee-api";
+import i18n from "@/i18n";
 
 const defaultCols = [
   ...employeeColumns,
   {
     dataField: "UsageStatus",
-    caption: "Trạng thái sử dụng dịch vụ",
+    caption: i18n.t("employee.employeeDetail.usageStatus"),
     dataType: "string",
-    customizeText: (e) => (e.value ? "Đang sử dụng" : "Ngừng sử dụng"),
+    customizeText: (e) =>
+      e.value ? i18n.t("employee.usageStatus.using") : i18n.t("employee.usageStatus.stopUsing"),
     alignment: "center",
     width: 220,
     visible: true,

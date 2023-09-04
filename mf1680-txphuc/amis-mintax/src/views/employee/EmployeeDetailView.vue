@@ -4,7 +4,7 @@
       <div class="page__title-wrapper">
         <h1 class="page__title">
           <div
-            v-tooltip="'Quay lại'"
+            v-tooltip="$t('tooltip.back')"
             @click="
               () => {
                 this.$router.push({ name: 'employee' });
@@ -14,7 +14,7 @@
           >
             <MISAIcon size="24" icon="arrow-left" />
           </div>
-          Thông tin người nộp thuế
+          {{ $t("employee.employeeDetail.viewTitle") }}
         </h1>
       </div>
 
@@ -23,14 +23,14 @@
           <template #icon>
             <MISAIcon size="20" icon="trash" />
           </template>
-          Xoá
+          {{ $t("button.delete") }}
         </MISAButton>
 
         <MISAButton @click="onClickEditButton" color="primary">
           <template #icon>
             <MISAIcon size="20" icon="pen" />
           </template>
-          Chỉnh sửa
+          {{ $t("button.edit") }}
         </MISAButton>
       </div>
     </div>
@@ -48,9 +48,13 @@
           </div>
         </div>
         <div class="form-content-wrapper">
-          <div ref="mainInfo" class="form-content__header pb-24">Thông tin chung</div>
+          <div ref="mainInfo" class="form-content__header pb-24">
+            {{ $t("employee.employeeDetail.mainInfoTitle") }}
+          </div>
 
-          <div class="form-content__subheader">Thông tin cá nhân</div>
+          <div class="form-content__subheader">
+            {{ $t("employee.employeeDetail.personalInfoSubTitle") }}
+          </div>
 
           <div class="mb-24">
             <MISARow :gutter="{ x: 80 }">
@@ -59,7 +63,7 @@
                   <MISARow>
                     <MISACol :span="4">
                       <div class="height-36 d-flex align-center flex-wrap pr-12">
-                        Loại đối tượng
+                        {{ $t("employee.employeeDetail.employeeType") }}
                       </div>
                     </MISACol>
                     <MISACol :span="8">
@@ -74,7 +78,7 @@
                   <MISARow>
                     <MISACol :span="4">
                       <label for="test" class="height-36 d-flex align-center flex-wrap pr-12">
-                        Mã người nộp thuế
+                        {{ $t("employee.employeeDetail.employeeCode") }}
                       </label>
                     </MISACol>
                     <MISACol :span="8">
@@ -86,7 +90,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Họ tên</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.fullName") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">{{ employeeFormated?.FullName ?? "-" }}</div>
@@ -97,7 +103,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Ngày sinh</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.dateOfBirth") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">
@@ -110,7 +118,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Giới tính</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.gender") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="height-36 d-flex align-center">
@@ -133,7 +143,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Số điện thoại</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.mobile") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">{{ employeeFormated?.Mobile ?? "-" }}</div>
@@ -144,7 +156,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Email</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.email") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">{{ employeeFormated?.Email ?? "-" }}</div>
@@ -156,7 +170,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Mã số thuế</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.taxCode") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">{{ employeeFormated?.TaxCode ?? "-" }}</div>
@@ -167,7 +183,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Loại giấy tờ</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.identifyType") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">
@@ -184,7 +202,11 @@
                         v-tooltip="'Số Chứng minh nhân dân'"
                         class="height-36 d-flex align-center flex-wrap pr-12"
                       >
-                        Số {{ employeeFormated?.IdentifyTypeName ?? "-" }}
+                        {{
+                          $t("employee.employeeDetail.identifyNumber", {
+                            identifyType: employeeFormated?.IdentifyTypeName ?? "-",
+                          })
+                        }}
                       </div>
                     </MISACol>
                     <MISACol :span="8">
@@ -198,7 +220,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Ngày cấp</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.identifyDate") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">
@@ -211,7 +235,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Nơi cấp</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.identifyIssuedPlace") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">
@@ -224,7 +250,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Quốc tịch</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.national") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">{{ employeeFormated?.NationalName ?? "-" }}</div>
@@ -235,7 +263,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Loại hợp đồng</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.contractType") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">
@@ -248,7 +278,9 @@
             </MISARow>
           </div>
 
-          <div class="form-content__subheader mt-44">Hộ khẩu thường trú</div>
+          <div class="form-content__subheader mt-44">
+            {{ $t("employee.employeeDetail.permanentResidenceSubTitle") }}
+          </div>
 
           <div class="mb-24">
             <MISARow :gutter="{ x: 80 }">
@@ -256,7 +288,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Quốc gia</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.country") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">
@@ -270,7 +304,7 @@
                   <MISARow>
                     <MISACol :span="4">
                       <div class="height-36 d-flex align-center flex-wrap pr-12">
-                        Tỉnh/thành phố
+                        {{ $t("employee.employeeDetail.province") }}
                       </div>
                     </MISACol>
                     <MISACol :span="8">
@@ -284,7 +318,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Quận/huyện</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.district") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">
@@ -298,7 +334,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Xã/phường</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.ward") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">
@@ -312,7 +350,7 @@
                   <MISARow>
                     <MISACol :span="4">
                       <div class="height-36 d-flex align-center flex-wrap pr-12">
-                        Số nhà, đường/phố, thôn/xóm
+                        {{ $t("employee.employeeDetail.streetNumber") }}
                       </div>
                     </MISACol>
                     <MISACol :span="8">
@@ -326,7 +364,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Địa chỉ</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.address") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">
@@ -339,7 +379,9 @@
             </MISARow>
           </div>
 
-          <div class="form-content__subheader mt-44">Chỗ ở hiện nay</div>
+          <div class="form-content__subheader mt-44">
+            {{ $t("employee.employeeDetail.currentAccommodationSubTitle") }}
+          </div>
 
           <div class="mb-24">
             <MISARow :gutter="{ x: 80 }">
@@ -347,7 +389,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Quốc gia</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.country") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">
@@ -361,7 +405,7 @@
                   <MISARow>
                     <MISACol :span="4">
                       <div class="height-36 d-flex align-center flex-wrap pr-12">
-                        Tỉnh/thành phố
+                        {{ $t("employee.employeeDetail.province") }}
                       </div>
                     </MISACol>
                     <MISACol :span="8">
@@ -375,7 +419,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Quận/huyện</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.district") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">
@@ -389,7 +435,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Xã/phường</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.ward") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">
@@ -403,7 +451,7 @@
                   <MISARow>
                     <MISACol :span="4">
                       <div class="height-36 d-flex align-center flex-wrap pr-12">
-                        Số nhà, đường/phố, thôn/xóm
+                        {{ $t("employee.employeeDetail.streetNumber") }}
                       </div>
                     </MISACol>
                     <MISACol :span="8">
@@ -417,7 +465,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Địa chỉ</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.address") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">
@@ -431,7 +481,9 @@
           </div>
 
           <!-- ----- THÔNG TIN CÔNG VIỆC ----- -->
-          <div ref="jobInfo" class="form-content__header mt-44">Thông tin công việc</div>
+          <div ref="jobInfo" class="form-content__header mt-44">
+            {{ $t("employee.employeeDetail.jobInfoTitle") }}
+          </div>
 
           <div class="mb-24">
             <MISARow :gutter="{ x: 80 }">
@@ -440,7 +492,7 @@
                   <MISARow>
                     <MISACol :span="4">
                       <div class="height-36 d-flex align-center flex-wrap pr-12">
-                        Bộ phận/phòng ban
+                        {{ $t("employee.employeeDetail.department") }}
                       </div>
                     </MISACol>
                     <MISACol :span="8">
@@ -455,7 +507,7 @@
                   <MISARow>
                     <MISACol :span="4">
                       <div class="height-36 d-flex align-center flex-wrap pr-12">
-                        Vị trí công việc
+                        {{ $t("employee.employeeDetail.jobPosition") }}
                       </div>
                     </MISACol>
                     <MISACol :span="8">
@@ -469,7 +521,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Chức danh</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.jobTitle") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">{{ employeeFormated?.JobTitleName ?? "-" }}</div>
@@ -481,7 +535,7 @@
                   <MISARow>
                     <MISACol :span="4">
                       <div class="height-36 d-flex align-center flex-wrap pr-12">
-                        Trạng thái làm việc
+                        {{ $t("employee.employeeDetail.employeeStatus") }}
                       </div>
                     </MISACol>
                     <MISACol :span="8">
@@ -497,7 +551,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Ngày học việc</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.probationDate") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">
@@ -510,7 +566,9 @@
                 <div class="mt-16">
                   <MISARow>
                     <MISACol :span="4">
-                      <div class="height-36 d-flex align-center flex-wrap pr-12">Ngày thử việc</div>
+                      <div class="height-36 d-flex align-center flex-wrap pr-12">
+                        {{ $t("employee.employeeDetail.hireDate") }}
+                      </div>
                     </MISACol>
                     <MISACol :span="8">
                       <div class="form-input-view">
@@ -524,7 +582,7 @@
                   <MISARow>
                     <MISACol :span="4">
                       <div class="height-36 d-flex align-center flex-wrap pr-12">
-                        Ngày chính thức
+                        {{ $t("employee.employeeDetail.receiveDate") }}
                       </div>
                     </MISACol>
                     <MISACol :span="8">
@@ -539,7 +597,7 @@
                   <MISARow>
                     <MISACol :span="4">
                       <div class="height-36 d-flex align-center flex-wrap pr-12">
-                        Ngày nghỉ việc
+                        {{ $t("employee.employeeDetail.terminationDate") }}
                       </div>
                     </MISACol>
                     <MISACol :span="8">
@@ -555,12 +613,15 @@
 
           <!-- ----- THÔNG TIN GIA ĐÌNH ----- -->
           <div ref="familyInfo" class="d-flex align-center justify-content-between mt-44 pb-24">
-            <div class="form-content__header">Thông tin gia đình</div>
+            <div class="form-content__header">
+              {{ $t("employee.employeeDetail.familyInfoTitle") }}
+            </div>
             <MISAButton
               @click="$store.dispatch('employeeRelationshipStore/openFormForCreate')"
               type="outline"
               color="primary"
-              >Thêm
+            >
+              {{ $t("button.add") }}
               <template #icon>
                 <MISAIcon :size="20" icon="plus" />
               </template>
@@ -617,6 +678,7 @@ import { formatDate } from "devextreme/localization";
 import { employeeRelationshipColumns } from "./employee-columns";
 import { mapState, mapGetters } from "vuex";
 import { getCountry, getProvince, getDistrict, getWard } from "@/api/mock-data";
+import i18n from "@/i18n";
 
 export default {
   name: "EmployeeDetailView",
@@ -637,9 +699,9 @@ export default {
       activeFormSidebarItem: "main-info",
 
       formSidebarItems: [
-        { key: "main-info", title: "Thông tin chung" },
-        { key: "job-info", title: "Thông tin công việc" },
-        { key: "family-info", title: "Thông tin gia đình" },
+        { key: "main-info", title: i18n.t("employee.employeeDetail.mainInfoTitle") },
+        { key: "job-info", title: i18n.t("employee.employeeDetail.jobInfoTitle") },
+        { key: "family-info", title: i18n.t("employee.employeeDetail.familyInfoTitle") },
       ],
 
       // Các cột của bảng thành viên gia đình
@@ -763,8 +825,10 @@ export default {
      */
     showDeleteConfirmDialog() {
       this.$store.dispatch("dialogStore/showDeleteWarning", {
-        title: "Xoá người nộp thuế",
-        description: `Bạn có chắc chắn muốn xóa người nộp thuế <b>${this.employeeData?.FullName}</b> vào Thùng rác?`,
+        title: this.$t("employee.dialog.deleteEmployeeTitle"),
+        description: this.$t("employee.dialog.deleteEmployeeDesc", {
+          employee: this.employeeData?.FullName,
+        }),
         okHandler: this.deleteActiveEmployee,
       });
     },
@@ -794,7 +858,7 @@ export default {
 
           // Hiện toast message xoá thành công
           this.$store.dispatch("toastStore/pushSuccessMessage", {
-            message: "Xoá người nộp thuế thành công",
+            message: this.$t("employee.toast.deleteSuccess"),
           });
 
           // Tắt loading
@@ -856,9 +920,7 @@ export default {
      */
     onClickDeleteRow(row) {
       this.activeRowState = row.data;
-      this.showDeleteRelationshipConfirmDialog(
-        `Bạn có chắc chắn xóa thông tin gia đình này khỏi danh sách không?`
-      );
+      this.showDeleteRelationshipConfirmDialog(this.$t("employee.dialog.deleteFamilyDesc"));
     },
 
     /**
@@ -867,7 +929,7 @@ export default {
      */
     showDeleteRelationshipConfirmDialog(description) {
       this.$store.dispatch("dialogStore/showDeleteWarning", {
-        title: "Xoá dữ liệu",
+        title: this.$t("dialog.deleteTitle"),
         description,
         okHandler: this.deleteActiveRelationship,
       });
@@ -900,7 +962,7 @@ export default {
 
         // Hiện toast message xoá thành công
         this.$store.dispatch("toastStore/pushSuccessMessage", {
-          message: "Xoá thông tin gia đình thành công",
+          message: this.$t("employee.toast.deleteFamilySuccess"),
         });
       } catch (error) {
         console.warn(error);

@@ -1,7 +1,9 @@
+import i18n from "@/i18n";
+
 export const employeeFilterGroups = [
   {
     key: 1,
-    name: "Trạng thái làm việc",
+    name: i18n.t("employee.advancedFilter.workStatus"),
     enabled: false,
     filters: [
       {
@@ -12,11 +14,11 @@ export const employeeFilterGroups = [
         options: [
           {
             value: 1,
-            label: "Đang làm việc",
+            label: i18n.t("employee.workStatus.currentlyEmployed"),
           },
           {
             value: 0,
-            label: "Đã nghỉ việc",
+            label: i18n.t("employee.workStatus.formerlyEmployed"),
           },
         ],
       },
@@ -24,7 +26,7 @@ export const employeeFilterGroups = [
   },
   {
     key: 2,
-    name: "Loại đối tượng",
+    name: i18n.t("employee.advancedFilter.employeeType"),
     enabled: false,
     filters: [
       {
@@ -35,11 +37,11 @@ export const employeeFilterGroups = [
         options: [
           {
             value: 0,
-            label: "Nhân viên",
+            label: i18n.t("employee.employeeType.employee"),
           },
           {
             value: 1,
-            label: "Vãng lai",
+            label: i18n.t("employee.employeeType.client"),
           },
         ],
       },
@@ -47,7 +49,7 @@ export const employeeFilterGroups = [
   },
   {
     key: 3,
-    name: "Mã số thuế",
+    name: i18n.t("employee.advancedFilter.taxCode"),
     enabled: false,
     filters: [
       {
@@ -58,11 +60,11 @@ export const employeeFilterGroups = [
         options: [
           {
             value: "true",
-            label: "Đã có MST",
+            label: i18n.t("employee.advancedFilter.haveTaxCode"),
           },
           {
             value: "false",
-            label: "Chưa có MST",
+            label: i18n.t("employee.advancedFilter.noTaxCode"),
           },
         ],
       },
@@ -70,7 +72,7 @@ export const employeeFilterGroups = [
   },
   {
     key: 4,
-    name: "Thời gian",
+    name: i18n.t("employee.advancedFilter.time"),
     enabled: false,
     filters: [
       {
@@ -81,11 +83,11 @@ export const employeeFilterGroups = [
         options: [
           {
             value: "HireDate",
-            label: "Ngày thử việc",
+            label: i18n.t("employee.employeeDetail.hireDate"),
           },
           {
             value: "ReceiveDate",
-            label: "Ngày chính thức",
+            label: i18n.t("employee.employeeDetail.receiveDate"),
           },
         ],
       },

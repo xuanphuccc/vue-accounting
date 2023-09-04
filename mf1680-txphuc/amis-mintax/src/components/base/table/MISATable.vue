@@ -55,7 +55,9 @@
           :id="data.column?.dataField"
           class="ms-table__header-cell"
         >
-          {{ data.column?.caption }}
+          <div class="ms-table__cell-text-wrap">
+            {{ data.column?.caption }}
+          </div>
 
           <span
             v-if="apiSort && data.column?.dataField === sort.sortColumn"
@@ -78,7 +80,7 @@
       <template #cellTemplate="{ data }">
         <div class="ms-table__action-container">
           <MISAButton
-            v-tooltip="'Mở trong cửa sổ mới'"
+            v-tooltip="$t('button.openInNewWindow')"
             v-if="isShowActionButton('new-window')"
             @click="$emit('new-window', data)"
             type="rounded"
@@ -90,7 +92,7 @@
           </MISAButton>
 
           <MISAButton
-            v-tooltip="'Chỉnh sửa'"
+            v-tooltip="$t('button.edit')"
             v-if="isShowActionButton('edit')"
             @click="$emit('edit-row', data)"
             type="rounded"
@@ -102,7 +104,7 @@
           </MISAButton>
 
           <MISAButton
-            v-tooltip="'Xoá'"
+            v-tooltip="$t('button.delete')"
             v-if="isShowActionButton('delete')"
             @click="$emit('delete-row', data)"
             type="rounded"

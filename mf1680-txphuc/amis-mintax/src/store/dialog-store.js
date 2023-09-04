@@ -1,4 +1,5 @@
 import enums from "@/enum/enum";
+import i18n from "@/i18n";
 
 const dialogStore = {
   namespaced: true,
@@ -6,7 +7,7 @@ const dialogStore = {
   state: () => ({
     active: false,
     type: enums.dialog.type.INFO,
-    title: "Cảnh báo",
+    title: i18n.t("dialog.warningTitle"),
     description: "",
 
     // Hàm xử lý đóng dialog
@@ -72,11 +73,11 @@ const dialogStore = {
     showWarning({ commit }, description) {
       commit("SET_ACTIVE", true);
       commit("SET_TYPE", enums.dialog.type.WARNING);
-      commit("SET_TITLE", "Cảnh báo");
+      commit("SET_TITLE", i18n.t("dialog.warningTitle"));
       commit("SET_DESCRIPTION", description);
 
       commit("SET_BUTTONS", [
-        { key: 1, text: "Đồng ý", color: "danger", focus: true, action: "closeDialog" },
+        { key: 1, text: i18n.t("button.ok"), color: "danger", focus: true, action: "closeDialog" },
       ]);
     },
 
@@ -87,13 +88,24 @@ const dialogStore = {
     showExistFormWarning({ commit }, handler) {
       commit("SET_ACTIVE", true);
       commit("SET_TYPE", enums.dialog.type.WARNING);
-      commit("SET_TITLE", "Dữ liệu đã thay đổi");
-      commit("SET_DESCRIPTION", "Lưu lại những thay đổi?");
+      commit("SET_TITLE", i18n.t("dialog.closeFormWarningTitle"));
+      commit("SET_DESCRIPTION", i18n.t("dialog.closeFormWarningDesc"));
 
       commit("SET_BUTTONS", [
-        { key: 1, text: "Huỷ", color: "secondary", action: "closeDialog" },
-        { key: 2, text: "Không lưu", color: "solid-secondary", action: handler.cancel },
-        { key: 3, text: "Lưu", color: "primary", focus: true, action: handler.submit },
+        { key: 1, text: i18n.t("button.cancel"), color: "secondary", action: "closeDialog" },
+        {
+          key: 2,
+          text: i18n.t("button.dontSave"),
+          color: "solid-secondary",
+          action: handler.cancel,
+        },
+        {
+          key: 3,
+          text: i18n.t("button.save"),
+          color: "primary",
+          focus: true,
+          action: handler.submit,
+        },
       ]);
     },
 
@@ -120,11 +132,17 @@ const dialogStore = {
       commit("SET_BUTTONS", [
         {
           key: 1,
-          text: "Không",
+          text: i18n.t("button.no"),
           color: "secondary",
           action: options.cancelHandler || "closeDialog",
         },
-        { key: 2, text: "Có", color: "danger", focus: true, action: options.okHandler },
+        {
+          key: 2,
+          text: i18n.t("button.yes"),
+          color: "danger",
+          focus: true,
+          action: options.okHandler,
+        },
       ]);
     },
 

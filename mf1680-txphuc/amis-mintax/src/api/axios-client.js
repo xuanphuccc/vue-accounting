@@ -2,12 +2,28 @@ import axios from "axios";
 import enums from "@/enum/enum";
 import store from "@/store";
 
+/**
+ * Description: Chuyển mã ngôn ngữ của I18n sang mã ngôn ngữ của resource Backend
+ * Author: txphuc (02/09/2023)
+ */
+const getContentLanguage = (lang) => {
+  if (lang) {
+    if (lang == "vi") {
+      return enums.language.VN;
+    } else {
+      return enums.language.EN;
+    }
+  } else {
+    return enums.language.VN;
+  }
+};
+
 // Create new instance
 const axiosClient = axios.create({
   baseURL: "https://localhost:7047/api/v1",
   headers: {
     "Content-Type": "application/json",
-    ContentLanguage: localStorage.getItem("lang") ?? enums?.language?.VN,
+    ContentLanguage: getContentLanguage(localStorage.getItem("lang")),
   },
 });
 

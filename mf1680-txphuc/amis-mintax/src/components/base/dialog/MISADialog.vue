@@ -7,7 +7,11 @@
   >
     <div @click.stop="" class="ms-dialog">
       <h4 class="ms-dialog__title">{{ title }}</h4>
-      <div v-tooltip="'Đóng (ESC)'" @click="$emit('cancel')" class="ms-dialog__close">
+      <div
+        v-tooltip="$t('tooltip.close') + ' (ESC)'"
+        @click="$emit('cancel')"
+        class="ms-dialog__close"
+      >
         <MISAIcon icon="times" />
       </div>
 

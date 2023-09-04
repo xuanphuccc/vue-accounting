@@ -20,13 +20,13 @@
         </div>
       </div>
       <div class="navbar__controls">
-        <div v-tooltip="'Thông báo'" class="navbar__button">
+        <div v-tooltip="$t('tooltip.notification')" class="navbar__button">
           <MISAIcon icon="bell" />
         </div>
-        <div v-tooltip="'Trợ giúp'" class="navbar__button">
+        <div v-tooltip="$t('tooltip.help')" class="navbar__button">
           <MISAIcon icon="question-circle" />
         </div>
-        <div v-tooltip="'Tính năng khác'" class="navbar__button">
+        <div v-tooltip="$t('tooltip.otherFeatures')" class="navbar__button">
           <MISAIcon icon="menu-circle" />
         </div>
 
@@ -36,19 +36,19 @@
       </div>
     </div>
 
-    <!-- <MISAUserMenu v-if="isOpenUserMenu" @click.stop="" /> -->
+    <MISAUserMenu v-if="isOpenUserMenu" @click.stop="" />
   </header>
 </template>
 
 <script>
-// import MISAUserMenu from "@/components/base/user-menu/MISAUserMenu.vue";
+import MISAUserMenu from "@/components/base/user-menu/MISAUserMenu.vue";
 import MISAIcon from "@/components/base/icon/MISAIcon.vue";
-// import MISAResource from "@/resource/resource";
 
 export default {
   name: "TheNavBar",
   components: {
     MISAIcon,
+    MISAUserMenu,
   },
   data: function () {
     return {

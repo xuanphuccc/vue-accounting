@@ -7,7 +7,11 @@
           <slot name="header-controls"></slot>
         </div>
       </div>
-      <div v-tooltip="'Đóng (ESC)'" @click="$emit('close')" class="ms-popup__close">
+      <div
+        v-tooltip="$t('tooltip.close') + ' (ESC)'"
+        @click="$emit('close')"
+        class="ms-popup__close"
+      >
         <MISAIcon icon="times" />
       </div>
 

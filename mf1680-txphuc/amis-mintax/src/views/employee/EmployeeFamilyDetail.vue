@@ -2,7 +2,11 @@
   <MISAPopup
     @submit="handleSubmitForm()"
     @close="onCloseForm"
-    title="Thêm thành viên gia đình"
+    :title="
+      employeeRelationshipStore.mode == 0
+        ? $t('employee.employeeFamilyDetail.createFormTitle')
+        : $t('employee.employeeFamilyDetail.updateFormTitle')
+    "
     :width="1146"
   >
     <ValidationObserver ref="formValidation">
@@ -13,12 +17,13 @@
               <MISARow>
                 <MISACol :span="4">
                   <label for="fullname" class="height-36 d-flex align-center flex-wrap pr-12">
-                    Họ tên thành viên <span class="required-mark">*</span>
+                    {{ $t("employee.employeeFamilyDetail.fullName") }}
+                    <span class="required-mark">*</span>
                   </label>
                 </MISACol>
                 <MISACol :span="8">
                   <ValidationProvider
-                    name="Họ tên thành viên"
+                    :name="$t('employee.employeeFamilyDetail.fullName')"
                     rules="required"
                     v-slot="{ errors }"
                     slim
@@ -29,7 +34,9 @@
                         :is-valid="!errors[0]"
                         :max-length="100"
                         auto-focus
-                        placeholder="Nhập họ tên thành viên"
+                        :placeholder="`${$t('placeholder.input')} ${$t(
+                          'employee.employeeFamilyDetail.fullName'
+                        ).toLowerCase()}`"
                         id="fullname"
                       />
                       <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
@@ -43,11 +50,17 @@
               <MISARow>
                 <MISACol :span="4">
                   <label for="relationship" class="height-36 d-flex align-center flex-wrap pr-12">
-                    Quan hệ <span class="required-mark">*</span>
+                    {{ $t("employee.employeeFamilyDetail.relationship") }}
+                    <span class="required-mark">*</span>
                   </label>
                 </MISACol>
                 <MISACol :span="8">
-                  <ValidationProvider name="Quan hệ" rules="required" v-slot="{ errors }" slim>
+                  <ValidationProvider
+                    :name="$t('employee.employeeFamilyDetail.relationship')"
+                    rules="required"
+                    v-slot="{ errors }"
+                    slim
+                  >
                     <div class="width-100">
                       <MISASelectBox
                         v-model="formData.Relationship"
@@ -56,7 +69,9 @@
                         valueExpr="value"
                         :searchEnabled="true"
                         :is-valid="!errors[0]"
-                        placeholder="Chọn/nhập quan hệ"
+                        :placeholder="`${$t('placeholder.selectOrInput')} ${$t(
+                          'employee.employeeFamilyDetail.relationship'
+                        ).toLowerCase()}`"
                         id="relationship"
                       />
                       <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
@@ -69,9 +84,9 @@
             <div class="mt-16">
               <MISARow>
                 <MISACol :span="4">
-                  <label for="dateofbirth" class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Ngày sinh</label
-                  >
+                  <label for="dateofbirth" class="height-36 d-flex align-center flex-wrap pr-12">{{
+                    $t("employee.employeeFamilyDetail.dateOfBirth")
+                  }}</label>
                 </MISACol>
                 <MISACol :span="8">
                   <MISADatePicker
@@ -86,17 +101,17 @@
             <div class="mt-16">
               <MISARow>
                 <MISACol :span="4">
-                  <label for="test" class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Giới tính</label
-                  >
+                  <label for="test" class="height-36 d-flex align-center flex-wrap pr-12">{{
+                    $t("employee.employeeFamilyDetail.gender")
+                  }}</label>
                 </MISACol>
                 <MISACol :span="8">
                   <div class="height-36 d-flex align-center">
                     <DxRadioGroup
                       v-model="formData.Gender"
                       :items="[
-                        { value: 0, label: 'Nam' },
-                        { value: 1, label: 'Nữ' },
+                        { value: 0, label: $t('gender.male') },
+                        { value: 1, label: $t('gender.female') },
                       ]"
                       value-expr="value"
                       display-expr="label"
@@ -110,9 +125,9 @@
             <div class="mt-16">
               <MISARow>
                 <MISACol :span="4">
-                  <label for="tax-code" class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Mã số thuế</label
-                  >
+                  <label for="tax-code" class="height-36 d-flex align-center flex-wrap pr-12">{{
+                    $t("employee.employeeFamilyDetail.taxCode")
+                  }}</label>
                 </MISACol>
                 <MISACol :span="8">
                   <MISARow>
@@ -120,13 +135,15 @@
                       <MISATextBox
                         v-model="formData.TaxCode"
                         :max-length="10"
-                        placeholder="Nhập mã số thuế"
+                        :placeholder="`${$t('placeholder.input')} ${$t(
+                          'employee.employeeFamilyDetail.taxCode'
+                        ).toLowerCase()}`"
                         width="100%"
                         id="tax-code"
                       />
 
-                      <MISAButton color="secondary"
-                        >Lấy thông tin
+                      <MISAButton color="secondary">
+                        {{ $t("employee.employeeFamilyDetail.button.getInfo") }}
                         <template #icon>
                           <MISAIcon :size="20" icon="get-info" />
                         </template>
@@ -144,7 +161,7 @@
                   <label
                     for="nationality-code"
                     class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Quốc tịch</label
+                    >{{ $t("employee.employeeFamilyDetail.nationality") }}</label
                   >
                 </MISACol>
                 <MISACol :span="8">
@@ -154,7 +171,6 @@
                     displayExpr="label"
                     valueExpr="value"
                     :searchEnabled="true"
-                    placeholder="Chọn/nhập quốc tịch"
                     id="nationality-code"
                   />
                 </MISACol>
@@ -167,7 +183,7 @@
                   <label
                     for="identify-kind-of-paper"
                     class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Loại giấy tờ</label
+                    >{{ $t("employee.employeeFamilyDetail.identifyType") }}</label
                   >
                 </MISACol>
                 <MISACol :span="8">
@@ -176,7 +192,6 @@
                     :dataSource="identifyTypes"
                     displayExpr="label"
                     valueExpr="value"
-                    placeholder="Chọn loại giấy tờ"
                     id="identify-kind-of-paper"
                   />
                 </MISACol>
@@ -191,14 +206,22 @@
                     for="identify-paper-number"
                     class="height-36 d-flex align-center flex-wrap pr-12"
                   >
-                    Số {{ getIdentifyType(formData.IdentifyKindOfPaper)?.label }}
+                    {{
+                      $t("employee.employeeFamilyDetail.identifyNumber", {
+                        identifyType: getIdentifyType(formData.IdentifyKindOfPaper)?.label,
+                      })
+                    }}
                   </label>
                 </MISACol>
                 <MISACol :span="8">
                   <MISARow>
                     <div class="d-flex width-100 col-gap-8">
                       <ValidationProvider
-                        :name="'Số ' + getIdentifyType(formData.IdentifyKindOfPaper)?.label"
+                        :name="
+                          $t('employee.employeeFamilyDetail.identifyNumber', {
+                            identifyType: getIdentifyType(formData.IdentifyKindOfPaper)?.label,
+                          })
+                        "
                         rules="numeric"
                         v-slot="{ errors }"
                         slim
@@ -208,9 +231,12 @@
                             v-model="formData.IdentifyPaperNumber"
                             :is-valid="!errors[0]"
                             :max-length="20"
-                            :placeholder="
-                              'Nhập số ' + getIdentifyType(formData.IdentifyKindOfPaper)?.label
-                            "
+                            :placeholder="`${$t('placeholder.input')} ${$t(
+                              'employee.employeeFamilyDetail.identifyNumber',
+                              {
+                                identifyType: getIdentifyType(formData.IdentifyKindOfPaper)?.label,
+                              }
+                            )}`"
                             width="100%"
                             id="identify-paper-number"
                           />
@@ -218,8 +244,8 @@
                         </div>
                       </ValidationProvider>
 
-                      <MISAButton color="secondary"
-                        >Lấy thông tin
+                      <MISAButton color="secondary">
+                        {{ $t("employee.employeeFamilyDetail.button.getInfo") }}
                         <template #icon>
                           <MISAIcon :size="20" icon="get-info" />
                         </template>
@@ -236,7 +262,7 @@
                   <label
                     for="identify-number-issued-date"
                     class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Ngày cấp</label
+                    >{{ $t("employee.employeeFamilyDetail.identifyIssuedDate") }}</label
                   >
                 </MISACol>
                 <MISACol :span="8">
@@ -255,7 +281,7 @@
                   <label
                     for="identify-number-issued-place-code"
                     class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Nơi cấp</label
+                    >{{ $t("employee.employeeFamilyDetail.identifyIssuedPlace") }}</label
                   >
                 </MISACol>
                 <MISACol :span="8">
@@ -265,7 +291,9 @@
                     displayExpr="label"
                     valueExpr="value"
                     :searchEnabled="true"
-                    placeholder="Chọn/nhập nơi cấp"
+                    :placeholder="`${$t('placeholder.selectOrInput')} ${$t(
+                      'employee.employeeFamilyDetail.identifyIssuedPlace'
+                    ).toLowerCase()}`"
                     id="identify-number-issued-place-code"
                   />
                 </MISACol>
@@ -276,7 +304,9 @@
       </div>
 
       <!-- ----- THÔNG TIN KHAI SINH ----- -->
-      <div class="form-content__header">Thông tin khai sinh</div>
+      <div class="form-content__header">
+        {{ $t("employee.employeeFamilyDetail.birthInformationTitle") }}
+      </div>
       <div class="mb-24">
         <MISARow :gutter="{ x: 80 }">
           <MISACol :span="6">
@@ -286,14 +316,16 @@
                   <label
                     for="dependent-number"
                     class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Số khai sinh</label
+                    >{{ $t("employee.employeeFamilyDetail.dependentNumber") }}</label
                   >
                 </MISACol>
                 <MISACol :span="8">
                   <MISATextBox
                     v-model="formData.DependentNumber"
                     :max-length="20"
-                    placeholder="Nhập số khai sinh"
+                    :placeholder="`${$t('placeholder.input')} ${$t(
+                      'employee.employeeFamilyDetail.dependentNumber'
+                    ).toLowerCase()}`"
                     id="dependent-number"
                   />
                 </MISACol>
@@ -303,15 +335,17 @@
             <div class="mt-16">
               <MISARow>
                 <MISACol :span="4">
-                  <label for="number-book" class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Quyển số</label
-                  >
+                  <label for="number-book" class="height-36 d-flex align-center flex-wrap pr-12">{{
+                    $t("employee.employeeFamilyDetail.numberBook")
+                  }}</label>
                 </MISACol>
                 <MISACol :span="8">
                   <MISATextBox
                     v-model="formData.NumberBook"
                     :max-length="20"
-                    placeholder="Nhập quyển số"
+                    :placeholder="`${$t('placeholder.input')} ${$t(
+                      'employee.employeeFamilyDetail.numberBook'
+                    ).toLowerCase()}`"
                     id="number-book"
                   />
                 </MISACol>
@@ -325,7 +359,7 @@
                     for="birth-certification-issue-date"
                     class="height-36 d-flex align-center flex-wrap pr-12"
                   >
-                    Ngày cấp giấy khai sinh
+                    {{ $t("employee.employeeFamilyDetail.birthCertificationIssueDate") }}
                   </label>
                 </MISACol>
                 <MISACol :span="8">
@@ -341,9 +375,9 @@
             <div class="mt-16">
               <MISARow>
                 <MISACol :span="4">
-                  <label for="country-code" class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Quốc gia</label
-                  >
+                  <label for="country-code" class="height-36 d-flex align-center flex-wrap pr-12">{{
+                    $t("employee.employeeFamilyDetail.country")
+                  }}</label>
                 </MISACol>
                 <MISACol :span="8">
                   <MISASelectBox
@@ -352,7 +386,6 @@
                     displayExpr="label"
                     valueExpr="value"
                     :searchEnabled="true"
-                    placeholder="Chọn/nhập quốc gia"
                     id="country-code"
                   />
                 </MISACol>
@@ -363,8 +396,10 @@
             <div class="mt-16">
               <MISARow>
                 <MISACol :span="4">
-                  <label for="province-code" class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Tỉnh/thành phố</label
+                  <label
+                    for="province-code"
+                    class="height-36 d-flex align-center flex-wrap pr-12"
+                    >{{ $t("employee.employeeFamilyDetail.province") }}</label
                   >
                 </MISACol>
                 <MISACol :span="8">
@@ -374,7 +409,9 @@
                     displayExpr="label"
                     valueExpr="value"
                     :searchEnabled="true"
-                    placeholder="Chọn/nhập tỉnh/thành phố"
+                    :placeholder="`${$t('placeholder.selectOrInput')} ${$t(
+                      'employee.employeeFamilyDetail.province'
+                    ).toLowerCase()}`"
                     id="province-code"
                   />
                 </MISACol>
@@ -384,8 +421,10 @@
             <div class="mt-16">
               <MISARow>
                 <MISACol :span="4">
-                  <label for="district-code" class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Quận/huyện</label
+                  <label
+                    for="district-code"
+                    class="height-36 d-flex align-center flex-wrap pr-12"
+                    >{{ $t("employee.employeeFamilyDetail.district") }}</label
                   >
                 </MISACol>
                 <MISACol :span="8">
@@ -395,7 +434,9 @@
                     displayExpr="label"
                     valueExpr="value"
                     :searchEnabled="true"
-                    placeholder="Chọn/nhập quận/huyện"
+                    :placeholder="`${$t('placeholder.selectOrInput')} ${$t(
+                      'employee.employeeFamilyDetail.district'
+                    ).toLowerCase()}`"
                     id="district-code"
                   />
                 </MISACol>
@@ -405,9 +446,9 @@
             <div class="mt-16">
               <MISARow>
                 <MISACol :span="4">
-                  <label for="ward-code" class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Xã/phường</label
-                  >
+                  <label for="ward-code" class="height-36 d-flex align-center flex-wrap pr-12">{{
+                    $t("employee.employeeFamilyDetail.ward")
+                  }}</label>
                 </MISACol>
                 <MISACol :span="8">
                   <MISASelectBox
@@ -416,7 +457,9 @@
                     displayExpr="label"
                     valueExpr="value"
                     :searchEnabled="true"
-                    placeholder="Chọn/nhập xã/phường"
+                    :placeholder="`${$t('placeholder.selectOrInput')} ${$t(
+                      'employee.employeeFamilyDetail.ward'
+                    ).toLowerCase()}`"
                     id="ward-code"
                   />
                 </MISACol>
@@ -427,7 +470,9 @@
       </div>
 
       <!-- ----- HỘ KHẨU THƯỜNG TRÚ ----- -->
-      <div class="form-content__header">Hộ khẩu thường trú</div>
+      <div class="form-content__header">
+        {{ $t("employee.employeeFamilyDetail.permanentResidenceTitle") }}
+      </div>
       <div class="mb-24">
         <MISARow :gutter="{ x: 80 }">
           <MISACol :span="6">
@@ -437,7 +482,7 @@
                   <label
                     for="family-permanent-address-province-code"
                     class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Tỉnh/thành phố</label
+                    >{{ $t("employee.employeeFamilyDetail.province") }}</label
                   >
                 </MISACol>
                 <MISACol :span="8">
@@ -447,7 +492,9 @@
                     displayExpr="label"
                     valueExpr="value"
                     :searchEnabled="true"
-                    placeholder="Chọn/nhập tỉnh/thành phố"
+                    :placeholder="`${$t('placeholder.selectOrInput')} ${$t(
+                      'employee.employeeFamilyDetail.province'
+                    ).toLowerCase()}`"
                     id="family-permanent-address-province-code"
                   />
                 </MISACol>
@@ -460,7 +507,7 @@
                   <label
                     for="family-permanent-address-district-code"
                     class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Quận/huyện</label
+                    >{{ $t("employee.employeeFamilyDetail.district") }}</label
                   >
                 </MISACol>
                 <MISACol :span="8">
@@ -472,7 +519,9 @@
                     displayExpr="label"
                     valueExpr="value"
                     :searchEnabled="true"
-                    placeholder="Chọn/nhập quận/huyện"
+                    :placeholder="`${$t('placeholder.selectOrInput')} ${$t(
+                      'employee.employeeFamilyDetail.district'
+                    ).toLowerCase()}`"
                     id="family-permanent-address-district-code"
                   />
                 </MISACol>
@@ -486,7 +535,7 @@
                   <label
                     for="family-permanent-address-ward-code"
                     class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Xã/phường</label
+                    >{{ $t("employee.employeeFamilyDetail.ward") }}</label
                   >
                 </MISACol>
                 <MISACol :span="8">
@@ -496,7 +545,9 @@
                     displayExpr="label"
                     valueExpr="value"
                     :searchEnabled="true"
-                    placeholder="Chọn/nhập xã/phường"
+                    :placeholder="`${$t('placeholder.selectOrInput')} ${$t(
+                      'employee.employeeFamilyDetail.ward'
+                    ).toLowerCase()}`"
                     id="family-permanent-address-ward-code"
                   />
                 </MISACol>
@@ -510,13 +561,15 @@
                     for="family-permanent-address-street"
                     class="height-36 d-flex align-center flex-wrap pr-12"
                   >
-                    Số nhà, đường/phố, thôn/xóm
+                    {{ $t("employee.employeeFamilyDetail.streetNumber") }}
                   </label>
                 </MISACol>
                 <MISACol :span="8">
                   <MISATextBox
                     v-model="formData.FamilyPermanentAddressStreetHouseNumber"
-                    placeholder="Nhập số nhà, đường/phố, thôn/xóm"
+                    :placeholder="`${$t('placeholder.input')} ${$t(
+                      'employee.employeeFamilyDetail.streetNumber'
+                    ).toLowerCase()}`"
                     id="family-permanent-address-street"
                   />
                 </MISACol>
@@ -527,7 +580,9 @@
       </div>
 
       <!-- ----- CHỖ Ở HIỆN NAY ----- -->
-      <div class="form-content__header">Chỗ ở hiện nay</div>
+      <div class="form-content__header">
+        {{ $t("employee.employeeFamilyDetail.currentAccommodationTitle") }}
+      </div>
       <div class="mb-24">
         <MISARow :gutter="{ x: 80 }">
           <MISACol :span="6">
@@ -537,7 +592,7 @@
                   <label
                     for="family-current-province-code"
                     class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Tỉnh/thành phố</label
+                    >{{ $t("employee.employeeFamilyDetail.province") }}</label
                   >
                 </MISACol>
                 <MISACol :span="8">
@@ -547,7 +602,9 @@
                     displayExpr="label"
                     valueExpr="value"
                     :searchEnabled="true"
-                    placeholder="Chọn/nhập tỉnh/thành phố"
+                    :placeholder="`${$t('placeholder.selectOrInput')} ${$t(
+                      'employee.employeeFamilyDetail.province'
+                    ).toLowerCase()}`"
                     id="family-current-province-code"
                   />
                 </MISACol>
@@ -560,7 +617,7 @@
                   <label
                     for="family-current-district-code"
                     class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Quận/huyện</label
+                    >{{ $t("employee.employeeFamilyDetail.district") }}</label
                   >
                 </MISACol>
                 <MISACol :span="8">
@@ -570,7 +627,9 @@
                     displayExpr="label"
                     valueExpr="value"
                     :searchEnabled="true"
-                    placeholder="Chọn/nhập quận/huyện"
+                    :placeholder="`${$t('placeholder.selectOrInput')} ${$t(
+                      'employee.employeeFamilyDetail.district'
+                    ).toLowerCase()}`"
                     id="family-current-district-code"
                   />
                 </MISACol>
@@ -584,7 +643,7 @@
                   <label
                     for="family-current-ward-code"
                     class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Xã/phường</label
+                    >{{ $t("employee.employeeFamilyDetail.ward") }}</label
                   >
                 </MISACol>
                 <MISACol :span="8">
@@ -594,7 +653,9 @@
                     displayExpr="label"
                     valueExpr="value"
                     :searchEnabled="true"
-                    placeholder="Chọn/nhập xã/phường"
+                    :placeholder="`${$t('placeholder.selectOrInput')} ${$t(
+                      'employee.employeeFamilyDetail.ward'
+                    ).toLowerCase()}`"
                     id="family-current-ward-code"
                   />
                 </MISACol>
@@ -608,13 +669,15 @@
                     for="family-current-street"
                     class="height-36 d-flex align-center flex-wrap pr-12"
                   >
-                    Số nhà, đường/phố, thôn/xóm
+                    {{ $t("employee.employeeFamilyDetail.streetNumber") }}
                   </label>
                 </MISACol>
                 <MISACol :span="8">
                   <MISATextBox
                     v-model="formData.FamilyCurrentStreetHouseNumber"
-                    placeholder="Nhập số nhà, đường/phố, thôn/xóm"
+                    :placeholder="`${$t('placeholder.input')} ${$t(
+                      'employee.employeeFamilyDetail.streetNumber'
+                    ).toLowerCase()}`"
                     id="family-current-street"
                   />
                 </MISACol>
@@ -625,16 +688,18 @@
       </div>
 
       <!-- ----- THÔNG TIN GIẢM TRỪ ----- -->
-      <div class="form-content__header">Thông tin giảm trừ</div>
+      <div class="form-content__header">
+        {{ $t("employee.employeeFamilyDetail.deductionInformation") }}
+      </div>
       <div class="mb-24">
         <MISARow :gutter="{ x: 80 }">
           <MISACol :span="6">
             <div class="mt-16">
               <MISARow>
                 <MISACol :span="4">
-                  <label for="isdependent" class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Là người phụ thuộc</label
-                  >
+                  <label for="isdependent" class="height-36 d-flex align-center flex-wrap pr-12">{{
+                    $t("employee.employeeFamilyDetail.isDependent")
+                  }}</label>
                 </MISACol>
                 <MISACol :span="8">
                   <div class="d-flex">
@@ -654,7 +719,7 @@
                   <label
                     for="deduction-start-date"
                     class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Giảm trừ từ tháng</label
+                    >{{ $t("employee.employeeFamilyDetail.deductionStartDate") }}</label
                   >
                 </MISACol>
                 <MISACol :span="8">
@@ -676,7 +741,7 @@
                   <label
                     for="deduction-end-date"
                     class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Giảm trừ đến tháng</label
+                    >{{ $t("employee.employeeFamilyDetail.deductionEndDate") }}</label
                   >
                 </MISACol>
                 <MISACol :span="8">
@@ -703,9 +768,9 @@
             <div class="mt-16">
               <MISARow>
                 <MISACol :span="4">
-                  <label for="description" class="height-36 d-flex align-center flex-wrap pr-12"
-                    >Ghi chú</label
-                  >
+                  <label for="description" class="height-36 d-flex align-center flex-wrap pr-12">{{
+                    $t("employee.employeeFamilyDetail.description")
+                  }}</label>
                 </MISACol>
                 <MISACol :span="8">
                   <DxTextArea
@@ -722,8 +787,12 @@
     </ValidationObserver>
 
     <template #controls-right>
-      <MISAButton v-tooltip="'ESC'" @click="onCloseForm" color="secondary">Huỷ</MISAButton>
-      <MISAButton v-tooltip="'Ctrl + S'" @click="handleSubmitForm()">Đồng ý</MISAButton>
+      <MISAButton v-tooltip="'ESC'" @click="onCloseForm" color="secondary">{{
+        $t("button.cancel")
+      }}</MISAButton>
+      <MISAButton v-tooltip="'Ctrl + S'" @click="handleSubmitForm()">{{
+        $t("button.ok")
+      }}</MISAButton>
     </template>
   </MISAPopup>
 </template>
@@ -1074,7 +1143,7 @@ export default {
 
             // Hiện toast message thành công
             this.$store.dispatch("toastStore/pushSuccessMessage", {
-              message: "Thêm thông tin gia đình thành công",
+              message: this.$t("employee.toast.addFamilySuccess"),
             });
 
             this.$emit("submit");
@@ -1148,7 +1217,7 @@ export default {
 
             // Hiện toast message thành công
             this.$store.dispatch("toastStore/pushSuccessMessage", {
-              message: "Sửa thông tin gia đình thành công",
+              message: this.$t("employee.toast.updateFamilySuccess"),
             });
             this.$emit("submit");
           } else {
