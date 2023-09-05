@@ -39,6 +39,7 @@ import TheEmptyLayout from "./components/layout/empty-layout/TheEmptyLayout.vue"
 import MISADialog from "@/components/base/dialog/MISADialog.vue";
 import MISAButton from "./components/base/button/MISAButton.vue";
 import { mapState } from "vuex";
+import { locale } from "devextreme/localization";
 
 export default {
   name: "App",
@@ -91,6 +92,7 @@ export default {
    */
   mounted: function () {
     document.title = this.$t("fullProductName");
+    locale("vi");
   },
 };
 </script>

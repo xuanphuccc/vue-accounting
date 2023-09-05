@@ -4,6 +4,7 @@ import EmployeeList from "@/views/employee/EmployeeList.vue";
 import EmployeeManagerList from "@/views/employee-manager/EmployeeManagerList.vue";
 import EmployeeDetail from "@/views/employee/EmployeeDetail.vue";
 import EmployeeDetailView from "@/views/employee/EmployeeDetailView.vue";
+import NotFound from "@/views/not-found/NotFound.vue";
 
 Vue.use(VueRouter);
 
@@ -56,7 +57,7 @@ const routes = [
   },
 
   // Not found
-  { path: "*", component: null, meta: { layout: "empty" } },
+  { path: "*", component: NotFound, meta: { layout: "empty" } },
 ];
 
 const router = new VueRouter({

@@ -3,15 +3,36 @@
   border: 2.5px solid var(--secondary-text-color);
   width: 20px;
   height: 20px;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+    width: 36px;
+    height: 36px;
+    background-color: rgba(0, 0, 0, 0.08);
+    border-radius: 100px;
+    display: none;
+  }
 }
 
 .dx-radiobutton.dx-state-hover .dx-radiobutton-icon {
   border-color: var(--secondary-text-color);
-  outline: 3px solid var(--primary-color-200);
+
+  &::after {
+    display: block;
+  }
 }
 
 .dx-radiobutton.dx-state-focused .dx-radiobutton-icon {
-  outline: 3px solid var(--primary-color-200);
+  border-color: var(--secondary-text-color);
+
+  &::after {
+    display: block;
+  }
 }
 
 .dx-radiobutton-icon.dx-radiobutton-icon-checked {

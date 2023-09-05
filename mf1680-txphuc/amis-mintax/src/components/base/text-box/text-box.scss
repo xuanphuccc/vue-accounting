@@ -45,7 +45,10 @@
 
 /* trạng thái lỗi validate */
 .dx-invalid.dx-texteditor {
-  border-color: var(--red-500);
+  border-color: var(--red-500) !important;
+}
+.dx-invalid .dx-texteditor {
+  border-color: var(--red-500) !important;
 }
 
 .dx-invalid.dx-texteditor.dx-editor-outlined.dx-show-invalid-badge

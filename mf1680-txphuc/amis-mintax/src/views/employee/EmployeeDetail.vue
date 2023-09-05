@@ -370,11 +370,10 @@
                           v-slot="{ errors }"
                           slim
                         >
-                          <div class="width-100">
+                          <div :class="['width-100', { 'dx-invalid': errors[0] }]">
                             <MISADatePicker
                               v-model="formData.IdentifyDate"
                               :max="new Date()"
-                              :is-valid="!errors[0]"
                               id="identify-date"
                             />
                             <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
@@ -824,10 +823,25 @@
                         </label>
                       </MISACol>
                       <MISACol :span="8">
-                        <MISATreeView
-                          v-model="formData.OrganizationUnitId"
-                          :data-source="departments"
-                        />
+                        <ValidationProvider
+                          :name="$t('employee.employeeDetail.department')"
+                          rules="required"
+                          v-slot="{ errors }"
+                          slim
+                        >
+                          <div class="width-100">
+                            <MISATreeView
+                              v-model="formData.OrganizationUnitId"
+                              :data-source="departments"
+                              valueExpr="value"
+                              :isValid="!errors[0]"
+                              :placeholder="`${$t('placeholder.select')} ${$t(
+                                'employee.employeeDetail.department'
+                              ).toLowerCase()}`"
+                            />
+                            <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
+                          </div>
+                        </ValidationProvider>
                       </MISACol>
                     </MISARow>
                   </div>
@@ -1063,6 +1077,7 @@ import {
   getWard,
   getWardsOfDistrict,
   getPosition,
+  getDepartment,
   getWorkStatus,
   getContractType,
   getIdentifyPlaceDatasource,
@@ -1101,7 +1116,7 @@ const defaultFormData = {
   CurrentDistrictCode: null,
   CurrentWardCode: null,
   CurrentStreetHouseNumber: null,
-  OrganizationUnitId: 0,
+  OrganizationUnitId: 1,
   JobPositionId: null,
   JobTitleId: null,
   EmployeeStatus: 1,
@@ -1233,6 +1248,10 @@ export default {
       deep: true,
     },
 
+    /**
+     * Description: Sao chép địa chỉ giống hộ khẩu thường trú
+     * Author: txphuc (31/08/2023)
+     */
     "formData.IsCopyAddress": function () {
       if (this.formData?.IsCopyAddress) {
         this.formData = {
@@ -1484,7 +1503,7 @@ export default {
         CurrentProvinceName: getProvince(this.formData?.CurrentProvinceCode)?.label,
         CurrentDistrictName: getDistrict(this.formData?.CurrentDistrictCode)?.label,
         CurrentWardName: getWard(this.formData?.CurrentWardCode)?.label,
-        OrganizationUnitName: "Nhân sự điều hành",
+        OrganizationUnitName: getDepartment(this.formData?.OrganizationUnitId)?.label,
         JobPositionName: getPosition(this.formData?.JobPositionId)?.label,
         EmployeeStatusName: getWorkStatus(this.formData?.EmployeeStatus)?.label,
       };

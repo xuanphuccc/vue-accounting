@@ -104,7 +104,12 @@
                 <MISAIcon size="20" icon="search" />
               </MISATextBox>
 
-              <MISATreeView :placeholder="$t('employee.filterBar.department')" />
+              <MISATreeView
+                v-model="filterRequest.department"
+                :dataSource="departments"
+                valueExpr="value"
+                :placeholder="$t('employee.filterBar.department')"
+              />
             </div>
 
             <div class="controls__group">
@@ -226,6 +231,7 @@ import MISATreeView from "@/components/base/tree-view/MISATreeView.vue";
 import MISAFilterPopup from "@/components/base/filter-popup/MISAFilterPopup.vue";
 import { employeeColumns, excelExportSheets } from "./employee-columns";
 import employeeApi from "@/api/employee-api";
+import { departments } from "@/api/mock-data";
 import MISABadge from "@/components/base/badge/MISABadge.vue";
 import { employeeFilterGroups } from "./employee-filter";
 import { formatDate } from "devextreme/localization";
@@ -261,6 +267,8 @@ export default {
   },
   data: function () {
     return {
+      departments,
+
       dataSource: [],
 
       defaultColumns: [...employeeColumns],
@@ -283,6 +291,7 @@ export default {
         page: 1,
         pageSize: 15,
         search: null,
+        department: null,
         usageStatus: true,
         sortColumn: null,
         sortOrder: null,
@@ -544,12 +553,6 @@ export default {
         this.pagingInfo.totalPages = totalPages;
 
         this.$store.dispatch("commonStore/setLoading", false);
-
-        // Nếu trang hiện tại không có data thì về trang cuối
-        // (dùng cho trường hợp xoá hết bản ghi trang cuối)
-        if (response.data?.Data?.length === 0) {
-          this.filterRequest.page = totalPages;
-        }
       } catch (error) {
         console.warn(error);
       }

@@ -110,7 +110,12 @@
                 <MISAIcon size="20" icon="search" />
               </MISATextBox>
 
-              <MISATreeView :placeholder="$t('employee.filterBar.department')" />
+              <MISATreeView
+                v-model="filterRequest.department"
+                :dataSource="departments"
+                valueExpr="value"
+                :placeholder="$t('employee.filterBar.department')"
+              />
 
               <MISASelectBox
                 v-model="filterRequest.usageStatus"
@@ -191,6 +196,7 @@ import MISATreeView from "@/components/base/tree-view/MISATreeView.vue";
 import MISASelectBox from "@/components/base/select-box/MISASelectBox.vue";
 import MISABadge from "@/components/base/badge/MISABadge.vue";
 import employeeApi from "@/api/employee-api";
+import { departments } from "@/api/mock-data";
 import i18n from "@/i18n";
 
 const defaultCols = [
@@ -222,6 +228,8 @@ export default {
   },
   data: function () {
     return {
+      departments,
+
       dataSource: [],
 
       defaultColumns: [...defaultCols],
@@ -239,6 +247,7 @@ export default {
         page: 1,
         pageSize: 15,
         search: null,
+        department: null,
         usageStatus: null,
         sortColumn: null,
         sortOrder: null,
@@ -395,12 +404,6 @@ export default {
 
         // Tắt loading
         this.$store.dispatch("commonStore/setLoading", false);
-
-        // Nếu trang hiện tại không có data thì về trang cuối
-        // (dùng cho trường hợp xoá hết bản ghi trang cuối)
-        if (response.data?.Data?.length === 0) {
-          this.filterRequest.page = totalPages;
-        }
       } catch (error) {
         console.warn(error);
       }

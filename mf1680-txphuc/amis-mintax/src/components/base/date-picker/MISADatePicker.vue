@@ -13,7 +13,12 @@
     :placeholder="placeholder"
     :input-attr="{ id }"
     pickerType="calendar"
-    :calendarOptions="{ firstDayOfWeek: 1, zoomLevel, maxZoomLevel }"
+    :calendarOptions="{
+      firstDayOfWeek: 1,
+      zoomLevel,
+      maxZoomLevel,
+      elementAttr: { class: 'ms-calendar' },
+    }"
     drop-down-button-template="imageIcon"
   >
     <template #imageIcon="{}">
