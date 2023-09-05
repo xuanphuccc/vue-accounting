@@ -121,7 +121,7 @@
     <value>Invalid data input</value>
   </data>
   <data name="ConflictEmployee" xml:space="preserve">
-    <value>{0} &lt;b&gt;{1}&lt;/b&gt; matches with taxpayer &lt;b&gt;{2}&lt;/b&gt; in the Taxpayer Profile. Please double-check.</value>
+    <value>{0} &lt;b&gt;{1}&lt;/b&gt; matches with taxpayer &lt;b&gt;{2}&lt;/b&gt; in the taxpayer profiles. Please double-check.</value>
   </data>
   <data name="ConstraintError" xml:space="preserve">
     <value>Cannot delete {0} due to dependent records</value>

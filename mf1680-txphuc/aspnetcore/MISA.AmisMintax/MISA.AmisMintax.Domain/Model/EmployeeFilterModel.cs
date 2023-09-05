@@ -31,6 +31,12 @@ namespace MISA.AmisMintax.Domain
         public string? Search { get; set; }
 
         /// <summary>
+        /// Lọc theo mã đơn vị/phòng ban
+        /// </summary>
+        /// CreatedBy: txphuc (02/09/2023)
+        public int? Department { get; set; }
+
+        /// <summary>
         /// Trạng thái sử dụng
         /// </summary>
         /// CreatedBy: txphuc (22/08/2023)
