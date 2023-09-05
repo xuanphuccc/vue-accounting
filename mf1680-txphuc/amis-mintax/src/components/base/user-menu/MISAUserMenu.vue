@@ -41,8 +41,8 @@
         {{ $t("userMenu.referralsEarnPoints") }}
       </li>
       <li @click="toggleLanguageDropdown" class="ms-user-menu__menu-item">
-        <MISAIcon icon="vi-VN" />
-        {{ $t("userMenu.language") }}: Việt Nam
+        <MISAIcon :icon="$i18n.locale" />
+        {{ $t("userMenu.language") }}: {{ $i18n.locale == "vi" ? "Việt Nam" : "English" }}
         <div class="language-dropdown__menu-icon">
           <MISAIcon size="16" icon="angle-down" />
         </div>

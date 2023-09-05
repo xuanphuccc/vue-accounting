@@ -55,7 +55,8 @@
 
   /* Selected */
   .dx-calendar-cell.dx-calendar-selected-date span {
-    color: #fff;
+    color: #fff !important;
+    font-weight: 500 !important;
     background-color: var(--primary-color-500);
   }
 
