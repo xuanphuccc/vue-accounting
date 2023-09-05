@@ -11,13 +11,18 @@ namespace MISA.AmisMintax.Domain
 {
     public class EmployeeManager : IEmployeeManager
     {
+        #region Fields
         private readonly IEmployeeRepository _employeeRepository;
+        #endregion
 
+        #region Constructors
         public EmployeeManager(IEmployeeRepository employeeRepository)
         {
             _employeeRepository = employeeRepository;
         }
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Check trùng mã nhân viên
         /// </summary>
@@ -88,6 +93,7 @@ namespace MISA.AmisMintax.Domain
                     throw new ConflictException(errorMessage, ErrorCode.ConflictCode);
                 }
             }
-        }
+        } 
+        #endregion
     }
 }

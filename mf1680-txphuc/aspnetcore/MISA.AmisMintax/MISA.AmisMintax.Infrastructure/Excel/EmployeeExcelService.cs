@@ -12,17 +12,22 @@ namespace MISA.AmisMintax.Infrastructure
 {
     public class EmployeeExcelService : ExcelCore, IEmployeeExcelService
     {
+        #region Fields
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IEmployeeRelationshipRepository _employeeRelationshipRepository;
         private readonly IMapper _mapper;
+        #endregion
 
+        #region Fields
         public EmployeeExcelService(IEmployeeRepository employeeRepository, IEmployeeRelationshipRepository employeeRelationshipRepository, IMapper mapper)
         {
             _employeeRepository = employeeRepository;
             _employeeRelationshipRepository = employeeRelationshipRepository;
             _mapper = mapper;
         }
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Xuất toàn bộ dữ liệu ra file Excel
         /// </summary>
@@ -32,7 +37,7 @@ namespace MISA.AmisMintax.Infrastructure
         {
             foreach (var exportSheet in exportSheetDtos)
             {
-                if(exportSheet.SheetKey == "Employee")
+                if (exportSheet.SheetKey == "Employee")
                 {
                     var employees = await _employeeRepository.GetAllAsync();
 
@@ -91,6 +96,7 @@ namespace MISA.AmisMintax.Infrastructure
             var bytes = GetExcelBytes();
 
             return bytes;
-        }
+        } 
+        #endregion
     }
 }

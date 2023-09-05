@@ -6,13 +6,18 @@ namespace MISA.AmisMintax
 {
     public abstract class BaseReadOnlyController<TEntityDto> : ControllerBase
     {
+        #region Fields
         protected readonly IBaseReadOnlyService<TEntityDto> _baseReadOnlyService;
+        #endregion
 
+        #region Constructors
         protected BaseReadOnlyController(IBaseReadOnlyService<TEntityDto> baseReadOnlyService)
         {
             _baseReadOnlyService = baseReadOnlyService;
         }
+        #endregion
 
+        #region Endpoints
         /// <summary>
         /// Get toàn bộ danh sách đối tượng
         /// </summary>
@@ -39,5 +44,6 @@ namespace MISA.AmisMintax
 
             return Ok(entityDto);
         }
+        #endregion
     }
 }

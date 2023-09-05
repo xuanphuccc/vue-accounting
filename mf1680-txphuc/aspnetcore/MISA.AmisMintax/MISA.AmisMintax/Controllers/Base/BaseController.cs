@@ -7,13 +7,18 @@ namespace MISA.AmisMintax
     public abstract class BaseController<TEntityDto, TEntityCreateDto, TEntityUpdateDto> :
         BaseReadOnlyController<TEntityDto>
     {
+        #region Fields
         protected readonly IBaseService<TEntityDto, TEntityCreateDto, TEntityUpdateDto> _baseService;
+        #endregion
 
+        #region Constructors
         protected BaseController(IBaseService<TEntityDto, TEntityCreateDto, TEntityUpdateDto> baseService) : base(baseService)
         {
             _baseService = baseService;
         }
+        #endregion
 
+        #region Endpoints
         /// <summary>
         /// Tạo mới một đối tượng
         /// </summary>
@@ -83,6 +88,7 @@ namespace MISA.AmisMintax
             var result = await _baseService.DeleteMultipleAsync(entityIds);
 
             return Ok(result);
-        }
+        } 
+        #endregion
     }
 }

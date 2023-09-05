@@ -11,10 +11,13 @@ namespace MISA.AmisMintax.Application
 {
     public class EmployeeService : BaseCodeService<Employee, Employee, EmployeeDto, EmployeeCreateDto, EmployeeUpdateDto>, IEmployeeService
     {
+        #region Fields
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IEmployeeManager _employeeManager;
         private readonly IEmployeeRelationshipRepository _employeeRelationshipRepository;
+        #endregion
 
+        #region Constructors
         public EmployeeService(IEmployeeRepository employeeRepository, IEmployeeManager employeeManager, IEmployeeRelationshipRepository employeeRelationshipRepository, IUnitOfWork unitOfWork, IMapper mapper)
             : base(employeeRepository, unitOfWork, mapper)
         {
@@ -22,7 +25,9 @@ namespace MISA.AmisMintax.Application
             _employeeManager = employeeManager;
             _employeeRelationshipRepository = employeeRelationshipRepository;
         }
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Tìm kiếm, filter và phân trang
         /// </summary>
@@ -215,6 +220,7 @@ namespace MISA.AmisMintax.Application
                     await _employeeRelationshipRepository.DeleteMultipleAsync(deleteList);
                 }
             }
-        }
+        } 
+        #endregion
     }
 }

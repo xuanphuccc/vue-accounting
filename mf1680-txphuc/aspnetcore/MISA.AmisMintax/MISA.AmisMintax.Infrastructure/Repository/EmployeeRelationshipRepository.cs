@@ -13,10 +13,13 @@ namespace MISA.AmisMintax.Infrastructure
 {
     public class EmployeeRelationshipRepository : BaseRepository<EmployeeRelationship, EmployeeRelationshipModel>, IEmployeeRelationshipRepository
     {
+        #region Constructors
         public EmployeeRelationshipRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Lấy danh sách người thân theo Id nhân viên
         /// </summary>
@@ -41,6 +44,7 @@ namespace MISA.AmisMintax.Infrastructure
             var entities = await _unitOfWork.Connection.QueryAsync<EmployeeRelationshipModel>(sql, param, commandType: CommandType.StoredProcedure, transaction: _unitOfWork.Transaction);
 
             return entities;
-        }
+        } 
+        #endregion
     }
 }

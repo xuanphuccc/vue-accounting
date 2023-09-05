@@ -12,14 +12,19 @@ namespace MISA.AmisMintax.Application
     public class EmployeeRelationshipService
         : BaseService<EmployeeRelationship, EmployeeRelationshipModel, EmployeeRelationshipDto, EmployeeRelationshipCreateDto, EmployeeRelationshipUpdateDto>, IEmployeeRelationshipService
     {
+        #region Fields
         private readonly IEmployeeRelationshipRepository _employeeRelationshipRepository;
+        #endregion
 
+        #region Constructors
         public EmployeeRelationshipService(IEmployeeRelationshipRepository employeeRelationshipRepository, IUnitOfWork unitOfWork, IMapper mapper)
             : base(employeeRelationshipRepository, unitOfWork, mapper)
         {
             _employeeRelationshipRepository = employeeRelationshipRepository;
         }
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Validate nghiệp vụ cho Insert
         /// </summary>
@@ -50,6 +55,7 @@ namespace MISA.AmisMintax.Application
             var employeeRelationship = _mapper.Map(entityUpdateDto, oldEmployeeRelationship);
 
             return employeeRelationship;
-        }
+        } 
+        #endregion
     }
 }

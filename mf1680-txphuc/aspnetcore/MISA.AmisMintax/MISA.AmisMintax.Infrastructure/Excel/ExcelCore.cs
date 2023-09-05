@@ -40,7 +40,9 @@ namespace MISA.AmisMintax.Infrastructure
         /// CreatedBy: txphuc (28/08/2023)
         public void AddWorkSheet(IEnumerable<object> entityDtos, ExcelExportSheetDto exportSheetDto)
         {
-            if (entityDtos.ToList().Count > 0 && exportSheetDto.Columns.Count > 0)
+            if (entityDtos.ToList().Count > 0
+                && exportSheetDto != null
+                && exportSheetDto.Columns.Count > 0)
             {
                 // Định nghĩa một trang tính
                 var worksheet = _excelPackage.Workbook.Worksheets.Add(exportSheetDto.SheetName);
@@ -60,7 +62,7 @@ namespace MISA.AmisMintax.Infrastructure
                 var totalColumns = exportSheetDto.Columns.Count;
 
                 // Tạo kiểu cho tiêu đề trang tính
-                worksheet.Cells["A1"].Value = exportSheetDto.SheetTitle.ToUpper();
+                worksheet.Cells["A1"].Value = exportSheetDto?.SheetTitle?.ToUpper() ?? "";
                 using var titleRange = worksheet.Cells[1, 1, 1, totalColumns];
                 titleRange.Merge = true;
                 titleRange.Style.Font.Size = 16;
@@ -71,6 +73,7 @@ namespace MISA.AmisMintax.Infrastructure
                 titleRange.Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml("#FFBA86"));
                 titleRange.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 worksheet.Rows[1].Height = 22;
+
 
                 // Ghi các nhóm cột ra file Excel
                 var colGroupRowIndex = 2;
@@ -83,9 +86,10 @@ namespace MISA.AmisMintax.Infrastructure
                     colGroupRange.StyleName = cellStyle.Name;
                     colGroupRange.Style.Font.Bold = true;
                     colGroupRange.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    colGroupRange.Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml(colGroup.Background));
+                    colGroupRange.Style.Fill.BackgroundColor.SetColor(ColorTranslator.FromHtml(colGroup.Background ?? "#BEF2FF"));
                     colGroupRange.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 }
+
 
 
                 // Ghi tên cột ra file Excel
@@ -113,7 +117,7 @@ namespace MISA.AmisMintax.Infrastructure
 
                         // Chuyển đổi từ px sang đơn vị Excel
                         var collumnWidth = column.Width / 7.5;
-                        worksheet.Columns[column.Index].Width = collumnWidth.Value;
+                        worksheet.Columns[column.Index].Width = collumnWidth != null ? collumnWidth.Value : 150 / 7.5;
                     }
                 }
 
@@ -198,6 +202,9 @@ namespace MISA.AmisMintax.Infrastructure
                     {
                         worksheet.Cells[row, col].Value = ((DateTime)value).ToString("dd/MM/yyyy");
                     }
+                    break;
+                case bool:
+                    worksheet.Cells[row, col].Value = (bool)value ? 1: 0;
                     break;
                 default:
                     worksheet.Cells[row, col].Value = value;

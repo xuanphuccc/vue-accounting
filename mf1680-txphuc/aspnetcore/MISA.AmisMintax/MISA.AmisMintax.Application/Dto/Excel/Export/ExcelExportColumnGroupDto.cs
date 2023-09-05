@@ -14,7 +14,7 @@ namespace MISA.AmisMintax.Application
         /// Tiêu đề của nhóm cột
         /// </summary>
         /// CreatedBy: txphuc (28/08/2023)
-        public string? Title { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
 
         /// <summary>
         /// Vị trí bắt đầu của nhóm cột

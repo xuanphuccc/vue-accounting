@@ -6,14 +6,19 @@ namespace MISA.AmisMintax.Controllers.Base
     public class BaseCodeController<TEntityDto, TEntityCreateDto, TEntityUpdateDto> :
         BaseController<TEntityDto, TEntityCreateDto, TEntityUpdateDto>
     {
+        #region Fields
         protected readonly IBaseCodeService<TEntityDto, TEntityCreateDto, TEntityUpdateDto> _baseCodeService;
+        #endregion
 
+        #region Constructors
         public BaseCodeController(
             IBaseCodeService<TEntityDto, TEntityCreateDto, TEntityUpdateDto> baseCodeService) : base(baseCodeService)
         {
             _baseCodeService = baseCodeService;
         }
+        #endregion
 
+        #region Endpoints
         /// <summary>
         /// Lấy mã mới
         /// </summary>
@@ -25,6 +30,7 @@ namespace MISA.AmisMintax.Controllers.Base
             var newCode = await _baseCodeService.FindNewCodeAsync();
 
             return Ok(newCode);
-        }
+        } 
+        #endregion
     }
 }

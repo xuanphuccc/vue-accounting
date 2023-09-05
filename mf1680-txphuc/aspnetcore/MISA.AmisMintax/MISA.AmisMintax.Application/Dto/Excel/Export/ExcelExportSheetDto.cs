@@ -34,12 +34,12 @@ namespace MISA.AmisMintax.Application
         /// Danh sách cấu hình nhóm cột
         /// </summary>
         /// CreatedBy: txphuc (28/08/2023)
-        public List<ExcelExportColumnGroupDto>? ColumnGroups { get; set; } = new List<ExcelExportColumnGroupDto>();
+        public List<ExcelExportColumnGroupDto> ColumnGroups { get; set; } = new List<ExcelExportColumnGroupDto>();
 
         /// <summary>
         /// Danh sách cấu hình các cột
         /// </summary>
         /// CreatedBy: txphuc (28/08/2023)
-        public List<ExcelExportColumnDto>? Columns { get; set; } = new List<ExcelExportColumnDto>();
+        public List<ExcelExportColumnDto> Columns { get; set; } = new List<ExcelExportColumnDto>();
     }
 }

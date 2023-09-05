@@ -31,28 +31,7 @@ namespace MISA.AmisMintax.Infrastructure
         {
             var parameters = new DynamicParameters();
 
-            PropertyInfo[] properties = typeof(TEntity).GetProperties();
-
-            // Lấy tên các cột
-            IEnumerable<string> columns = properties.Select(property => property.Name);
-            string columnsString = string.Join(", ", columns);
-
-            // Gán placeholder và gán giá trị cho paramerter
-            IEnumerable<string> valuePlaceholders = properties.Select(property =>
-            {
-                var propName = property.Name;
-                var propValue = property.GetValue(entity);
-
-                var valuePlaceholder = $"@{propName}";
-
-                parameters.Add(valuePlaceholder, propValue);
-
-                return valuePlaceholder;
-            });
-
-            var valuePlaceholdersString = string.Join(", ", valuePlaceholders);
-
-            string insertQuery = $"INSERT INTO {TableName} ({columnsString}) VALUES ({valuePlaceholdersString})";
+            string insertQuery = InsertQueryBuilder(entity, parameters);
 
             await _unitOfWork.Connection.ExecuteAsync(insertQuery, parameters, transaction: _unitOfWork.Transaction);
 
@@ -69,33 +48,12 @@ namespace MISA.AmisMintax.Infrastructure
         {
             var parameters = new DynamicParameters();
 
-            PropertyInfo[] properties = typeof(TEntity).GetProperties();
-
             List<string> insertQueries = new();
-
-            // Lấy tên các cột
-            IEnumerable<string> columns = properties.Select(property => property.Name);
-            string columnsString = string.Join(", ", columns);
 
             var index = 0;
             foreach (var entity in entities)
             {
-                // Gán placeholder và gán giá trị cho paramerter
-                IEnumerable<string> valuePlaceholders = properties.Select(property =>
-                {
-                    var propName = property.Name;
-                    var propValue = property.GetValue(entity);
-
-                    var valuePlaceholder = $"@{propName}{index}";
-
-                    parameters.Add(valuePlaceholder, propValue);
-
-                    return valuePlaceholder;
-                });
-
-                var valuePlaceholdersString = string.Join(", ", valuePlaceholders);
-
-                string insertQuery = $"INSERT INTO {TableName} ({columnsString}) VALUES ({valuePlaceholdersString})";
+                string insertQuery = InsertQueryBuilder(entity, parameters, index);
 
                 insertQueries.Add(insertQuery);
 
@@ -119,27 +77,7 @@ namespace MISA.AmisMintax.Infrastructure
         {
             var parameters = new DynamicParameters();
 
-            PropertyInfo[] properties = typeof(TEntity).GetProperties();
-
-            // Gán placeholder và gán giá trị cho paramerter
-            // Không cập nhật trường (CreateDate và CreateBy)
-            IEnumerable<string> valuePlaceholders =
-            properties.Where(property => property.Name != "CreatedDate" && property.Name != "CreatedBy")
-            .Select(property =>
-            {
-                var propName = property.Name;
-                var propValue = property.GetValue(entity);
-
-                var valuePlaceholder = $"@{propName}";
-
-                parameters.Add(valuePlaceholder, propValue);
-
-                return $"{propName} = {valuePlaceholder}";
-            });
-
-            var valuePlaceholdersString = string.Join(", ", valuePlaceholders);
-
-            string updateQuery = $"UPDATE {TableName} SET {valuePlaceholdersString} WHERE {TableName}ID = '{entity.GetKey()}'";
+            string updateQuery = UpdateQueryBuilder(entity, parameters);
 
             var result = await _unitOfWork.Connection.ExecuteAsync(updateQuery, parameters, transaction: _unitOfWork.Transaction);
 
@@ -156,32 +94,12 @@ namespace MISA.AmisMintax.Infrastructure
         {
             var parameters = new DynamicParameters();
 
-            PropertyInfo[] properties = typeof(TEntity).GetProperties();
-
             List<string> insertQueries = new();
 
             var index = 0;
             foreach (var entity in entities)
             {
-                // Gán placeholder và gán giá trị cho paramerter
-                // Không cập nhật trường (CreateDate và CreateBy)
-                IEnumerable<string> valuePlaceholders =
-                properties.Where(property => property.Name != "CreatedDate" && property.Name != "CreatedBy")
-                .Select(property =>
-                {
-                    var propName = property.Name;
-                    var propValue = property.GetValue(entity);
-
-                    var valuePlaceholder = $"@{propName}{index}";
-
-                    parameters.Add(valuePlaceholder, propValue);
-
-                    return $"{propName} = {valuePlaceholder}";
-                });
-
-                var valuePlaceholdersString = string.Join(", ", valuePlaceholders);
-
-                string insertQuery = $"UPDATE {TableName} SET {valuePlaceholdersString} WHERE {TableName}ID = '{entity.GetKey()}'";
+                string insertQuery = UpdateQueryBuilder(entity, parameters, index);
 
                 insertQueries.Add(insertQuery);
 
@@ -204,11 +122,6 @@ namespace MISA.AmisMintax.Infrastructure
         public async Task<int> DeleteAsync(TEntity entity)
         {
             var param = new DynamicParameters();
-
-            //if (entity is IHasKey entityHasKey)
-            //{
-            //    param.Add($"@{TableId}", entityHasKey.GetKey());
-            //}
 
             param.Add($"@{TableId}", entity.GetKey());
 
@@ -246,25 +159,74 @@ namespace MISA.AmisMintax.Infrastructure
         }
 
         /// <summary>
-        /// Map các thuộc tính của đối tượng sang DynamicParameters
-        /// để truyền vào Procedure
+        /// Xử lý tạo câu truy vấn insert bản ghi
         /// </summary>
-        /// <param name="entity">Đối tượng</param>
-        /// <returns>DynamicParameters</returns>
-        /// CreatedBy: txphuc (18/07/2023)
-        private DynamicParameters MapEntityToParams(TEntity entity)
+        /// <param name="entity">Đối tượng cần insert</param>
+        /// <param name="parameters">Các tham số</param>
+        /// <param name="index">Vị trí của phần tử trong danh sách (trường hợp insert nhiều bản ghi)</param>
+        /// <returns>Câu lệnh insert</returns>
+        /// CreatedBy: txphuc (02/09/2023)
+        private string InsertQueryBuilder(TEntity entity, DynamicParameters parameters, int? index = 0)
         {
-            var parameters = new DynamicParameters();
+            PropertyInfo[] properties = typeof(TEntity).GetProperties();
 
-            var properties = typeof(TEntity).GetProperties();
+            // Lấy tên các trường
+            IEnumerable<string> columns = properties.Select(property => property.Name);
+            string columnsString = string.Join(", ", columns);
 
-            foreach (var property in properties)
+            // Gán placeholder và gán giá trị cho paramerter
+            IEnumerable<string> valuePlaceholders = properties.Select(property =>
             {
-                var value = property.GetValue(entity);
-                parameters.Add($"@{property.Name}", value);
-            }
+                var propName = property.Name;
+                var propValue = property.GetValue(entity);
 
-            return parameters;
+                var valuePlaceholder = $"@{propName}{index}";
+
+                parameters.Add(valuePlaceholder, propValue);
+
+                return valuePlaceholder;
+            });
+
+            var valuePlaceholdersString = string.Join(", ", valuePlaceholders);
+
+            string insertQuery = $"INSERT INTO {TableName} ({columnsString}) VALUES ({valuePlaceholdersString})";
+
+            return insertQuery;
+        }
+
+        /// <summary>
+        /// Xử lý tạo câu truy vấn update bản ghi
+        /// </summary>
+        /// <param name="entity">Đối tượng cần update</param>
+        /// <param name="parameters">Các tham số</param>
+        /// <param name="index">Vị trí của phần tử trong danh sách (trường hợp insert nhiều bản ghi)</param>
+        /// <returns>Câu lệnh update</returns>
+        /// CreatedBy: txphuc (02/09/2023)
+        private string UpdateQueryBuilder(TEntity entity, DynamicParameters parameters, int? index = 0)
+        {
+            PropertyInfo[] properties = typeof(TEntity).GetProperties();
+
+            // Gán placeholder và gán giá trị cho paramerter
+            // Không cập nhật trường (CreateDate và CreateBy)
+            IEnumerable<string> valuePlaceholders =
+            properties.Where(property => property.Name != "CreatedDate" && property.Name != "CreatedBy")
+            .Select(property =>
+            {
+                var propName = property.Name;
+                var propValue = property.GetValue(entity);
+
+                var valuePlaceholder = $"@{propName}{index}";
+
+                parameters.Add(valuePlaceholder, propValue);
+
+                return $"{propName} = {valuePlaceholder}";
+            });
+
+            var valuePlaceholdersString = string.Join(", ", valuePlaceholders);
+
+            string updateQuery = $"UPDATE {TableName} SET {valuePlaceholdersString} WHERE {TableName}ID = '{entity.GetKey()}'";
+
+            return updateQuery;
         }
         #endregion
     }

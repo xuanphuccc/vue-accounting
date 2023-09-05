@@ -39,22 +39,38 @@ namespace MISA.AmisMintax.Application
         /// CreatedBy: txphuc (18/07/2023)
         public virtual async Task<Guid> InsertAsync(TEntityCreateDto entityCreateDto)
         {
-            var entity = await MapCreateDtoToEntityAsync(entityCreateDto);
-
-            if (entity is BaseAuditEntity baseAuditEntity)
+            try
             {
-                baseAuditEntity.CreatedDate = DateTime.Now;
-                baseAuditEntity.CreatedBy = "txphuc";
-                baseAuditEntity.ModifiedDate = DateTime.Now;
-                baseAuditEntity.ModifiedBy = "txphuc";
+                // Mở một transaction
+                await _unitOfWork.BeginTransactionAsync();
+
+                var entity = await MapCreateDtoToEntityAsync(entityCreateDto);
+
+                if (entity is BaseAuditEntity baseAuditEntity)
+                {
+                    baseAuditEntity.CreatedDate = DateTime.Now;
+                    baseAuditEntity.CreatedBy = "txphuc";
+                    baseAuditEntity.ModifiedDate = DateTime.Now;
+                    baseAuditEntity.ModifiedBy = "txphuc";
+                }
+
+                var result = await _baseRepository.InsertAsync(entity);
+
+                // Insert các bảng phụ (nếu có)
+                await InsertDetailTableAsync(entityCreateDto, entity.GetKey());
+
+                // Xác nhận thay đổi
+                await _unitOfWork.CommitAsync();
+
+                return result;
             }
+            catch (Exception)
+            {
+                // Hoàn tác thay đổi
+                await _unitOfWork.RollBackAsync();
 
-            var result = await _baseRepository.InsertAsync(entity);
-
-            // Insert các bảng phụ (nếu có)
-            await InsertDetailTableAsync(entityCreateDto, entity.GetKey());
-
-            return result;
+                throw;
+            }
         }
 
         /// <summary>
@@ -65,23 +81,39 @@ namespace MISA.AmisMintax.Application
         /// CreatedBy: txphuc (18/07/2023)
         public virtual async Task<int> UpdateAsync(Guid entityId, TEntityUpdateDto entityUpdateDto)
         {
-            var entity = await MapUpdateDtoToEntityAsync(entityId, entityUpdateDto);
-
-            if (entity is BaseAuditEntity baseAuditEntity)
+            try
             {
-                baseAuditEntity.ModifiedDate = DateTime.Now;
-                baseAuditEntity.ModifiedBy = "txphuc";
+                // Mở một transaction
+                await _unitOfWork.BeginTransactionAsync();
+
+                var entity = await MapUpdateDtoToEntityAsync(entityId, entityUpdateDto);
+
+                if (entity is BaseAuditEntity baseAuditEntity)
+                {
+                    baseAuditEntity.ModifiedDate = DateTime.Now;
+                    baseAuditEntity.ModifiedBy = "txphuc";
+                }
+
+                var result = await _baseRepository.UpdateAsync(entity);
+
+                // Cập nhật bảng phụ (nếu có)
+                if (result > 0)
+                {
+                    await UpdateDetailTableAsync(entityUpdateDto, entity.GetKey());
+                }
+
+                // Xác nhận thay đổi
+                await _unitOfWork.CommitAsync();
+
+                return result;
             }
-
-            var result = await _baseRepository.UpdateAsync(entity);
-
-            // Cập nhật bảng phụ (nếu có)
-            if (result > 0)
+            catch (Exception)
             {
-                await UpdateDetailTableAsync(entityUpdateDto, entity.GetKey());
-            }
+                // Hoàn tác thay đổi
+                await _unitOfWork.RollBackAsync();
 
-            return result;
+                throw;
+            }
         }
 
         /// <summary>
@@ -97,7 +129,7 @@ namespace MISA.AmisMintax.Application
             // Cập nhật ngày, người chỉnh sửa
             foreach (var entity in entities)
             {
-                if(entity is BaseAuditEntity baseAuditEntity)
+                if (entity is BaseAuditEntity baseAuditEntity)
                 {
                     baseAuditEntity.ModifiedDate = DateTime.Now;
                     baseAuditEntity.ModifiedBy = "txphuc";
@@ -207,6 +239,12 @@ namespace MISA.AmisMintax.Application
         /// CreatedBy: txphuc (18/07/2023)
         protected abstract Task<TEntity> MapUpdateDtoToEntityAsync(Guid entityId, TEntityUpdateDto entityUpdateDto);
 
+        /// <summary>
+        /// Xử lý validate cho update nhiều bản ghi
+        /// </summary>
+        /// <param name="entityUpdateDtos">Danh sách các đối tượng cần update</param>
+        /// <returns>Danh sách các đối tượng đã được validate</returns>
+        /// CreatedBy: txphuc (23/08/2023)
         protected virtual Task<IEnumerable<TEntity>> MapUpdateMultipleAsync(IEnumerable<TEntityUpdateDto> entityUpdateDtos)
         {
             var entities = _mapper.Map<IEnumerable<TEntity>>(entityUpdateDtos);

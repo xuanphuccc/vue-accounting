@@ -9,9 +9,11 @@ namespace MISA.AmisMintax.Controllers
     public class EmployeeRelationshipsController :
         BaseController<EmployeeRelationshipDto, EmployeeRelationshipCreateDto, EmployeeRelationshipUpdateDto>
     {
+        #region Constructors
         public EmployeeRelationshipsController(
             IEmployeeRelationshipService employeeRelationshipService) : base(employeeRelationshipService)
         {
-        }
+        } 
+        #endregion
     }
 }

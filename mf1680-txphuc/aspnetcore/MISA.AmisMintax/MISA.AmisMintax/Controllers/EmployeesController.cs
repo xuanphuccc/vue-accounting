@@ -11,14 +11,20 @@ namespace MISA.AmisMintax.Controllers
     [ApiController]
     public class EmployeesController : BaseCodeController<EmployeeDto, EmployeeCreateDto, EmployeeUpdateDto>
     {
+        #region Fields
         private readonly IEmployeeService _employeeService;
         private readonly IEmployeeExcelService _employeeExcelService;
+        #endregion
+
+        #region Constructors
         public EmployeesController(IEmployeeService employeeService, IEmployeeExcelService employeeExcelService) : base(employeeService)
         {
             _employeeService = employeeService;
             _employeeExcelService = employeeExcelService;
         }
+        #endregion
 
+        #region Endpoints
         /// <summary>
         /// Tìm kiếm, filter và phân trang nhân viên
         /// </summary>
@@ -68,5 +74,6 @@ namespace MISA.AmisMintax.Controllers
 
             return File(exportAllbytes, contentType, fileName);
         }
+        #endregion
     }
 }
