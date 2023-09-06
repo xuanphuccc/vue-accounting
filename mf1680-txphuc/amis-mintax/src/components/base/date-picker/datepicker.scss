@@ -96,3 +96,20 @@
     }
   }
 }
+
+.dx-calendar-view-century,
+.dx-calendar-view-decade,
+.dx-calendar-view-year {
+  .dx-calendar-cell span {
+    width: 56px;
+    height: 56px;
+  }
+
+  /* Disabled */
+  .dx-calendar-cell.dx-calendar-empty-cell span {
+    &::before,
+    &::after {
+      left: 16px;
+    }
+  }
+}

@@ -619,11 +619,19 @@ export default {
 
         await employeeApi.deleteMultiple(deleteIds);
 
+        // Chuyển về trang trước đó nếu xoá hét bản ghi ở trang hiện tại
+        if (
+          this.selectedRowsData.length == this.dataSource.length &&
+          this.filterRequest.page == this.pagingInfo.totalPages
+        ) {
+          this.filterRequest.page = this.filterRequest.page - 1;
+        } else {
+          // Load lại data
+          await this.getEmployeesData();
+        }
+
         // Ẩn dialog xác nhận xoá và bỏ chọn tất cả
         this.hideConfirmDialog();
-
-        // Load lại data
-        await this.getEmployeesData();
 
         // Hiện toast message xoá thành công
         this.$store.dispatch("toastStore/pushSuccessMessage", {
@@ -687,7 +695,7 @@ export default {
 
         const linkElement = document.createElement("a");
         linkElement.href = url;
-        linkElement.download = "export.xlsx";
+        linkElement.download = "Xuat_khau_Danh_sach_nguoi_nop_thue.xlsx";
         linkElement.click();
 
         this.isLoadingExportExcel = false;
