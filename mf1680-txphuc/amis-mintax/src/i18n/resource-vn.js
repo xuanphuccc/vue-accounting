@@ -3,6 +3,11 @@ const resourceVn = {
   fullProductName: "Thuế thu nhập cá nhân",
   company: "Công ty Cổ phần MISA",
 
+  validate: {
+    required: "không được bỏ trống",
+    inValidate: "Không đúng định dạng",
+  },
+
   sidebar: {
     registerTaxId: "Đăng ký mã số thuế",
     registerDependents: "Đăng ký người phụ thuộc",
@@ -175,6 +180,10 @@ const resourceVn = {
       filter: "Bộ lọc",
       customizeColumns: "Tuỳ chỉnh cột",
       usageStatus: "Trạng thái sử dụng",
+    },
+
+    text: {
+      hideDepartmentSelect: "Hiển thị cơ cấu tổ chức ngừng theo dõi",
     },
 
     employeeList: {

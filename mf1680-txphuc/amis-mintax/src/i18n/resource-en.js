@@ -3,6 +3,11 @@ const resourceEn = {
   fullProductName: "Personal Income Tax",
   company: "MISA Joint Stock Company",
 
+  validate: {
+    required: "field is required",
+    inValidate: "invalid format",
+  },
+
   sidebar: {
     registerTaxId: "Register tax ID",
     registerDependents: "Register dependents",
@@ -175,6 +180,10 @@ const resourceEn = {
       filter: "Filter",
       customizeColumns: "Customize columns",
       usageStatus: "Usage status",
+    },
+
+    text: {
+      hideDepartmentSelect: "Show organizational structure as inactive",
     },
 
     employeeList: {

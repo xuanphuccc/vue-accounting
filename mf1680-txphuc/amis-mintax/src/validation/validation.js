@@ -1,6 +1,7 @@
 import { extend } from "vee-validate";
 import { required, email, numeric } from "vee-validate/dist/rules";
 // import { setInteractionMode } from "vee-validate";
+import i18n from "@/i18n";
 
 // setInteractionMode("lazy");
 
@@ -10,7 +11,7 @@ import { required, email, numeric } from "vee-validate/dist/rules";
  */
 extend("required", {
   ...required,
-  message: "{_field_} không được bỏ trống",
+  message: "{_field_} " + i18n.t("validate.required"),
 });
 
 /**
@@ -19,7 +20,7 @@ extend("required", {
  */
 extend("numeric", {
   ...numeric,
-  message: "{_field_} không đúng định dạng",
+  message: "{_field_} " + i18n.t("validate.inValidate"),
 });
 
 /**
@@ -28,7 +29,7 @@ extend("numeric", {
  */
 extend("email", {
   ...email,
-  message: "Email không đúng định dạng",
+  message: "Email " + i18n.t("validate.inValidate"),
 });
 
 /**
@@ -40,5 +41,5 @@ extend("mobile", {
     const regex = /^0\d{9}$/;
     return regex.test(value);
   },
-  message: "{_field_} không đúng định dạng",
+  message: "{_field_} " + i18n.t("validate.inValidate"),
 });

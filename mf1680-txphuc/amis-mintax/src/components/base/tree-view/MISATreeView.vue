@@ -40,7 +40,7 @@
         </div>
 
         <div class="ms-tree-view__footer">
-          <DxCheckBox text="Hiển thị cơ cấu tổ chức ngừng theo dõi" />
+          <DxCheckBox :text="$t('employee.text.hideDepartmentSelect')" />
         </div>
       </div>
     </template>

@@ -838,6 +838,7 @@
                               :placeholder="`${$t('placeholder.select')} ${$t(
                                 'employee.employeeDetail.department'
                               ).toLowerCase()}`"
+                              :searchPlaceholder="$t('placeholder.search')"
                             />
                             <p v-if="errors[0]" class="validate-error">{{ errors[0] }}</p>
                           </div>

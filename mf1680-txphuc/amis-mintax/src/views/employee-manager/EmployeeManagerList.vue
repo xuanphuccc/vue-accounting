@@ -115,6 +115,7 @@
                 :dataSource="departments"
                 valueExpr="value"
                 :placeholder="$t('employee.filterBar.department')"
+                :searchPlaceholder="$t('placeholder.search')"
               />
 
               <MISASelectBox
